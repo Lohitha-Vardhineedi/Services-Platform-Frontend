@@ -1,0 +1,119 @@
+.home-page {
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+}
+.search-text {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--black-color);
+}
+.category-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+}
+.category-image-home {
+  width: 50px;
+  cursor: pointer;
+}
+.category-name {
+  font-size: 13px;
+  color: var(--black-color);
+  text-align: center;
+}
+.image-container {
+  width: 70px;
+  height: 70px;
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.submit-button {
+  align-self: center;
+  background-color: var(--crimson-red);
+  border: 0;
+  color: var(--white-color);
+}
+.promotion-image {
+  width: 90%;
+  border-radius: 20px;
+}
+.how-it-works-text {
+  font-size: 16px;
+  text-align: center;
+  color: var(--black-color);
+}
+
+.how-it-works-card {
+  width: 80%;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--black-color);
+}
+.card-imge-container {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+.how-it-works-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.step-container {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background-color: var(--crimson-red);
+  position: absolute;
+  top: 20%;
+  right: 65%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--white-color);
+}
+.search-text1 {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+}
+.search-description {
+  font-size: 14px;
+  text-align: center;
+}
+@media (min-width: 1200px) {
+  .custom-xl-9 {
+    flex: 0 0 auto;
+    width: 11.11%; /* 100 / 9 = 11.11% */
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .how-it-works-card {
+    width: 100%;
+  }
+  .how-it-works-text {
+    text-align: left;
+  }
+}

@@ -1,0 +1,32 @@
+* {
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
+}
+body,
+html,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+.link {
+  text-decoration: none;
+}
+/* :root {
+  --crimson-red: #db342a;
+  --white-color: #fff;
+  --black-color: #111;
+  --gray-color: #8390a0;
+  --light-gray-color: #e8e8e8;
+} */
+:root {
+  --white-color: #fff;
+  --black-color: #111;
+  --crimson-red: #d1292b;
+  --light-gray: #e8e8e8;
+  --blue-color: #4998e0;
+  --font-primary: "Poppins", sans-serif;
+  --font-secondary: "Montserrat", sans-serif;
+  --font-sub-secondary: "Raleway", sans-serif;
+}

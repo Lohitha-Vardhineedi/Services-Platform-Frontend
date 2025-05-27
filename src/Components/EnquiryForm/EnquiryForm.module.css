@@ -1,0 +1,62 @@
+.cardContainer {
+  background-color: var(--white-color);
+  padding: 32px;
+  border-bottom-right-radius: 24px;
+  border-top-left-radius: 24px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  font-family: var(--font-primary);
+  transition: transform 0.3s ease;
+}
+
+.cardContainer:hover {
+  transform: translateY(-4px);
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  font-family: var(--font-primary);
+  text-align: center;
+  color: var(--black-color);
+  margin-bottom: 24px;
+}
+
+.form-control {
+  border-radius: 10px !important;
+  border: 1px solid #ddd;
+  padding: 12px 14px;
+  font-family: var(--font-primary);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-control:focus {
+  border-color: var(--crimson-red);
+  box-shadow: 0 0 0 0.2rem rgba(209, 41, 43, 0.25);
+}
+
+.enquiryButton {
+  background-color: var(--crimson-red) !important;
+  color: var(--white-color) !important;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  width: 100%;
+  font-weight: 500;
+  font-family: var(--font-primary);
+  margin-top: 10px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.enquiryButton:hover {
+  background-color: #b92022;
+  transform: scale(1.02);
+}
+
+.footerText {
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--black-color);
+  font-family: var(--font-primary);
+  text-align: center;
+  opacity: 0.75;
+}
