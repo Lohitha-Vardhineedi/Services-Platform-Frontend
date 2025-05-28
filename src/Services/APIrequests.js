@@ -2,7 +2,7 @@ import ApiService from "./config";
 
 /*login*/
 export const registerUser = (body) => {
-  return ApiService.post("/api/providers/signup", body);
+  return ApiService.post("/api/users/register", body);
 };
 
 export const getCategoriesDetails = (body) => {

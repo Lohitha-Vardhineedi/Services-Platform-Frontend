@@ -1,34 +1,29 @@
 import "./login.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "react-bootstrap/Button";
 import { loginUser } from "../../Services/APIrequests";
 import { warningSwal } from "../../Utils/Toast";
+import Spinner from "react-bootstrap/Spinner";
 
 const Login = ({ onClose }) => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, []);
-
   const onSubmit = async (data) => {
+    setIsLoading(true);
     try {
       const response = await loginUser(data);
       debuddger;
 
       if (response.ok) {
         localStorage.setItem("token", result.token); // store JWT
-        navigate("/"); // redirect
       } else {
         console.log(response);
         alert(result.message || "Login failed");
@@ -38,6 +33,8 @@ const Login = ({ onClose }) => {
         "Error",
         err?.response?.data?.message || "Network error. Please try again."
       );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -95,10 +92,28 @@ const Login = ({ onClose }) => {
               <small className="text-danger">{errors.password.message}</small>
             )}
           </div>
-
-          <button type="submit" className="form-control mt-4 login-btn">
-            Login
-          </button>
+          {isLoading ? (
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <div>
+                <Spinner
+                  animation="border"
+                  variant="primary"
+                  style={{ marginRight: "auto" }}
+                />
+              </div>
+            </div>
+          ) : (
+            <button type="submit" className="form-control mt-4 login-btn">
+              Login
+            </button>
+          )}
 
           <p className="mt-3 text-center">Don't have an account? </p>
         </form>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./signup.css";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { SuccessMessage, warningSwal } from "../../Utils/Toast";
+import { SuccessSwal, warningSwal } from "../../Utils/Toast";
 import { getCategoriesDetails, registerUser } from "../../Services/APIrequests";
 import Spinner from "react-bootstrap/Spinner";
 
@@ -12,18 +12,16 @@ const SignupModal = ({ onClose, role }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
   const getCategories = async () => {
-    setIsLoading(true);
     try {
       const response = await getCategoriesDetails();
 
       setCategory(response?.data);
     } catch (error) {
       console.error("Error fetching user data:", error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -79,17 +77,17 @@ const SignupModal = ({ onClose, role }) => {
 
       const res = await registerUser(requestBody);
       if (res.status === 201) {
-        navigate("/");
-        SuccessMessage("Success", "Register Successfully");
+        SuccessSwal("Success", "Register Successfully");
+        reset(); // <-- this resets the form fields
+        onClose();
       } else {
-        debugger;
         Error(res.data.message);
       }
     } catch (error) {
       console.log(error);
       warningSwal("Error", error.response?.data?.message);
     } finally {
-      setIsLoading(true);
+      setIsLoading(false);
     }
   };
 
@@ -228,10 +226,6 @@ const SignupModal = ({ onClose, role }) => {
             )}
           </div>
           {isLoading ? (
-            <button className="modal-register-btn" type="submit">
-              Register
-            </button>
-          ) : (
             <div
               style={{
                 width: "100%",
@@ -248,6 +242,10 @@ const SignupModal = ({ onClose, role }) => {
                 />
               </div>
             </div>
+          ) : (
+            <button className="modal-register-btn" type="submit">
+              Register
+            </button>
           )}
           <p className="login-redirect">
             Already have an account?{" "}
