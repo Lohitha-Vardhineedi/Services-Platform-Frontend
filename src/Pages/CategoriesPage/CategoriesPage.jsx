@@ -4,13 +4,30 @@ import { Col, Container, Row } from "react-bootstrap";
 import { categoryDetails } from "../../Utils/constant";
 import CategoryDetails from "../../Components/CategoryCards/CategoryCards";
 import { useEffect, useState } from "react";
+import { getCategoriesDetails } from "../../Services/APIrequests";
 const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);
   const [resultCategory, setResultCategory] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getCategories = async () => {
+    setIsLoading(true);
+    try {
+      const response = await getCategoriesDetails();
+
+      setCategories(response?.data || []);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
+    getCategories();
     setCategories(categoryDetails);
     setResultCategory(categoryDetails);
   }, []);
+
   const handleSearch = (e) => {
     const searchValue = e.target.value;
     const result = categories.filter((item) =>
@@ -32,9 +49,9 @@ const CategoriesPage = () => {
                 onChange={handleSearch}
               />
             </Col>
-            {resultCategory?.length != 0 ? (
+            {categories?.length != 0 ? (
               <>
-                {resultCategory?.map((item) => (
+                {categories?.map((item) => (
                   <Col
                     xs={4}
                     md={3}
@@ -42,7 +59,7 @@ const CategoriesPage = () => {
                     className="custom-xl-9"
                     key={item?.id}
                   >
-                    <CategoryDetails categoryDetails1={item} key={item?.id} />
+                    <CategoryDetails categoryDetails={item} key={item?.id} />
                   </Col>
                 ))}
               </>

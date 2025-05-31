@@ -12,8 +12,60 @@ import {
 import BlogCarousel from "../../Components/Blogs/Blogs";
 import CategoryDetails from "../../Components/CategoryCards/CategoryCards";
 import HowItWorksCard from "../../Components/HowItWorksCard/HowItWorksCard";
+import { useEffect, useState } from "react";
+import {
+  allPinCodes,
+  allRegions,
+  getCategoriesDetails,
+} from "../../Services/APIrequests";
 
 const HomePage = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [category, setCategory] = useState([]);
+  const [regions, setRegions] = useState([]);
+  const [pinCodes, setPinCodes] = useState([]);
+
+  const getCategories = async () => {
+    setIsLoading(true);
+    try {
+      const response = await getCategoriesDetails();
+
+      setCategory(response?.data || []);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const getAllRegions = async () => {
+    setIsLoading(true);
+    try {
+      const response = await allRegions();
+
+      setRegions(response?.data || []);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const getPinCodes = async () => {
+    setIsLoading(true);
+    try {
+      const response = await allPinCodes();
+
+      setPinCodes(response?.data || []);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    getCategories();
+    getAllRegions();
+    getPinCodes();
+  }, []);
   return (
     <>
       <Layout>
@@ -27,23 +79,61 @@ const HomePage = () => {
               </Col>
               <Col sm={3} md={3}>
                 <select className="form-control">
-                  <option>Select Category</option>
-                  <option>Ac Repair</option>
+                  {isLoading ? (
+                    <option>Loading...</option>
+                  ) : category?.length === 0 ? (
+                    <option>No Data Found</option>
+                  ) : (
+                    <>
+                      <option>Select Category</option>
+                      {category?.map((item) => (
+                        <option key={item?.id}>{item?.category_name}</option>
+                      ))}
+                    </>
+                  )}
                 </select>
               </Col>
-              <Col sm={4} md={4}>
+              <Col sm={4} md={3}>
                 <select className="form-control">
-                  <option>Select Location</option>
-                  <option>Hyderabad</option>
-                  <option>Mumbai</option>
+                  {isLoading ? (
+                    <option>Loading...</option>
+                  ) : regions?.length === 0 ? (
+                    <option>No Data Found</option>
+                  ) : (
+                    <>
+                      <option>Select Location</option>
+                      {regions?.map((item) => (
+                        <option key={item?.id}>{item?.sa_name}</option>
+                      ))}
+                    </>
+                  )}
                 </select>
               </Col>
-              <Col sm={3} md={3}>
+              <Col sm={3} md={2}>
                 <select className="form-control">
-                  <option>Select pin code</option>
-                  <option>123456</option>
+                  {isLoading ? (
+                    <option>Loading...</option>
+                  ) : pinCodes?.length === 0 ? (
+                    <option>No Data Found</option>
+                  ) : (
+                    <>
+                      <option>Select Pincode</option>
+                      {pinCodes?.map((item) => (
+                        <option key={item?.id}>
+                          {item?.Pnc_Code}({item?.Pnc_aliasname})
+                        </option>
+                      ))}
+                    </>
+                  )}
                 </select>
               </Col>
+              <Col sm={3} md={2}>
+                <select className="form-control">
+                  <option>Select Area</option>
+                  <option>Sr Nagar</option>
+                </select>
+              </Col>
+
               <Col sm={2} md={2}>
                 <button className="form-control submit-button">Search</button>
               </Col>
@@ -59,7 +149,7 @@ const HomePage = () => {
               <Col sm={12}>
                 <h3 className="search-text">Featured Categories</h3>
               </Col>
-              {categoryDetails?.map((item) => (
+              {category?.map((item) => (
                 <Col
                   xs={4}
                   md={3}
@@ -67,7 +157,7 @@ const HomePage = () => {
                   className="custom-xl-9"
                   key={item?.id}
                 >
-                  <CategoryDetails categoryDetails1={item} key={item?.id} />
+                  <CategoryDetails categoryDetails={item} key={item?.id} />
                 </Col>
               ))}
               <Col sm={12}>

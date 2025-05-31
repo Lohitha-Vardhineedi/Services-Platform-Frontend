@@ -3,7 +3,7 @@ import "../../Pages/HomePage/home.css";
 import { useNavigate } from "react-router-dom";
 
 const CategoryDetails = (props) => {
-  const { categoryDetails1 } = props;
+  const { categoryDetails } = props;
   const navigate = useNavigate();
 
   const handleNavigateEnquire = () => {
@@ -13,12 +13,12 @@ const CategoryDetails = (props) => {
     <div className="category-container" onClick={handleNavigateEnquire}>
       <div className="image-container">
         <img
-          src={categoryDetails1?.categoryImage}
-          alt={categoryDetails1?.categoryName}
+          src={`https://prnvservices.com/${categoryDetails?.category_image}`}
+          alt={categoryDetails?.category_name}
           className="category-image-home"
         />
       </div>
-      <p className="category-name">{categoryDetails1?.categoryName}</p>
+      <p className="category-name">{categoryDetails?.category_name}</p>
     </div>
   );
 };
