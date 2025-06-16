@@ -1,18 +1,18 @@
 import React from 'react';
-import BillsSection from './BillsSection';
-import TravelSection from './TravelSection';
+import WeddingSection from '../WeddingSection';
+import BeautySection from '../BeautySection';
 
-function BillsTravelRow() {
+function WeddingBeautyRow() {
   return (
     <div className="mb-12 grid grid-cols-1 md:grid-cols-2 gap-8">
       <div className="bg-white rounded-2xl shadow p-6 flex flex-col">
-        <BillsSection />
+        <WeddingSection hideTitle />
       </div>
       <div className="bg-white rounded-2xl shadow p-6 flex flex-col">
-        <TravelSection />
+        <BeautySection hideTitle />
       </div>
     </div>
   );
 }
 
-export default BillsTravelRow; 
+export default WeddingBeautyRow; 

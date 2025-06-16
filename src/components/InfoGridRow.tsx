@@ -1,8 +1,8 @@
 import React from 'react';
 import BillsSection from './BillsSection';
 import TravelSection from './TravelSection';
-import TrendingSection from './TrendingSection';
-import PopularSearchesSection from './PopularSearchesSection';
+import TrendingSection from './homepage/TrendingSection';
+import PopularSearchesSection from './homepage/PopularSearchesSection';
 
 function InfoGridRow() {
   return (
