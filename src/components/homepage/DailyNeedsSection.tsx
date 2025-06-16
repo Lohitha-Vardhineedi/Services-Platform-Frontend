@@ -1,5 +1,5 @@
 import React from 'react';
-import { dailyNeeds } from '../data/dailyNeedsData';
+import { dailyNeeds } from '../../data/dailyNeedsData';
 
 function DailyNeedsSection() {
   return (

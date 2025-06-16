@@ -1,5 +1,5 @@
 import React from 'react';
-import { billServices } from '../data/billServicesData';
+import { billServices } from '../../data/billServicesData';
 
 function BillsSection() {
   return (

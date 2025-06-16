@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import CarouselCard from '../CarouselCard';
+import CarouselCard from './CarouselCard';
 import { serviceCards, serviceCardBgColors } from '../../data/serviceCardsData';
 
 // ServiceCardsRow component

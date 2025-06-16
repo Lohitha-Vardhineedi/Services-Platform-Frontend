@@ -1,6 +1,6 @@
 import React from 'react';
-import BillsSection from '../BillsSection';
-import TravelSection from '../TravelSection';
+import BillsSection from './BillsSection';
+import TravelSection from './TravelSection';
 
 function BillsTravelRow() {
   return (
