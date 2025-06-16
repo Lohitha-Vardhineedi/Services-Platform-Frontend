@@ -1,15 +1,10 @@
 import React from 'react';
 import LoginForm from '../../components/auth/LoginForm';
-import AuthLayout from '../../components/layout/AuthLayout';
 
 const TechnicianLogin = () => {
-  return (
-    <AuthLayout title="Technician Login" subtitle="Access your technician account">
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    return (
         <LoginForm defaultRole="technician" />
-      </main>
-    </AuthLayout>
-  );
+    );
 };
 
 export default TechnicianLogin;
