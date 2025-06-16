@@ -1,5 +1,5 @@
 import React from 'react';
-import { travelServices } from '../data/travelServicesData';
+import { travelServices } from '../../data/travelServicesData';
 
 function TravelSection() {
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
-import RepairSection from '../RepairSection';
-import DailyNeedsSection from '../DailyNeedsSection';
+import RepairSection from './RepairSection';
+import DailyNeedsSection from './DailyNeedsSection';
 
 function RepairDailyRow() {
   return (

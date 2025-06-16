@@ -1,12 +1,12 @@
 import React from 'react';
-import { weddingServices } from '../data/weddingServicesData';
+import { beautyServices } from '../../data/beautyServicesData';
 
-function WeddingSection() {
+function BeautySection() {
   return (
     <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-4 text-left">Wedding Services</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-4 text-left">Beauty & Spa</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {weddingServices.map((service, idx) => (
+        {beautyServices.map((service, idx) => (
           <div key={idx} className="bg-white rounded-xl shadow p-4 flex flex-col items-center">
             <img src={service.image} alt={service.name} className="w-full h-32 object-cover rounded mb-3" />
             <h3 className="font-semibold text-lg text-gray-800 text-center">{service.name}</h3>
@@ -17,4 +17,4 @@ function WeddingSection() {
   );
 }
 
-export default WeddingSection; 
+export default BeautySection; 

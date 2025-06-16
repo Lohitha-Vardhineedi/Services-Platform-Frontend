@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
-import HomePage from '../pages/HomePage.tsx';
-import NotFoundPage from '../pages/NotFoundPage.tsx';
-import AboutPage from '../pages/AboutPage.tsx';
+import HomePage from '../pages/HomePage';
+import AboutPage from '../pages/AboutPage';
+import NotFoundPage from '../pages/NotFoundPage';
 
 
 const AppRoutes = () => {

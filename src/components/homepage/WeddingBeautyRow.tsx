@@ -1,6 +1,6 @@
 import React from 'react';
-import WeddingSection from '../WeddingSection';
-import BeautySection from '../BeautySection';
+import WeddingSection from './WeddingSection';
+import BeautySection from './BeautySection';
 
 function WeddingBeautyRow() {
   return (
