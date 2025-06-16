@@ -1,0 +1,22 @@
+export const categories = [
+  { name: "Restaurants", icon: "https://prnvservices.com/uploads/category_images/images/abe86046010a22af65a721cc7bc02544.svg", color: "bg-orange-100 text-orange-600" },
+  { name: "Hotels", icon: "https://prnvservices.com/uploads/category_images/images/8cdeb7b9f2b4208423c9a0e9ffaf9dae.svg", color: "bg-blue-100 text-blue-600" },
+  { name: "Beauty Spa", icon: "https://prnvservices.com/uploads/category_images/images/c07127a6d57dafa0724a6afa6d45ae12.svg", color: "bg-pink-100 text-pink-600" },
+  { name: "Home Decor", icon: "https://prnvservices.com/uploads/category_images/images/5fa2929b21b2838e3b50e5851824fc8f.svg", color: "bg-green-100 text-green-600" },
+  { name: "Wedding Planning", icon: "https://prnvservices.com/uploads/category_images/images/7c8c15aaf400679204d70922addc3b4d.svg", color: "bg-red-100 text-red-600" },
+  { name: "Education", icon: "https://prnvservices.com/uploads/category_images/images/2d6f748b0bf40386ad95e501409fc392.svg", color: "bg-indigo-100 text-indigo-600" },
+  { name: "Rent & Hire", icon: "https://prnvservices.com/uploads/category_images/images/6d8db75af0bffd2ff401b564d79929a3.svg", color: "bg-teal-100 text-teal-600" },
+  { name: "Hospitals", icon: "https://prnvservices.com/uploads/category_images/images/11b892879247017fdabde160f0785fef.svg", color: "bg-red-100 text-red-600" },
+  { name: "Contractors", icon: "https://prnvservices.com/uploads/category_images/images/11b892879247017fdabde160f0785fef.svg", color: "bg-yellow-100 text-yellow-600" },
+  { name: "Pet Shops", icon: "https://prnvservices.com/uploads/category_images/images/2fa9d290d7bbac4133f77b0de117488a.svg", color: "bg-purple-100 text-purple-600" },
+  { name: "PG/Hostels", icon: "🏠", color: "bg-blue-100 text-blue-600" },
+  { name: "Estate Agents", icon: "🏢", color: "bg-green-100 text-green-600" },
+  { name: "Dentists", icon: "🦷", color: "bg-blue-100 text-blue-600" },
+  { name: "Gym", icon: "💪", color: "bg-red-100 text-red-600" },
+  { name: "Loans", icon: "💰", color: "bg-yellow-100 text-yellow-600" },
+  { name: "Event Organisers", icon: "🎉", color: "bg-purple-100 text-purple-600" },
+  { name: "Driving Schools", icon: "🚗", color: "bg-blue-100 text-blue-600" },
+  { name: "Packers & Movers", icon: "📦", color: "bg-orange-100 text-orange-600" },
+  { name: "Courier Service", icon: "📮", color: "bg-green-100 text-green-600" },
+  { name: "Internet Providers", icon: "🌐", color: "bg-blue-100 text-blue-600" }
+]; 
