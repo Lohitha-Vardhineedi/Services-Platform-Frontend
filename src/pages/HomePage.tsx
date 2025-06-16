@@ -1,3 +1,15 @@
+import SearchBarSection from "../components/homepage/SearchBarSection";
+import ServiceCardsRow from "../components/homepage/ServiceCardsRow";
+import CategoriesGrid from "../components/homepage/CategoriesGrid.js";
+import WeddingBeautyRow from "../components/homepage/WeddingBeautyRow";
+import RepairDailyRow from "../components/homepage/RepairDailyRow.js";
+import BillsTravelRow from "../components/homepage/BillsTravelRow.js";
+import TrendingSection from "../components/homepage/TrendingSection";
+import PopularSearchesSection from "../components/homepage/PopularSearchesSection";
+import CitiesSection from "../components/homepage/CitiesSection";
+import RainyDaySection from "../components/homepage/RainyDaySection";
+import CustomerReviews from "../components/homepage/CustomerReviews.js";
+
 const HomePage = () => {
     return (
         <>
