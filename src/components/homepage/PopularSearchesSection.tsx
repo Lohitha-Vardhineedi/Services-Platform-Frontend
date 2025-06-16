@@ -1,5 +1,5 @@
 import React from 'react';
-import { popularSearches } from '../data/popularSearchesData';
+import { popularSearches } from '../../data/popularSearchesData';
 
 function PopularSearchesSection() {
   return (

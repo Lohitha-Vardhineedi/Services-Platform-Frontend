@@ -1,5 +1,5 @@
 import React from 'react';
-import { rainyDayServices } from '../data/rainyDayServicesData';
+import { rainyDayServices } from '../../data/rainyDayServicesData';
 
 function RainyDaySection() {
   return (

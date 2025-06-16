@@ -1,5 +1,5 @@
 import React from 'react';
-import { cities } from '../data/citiesData';
+import { cities } from '../../data/citiesData';
 
 function CitiesSection() {
   return (

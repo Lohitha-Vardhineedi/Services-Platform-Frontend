@@ -1,6 +1,6 @@
 import React from 'react';
 import { Menu } from 'lucide-react';
-import { categories } from '../data/categoriesData';
+import { categories } from '../../data/categoriesData';
 
 interface CategoriesGridProps {
   lang: string;

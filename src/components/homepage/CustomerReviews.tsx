@@ -1,6 +1,6 @@
 import React from 'react';
 import { User, Star } from 'lucide-react';
-import { customerReviews } from '../data/customerReviewsData';
+import { customerReviews } from '../../data/customerReviewsData';
 
 function CustomerReviewCarousel() {
   const [page, setPage] = React.useState(0);
