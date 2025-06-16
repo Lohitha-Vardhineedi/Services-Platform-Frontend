@@ -10,11 +10,11 @@ function Header() {
         <div className="flex items-center justify-between h-16 overflow-x-auto">
           {/* Logo */}
           <div className="flex-shrink-0 bg-blue-900 rounded px-1 py-0.5">
-            <img
+            <Link to="/"><img
               src="https://prnvservices.com/uploads/logo/1695377568_logo-white.png"
               alt="Justdial Logo"
               className="h-8 w-auto"
-            />
+            /></Link>
           </div>
 
           {/* Navigation (Desktop) */}
