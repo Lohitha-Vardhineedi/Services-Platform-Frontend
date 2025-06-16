@@ -3,6 +3,7 @@ import HomePage from '../pages/HomePage.tsx';
 import AboutPage from '../pages/AboutPage.tsx';
 import NotFoundPage from '../pages/NotFoundPage.tsx';
 
+
 const AppRoutes = () => {
   return (
     <Routes>
