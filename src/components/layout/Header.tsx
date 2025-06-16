@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Download, Menu, X } from 'lucide-react';
 
 function Header() {
@@ -9,7 +10,11 @@ function Header() {
         <div className="flex items-center justify-between h-16 overflow-x-auto">
           {/* Logo */}
           <div className="flex-shrink-0 bg-blue-900 rounded px-1 py-0.5">
-            <img src="https://prnvservices.com/uploads/logo/1695377568_logo-white.png" alt="Justdial Logo" className="h-8 w-auto" />
+            <img
+              src="https://prnvservices.com/uploads/logo/1695377568_logo-white.png"
+              alt="Justdial Logo"
+              className="h-8 w-auto"
+            />
           </div>
 
           {/* Navigation (Desktop) */}
@@ -17,11 +22,11 @@ function Header() {
             <div className="flex items-center w-16">
               <div id="google_translate_element" className="w-full" />
             </div>
-            <a href="#" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium">Categories</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium flex items-center">About Us</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium">Subscriptions</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium">Key Features</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium">Franchise</a>
+            <Link to="/categories" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium">Categories</Link>
+            <Link to="/about" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium flex items-center">About Us</Link>
+            <Link to="/subscriptions" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium">Subscriptions</Link>
+            <Link to="/features" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium">Key Features</Link>
+            <Link to="/franchise" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium">Franchise</Link>
           </nav>
 
           {/* Right side */}
@@ -39,6 +44,7 @@ function Header() {
           </div>
         </div>
       </div>
+
       {/* Mobile Menu Overlay */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex justify-end">
@@ -49,16 +55,18 @@ function Header() {
             <div className="flex items-center w-16 mb-6 mt-2">
               <div id="google_translate_element_mobile" className="w-full" />
             </div>
-            <a href="#" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>Categories</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>About Us</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>Subscriptions</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>Key Features</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>Franchise</a>
+            <Link to="/categories" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>Categories</Link>
+            <Link to="/about" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>About Us</Link>
+            <Link to="/subscriptions" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>Subscriptions</Link>
+            <Link to="/features" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>Key Features</Link>
+            <Link to="/franchise" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>Franchise</Link>
             <button className="mt-6 flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg transition-colors w-full justify-center">
               <Download className="w-4 h-4" />
               <span className="text-sm font-medium">Download App</span>
             </button>
-            <button className="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors w-full">Login / Sign Up</button>
+            <button className="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors w-full">
+              Login / Sign Up
+            </button>
           </div>
         </div>
       )}
@@ -66,4 +74,4 @@ function Header() {
   );
 }
 
-export default Header; 
+export default Header;
