@@ -1,0 +1,69 @@
+import React, { useState } from 'react';
+import { Download, Menu, X } from 'lucide-react';
+
+function Header() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  return (
+    <header className="bg-white shadow-sm border-b">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 overflow-x-auto">
+          {/* Logo */}
+          <div className="flex-shrink-0 bg-blue-900 rounded px-1 py-0.5">
+            <img src="https://prnvservices.com/uploads/logo/1695377568_logo-white.png" alt="Justdial Logo" className="h-8 w-auto" />
+          </div>
+
+          {/* Navigation (Desktop) */}
+          <nav className="hidden md:flex space-x-4 flex-shrink items-center">
+            <div className="flex items-center w-16">
+              <div id="google_translate_element" className="w-full" />
+            </div>
+            <a href="#" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium">Categories</a>
+            <a href="#" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium flex items-center">About Us</a>
+            <a href="#" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium">Subscriptions</a>
+            <a href="#" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium">Key Features</a>
+            <a href="#" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium">Franchise</a>
+          </nav>
+
+          {/* Right side */}
+          <div className="flex items-center space-x-4">
+            <button className="hidden md:flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg transition-colors">
+              <Download className="w-4 h-4" />
+              <span className="text-sm font-medium">Download App</span>
+            </button>
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+              Login / Sign Up
+            </button>
+            <button className="md:hidden" onClick={() => setMobileOpen(true)}>
+              <Menu className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* Mobile Menu Overlay */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex justify-end">
+          <div className="w-64 bg-white h-full shadow-lg flex flex-col p-6 relative animate-slide-in">
+            <button className="absolute top-4 right-4 text-gray-600" onClick={() => setMobileOpen(false)}>
+              <X className="w-6 h-6" />
+            </button>
+            <div className="flex items-center w-16 mb-6 mt-2">
+              <div id="google_translate_element_mobile" className="w-full" />
+            </div>
+            <a href="#" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>Categories</a>
+            <a href="#" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>About Us</a>
+            <a href="#" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>Subscriptions</a>
+            <a href="#" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>Key Features</a>
+            <a href="#" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>Franchise</a>
+            <button className="mt-6 flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg transition-colors w-full justify-center">
+              <Download className="w-4 h-4" />
+              <span className="text-sm font-medium">Download App</span>
+            </button>
+            <button className="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors w-full">Login / Sign Up</button>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
+
+export default Header; 
