@@ -1,39 +1,66 @@
 import React, { useState } from 'react';
+import {
+  Check,
+  X,
+  Star,
+  Crown,
+  Zap,
+  Shield,
+  BadgeIndianRupee,
+  LucideIcon
+} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { Star, Crown, Zap, BadgeIndianRupee } from 'lucide-react';
-import { plans } from '../utils/jsonData.js';
+import { plans } from '../utils/jsonData';
 
-const Subscription = () => {
-  const [selectedPlan, setSelectedPlan] = useState(null);
+interface PlanFeature {
+  text: string;
+  included: boolean;
+}
+
+interface Plan {
+  id: string;
+  name: string;
+  price: string;
+  originalPrice?: string;
+  gst: string;
+  validity: string;
+  icon: LucideIcon;
+  color: string;
+  features: PlanFeature[];
+  discount?: string;
+  popular?: boolean;
+  buttonColor: string;
+}
+
+const Subscription: React.FC = () => {
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleFullDetails = (plan) => {
+  const handleFullDetails = (plan: Plan): void => {
     navigate(`/plans/${plan.id}`);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-4">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">
+          <h1 className="text-3xl font-bold text-gray-800">
             Technician Subscription Plans
           </h1>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-l text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Choose the perfect plan to grow your technical service business and connect with more customers
           </p>
         </div>
 
         {/* Plans Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {plans.map((plan) => {
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 xl:gap-10">
+          {plans.map((plan: Plan) => {
             const IconComponent = plan.icon;
             return (
               <div
                 key={plan.id}
-                className={`relative bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border ${
-                  plan.popular ? 'border-yellow-400 ring-2 ring-yellow-400' : 'border-gray-200'
-                } ${selectedPlan === plan.id ? 'ring-2 ring-blue-500' : ''}`}
+                className={`relative bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border ${plan.popular ? 'border-yellow-400 ring-2 ring-yellow-400' : 'border-gray-200'} ${selectedPlan === plan.id ? 'ring-2 ring-blue-500' : ''}`}
               >
                 {/* Popular Badge */}
                 {plan.popular && (
@@ -79,8 +106,8 @@ const Subscription = () => {
                   <div className="space-y-3 mb-8">
                     {plan.features.map((feature, index) => (
                       <div key={index} className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center mt-0.5">
-                          <BadgeIndianRupee className="text-green-600" size={12} />
+                        <div className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5 ${feature.included ? 'bg-gray-200' : 'bg-gray-100'}`}>
+                          <BadgeIndianRupee className="text-gray-600" size={12} />
                         </div>
                         <span className="text-sm text-gray-700">{feature.text}</span>
                       </div>
@@ -97,7 +124,7 @@ const Subscription = () => {
                     </button>
                     <button
                       onClick={() => handleFullDetails(plan)}
-                      className="w-full py-2 px-4 text-gray-600 hover:text-blue-600 font-medium transition-colors duration-300"
+                      className="w-full py-2 px-4 text-gray-600 hover:text-red-600 font-medium transition-colors duration-300"
                     >
                       Full Details →
                     </button>
@@ -106,34 +133,6 @@ const Subscription = () => {
               </div>
             );
           })}
-        </div>
-
-        {/* Additional Information */}
-        <div className="mt-16 bg-white rounded-2xl shadow-xl p-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Why Choose Our Platform?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BadgeIndianRupee className="text-blue-600" size={24} />
-              </div>
-              <h3 className="font-semibold text-gray-800 mb-2">No Commission</h3>
-              <p className="text-gray-600 text-sm">Keep 100% of your earnings with our commission-free model</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Star className="text-green-600" size={24} />
-              </div>
-              <h3 className="font-semibold text-gray-800 mb-2">Quality Leads</h3>
-              <p className="text-gray-600 text-sm">Get verified customer leads in your service area</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Crown className="text-purple-600" size={24} />
-              </div>
-              <h3 className="font-semibold text-gray-800 mb-2">Professional Growth</h3>
-              <p className="text-gray-600 text-sm">Build your reputation and grow your business</p>
-            </div>
-          </div>
         </div>
       </div>
     </div>

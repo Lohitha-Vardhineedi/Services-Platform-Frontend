@@ -1,0 +1,20 @@
+export const franchiseTerms = [
+  { id: 1, text: "Franchise will earn Rs 10% commission on their enrollments and renewals of professionals (service providers/technicians) & advertisement plans as well." },
+  { id: 2, text: "The franchise has to pay a monthly subscription fee of Rs. 100 + GST (18%), Rs. 18 = Rs. 118 (valid for 30 days). (It is Not Refundable.) (Actual amount Rs. 1000 + 18% GST Rs. 180 Total Rs. 1,180)." },
+  { id: 3, text: "The franchise has to renew with Rs. 118 after every 30 days." },
+  { id: 4, text: "The franchise must have Marketing as well as organizing knowledge." },
+  { id: 5, text: "This commission will be paid every month. The total commission earned from the 1st to the end of the month will be paid next month between the 5th to 10th by PRNV Services." },
+  { id: 6, text: "This amount will be deposited to their respective bank account." },
+  { id: 7, text: "PRNV Services will provide proper training to the Franchise." },
+  { id: 8, text: "The growth of the franchise is purely dependent upon their performance." },
+  { id: 9, text: "The Franchise is responsible for explaining to Service Providers about the work, billing & handling profiles, and training them to operate their profile and renewal process." },
+  { id: 10, text: "If the Franchise doesn't renew the monthly plan, he will not receive any commission." },
+  { id: 11, text: "The Franchise can work anywhere within the area of GHMC." },
+  { id: 12, text: "The Franchise is not a job but a purely business-based service depending upon individual performance." },
+  { id: 13, text: "Franchises will not get a monthly salary, but their earnings will depend upon their performance." },
+  { id: 14, text: "The individual's commission differs from one another because it is based on their efforts." },
+  { id: 15, text: "PRNV Services will charge individual Franchises TDS if they fall in terms of government policies." },
+  { id: 16, text: "The Franchise can add Service Providers within the GHMC area only." },
+  { id: 17, text: "The Franchise should submit 2 mobile referral numbers, an Aadhaar Card, and a PAN card or Voter ID card for verification. The account will be activated within 24 hours." },
+  { id: 18, text: "The Franchise should mention account details. So, the commission will be deposited in his respective bank account." }
+];
