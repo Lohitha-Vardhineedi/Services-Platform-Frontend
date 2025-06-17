@@ -1,25 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import {
-  CheckCircle,
-  Phone,
-  Mail,
-  MapPin,
-  AlertCircle,
-  Users,
-  TrendingUp,
-  Award,
-  DollarSign,
-  Calendar,
-  Target,
-  BookOpen,
-  Briefcase,
-  Clock,
-  Globe,
-  FileText,
-  CreditCard,
-  Shield
-} from 'lucide-react';
-import { franchiseTerms } from '../utils/franchiseData';
+import { CheckCircle, Phone, Mail, MapPin, AlertCircle, Users, TrendingUp, Award, DollarSign, Calendar, Target, BookOpen, Briefcase, Clock, Globe, FileText, CreditCard, Shield } from 'lucide-react';
+import { franchiseTerms } from '../data/FranchiseData';
 
 interface FormData {
   name: string;

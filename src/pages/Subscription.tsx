@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
-import {
-  Check,
-  X,
-  Star,
-  Crown,
-  Zap,
-  Shield,
-  BadgeIndianRupee,
-  LucideIcon
-} from 'lucide-react';
+import { Check, X, Star, Crown, Zap, Shield, BadgeIndianRupee, LucideIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { plans } from '../utils/jsonData';
+import { plans } from '../data/jsonData';
 
 interface PlanFeature {
   text: string;

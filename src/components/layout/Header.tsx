@@ -36,17 +36,17 @@ function Header() {
               <span className="text-sm font-medium">Download App</span>
             </button>
             <Link
-  to="/login/user"
-  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
->
-  Login
-</Link>
-<Link
-  to="/signup/user"
-  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
->
-  Sign Up
-</Link>
+              to="/login/user"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            >
+              Login
+            </Link>
+            <Link
+              to="/signup/user"
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            >
+              Sign Up
+            </Link>
 
             <button className="md:hidden" onClick={() => setMobileOpen(true)}>
               <Menu className="w-6 h-6" />
