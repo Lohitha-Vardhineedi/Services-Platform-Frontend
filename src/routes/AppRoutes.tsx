@@ -7,9 +7,9 @@ import TechnicianLogin from '../pages/login/TechnicianLogin';
 import UserSignup from '../pages/signup/UserSignup';
 import TechnicianSignup from '../pages/signup/TechnicianSignup';
 import AuthLayout from '../components/layout/AuthLayout'; 
-import Subscription from '../pages/SubscriptionPage';
+import SubscriptionPage from '../pages/SubscriptionPage';
 import FranchisePage from '../pages/FranchisePage';
-import PlanDetails from '../pages/PlanDetailsPage';
+import PlanDetailsPage from '../pages/PlanDetailsPage';
 
 
 const AppRoutes = () => {
@@ -26,9 +26,9 @@ const AppRoutes = () => {
                 <Route path="/signup/user" element={<UserSignup />} />
                 <Route path="/signup/technician" element={<TechnicianSignup />} />
             </Route>
-            <Route path="/subscription" element={<Subscription />} />
+            <Route path="/subscription" element={<SubscriptionPage />} />
             <Route path="/franchise" element={<FranchisePage />} />
-            <Route path="/plans/:id" element={<PlanDetails />} />
+            <Route path="/plans/:id" element={<PlanDetailsPage />} />
             <Route path="*" element={<NotFoundPage />} />
         </Routes>
     );

@@ -1,10 +1,11 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import { plans } from '../data/subscriptionPlans';
+import { LucideIcon } from 'lucide-react';
 
+// Define the shape of a feature and plan
 interface PlanFeature {
   text: string;
-  included: boolean;
+  included?: boolean;
 }
 
 interface Plan {
@@ -14,50 +15,62 @@ interface Plan {
   originalPrice?: string;
   gst: string;
   validity: string;
+  icon: LucideIcon;
+  color: string;
   features: PlanFeature[];
+  fullFeatures: PlanFeature[];
+  discount?: string;
+  popular?: boolean;
+  buttonColor: string;
 }
 
-interface PlanDetailsProps {
-  plan?: Plan;
-}
+const PlanDetailsPage: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const plan = plans.find((p: Plan) => p.id.toString() === id);
 
-const PlanDetails: React.FC<PlanDetailsProps> = ({ plan }) => {
-  const { id } = useParams();
-  const selectedPlan = plan || plans.find((p) => p.id === id);
-
-  if (!selectedPlan) {
-    return <div className="p-4 text-red-500">Plan not found.</div>;
+  if (!plan) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 text-red-600 text-xl font-semibold">
+        Plan not found
+      </div>
+    );
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-md">
-      <h1 className="text-3xl font-bold mb-4 text-gray-800">{selectedPlan.name}</h1>
-      <div className="mb-4">
-        <p className="text-xl font-semibold text-gray-700">Price: {selectedPlan.price}</p>
-        {selectedPlan.originalPrice && (
-          <p className="text-sm text-gray-500 line-through">Original: {selectedPlan.originalPrice}</p>
-        )}
-        <p className="text-md text-gray-600">{selectedPlan.gst}</p>
-        <p className="text-sm mt-1 font-medium bg-blue-50 inline-block px-3 py-1 rounded-full text-blue-700">
-          Validity: {selectedPlan.validity}
-        </p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-pink-50 py-12 px-4">
+      <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl p-8 md:p-12">
+        <div className="text-center mb-5">
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">{plan.name}</h1>
+          <p className="text-lg text-gray-500">{plan.validity}</p>
+        </div>
 
-      <h2 className="text-xl font-bold mb-2 text-gray-800">Plan Features:</h2>
-      <ul className="list-disc ml-6 space-y-2">
-        {selectedPlan.features.map((f, idx) => (
-          <li
-            key={idx}
-            className={`text-base ${
-              f.included ? 'text-green-600' : 'text-gray-400 line-through'
-            }`}
-          >
-            {f.text}
-          </li>
-        ))}
-      </ul>
+        {plan.discount && (
+          <div className="text-center mb-5">
+            <span className="inline-block bg-red-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
+              {plan.discount}
+            </span>
+          </div>
+        )}
+
+        <div className="text-center mb-6">
+          <p className="text-3xl font-extrabold text-gray-900">{plan.price}</p>
+          {plan.originalPrice && (
+            <p className="text-sm text-gray-500 line-through">{plan.originalPrice}</p>
+          )}
+          <p className="text-sm text-gray-600 mt-1">{plan.gst}</p>
+        </div>
+
+        <hr className="my-6 border-gray-200" />
+
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">What's included:</h2>
+        <ul className="space-y-2 text-gray-700 list-disc list-inside">
+          {plan.fullFeatures.map((feature, index) => (
+            <li key={index} className="leading-relaxed">{feature.text}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
 
-export default PlanDetails;
+export default PlanDetailsPage;
