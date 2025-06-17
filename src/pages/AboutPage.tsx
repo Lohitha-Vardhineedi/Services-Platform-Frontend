@@ -23,11 +23,11 @@ import {
   UserCheck
 } from 'lucide-react';
 
-const AboutPage: React.FC = () => {
+const AboutUs: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-6">
-
+        
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-800 mb-4">About Us</h1>
@@ -88,9 +88,36 @@ const AboutPage: React.FC = () => {
             </h2>
             <p className="mb-4">
               <strong>Professional Enrollment:</strong> Join our platform as a skilled technician or service 
-              provider in your respective field...
+              provider in your respective field. We welcome professionals from all service industries who 
+              are committed to quality work and customer satisfaction.
             </p>
-            {/* You can expand the remaining points here */}
+            <p className="mb-4">
+              <strong>Direct Connection Model:</strong> We uphold the motto of eliminating middlemen, fostering 
+              direct connections between you and your customers. No commissions are charged, ensuring you keep 
+              100% of your earnings.
+            </p>
+            <p className="mb-4">
+              <strong>Social Media Marketing:</strong> Your profile is promoted based on ratings, reviews, and 
+              teamwork performance. Share your profile URL across social media platforms to expand your reach 
+              and attract more customers.
+            </p>
+            <p className="mb-4">
+              <strong>Flexible Subscription Model:</strong> Renew your subscription after every 30 leads or 
+              Rs. 30,000 worth of work—whichever comes first.
+            </p>
+            <p className="mb-4">
+              <strong>Service Area Selection:</strong> Choose specific pin codes to define your working area.
+            </p>
+            <p className="mb-4">
+              <strong>Early Joiner Advantage:</strong> Be listed at the top of search results and get more 
+              visibility as an early adopter of our platform.
+            </p>
+            <p className="mb-4">
+              <strong>Video Showcase Feature:</strong> Upload videos to showcase your work and expertise. 
+            </p>
+            <p className="mb-4 text-sm italic">
+              <strong>Please note:</strong> Refunds are not available on professional subscriptions.
+            </p>
           </div>
 
           {/* Key Features for Advertisers */}
@@ -100,7 +127,26 @@ const AboutPage: React.FC = () => {
               Key Features for Advertisers
             </h2>
             <p className="mb-4">
-              <strong>Business Promotion:</strong> Join as an advertiser to promote your business...
+              <strong>Business Promotion:</strong> Join as an advertiser to promote your business through 
+              PRNV Services.
+            </p>
+            <p className="mb-4">
+              <strong>Targeted Advertising:</strong> Choose specific pin code areas within GHMC limits.
+            </p>
+            <p className="mb-4">
+              <strong>Comprehensive Business Profiles:</strong> Get a detailed business profile page.
+            </p>
+            <p className="mb-4">
+              <strong>Premium Placement Options:</strong> Ruby plan subscribers get homepage visibility.
+            </p>
+            <p className="mb-4">
+              <strong>Plan Management:</strong> All advertising plans have a 30-day validity period.
+            </p>
+            <p className="mb-4">
+              <strong>Digital Marketing Support:</strong> Share your profile URL across social media.
+            </p>
+            <p className="mb-4 text-sm italic">
+              <strong>Please note:</strong> Refunds are not available for advertising subscriptions.
             </p>
           </div>
 
@@ -111,7 +157,28 @@ const AboutPage: React.FC = () => {
               Key Features for Customers
             </h2>
             <p className="mb-4">
-              <strong>Commission-Free Services:</strong> Avail services at the lowest possible cost...
+              <strong>Commission-Free Services:</strong> Avail services at the lowest possible cost.
+            </p>
+            <p className="mb-4">
+              <strong>Competitive Pricing:</strong> Internal competition ensures the best prices.
+            </p>
+            <p className="mb-4">
+              <strong>Quality Assurance:</strong> Share feedback to help others make informed decisions.
+            </p>
+            <p className="mb-4">
+              <strong>Work Guarantee:</strong> Damage cover and a 1-week work guarantee available.
+            </p>
+            <p className="mb-4">
+              <strong>GST Benefits:</strong> Most providers are GST-exempt.
+            </p>
+            <p className="mb-4">
+              <strong>Convenient Rehiring:</strong> Easily rehire trusted providers anytime.
+            </p>
+            <p className="mb-4">
+              <strong>Choice and Negotiation:</strong> Negotiate directly with service providers.
+            </p>
+            <p className="mb-4 text-sm italic">
+              <strong>Please note:</strong> Refunds are not available for customer transactions.
             </p>
           </div>
 
@@ -122,11 +189,20 @@ const AboutPage: React.FC = () => {
               PRNV Services Liability and Compensation
             </h2>
             <p className="mb-4">
-              PRNV Services operates as a platform and directory service...
+              PRNV Services operates as a platform and directory service—not as a middleman.
+            </p>
+            <p className="mb-4">
+              Technicians and service providers are responsible for any damages caused.
+            </p>
+            <p className="mb-4">
+              Customers must provide documentation for compensation claims.
+            </p>
+            <p className="mb-4">
+              <strong>Important Notice:</strong> PRNV Services will not pay direct damages.
             </p>
           </div>
 
-          {/* Contact Information */}
+          {/* Contact Info */}
           <div className="bg-gray-100 p-6 rounded-lg">
             <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
               <Phone className="text-blue-600" size={24} />
@@ -157,13 +233,14 @@ const AboutPage: React.FC = () => {
               Join PRNV Services today and experience the difference of direct connections!
             </p>
             <p className="text-gray-600">
-              Whether you're a service provider looking to grow your business or a customer...
+              Whether you're a service provider or a customer, our platform is built to serve your needs efficiently.
             </p>
           </div>
+
         </div>
       </div>
     </div>
   );
 };
 
-export default AboutPage;
+export default AboutUs;

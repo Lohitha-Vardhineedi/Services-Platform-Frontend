@@ -6,7 +6,9 @@ import UserLogin from '../pages/login/UserLogin';
 import TechnicianLogin from '../pages/login/TechnicianLogin';
 import UserSignup from '../pages/signup/UserSignup';
 import TechnicianSignup from '../pages/signup/TechnicianSignup';
-import AuthLayout from '../components/layout/AuthLayout';
+import AuthLayout from '../components/layout/AuthLayout';import Subscription from '../pages/Subscription';
+import FranchisePage from '../pages/FranchisePage';
+
 
 const AppRoutes = () => {
     return (
@@ -22,7 +24,9 @@ const AppRoutes = () => {
                 <Route path="/signup/user" element={<UserSignup />} />
                 <Route path="/signup/technician" element={<TechnicianSignup />} />
             </Route>
-            <Route path="*" element={<NotFoundPage />} />
+            <Route path="/subscription" element={<Subscription />} />
+      <Route path="/franchise" element={<FranchisePage />} />
+      <Route path="*" element={<NotFoundPage />} />
         </Routes>
     );
 };

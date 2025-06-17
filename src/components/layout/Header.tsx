@@ -24,7 +24,7 @@ function Header() {
             </div>
             <Link to="/categories" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium">Categories</Link>
             <Link to="/about" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium flex items-center">About Us</Link>
-            <Link to="/subscriptions" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium">Subscriptions</Link>
+            <Link to="/subscription" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium">Subscriptions</Link>
             <Link to="/features" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium">Key Features</Link>
             <Link to="/franchise" className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium">Franchise</Link>
           </nav>
@@ -67,7 +67,7 @@ function Header() {
             </div>
             <Link to="/categories" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>Categories</Link>
             <Link to="/about" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>About Us</Link>
-            <Link to="/subscriptions" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>Subscriptions</Link>
+            <Link to="/subscription" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>Subscriptions</Link>
             <Link to="/features" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>Key Features</Link>
             <Link to="/franchise" className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium" onClick={() => setMobileOpen(false)}>Franchise</Link>
             <button className="mt-6 flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg transition-colors w-full justify-center">
