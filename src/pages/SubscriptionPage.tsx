@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Check, X, Star, Crown, Zap, Shield, BadgeIndianRupee, LucideIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { plans } from '../data/subscriptionPlans';
-import PlanDetailsPage from './PlanDetailsPage';
 
 interface PlanFeature {
   text: string;

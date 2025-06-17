@@ -11,6 +11,7 @@ import SubscriptionPage from '../pages/SubscriptionPage';
 import FranchisePage from '../pages/FranchisePage';
 import PlanDetailsPage from '../pages/PlanDetailsPage';
 import ComingSoonPage from '../pages/ComingSoonPage';
+import CategoriesPage from '../pages/CategoriesPage';
 
 
 const AppRoutes = () => {
@@ -28,6 +29,7 @@ const AppRoutes = () => {
             <Route path="/franchise" element={<FranchisePage />} />
             <Route path="/plans/:id" element={<PlanDetailsPage />} />
             <Route path="/comingsoon" element={<ComingSoonPage />} />
+            <Route path="/categories" element={<CategoriesPage />} />
             <Route path="*" element={<NotFoundPage />} />
         </Routes>
     );
