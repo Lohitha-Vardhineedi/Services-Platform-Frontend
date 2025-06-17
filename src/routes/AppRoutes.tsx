@@ -10,6 +10,7 @@ import AuthLayout from '../components/layout/AuthLayout';
 import SubscriptionPage from '../pages/SubscriptionPage';
 import FranchisePage from '../pages/FranchisePage';
 import PlanDetailsPage from '../pages/PlanDetailsPage';
+import ComingSoonPage from '../pages/ComingSoonPage';
 
 
 const AppRoutes = () => {
@@ -18,17 +19,15 @@ const AppRoutes = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route element={<AuthLayout />}>
-                {/* Login Pages */}
                 <Route path="/login/user" element={<UserLogin />} />
                 <Route path="/login/technician" element={<TechnicianLogin />} />
-
-                {/* Signup Pages */}
                 <Route path="/signup/user" element={<UserSignup />} />
                 <Route path="/signup/technician" element={<TechnicianSignup />} />
             </Route>
             <Route path="/subscription" element={<SubscriptionPage />} />
             <Route path="/franchise" element={<FranchisePage />} />
             <Route path="/plans/:id" element={<PlanDetailsPage />} />
+            <Route path="/comingsoon" element={<ComingSoonPage />} />
             <Route path="*" element={<NotFoundPage />} />
         </Routes>
     );
