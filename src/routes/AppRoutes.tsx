@@ -12,6 +12,7 @@ import FranchisePage from '../pages/FranchisePage';
 import PlanDetailsPage from '../pages/PlanDetailsPage';
 import ComingSoonPage from '../pages/ComingSoonPage';
 import CategoriesPage from '../pages/CategoriesPage';
+import KeyFeaturesPage from '../pages/KeyFeaturesPage';
 
 
 const AppRoutes = () => {
@@ -30,6 +31,7 @@ const AppRoutes = () => {
             <Route path="/plans/:id" element={<PlanDetailsPage />} />
             <Route path="/comingsoon" element={<ComingSoonPage />} />
             <Route path="/categories" element={<CategoriesPage />} />
+            <Route path="/features" element={<KeyFeaturesPage />} />
             <Route path="*" element={<NotFoundPage />} />
         </Routes>
     );
