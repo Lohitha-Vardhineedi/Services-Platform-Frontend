@@ -74,9 +74,18 @@ function Header() {
               <Download className="w-4 h-4" />
               <span className="text-sm font-medium">Download App</span>
             </button>
-            <button className="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors w-full">
-              Login / Sign Up
-            </button>
+             <Link
+              to="/login/user"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            >
+              Login
+            </Link>
+            <Link
+              to="/signup/user"
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            >
+              Sign Up
+            </Link>
           </div>
         </div>
       )}
