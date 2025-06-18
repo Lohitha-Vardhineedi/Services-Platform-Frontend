@@ -13,6 +13,8 @@ import PlanDetailsPage from '../pages/PlanDetailsPage';
 import ComingSoonPage from '../pages/ComingSoonPage';
 import CategoriesPage from '../pages/CategoriesPage';
 import KeyFeaturesPage from '../pages/KeyFeaturesPage';
+import ServicePage from '../pages/ServicePage';
+import ProfilePage from '../pages/ProfilePage';
 
 
 const AppRoutes = () => {
@@ -32,6 +34,8 @@ const AppRoutes = () => {
             <Route path="/comingsoon" element={<ComingSoonPage />} />
             <Route path="/categories" element={<CategoriesPage />} />
             <Route path="/features" element={<KeyFeaturesPage />} />
+            <Route path="/services" element={<ServicePage />} />
+            <Route path="/profile" element={<ProfilePage />} />
             <Route path="*" element={<NotFoundPage />} />
         </Routes>
     );

@@ -1,13 +1,15 @@
 import React from 'react';
 import { Menu } from 'lucide-react';
 import { categories } from '../../data/categoriesData';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface CategoriesGridProps {
   lang: string;
 }
 
 function CategoriesGrid({ lang }: CategoriesGridProps) {
+const navigate= useNavigate()
+
   return (
     <div className="bg-white rounded-2xl shadow p-6 mb-12">
       <h2 className="text-2xl font-bold text-gray-900 mb-4 text-left">
@@ -19,6 +21,7 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
             key={index}
             className="relative rounded-xl shadow group cursor-pointer p-4 flex flex-col items-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 hover:bg-blue-50/60 hover:scale-105 animate-fade-in"
             style={{ animationDelay: `${index * 60}ms`, animationFillMode: 'both' }}
+            onClick={()=>navigate("/services")}
           >
             <div className={`w-12 h-12 ${category.color} rounded-full flex items-center justify-center text-2xl mb-2 group-hover:scale-125 transition-transform duration-300`}>
               {typeof category.icon === 'string' && category.icon.startsWith('http') ? (
