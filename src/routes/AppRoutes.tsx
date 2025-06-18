@@ -18,20 +18,20 @@ import KeyFeaturesPage from '../pages/KeyFeaturesPage';
 const AppRoutes = () => {
     return (
         <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<HomePage />}/>
             <Route path="/about" element={<AboutPage />} />
             <Route element={<AuthLayout />}>
                 <Route path="/login/user" element={<UserLogin />} />
-                <Route path="/login/technician" element={<TechnicianLogin />} />
-                <Route path="/signup/user" element={<UserSignup />} />
-                <Route path="/signup/technician" element={<TechnicianSignup />} />
-            </Route>    
-            <Route path="/subscription" element={<SubscriptionPage />} />
+                <Route path="/login/technician" element={<TechnicianLogin />}/>
+                <Route path="/signup/user" element={<UserSignup />}/>
+                <Route path="/signup/technician" element={<TechnicianSignup />}/>
+            </Route>   
+            <Route path="/subscription" element={<SubscriptionPage/>}/>
             <Route path="/franchise" element={<FranchisePage />} />
             <Route path="/plans/:id" element={<PlanDetailsPage />} />
             <Route path="/comingsoon" element={<ComingSoonPage />} />
-            <Route path="/categories" element={<CategoriesPage />} />
-            <Route path="/features" element={<KeyFeaturesPage />} />
+            <Route path="/categories" element={<CategoriesPage />}/>
+            <Route path="/features" element={<KeyFeaturesPage />}/>
             <Route path="*" element={<NotFoundPage />} />
         </Routes>
     );
