@@ -92,7 +92,7 @@ const CartPage = () => {
                     {item.quantity === 1 ? (
                       <button onClick={() => handleRemove(item.id)}>
                         <Trash2
-                          size={20}
+                          size={16}
                           className="text-red-500 hover:text-red-700 cursor-pointer"
                         />
                       </button>
@@ -147,7 +147,7 @@ const CartPage = () => {
           <div className="flex justify-between items-center text-sm sm:text-sm md:text-md lg:text-md xl:text-lg font-medium mt-3">
             <span className="text-black">Missed Something?</span>
             <div
-              className="bg-red-600 text-white hover:bg-red-700 px-2 py-1 rounded-sm cursor-pointer"
+              className="bg-red-600 text-white hover:bg-red-700 px-2 py-1 rounded-lg cursor-pointer"
               onClick={() => navigate("/profile")}
             >
               Add More Items
