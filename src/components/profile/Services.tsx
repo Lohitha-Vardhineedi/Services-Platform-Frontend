@@ -78,22 +78,22 @@ const Services = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
         {services?.map((item, index) => {
-          const isInCart = cartItems.some((cartItem) => cartItem.id === item.id);;
+          const isInCart = cartItems.some((cartItem) => cartItem.id === item.id);
           
           return (
             <div
-              className="flex justify-between items-center border border-gray-300 rounded-xl p-4 shadow"
+              className="flex justify-between items-center border border-gray-300 rounded-xl py-4 px-6 shadow"
               key={index}
             >
               <div>
-                <div className="text-sm sm:text-md md:text-lg lg:text-lg xl:text-lg">
+                <div className="text-sm sm:text-md md:text-lg lg:text-lg xl:text-xl">
                   {item?.serv}
                 </div>
 
-                <div className="text-sm sm:text-sm md:text-md lg:text-md xl:text-md">
+                <div className="text-sm sm:text-sm md:text-md lg:text-md xl:text-lg">
                   ₹ <span className="clr-blue">{item?.price}</span> per Unit
                 </div>
-                <div className="flex text-sm sm:text-sm md:text-md lg:text-md xl:text-md">
+                <div className="flex items-center text-sm sm:text-sm md:text-md lg:text-md xl:text-lg">
                   <MdOutlineStar size={18} color="#ffc71b" />
                   <div className="clr-black ms-1 ">
                     {item?.ratings}
@@ -104,13 +104,13 @@ const Services = () => {
                 </div>
               </div>
 <div className="">
-  <img src={item?.image} alt={item?.name} className="rounded-lg object-cover w-20 sm:w-28 md:w-36 lg:w-40 xl:w-45 h-30"/>
+  <img src={item?.image} alt={item?.name} className="rounded-t-lg object-cover w-20 sm:w-28 md:w-36 lg:w-40 xl:w-45 h-30"/>
               <div
-                className={` rounded-sm px-2 py-1 flex cursor-pointer items-center justify-center 
+                className={` rounded-b-lg px-2 py-1 flex cursor-pointer items-center justify-center 
                       ${
                         isInCart
                           ? "text-red-600 border border-red-600"
-                          : " bg-red-600 text-white hover:bg-red-700"
+                          : " bg-red-600 border-b text-white hover:bg-red-700"
                       }
                       `}
                 onClick={() => handleCartToggle(item.id)}

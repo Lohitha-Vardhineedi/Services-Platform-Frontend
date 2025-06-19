@@ -116,7 +116,7 @@ const CartPage = () => {
             <span className="text-black ">Missed Something ?</span>
             <div
               className="bg-red-600 text-white hover:bg-red-700 px-2 py-1 rounded-sm cursor-pointer"
-              onClick={() => navigate("/profile")}
+              onClick={() => navigate("/categories")}
             >
               Add More Items
             </div>
