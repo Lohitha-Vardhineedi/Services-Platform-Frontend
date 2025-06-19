@@ -142,10 +142,10 @@ const CartPage = () => {
             <span className="text-black ">Missed Something ?</span>
             <div
               className="bg-red-600 text-white hover:bg-red-700 px-2 py-1 rounded-sm cursor-pointer"
-              onClick={() => navigate("/categories")}
+              onClick={() => navigate("/profile")}
             >
               Add More Items
-            </button>
+            </div>
           </div>
 
           <div className="mt-6 border-t pt-4">
