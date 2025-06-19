@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Download, Menu, X, ShoppingCart } from 'lucide-react';
+import { Download, Menu, X, ShoppingCart, History } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
 
 function Header() {
@@ -45,6 +45,9 @@ function Header() {
             <ShoppingCart className="w-6 h-6 text-gray-700 group-hover:text-blue-600 transition-colors" />
             {/* Optional: Item count badge */}
             {/* <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1">2</span> */}
+          </Link>
+          <Link to="/transactions" className="relative group">
+              <History className="w-6 h-6 text-gray-700 group-hover:text-blue-600 transition-colors" />
           </Link>
           <span className="text-sm text-gray-700">Hi, {user.name}</span>
         </>
