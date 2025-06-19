@@ -77,7 +77,7 @@ const Reviews = () => {
                     <img
                       src={review?.image}
                       alt={review?.name}
-                      className="w-15 h-15 object-cover rounded-full"
+                      className="w-14 h-14 object-cover rounded-full"
                     />
                     <div className="flex flex-col ">
                       <span className="text-md sm:text-md md:text-md lg:text-lg xl:text-lg font-extralight">

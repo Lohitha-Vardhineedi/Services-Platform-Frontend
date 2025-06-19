@@ -27,17 +27,17 @@ const ServicePage = () => {
           <ServiceFilters />
         </div>
         <div className="flex flex-col md:flex-row p-2 gap-3">
-          <div onClick={()=>navigate("/profile")} className="flex-1 space-y-3 overflow-y-auto scrollbar-hide max-h-[calc(100vh-220px)] sm:max-h-[calc(100vh-180px)] md:max-h-[calc(100vh-160px)]">
+          <div onClick={()=>navigate("/profile")} className="flex-1 space-y-3  overflow-y-auto scrollbar-hide max-h-[calc(100vh-220px)] sm:max-h-[calc(100vh-180px)] md:max-h-[calc(100vh-160px)] ">
             {ServicesList.map((profile, index) => (
               <div
                 key={index}
-                className="border border-gray-300 rounded-2xl shadow p-3 flex flex-col md:flex-row items-center gap-4"
+                className="border border-gray-300 rounded-2xl shadow p-3 flex flex-col md:flex-row items-center gap-4 cursor-pointer hover:bg-gray-100"
               >
              
                   <img
                     src={profile?.image}
                     alt={profile?.name}
-                    className="w-20 sm:w-28 md:w-36 lg:w-44 xl:w-52 h-35 object-cover rounded-2xl"
+                    className="w-20 sm:w-28 md:w-36 lg:w-44 xl:w-52 h-36 object-cover rounded-2xl"
                   />
                
                 <div className="flex-1 space-y-1.5">
