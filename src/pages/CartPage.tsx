@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
@@ -11,7 +11,11 @@ const CartPage = () => {
   const [cartItems, setCartItems] = useState(() => {
     const stored = localStorage.getItem("cartItems");
     const parsed = stored ? JSON.parse(stored) : [];
-    return parsed.map(item => ({ ...item, quantity: item.quantity ?? 1 }));
+    return parsed.map(item => ({
+      ...item,
+      quantity: item.quantity ?? 1,
+      selectedDate: item.selectedDate ?? "",
+    }));
   });
 
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -26,17 +30,17 @@ const CartPage = () => {
 
   const handleDateChange = (e, itemId) => {
     const selectedDate = e.target.value;
-    setCartItems((prev) =>
-      prev.map((item) =>
+    setCartItems(prev =>
+      prev.map(item =>
         item.id === itemId ? { ...item, selectedDate } : item
       )
     );
-    setSelectedItemId(null); // Hide date input
+    setSelectedItemId(null);
   };
 
   const handleQuantityChange = (id, delta) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
+    setCartItems(prev =>
+      prev.map(item =>
         item.id === id
           ? { ...item, quantity: Math.max(1, item.quantity + delta) }
           : item
@@ -45,7 +49,7 @@ const CartPage = () => {
   };
 
   const handleRemove = (id) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+    setCartItems(prev => prev.filter(item => item.id !== id));
   };
 
   const subtotal = cartItems.reduce(
@@ -83,7 +87,7 @@ const CartPage = () => {
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center space-y-2">
+                <div className="flex items-center space-x-4">
                   <div className="flex items-center space-x-2 bg-fuchsia-100 rounded-lg px-2 border border-fuchsia-400">
                     {item.quantity === 1 ? (
                       <button onClick={() => handleRemove(item.id)}>
@@ -109,37 +113,39 @@ const CartPage = () => {
                     </button>
                   </div>
 
-                  {/* <div className="flex items-center space-x-4 relative"> */}
-                  <div className="font-semibold text-gray-800 mx-3">₹ {item.price * item.quantity}</div>
+                  <div className="font-semibold text-gray-800">
+                    ₹ {item.price * item.quantity}
+                  </div>
 
-                  {/* Date display or calendar */}
-                  {item.selectedDate ? (
-                    <span className="text-sm text-blue-600">
-                      📅 {item.selectedDate}
-                    </span>
-                  ) : (
-                    <FaRegCalendarAlt
-                      size={20}
-                      className="cursor-pointer clr-blue"
-                      onClick={() => handleCalendarClick(item.id)}
-                    />
-                  )}
+                  {/* Date Picker */}
+                  <div className="relative">
+                    {item.selectedDate ? (
+                      <span className="text-sm text-blue-600">
+                        📅 {item.selectedDate}
+                      </span>
+                    ) : (
+                      <FaRegCalendarAlt
+                        size={20}
+                        className="cursor-pointer clr-blue"
+                        onClick={() => handleCalendarClick(item.id)}
+                      />
+                    )}
 
-                  {selectedItemId === item.id && (
-                    <input
-                      type="date"
-                      onChange={(e) => handleDateChange(e, item.id)}
-                      className="absolute top-full mt-1 right-0 z-10 border rounded px-2 py-1 text-sm shadow bg-white"
-                    />
-                  )}
-                  {/* </div> */}
+                    {selectedItemId === item.id && (
+                      <input
+                        type="date"
+                        onChange={(e) => handleDateChange(e, item.id)}
+                        className="absolute top-full mt-1 right-0 z-10 border rounded px-2 py-1 text-sm shadow bg-white"
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
           </div>
 
           <div className="flex justify-between items-center text-sm sm:text-sm md:text-md lg:text-md xl:text-lg font-medium mt-3">
-            <span className="text-black ">Missed Something ?</span>
+            <span className="text-black">Missed Something?</span>
             <div
               className="bg-red-600 text-white hover:bg-red-700 px-2 py-1 rounded-sm cursor-pointer"
               onClick={() => navigate("/profile")}
