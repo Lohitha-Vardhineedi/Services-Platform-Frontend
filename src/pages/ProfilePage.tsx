@@ -4,7 +4,7 @@ import AllFilters from '../components/profile/AllFilters.tsx'
 
 const ProfilePage = () => {
   return (
-    <div className='p-4'>
+    <div className='max-w-7xl mx-auto p-4'>
         <ProfileCard/>
         <AllFilters/>
     </div>

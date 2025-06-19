@@ -11,7 +11,7 @@ import { ContactForm } from "../components/services/ContactForms.tsx";
 const ServicePage = () => {
   const navigate = useNavigate()
   return (
-    <div className="px-4 py-4">
+    <div className="max-w-7xl mx-auto px-4 py-4">
       {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         {Adds.map((add, index) => (
           <img key={index} src={add?.Image} alt={`Add ${index + 1}`} className="w-full h-40 object-cover rounded-xl shadow-md"/>
