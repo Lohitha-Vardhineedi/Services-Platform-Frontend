@@ -2,6 +2,7 @@ import React from 'react';
 import { cities } from '../../data/citiesData';
 
 function CitiesSection() {
+  
   return (
     <div className="mb-12">
       <h2 className="text-2xl font-bold text-gray-900 mb-4 text-left">Explore Top Cities</h2>
