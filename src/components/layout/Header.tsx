@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Download, Menu, X } from 'lucide-react';
+import { Download, Menu, X, ShoppingCart } from 'lucide-react';
+import { useUser } from '../../context/UserContext';
 
 function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  // const {user} = useUser();
+  const user = {"name": "uday"};
+
   return (
     <header className="bg-white shadow-sm border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -35,18 +39,31 @@ function Header() {
               <Download className="w-4 h-4" />
               <span className="text-sm font-medium">Download App</span>
             </button>
-            <Link
-              to="/login/user"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-            >
-              Login
-            </Link>
-            <Link
-              to="/signup/user"
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-            >
-              Sign Up
-            </Link>
+            {user ? (
+        <>
+          <Link to="/cart" className="relative group">
+            <ShoppingCart className="w-6 h-6 text-gray-700 group-hover:text-blue-600 transition-colors" />
+            {/* Optional: Item count badge */}
+            {/* <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1">2</span> */}
+          </Link>
+          <span className="text-sm text-gray-700">Hi, {user.name}</span>
+        </>
+      ) : (
+        <>
+          <Link
+            to="/login/user"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          >
+            Login
+          </Link>
+          <Link
+            to="/signup/user"
+            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          >
+            Sign Up
+          </Link>
+        </>
+      )}
 
             <button className="md:hidden" onClick={() => setMobileOpen(true)}>
               <Menu className="w-6 h-6" />
