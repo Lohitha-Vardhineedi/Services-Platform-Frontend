@@ -1,9 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Download, Menu, X, ShoppingCart, History } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
 
 function Header() {
+  const [cartCount, setCartCount] = useState(0);
+
+useEffect(() => {
+    const updateCartCount = () => {
+  const storedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+  setCartCount(storedItems?.length);
+    };
+
+  window.addEventListener("storage", updateCartCount);
+  window.addEventListener("focus", updateCartCount);
+
+  updateCartCount(); 
+
+  return () => {
+    window.removeEventListener("storage", updateCartCount);
+    window.removeEventListener("focus", updateCartCount);
+  };
+}, []);
+
+
   const [mobileOpen, setMobileOpen] = useState(false);
   // const {user} = useUser();
   const user = {"name": "uday"};
@@ -41,11 +61,23 @@ function Header() {
             </button>
             {user ? (
         <>
-          <Link to="/cart" className="relative group">
+
+          <Link to="/cart" >
+          <div className="relative">
+                    {cartCount > 0 && (
+      <div className="absolute -right-1 bottom-3 w-4 h-4 bg-green-600 text-white text-xs flex items-center justify-center rounded-full">
+        {cartCount}
+      </div>
+    )}
             <ShoppingCart color='#d70000' className="w-6 h-6 text-gray-700  group-hover:text-blue-600 transition-colors" />
-            {/* Optional: Item count badge */}
-            {/* <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1">2</span> */}
+                </div>
           </Link>
+          
+          {/* <Link to="/cart" className="relative group">
+            <ShoppingCart color='#d70000' className="w-6 h-6 text-gray-700  group-hover:text-blue-600 transition-colors" />
+           
+          </Link> */}
+          
           <Link to="/transactions" className="relative group">
               <History className="w-6 h-6 text-gray-700 group-hover:text-blue-600 transition-colors" />
           </Link>
