@@ -62,7 +62,7 @@ useEffect(() => {
             {user ? (
         <>
 
-          <Link to="/cart" >
+          <Link to="/cart">
           <div className="relative">
                     {cartCount > 0 && (
       <div className="absolute -right-1 bottom-3 w-4 h-4 bg-green-600 text-white text-xs flex items-center justify-center rounded-full">
