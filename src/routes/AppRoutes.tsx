@@ -13,25 +13,31 @@ import PlanDetailsPage from '../pages/PlanDetailsPage';
 import ComingSoonPage from '../pages/ComingSoonPage';
 import CategoriesPage from '../pages/CategoriesPage';
 import KeyFeaturesPage from '../pages/KeyFeaturesPage';
+import ServicePage from '../pages/ServicePage';
+import ProfilePage from '../pages/ProfilePage';
+import CartPage from '../pages/CartPage';
 
 
 const AppRoutes = () => {
     return (
         <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<HomePage />}/>
             <Route path="/about" element={<AboutPage />} />
             <Route element={<AuthLayout />}>
                 <Route path="/login/user" element={<UserLogin />} />
-                <Route path="/login/technician" element={<TechnicianLogin />} />
-                <Route path="/signup/user" element={<UserSignup />} />
-                <Route path="/signup/technician" element={<TechnicianSignup />} />
-            </Route>
-            <Route path="/subscription" element={<SubscriptionPage />} />
+                <Route path="/login/technician" element={<TechnicianLogin />}/>
+                <Route path="/signup/user" element={<UserSignup />}/>
+                <Route path="/signup/technician" element={<TechnicianSignup />}/>
+            </Route>   
+            <Route path="/subscription" element={<SubscriptionPage/>}/>
             <Route path="/franchise" element={<FranchisePage />} />
             <Route path="/plans/:id" element={<PlanDetailsPage />} />
             <Route path="/comingsoon" element={<ComingSoonPage />} />
             <Route path="/categories" element={<CategoriesPage />} />
             <Route path="/features" element={<KeyFeaturesPage />} />
+            <Route path="/services" element={<ServicePage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/cart" element={<CartPage/>} />
             <Route path="*" element={<NotFoundPage />} />
         </Routes>
     );

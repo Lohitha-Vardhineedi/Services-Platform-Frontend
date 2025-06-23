@@ -1,5 +1,6 @@
 import React from 'react';
 import { category } from '../data/categoryData';
+import { useNavigate } from 'react-router-dom';
 
 interface Category {
   id: string;
@@ -18,6 +19,8 @@ const getRandomBgColor = (): string => {
 };
 
 const CategoriesPage: React.FC = () => {
+const navigate= useNavigate()
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-4">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -27,6 +30,7 @@ const CategoriesPage: React.FC = () => {
             <div
               key={id}
               className="flex flex-col items-center p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105 bg-white"
+              onClick={()=>navigate("/services")}
             >
               <div
                 className={`w-20 h-20 ${bgColor} rounded-full flex items-center justify-center mb-4 overflow-hidden transition-transform duration-300 hover:scale-110`}

@@ -1,9 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Download, Menu, X } from 'lucide-react';
+import { Download, Menu, X, ShoppingCart, History } from 'lucide-react';
+import { useUser } from '../../context/UserContext';
 
 function Header() {
+  const [cartCount, setCartCount] = useState(0);
+
+useEffect(() => {
+    const updateCartCount = () => {
+  const storedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+  setCartCount(storedItems?.length);
+    };
+
+  window.addEventListener("storage", updateCartCount);
+  window.addEventListener("focus", updateCartCount);
+
+  updateCartCount(); 
+
+  return () => {
+    window.removeEventListener("storage", updateCartCount);
+    window.removeEventListener("focus", updateCartCount);
+  };
+}, []);
+
+
   const [mobileOpen, setMobileOpen] = useState(false);
+  const {user} = useUser();
+  // const user = {"name": "uday"};
+
   return (
     <header className="bg-white shadow-sm border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -35,18 +59,46 @@ function Header() {
               <Download className="w-4 h-4" />
               <span className="text-sm font-medium">Download App</span>
             </button>
-            <Link
-              to="/login/user"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-            >
-              Login
-            </Link>
-            <Link
-              to="/signup/user"
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-            >
-              Sign Up
-            </Link>
+            {user ? (
+        <>
+
+          <Link to="/cart">
+          <div className="relative">
+                    {cartCount > 0 && (
+      <div className="absolute -right-1 bottom-3 w-4 h-4 bg-green-600 text-white text-xs flex items-center justify-center rounded-full">
+        {cartCount}
+      </div>
+    )}
+            <ShoppingCart color='#d70000' className="w-6 h-6 text-gray-700  group-hover:text-blue-600 transition-colors" />
+                </div>
+          </Link>
+          
+          {/* <Link to="/cart" className="relative group">
+            <ShoppingCart color='#d70000' className="w-6 h-6 text-gray-700  group-hover:text-blue-600 transition-colors" />
+           
+          </Link> */}
+          
+          <Link to="/transactions" className="relative group">
+              <History className="w-6 h-6 text-gray-700 group-hover:text-blue-600 transition-colors" />
+          </Link>
+          <span className="text-sm text-gray-700">Hi, {user.name}</span>
+        </>
+      ) : (
+        <>
+          <Link
+            to="/login/user"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          >
+            Login
+          </Link>
+          <Link
+            to="/signup/user"
+            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          >
+            Sign Up
+          </Link>
+        </>
+      )}
 
             <button className="md:hidden" onClick={() => setMobileOpen(true)}>
               <Menu className="w-6 h-6" />
@@ -74,9 +126,18 @@ function Header() {
               <Download className="w-4 h-4" />
               <span className="text-sm font-medium">Download App</span>
             </button>
-            <button className="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors w-full">
-              Login / Sign Up
-            </button>
+             <Link
+              to="/login/user"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            >
+              Login
+            </Link>
+            <Link
+              to="/signup/user"
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            >
+              Sign Up
+            </Link>
           </div>
         </div>
       )}
