@@ -25,8 +25,8 @@ useEffect(() => {
 
 
   const [mobileOpen, setMobileOpen] = useState(false);
-  // const {user} = useUser();
-  const user = {"name": "uday"};
+  const {user} = useUser();
+  // const user = {"name": "uday"};
 
   return (
     <header className="bg-white shadow-sm border-b">
