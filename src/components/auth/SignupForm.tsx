@@ -46,7 +46,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
           {/* Common Fields */}
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-              Full Name
+              User Name
             </label>
             <input
               id="name"
@@ -59,7 +59,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
             />
           </div>
 
-          <div>
+          {/* <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Email
             </label>
@@ -72,11 +72,11 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
               onChange={handleChange}
               className="mt-1 w-full border border-gray-300 rounded-md p-2"
             />
-          </div>
+          </div> */}
 
           <div>
             <label htmlFor="mobile" className="block text-sm font-medium text-gray-700">
-              Mobile Number
+              Phone Number
             </label>
             <input
               id="mobile"
@@ -104,7 +104,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
               className="mt-1 w-full border border-gray-300 rounded-md p-2"
             />
           </div>
-
+{/* 
           <div>
             <label htmlFor="dob" className="block text-sm font-medium text-gray-700">
               Date of Birth
@@ -118,7 +118,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
               onChange={handleChange}
               className="mt-1 w-full border border-gray-300 rounded-md p-2"
             />
-          </div>
+          </div> */}
 
           {/* Technician-specific category field */}
           {defaultRole === 'technician' && (
@@ -144,7 +144,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
             </div>
           )}
 
-          <div>
+          {/* <div>
             <label htmlFor="profileImage" className="block text-sm font-medium text-gray-700">
               Profile Image
             </label>
@@ -163,7 +163,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
                 className="mt-2 w-20 h-20 object-cover rounded-full"
               />
             )}
-          </div>
+          </div> */}
 
           <div className="pt-4">
             <button
@@ -205,3 +205,4 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
 };
 
 export default SignupForm;
+  
