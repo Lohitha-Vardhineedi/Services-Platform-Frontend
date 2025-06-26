@@ -14,8 +14,8 @@ export const plans = [
       buttonColor: 'bg-blue-600 hover:bg-blue-700',
       // promoCode: '1000',
       features: [
-        { text: 'Rs 500 off for first 1000 members'},
-        { text: 'Total Discounted price Rs 590 for first 60 days.'},
+        // { text: 'Rs 500 off for first 1000 members'},
+        // { text: 'Total Discounted price Rs 590 for first 60 days.'},
         { text: 'Only 5 members per pincode per plan', included: true },
         { text: 'No Commission From Technicians Or Customers', included: false },
         { text: 'No Refund', included: false },
@@ -53,8 +53,8 @@ export const plans = [
       buttonColor: 'bg-yellow-600 hover:bg-yellow-700',
       popular: true,
       features: [
-        { text: 'Rs 1000 off for first 500 members'},
-        { text: 'Total Discounted price Rs 2360 for first 60 days.'},
+        // { text: 'Rs 1000 off for first 500 members'},
+        // { text: 'Total Discounted price Rs 2360 for first 60 days.'},
         { text: 'Only 5 members per pincode per plan', included: true },
         {text: 'Each LEAD Shared with 5 Technicians', included: true},
         { text: 'No Commission From Technicians Or Customers', included: false },
@@ -93,8 +93,8 @@ export const plans = [
       color: 'from-purple-500 to-purple-600',
       buttonColor: 'bg-purple-600 hover:bg-purple-700',
       features: [
-        { text: 'Rs 2000 off for first 200 members'},
-        { text: 'Total Discounted price Rs 9440 for first 60 days.'},
+        // { text: 'Rs 2000 off for first 200 members'},
+        // { text: 'Total Discounted price Rs 9440 for first 60 days.'},
         { text: 'Only 5 members per pincode per plan', included: true },
         {text: 'Each LEAD Shared with 1 Technician', included: true},
         { text: 'No Commission From Technicians Or Customers', included: false },
