@@ -9,7 +9,7 @@ export const plans = [
       originalPrice: '₹ 2,000 + Rs. 360 (GST 18%)',
       discount: '50% OFF',
       gst: 'INCL 18% GST: ₹ 1,180',
-      validity: 'Valid for 90 Days',
+      validity: 'Valid for 30 Days',
       color: 'from-blue-500 to-blue-600',
       buttonColor: 'bg-blue-600 hover:bg-blue-700',
       // promoCode: '1000',
