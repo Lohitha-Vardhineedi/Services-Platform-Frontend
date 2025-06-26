@@ -46,8 +46,8 @@ const SubscriptionPage: React.FC = () => {
         </div>
 
         {/* Plans Grid */}
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 xl:gap-10"> */}
-          <div className="flex flex-col gap-6 sm:gap-8 xl:gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 xl:gap-10"> 
+          {/* <div className="flex gap-6 sm:gap-8 xl:gap-10"> */}
           {plans.map((plan: Plan) => {
             const IconComponent = plan.icon;
             return (
