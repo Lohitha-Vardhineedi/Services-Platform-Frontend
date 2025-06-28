@@ -25,35 +25,35 @@ interface FilterIcon {
 }
 
 const FILTER_SELECTS: FilterSelect[] = [
-  {
-    id: 'sortBy',
-    label: 'Sort By',
-    options: [
-      { value: 'relevance', label: 'Relevance' },
-      { value: 'rating', label: 'Rating' },
-      { value: 'popular', label: 'Popular' },
-      { value: 'distance', label: 'Distance' },
-    ],
-  },
-  {
-    id: 'services',
-    label: 'Services',
-    options: [
-      { value: 'authorised', label: 'Authorised' },
-      { value: 'doorStep', label: 'Door Step' },
-    ],
-  },
-  {
-    id: 'ratings',
-    label: 'Ratings',
-    options: [
-      { value: '1.0', label: '1.0' },
-      { value: '2.0', label: '2.0' },
-      { value: '3.0', label: '3.0' },
-      { value: '4.0', label: '4.0' },
-      { value: '5.0', label: '5.0' },
-    ],
-  },
+  // {
+  //   id: 'sortBy',
+  //   label: 'Sort By',
+  //   options: [
+  //     { value: 'relevance', label: 'Relevance' },
+  //     { value: 'rating', label: 'Rating' },
+  //     { value: 'popular', label: 'Popular' },
+  //     { value: 'distance', label: 'Distance' },
+  //   ],
+  // },
+  // {
+  //   id: 'services',
+  //   label: 'Services',
+  //   options: [
+  //     { value: 'authorised', label: 'Authorised' },
+  //     { value: 'doorStep', label: 'Door Step' },
+  //   ],
+  // },
+  // {
+  //   id: 'ratings',
+  //   label: 'Ratings',
+  //   options: [
+  //     { value: '1.0', label: '1.0' },
+  //     { value: '2.0', label: '2.0' },
+  //     { value: '3.0', label: '3.0' },
+  //     { value: '4.0', label: '4.0' },
+  //     { value: '5.0', label: '5.0' },
+  //   ],
+  // },
 ];
 
 const FILTER_ICONS: FilterIcon[] = [
@@ -63,15 +63,20 @@ const FILTER_ICONS: FilterIcon[] = [
     icon: <MdOutlineStar size={23} color="#ffc71b" className='flex'/>,
   },
   {
-    id: 'quickResponse',
-    label: 'Quick Response',
-    icon: <FaBolt size={20} color="#00b800"  className='flex'/>,
+    id: 'popular',
+    label: 'Popular',
+    icon: <MdOutlineStar size={23} color="#00b800" className='flex'/>,
   },
-  {
-    id: 'deals',
-    label: 'Deals',
-    icon: <RiDiscountPercentFill size={23} className='clr-purple flex'/>,
-  },
+  // {
+  //   id: 'quickResponse',
+  //   label: 'Quick Response',
+  //   icon: <FaBolt size={20} color="#00b800"  className='flex'/>,
+  // },
+  // {
+  //   id: 'deals',
+  //   label: 'Deals',
+  //   icon: <RiDiscountPercentFill size={23} className='clr-purple flex'/>,
+  // },
   {
     id: 'allFilters',
     label: 'All Filters',

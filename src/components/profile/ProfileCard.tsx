@@ -70,13 +70,13 @@ const ProfileCard = () => {
             </div>
 
             <div className='flex flex-col justify-between'>
-                <div className='flex justify-end'>
+                {/* <div className='flex justify-end'>
                     <div className={`border border-gray-500 rounded-xl p-2 flex items-end cursor-pointer ${setSave === true ? "clr-black" : ""}`}
                         onClick={() => setSave(!save)}
                     >
                         <FaRegBookmark size={20} />
                     </div>
-                </div>
+                </div> */}
 
                 <div className=''>
                     <div className='text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg mb-2 '>Click to Rate</div>
