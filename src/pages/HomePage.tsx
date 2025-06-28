@@ -23,8 +23,8 @@ const HomePage = () => {
                 <TrendingSection />
                 <PopularSearchesSection />
                 {/* <MoviesSection /> */}
-                <CitiesSection />
-                <RainyDaySection />
+                {/* <CitiesSection /> */}
+                {/* <RainyDaySection /> */}
                 <CustomerReviews />
             </main>
         </>
