@@ -96,14 +96,14 @@ function Header() {
                   </div>
                 </Link>
 
-                <Link to="/transactions" className="relative group">
+                {/* <Link to="/transactions" className="relative group">
                   <History className="w-6 h-6 text-gray-700 group-hover:text-blue-600 transition-colors" />
-                </Link>
+                </Link> */}
 
                 {/* Profile Dropdown */}
                 <div className="relative">
                   <button
-                    onClick={() => setShowModal(prev => !prev)}
+                    onClick={() => setShowModal(!showModal)}
                     className="text-sm text-gray-700 hover:text-blue-600 focus:outline-none"
                   >
                     Hi, {user.name}
@@ -115,18 +115,18 @@ function Header() {
                       className="fixed right-60 top-16 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 animate-fade-in"
                     >
                       <Link
-                        to="/transactions"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        onClick={() => setShowModal(false)}
-                      >
-                        Transactions
-                      </Link>
-                      <Link
                         to="/profile/edit"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         onClick={() => setShowModal(false)}
                       >
                         Edit Profile
+                      </Link>
+                      <Link
+                        to="/transactions"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setShowModal(false)}
+                      >
+                        Transactions
                       </Link>
                       <button
                         onClick={() => {
