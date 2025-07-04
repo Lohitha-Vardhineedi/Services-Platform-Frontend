@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Menu } from 'lucide-react';
 import { categories } from '../../data/categoriesData';
 import { Link, useNavigate } from 'react-router-dom';
+import { getAllCategories } from '../../api/apiMethods';
 
 interface CategoriesGridProps {
   lang: string;
@@ -9,6 +10,24 @@ interface CategoriesGridProps {
 
 function CategoriesGrid({ lang }: CategoriesGridProps) {
 const navigate= useNavigate()
+const [allCategories,setAllCategories] = useState()
+const [error,setError] = useState()
+
+const fetchCategories = async()=>{
+  try{
+    const response = await getAllCategories();
+    if(response.success === true){
+      console.log("response",response)
+      setAllCategories(response)
+    }
+  }catch(err){
+    setError(err?.message)
+  }
+}
+useEffect(()=>{
+fetchCategories()
+},[])
+
 
   return (
     <div className="bg-white rounded-2xl shadow p-6 mb-12">
