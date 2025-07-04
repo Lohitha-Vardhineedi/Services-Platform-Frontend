@@ -29,8 +29,8 @@ function Header() {
   }, []);
 
 
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const {user} = useUser();
+  // const [mobileOpen, setMobileOpen] = useState(false);
+  // const {user} = useUser();
   // const user = {"name": "uday"};
 
   return (
