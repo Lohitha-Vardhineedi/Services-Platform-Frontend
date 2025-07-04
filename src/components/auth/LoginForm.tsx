@@ -7,7 +7,7 @@ interface LoginFormProps {
 
 const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
   const [role, setRole] = useState<'user' | 'technician'>(defaultRole);
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [formData, setFormData] = useState({ username: '', password: '' });
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -61,14 +61,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
             </select>
           </div>
 
-          {/* Email */}
+          {/* Username */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <label className="block text-sm font-medium text-gray-700">Username</label>
             <input
-              type="email"
-              name="email"
+              type="username"
+              name="username"
               required
-              value={formData.email}
+              value={formData.username}
               onChange={handleChange}
               className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
             />
