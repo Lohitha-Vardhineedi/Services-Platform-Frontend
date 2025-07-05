@@ -7,14 +7,14 @@ function Header() {
   const [cartCount, setCartCount] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const modalRef = useRef(null);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const { user } = useUser();
   // const user = { name: 'uday' };
 
   useEffect(() => {
     const updateCartCount = () => {
-      const storedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+      const storedItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
       setCartCount(storedItems.length);
     };
 
@@ -100,7 +100,7 @@ function Header() {
                     onClick={() => setShowModal(!showModal)}
                     className="text-sm text-gray-700 hover:text-blue-600 focus:outline-none"
                   >
-                    Hi, {user.name}
+                    Hi, {user?.username || 'User'}
                   </button>
 
                   {showModal && (

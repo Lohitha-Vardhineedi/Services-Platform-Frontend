@@ -40,16 +40,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
     setError(null);
     try {
       const res = await login({ ...formData, role }) as any;
-      if (res.user.token) {
-        console.log("Token : ",res.user.token)
-        localStorage.setItem('jwt_token', res.token);
+      if (res.user && res.user.token) {
+        localStorage.setItem('jwt_token', res.user.token);
       }
-     
       if (res.user) {
         setUser(res.user);
         localStorage.setItem('user', JSON.stringify(res.user));
+        console.log("ID : ",res.user.id)
+        localStorage.setItem('userId', res.user.id);
       }
-      console.log("Called :")
       navigate('/');
     } catch (err: any) {
       setError(err?.message || 'Login failed. Please try again.');
