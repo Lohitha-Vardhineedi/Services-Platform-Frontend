@@ -1,17 +1,41 @@
 import React from 'react';
 import { User, Star } from 'lucide-react';
 import { customerReviews } from '../../data/customerReviewsData';
+import { getAvgReviews } from '../../api/apiMethods';
+import { useState } from 'react';
 
 function CustomerReviewCarousel() {
   const [page, setPage] = React.useState(0);
   const reviewsPerPage = 3;
   const pageCount = Math.ceil(customerReviews.length / reviewsPerPage);
+  const [avgReviews, setAvgReviews] = useState();
+
+  const fetchAvgReviews = async (serviceId) => {
+    try {
+      const response = await getAvgReviews(serviceId, {
+        params: {
+          serviceId: serviceId,
+        },
+      });
+      console.log('Average reviews fetched successfully:', response);
+      if (response.data.rating >= 3) {
+        setAvgReviews(response);
+      } else { 
+        setAvgReviews([]);
+      }
+    } catch (error) {
+      console.error('Error fetching average reviews:', error);
+    }
+  };
+
   React.useEffect(() => {
+    fetchAvgReviews(1);
     const interval = setInterval(() => {
       setPage((prev) => (prev + 1) % pageCount);
     }, 3500);
     return () => clearInterval(interval);
   }, [pageCount]);
+
   const start = page * reviewsPerPage;
   let reviewsToShow = customerReviews.slice(start, start + reviewsPerPage);
   if (reviewsToShow.length < reviewsPerPage) {
@@ -23,6 +47,26 @@ function CustomerReviewCarousel() {
   return (
     <div className="relative w-full max-w-5xl mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {avgReviews && avgReviews.map((element, index) => (
+          <div key={index} className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center h-full">
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-3">
+              <User className="w-8 h-8 text-blue-500" />
+            </div>
+            <h4 className="font-semibold text-lg text-gray-900 mb-1">{element.name}</h4>
+            <div className="flex mb-2">
+              {[...Array(element.rating)].map((_, i) => (
+                <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+              ))}
+
+              {[...Array(5 - element.rating)].map((_, i) => (
+                <Star key={i + element .rating} className="w-5 h-5 text-gray-300" />
+              ))}
+              <p className="text-gray-600 text-sm text-center flex-1">{element.review}</p>
+            </div>
+          </div>
+          ))}
+
+
         {reviewsToShow.map((review, idx) => (
           <div key={idx} className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center h-full">
             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-3">

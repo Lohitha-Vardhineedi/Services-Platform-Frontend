@@ -16,7 +16,11 @@ import KeyFeaturesPage from '../pages/KeyFeaturesPage';
 import ServicePage from '../pages/ServicePage';
 import ProfilePage from '../pages/ProfilePage';
 import CartPage from '../pages/CartPage';
+<<<<<<< HEAD
 import ProfileEdit from '../pages/ProfileEdit';
+=======
+import ProfileEdit from '../pages/ProfileEditPage';
+>>>>>>> 55d1b3cec39c8740de7d4898b3bd385b7b2a9bd4
 
 
 const AppRoutes = () => {

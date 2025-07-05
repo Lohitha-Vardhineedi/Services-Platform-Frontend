@@ -2,31 +2,52 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Download, Menu, X, ShoppingCart, History } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
+<<<<<<< HEAD
+=======
+// import { useUser } from '../../context/UserContext';
+>>>>>>> 55d1b3cec39c8740de7d4898b3bd385b7b2a9bd4
 
 function Header() {
   const [cartCount, setCartCount] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const modalRef = useRef(null);
+  const [user, setUser] = useState<{ name: string } | null>(null); // Will automatically show login if user is null
 
+<<<<<<< HEAD
   const { user } = useUser();
+=======
+  // Mock user data for demonstration
+>>>>>>> 55d1b3cec39c8740de7d4898b3bd385b7b2a9bd4
   // const user = { name: 'uday' };
 
-  useEffect(() => {
-    const updateCartCount = () => {
-      const storedItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-      setCartCount(storedItems.length);
-    };
+ 
+useEffect(() => {
+  const updateCartCount = () => {
+    const stored = localStorage.getItem("cartItems");
+    const storedItems = stored ? JSON.parse(stored) : [];
+    setCartCount(storedItems.length);
+  };
 
-    window.addEventListener("storage", updateCartCount);
-    window.addEventListener("focus", updateCartCount);
-    updateCartCount();
+  const updateUser = () => {
+    const storedUser = localStorage.getItem("user");
+    const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+    setUser(parsedUser);
+  };
 
-    return () => {
-      window.removeEventListener("storage", updateCartCount);
-      window.removeEventListener("focus", updateCartCount);
-    };
-  }, []);
+  window.addEventListener("storage", updateCartCount);
+  window.addEventListener("focus", updateCartCount);
+  window.addEventListener("userChanged", updateUser); // Listen for custom event
+
+  updateCartCount();
+  updateUser();
+
+  return () => {
+    window.removeEventListener("storage", updateCartCount);
+    window.removeEventListener("focus", updateCartCount);
+    window.removeEventListener("userChanged", updateUser); // Clean up
+  };
+}, []);
 
 
   // const [mobileOpen, setMobileOpen] = useState(false);
@@ -95,12 +116,13 @@ function Header() {
                 </Link> */}
 
                 {/* Profile Dropdown */}
+
                 <div className="relative">
                   <button
                     onClick={() => setShowModal(!showModal)}
                     className="text-sm text-gray-700 hover:text-blue-600 focus:outline-none"
                   >
-                    Hi, {user.name}
+                    Hi, {user || 'User'} <span className="text-xs">▼</span>
                   </button>
 
                   {showModal && (
@@ -126,6 +148,12 @@ function Header() {
                         onClick={() => {
                           setShowModal(false);
                           console.log("Logout clicked");
+                          localStorage.removeItem('user');
+                          localStorage.removeItem('token') // Clear user token
+                          // Optionally, redirect to home or login page
+                          setUser(null);
+                          window.location.href = '/'; // Redirect to home page
+
                           // logout logic here
                         }}
                         className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
