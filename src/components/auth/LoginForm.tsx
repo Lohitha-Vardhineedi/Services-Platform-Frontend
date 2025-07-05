@@ -11,7 +11,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
   const [formData, setFormData] = useState({ username: '', password: '' });
   const navigate = useNavigate();
   const location = useLocation();
-  const { setUser } = useUser();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -132,7 +131,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
           <div className="pt-4">
             <button
               type="submit"
-              onClick={getfunction}
+              onClick={handleSubmit}
               className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition duration-200"
             >
               Log In
