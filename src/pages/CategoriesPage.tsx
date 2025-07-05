@@ -1,5 +1,5 @@
 import React from 'react';
-import { category } from '../data/categoryData';
+import { categories } from '../data/categoryData';
 import { useNavigate } from 'react-router-dom';
 
 interface Category {
@@ -24,7 +24,7 @@ const navigate= useNavigate()
   return (
     <div className="max-w-7xl mx-auto px-4 py-4">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {category.map(({ id, category_name, category_image }) => {
+        {categories.map(({ id, category_name, category_image }) => {
           const bgColor = getRandomBgColor();
           return (
             <div

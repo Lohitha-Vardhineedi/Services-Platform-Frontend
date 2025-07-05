@@ -1,5 +1,5 @@
 import React from 'react';
-import { category } from '../data/categoryData';
+import { categories } from '../data/categoryData';
 
 interface Category {
   id: string;
@@ -22,8 +22,8 @@ const getRandomBgColor = (): string => {
 };
 
 const ComingSoonPage: React.FC = () => {
-  const filteredCategories: MappedCategory[] = category
-    .filter(cat => cat.category_image) // ensure image exists
+  const filteredCategories: MappedCategory[] = categories
+    .filter(cat => cat.category_image) 
     .map(cat => ({
       ...cat,
       bgColor: getRandomBgColor()
