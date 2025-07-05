@@ -108,7 +108,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
               name="username"
               required
               value={formData.username}
-              value={formData.username}
               onChange={handleChange}
               className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
             />
