@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Download, Menu, X, ShoppingCart, History } from 'lucide-react';
-// import { useUser } from '../../context/UserContext';
+import { useUser } from '../../context/UserContext';
 
 function Header() {
   const [cartCount, setCartCount] = useState(0);
@@ -9,8 +9,8 @@ function Header() {
   const [showModal, setShowModal] = useState(false);
   const modalRef = useRef(null);
 
-  // const { user } = useUser();
-  const user = { name: 'uday' };
+  const { user } = useUser();
+  // const user = { name: 'uday' };
 
   useEffect(() => {
     const updateCartCount = () => {
