@@ -9,7 +9,6 @@ interface LoginFormProps {
 const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
   const [role, setRole] = useState<'user' | 'technician'>(defaultRole);
   const [formData, setFormData] = useState({ username: '', password: '' });
-  const [formData, setFormData] = useState({ username: '', password: '' });
   const navigate = useNavigate();
   const location = useLocation();
   const { setUser } = useUser();
