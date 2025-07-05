@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { verifyLogin } from '../../api/apiMethods'; // Adjust the import path as necessary
 
 interface LoginFormProps {
   defaultRole?: 'user' | 'technician';
@@ -7,7 +8,7 @@ interface LoginFormProps {
 
 const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
   const [role, setRole] = useState<'user' | 'technician'>(defaultRole);
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [formData, setFormData] = useState({ username: '', password: '' });
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -32,14 +33,49 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
     }
   };
 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // TODO: Replace with API call
     console.log('Logging in as:', role, formData);
 
-    // Simulate login success
-    // navigate(role === 'technician' ? '/technician/dashboard' : '/user/dashboard');
+
+    try {
+      const response = await verifyLogin(formData);
+
+      // Adjusted type for backend response
+      type LoginResponse = {
+        success: boolean;
+        message?: string;
+        user?: { id: string; username: string; token: string };
+      };
+
+      const res = response as LoginResponse;
+
+      if (res.success && res.user) {
+        // Store token and user info
+        localStorage.setItem('token', res.user.token);
+        localStorage.setItem('user', JSON.stringify(res.user.username));
+
+        setFormData({ username: '', password: '' }); // Reset form data
+
+        // Notify other components
+        window.dispatchEvent(new Event('userChanged'));
+
+        // Redirect based on role
+        if (role === 'user') {
+          navigate('/');
+        } else {
+          navigate('/technician/dashboard'); // Redirect to technician dashboard
+        }
+      } else {
+        alert(res.message || 'Login failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('An error occurred while logging in. Please try again later.');
+    }
   };
 
   return (
@@ -63,12 +99,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
 
           {/* Email */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <label className="block text-sm font-medium text-gray-700">User name</label>
             <input
-              type="email"
-              name="email"
+              type="text"
+              name="username"
               required
-              value={formData.email}
+              value={formData.username}
               onChange={handleChange}
               className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
             />

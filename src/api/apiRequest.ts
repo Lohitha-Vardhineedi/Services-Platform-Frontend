@@ -33,7 +33,7 @@ const apiRequest = (
         res(response?.data);
       })
       .catch((error) => {
-        if (error.response?.status === 401 && jwt_token!=="demo-token") {
+        if (error.response?.status === 401 && jwt_token !== "demo-token") {
           localStorage.removeItem("jwt_token");
           localStorage.clear();
           window.location.href = "/login";
@@ -42,11 +42,11 @@ const apiRequest = (
           rej({
             status: error.response?.status,
             data: error.response?.data,
-            message: error.response?.data?.message || error.message
+            message: error.response?.data?.message || error.message,
           });
         } else {
           rej({
-            message: error.message || "Something went wrong"
+            message: error.message || "Something went wrong",
           });
         }
       });

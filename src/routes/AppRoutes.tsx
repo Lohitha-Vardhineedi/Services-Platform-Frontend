@@ -16,6 +16,7 @@ import KeyFeaturesPage from '../pages/KeyFeaturesPage';
 import ServicePage from '../pages/ServicePage';
 import ProfilePage from '../pages/ProfilePage';
 import CartPage from '../pages/CartPage';
+import ProfileEdit from '../pages/ProfileEditPage';
 
 
 const AppRoutes = () => {
@@ -38,6 +39,7 @@ const AppRoutes = () => {
             <Route path="/services" element={<ServicePage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/cart" element={<CartPage/>} />
+            <Route path="/profile/edit" element={<ProfileEdit />} />
             <Route path="*" element={<NotFoundPage />} />
         </Routes>
     );
