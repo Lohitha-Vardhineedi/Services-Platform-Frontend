@@ -2,10 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Download, Menu, X, ShoppingCart, History } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
-<<<<<<< HEAD
-=======
 // import { useUser } from '../../context/UserContext';
->>>>>>> 55d1b3cec39c8740de7d4898b3bd385b7b2a9bd4
 
 function Header() {
   const [cartCount, setCartCount] = useState(0);
@@ -14,11 +11,7 @@ function Header() {
   const modalRef = useRef(null);
   const [user, setUser] = useState<{ name: string } | null>(null); // Will automatically show login if user is null
 
-<<<<<<< HEAD
-  const { user } = useUser();
-=======
   // Mock user data for demonstration
->>>>>>> 55d1b3cec39c8740de7d4898b3bd385b7b2a9bd4
   // const user = { name: 'uday' };
 
  
