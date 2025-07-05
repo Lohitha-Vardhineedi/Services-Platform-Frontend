@@ -9,15 +9,13 @@ interface LoginFormProps {
 const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
   const [role, setRole] = useState<'user' | 'technician'>(defaultRole);
   const [formData, setFormData] = useState({ username: '', password: '' });
-  const [formData, setFormData] = useState({ username: '', password: '' });
   const navigate = useNavigate();
   const location = useLocation();
-  const { setUser } = useUser();
-  const [error, setError] = useState<string | null>(null);
 
+  // Redirect based on URL if applicable
   useEffect(() => {
     if (location.pathname.includes('/login/technician')) {
-      setRole('technician');
+      setRole('technician');1
     } else {
       setRole('user');
     }
@@ -85,10 +83,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
       <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Log In</h2>
 
-        <form className="space-y-4">
-          {error && (
-            <div className="text-red-600 text-sm text-center">{error}</div>
-          )}
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Role Selector */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Login As</label>
@@ -102,14 +97,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
             </select>
           </div>
 
-          {/* Username */}
+          {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-700">User name</label>
             <input
               type="text"
               name="username"
               required
-              value={formData.username}
               value={formData.username}
               onChange={handleChange}
               className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
@@ -133,7 +127,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
           <div className="pt-4">
             <button
               type="submit"
-              onClick={getfunction}
               className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition duration-200"
             >
               Log In
