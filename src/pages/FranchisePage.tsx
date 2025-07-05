@@ -113,7 +113,7 @@ const FranchisePage: React.FC = () => {
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">Username <span className='text-red-500'>*</span></label>
                     <input
                       type="text"
                       id="name"
@@ -126,7 +126,7 @@ const FranchisePage: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label htmlFor="mobile" className="block text-sm font-medium text-gray-700 mb-2">Mobile Number *</label>
+                    <label htmlFor="mobile" className="block text-sm font-medium text-gray-700 mb-2">Mobile Number <span className='text-red-500'>*</span></label>
                     <input
                       type="tel"
                       id="mobile"
@@ -139,7 +139,7 @@ const FranchisePage: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">Message <span className='text-red-500'>*</span></label>
                     <textarea
                       id="message"
                       name="message"

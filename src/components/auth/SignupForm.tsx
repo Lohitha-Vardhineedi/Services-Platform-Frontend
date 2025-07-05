@@ -1,130 +1,86 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { categories } from '../../data/categoriesData';
 
 interface SignupFormProps {
   defaultRole: 'user' | 'technician';
 }
 
+interface FormData {
+  name: string;
+  mobile: string;
+  password: string;
+  buildingName: string;
+  areaName: string;
+  pincode: string;
+  category: string;
+}
+
+const initialFormState: FormData = {
+  name: '',
+  mobile: '',
+  password: '',
+  buildingName: '',
+  areaName: '',
+  pincode: '',
+  category: '',
+};
+
 const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    mobile: '',
-    password: '',
-    dob: '',
-    profileImage: '',
-    category: '',
-  });
+  const [formData, setFormData] = useState<FormData>(initialFormState);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value, files } = e.target as HTMLInputElement;
-    if (name === 'profileImage' && files && files.length > 0) {
-      const file = files[0];
-      const imageUrl = URL.createObjectURL(file);
-      setFormData((prev) => ({ ...prev, profileImage: imageUrl }));
-    } else {
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+      const { name, value } = e.target;
       setFormData((prev) => ({ ...prev, [name]: value }));
-    }
-  };
+    },
+    []
+  );
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Signing up with:', { role: defaultRole, ...formData });
-    // TODO: Post to API
-  };
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+    },
+    [formData, defaultRole]
+  );
 
   return (
     <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
-        <h2 className="text-2xl font-semibold mb-6 text-center">
+        <h2 className="text-2xl font-semibold mb-6 text-center capitalize">
           Sign Up as {defaultRole}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Common Fields */}
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-              Full Name
-            </label>
-            <input
-              id="name"
-              type="text"
-              name="name"
-              required
-              value={formData.name}
-              onChange={handleChange}
-              className="mt-1 w-full border border-gray-300 rounded-md p-2"
-            />
-          </div>
+          {[
+            { id: 'name', label: 'User Name', type: 'text' },
+            { id: 'mobile', label: 'Phone Number', type: 'tel', pattern: '[0-9]{10}' },
+            { id: 'password', label: 'Password', type: 'password' },
+            { id: 'buildingName', label: 'House/Building Name', type: 'text' },
+            { id: 'areaName', label: 'Area/Street Name', type: 'text' },
+            { id: 'pincode', label: 'Pincode', type: 'number' },
+          ].map(({ id, label, type, pattern }) => (
+            <div key={id}>
+              <label htmlFor={id} className="block text-sm font-medium text-gray-700">
+                {label} <span className='text-red-600'>*</span>
+              </label>
+              <input
+                id={id}
+                name={id}
+                type={type}
+                placeholder={label}
+                required
+                value={(formData as any)[id]}
+                onChange={handleChange}
+                pattern={pattern}
+                className="mt-1 w-full border border-gray-300 rounded-md p-2"
+              />
+            </div>
+          ))}
 
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              required
-              value={formData.email}
-              onChange={handleChange}
-              className="mt-1 w-full border border-gray-300 rounded-md p-2"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="mobile" className="block text-sm font-medium text-gray-700">
-              Mobile Number
-            </label>
-            <input
-              id="mobile"
-              type="tel"
-              name="mobile"
-              required
-              pattern="[0-9]{10}"
-              value={formData.mobile}
-              onChange={handleChange}
-              className="mt-1 w-full border border-gray-300 rounded-md p-2"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              name="password"
-              required
-              value={formData.password}
-              onChange={handleChange}
-              className="mt-1 w-full border border-gray-300 rounded-md p-2"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="dob" className="block text-sm font-medium text-gray-700">
-              Date of Birth
-            </label>
-            <input
-              id="dob"
-              type="date"
-              name="dob"
-              required
-              value={formData.dob}
-              onChange={handleChange}
-              className="mt-1 w-full border border-gray-300 rounded-md p-2"
-            />
-          </div>
-
-          {/* Technician-specific category field */}
           {defaultRole === 'technician' && (
             <div>
               <label htmlFor="category" className="block text-sm font-medium text-gray-700">
-                Service Category
+                Service Category <span className='text-red-500'>*</span>
               </label>
               <select
                 id="category"
@@ -134,7 +90,9 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
                 required
                 className="mt-1 w-full border border-gray-300 rounded-md p-2"
               >
-                <option value="" disabled>Select a category</option>
+                <option value="" disabled>
+                  Select a category
+                </option>
                 {categories.map((cat) => (
                   <option key={cat.id} value={cat.name}>
                     {cat.name}
@@ -143,27 +101,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
               </select>
             </div>
           )}
-
-          <div>
-            <label htmlFor="profileImage" className="block text-sm font-medium text-gray-700">
-              Profile Image
-            </label>
-            <input
-              id="profileImage"
-              type="file"
-              name="profileImage"
-              accept="image/*"
-              onChange={handleChange}
-              className="mt-1 w-full border border-gray-300 rounded-md p-2"
-            />
-            {formData.profileImage && (
-              <img
-                src={formData.profileImage}
-                alt="Preview"
-                className="mt-2 w-20 h-20 object-cover rounded-full"
-              />
-            )}
-          </div>
 
           <div className="pt-4">
             <button
@@ -175,30 +112,15 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
           </div>
         </form>
 
-        {/* Switch Role Links */}
-        {defaultRole === 'user' && (
-          <p className="mt-4 text-sm text-center text-gray-600">
-            Are you a technician?{' '}
-            <a
-              href="/signup/technician"
-              className="text-blue-600 hover:underline font-medium"
-            >
-              Sign up here
-            </a>
-          </p>
-        )}
-
-        {defaultRole === 'technician' && (
-          <p className="mt-4 text-sm text-center text-gray-600">
-            Are you a user?{' '}
-            <a
-              href="/signup/user"
-              className="text-blue-600 hover:underline font-medium"
-            >
-              Sign up here
-            </a>
-          </p>
-        )}
+        <p className="mt-4 text-sm text-center text-gray-600">
+          {defaultRole === 'user' ? 'Are you a technician?' : 'Are you a user?'}{' '}
+          <a
+            href={`/signup/${defaultRole === 'user' ? 'technician' : 'user'}`}
+            className="text-blue-600 hover:underline font-medium"
+          >
+            Sign up here
+          </a>
+        </p>
       </div>
     </main>
   );
