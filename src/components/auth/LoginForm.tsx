@@ -11,6 +11,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
   const [formData, setFormData] = useState({ username: '', password: '' });
   const navigate = useNavigate();
   const location = useLocation();
+  const [error, setError] = useState<string | null>(null);
 
   // Redirect based on URL if applicable
   useEffect(() => {
@@ -127,6 +128,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
           <div className="pt-4">
             <button
               type="submit"
+              onClick={handleSubmit}
               className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition duration-200"
             >
               Log In
