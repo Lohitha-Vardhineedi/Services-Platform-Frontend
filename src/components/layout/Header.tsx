@@ -8,8 +8,9 @@ function Header() {
   const [cartCount, setCartCount] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [user, setUser] = useState({});
   const modalRef = useRef<HTMLDivElement>(null);
-
+console.log("user", user)
   // Mock user data for demonstration
   // const user = { name: 'uday' };
 

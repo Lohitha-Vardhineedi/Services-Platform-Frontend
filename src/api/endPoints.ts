@@ -20,12 +20,12 @@ const endpoints: any = {
     },
   },
   
-};
 
   register: {
     method: "post",
-    url: () => "/api/auth/register"
+    url: () => `/api/auth/register`
   },
+
 
   getUserProfile: {
     method: "get",
