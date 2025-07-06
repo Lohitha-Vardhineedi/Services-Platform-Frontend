@@ -60,8 +60,18 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
 
   return (
     <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
+       <div className='flex justify-center'>
+        <div className="bg-blue-900 rounded px-1 py-1 w-fit flex ">
+          <img
+            src="https://prnvservices.com/uploads/logo/1695377568_logo-white.png"
+            alt="Justdial Logo"
+            className="h-8 w-auto "
+          />
+
+        </div>
+      </div>
       <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Log In</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Sign In</h2>
 
         <form className="space-y-4">
           {error && (
@@ -69,7 +79,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
           )}
           {/* Role Selector */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Login As</label>
+            <label className="block text-sm font-medium text-gray-700">Login As <span className='text-red-500'>*</span></label>
             <select
               value={role}
               onChange={handleRoleChange}
@@ -82,7 +92,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
 
           {/* Username */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">User name</label>
+            <label className="block text-sm font-medium text-gray-700">Name <span className='text-red-500'>*</span></label>
             <input
               type="text"
               name="username"
@@ -95,7 +105,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
 
           {/* Password */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <label className="block text-sm font-medium text-gray-700">Password <span className='text-red-500'>*</span></label>
             <input
               type="password"
               name="password"
@@ -113,11 +123,21 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
               onClick={handleSubmit}
               className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition duration-200"
             >
-              Log In
+              Sign In
             </button>
           </div>
         </form>
       </div>
+      <p className="mt-4 text-sm text-center text-gray-600">
+        Don't have an account?
+        {/* {defaultRole === 'user' ? 'Are you a technician?' : 'Are you a user?'}{' '} */}
+        <a
+          href={`/signup/${defaultRole === 'user' ? 'user' : 'technician'}`}
+          className="text-blue-600 hover:underline font-medium ms-1"
+        >
+          sign Up
+        </a>
+      </p>
     </main>
   );
 };

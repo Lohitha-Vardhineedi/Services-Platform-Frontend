@@ -71,14 +71,14 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
         }
 
         const response = await register(payload) as any;
-        
+
         if (response.success) {
           // Redirect to login page on successful registration
           navigate(`/login/${defaultRole}`);
         } else {
           setError(response.message || 'Registration failed. Please try again.');
         }
-        
+
       } catch (err: any) {
         setError(err?.message || 'Registration failed. Please try again.');
       } finally {
@@ -90,7 +90,18 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
 
   return (
     <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className='flex justify-center'>
+        <div className="bg-blue-900 rounded px-1 py-1 w-fit flex ">
+          <img
+            src="https://prnvservices.com/uploads/logo/1695377568_logo-white.png"
+            alt="Justdial Logo"
+            className="h-8 w-auto "
+          />
+
+        </div>
+      </div>
       <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
+
         <h2 className="text-2xl font-semibold mb-6 text-center capitalize">
           Sign Up as {defaultRole}
         </h2>
@@ -100,8 +111,33 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
             <div className="text-red-600 text-sm text-center bg-red-50 p-2 rounded">{error}</div>
           )}
 
+            {defaultRole === 'technician' && (
+            <div>
+              <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+                Service Category <span className='text-red-500'>*</span>
+              </label>
+              <select
+                id="category"
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                required
+                className="mt-1 w-full border border-gray-300 rounded-md p-2"
+              >
+                <option value="" disabled>
+                  Select a category
+                </option>
+                {categories.map((cat, index) => (
+                  <option key={index} value={cat.name}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           {[
-            { id: 'name', label: 'User Name', type: 'text' },
+            { id: 'name', label: 'Name', type: 'text' },
             { id: 'mobile', label: 'Phone Number', type: 'tel', pattern: '[0-9]{10}' },
             { id: 'password', label: 'Password', type: 'password' },
             { id: 'buildingName', label: 'House/Building Name', type: 'text' },
@@ -128,31 +164,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
             </div>
           ))}
 
-          {defaultRole === 'technician' && (
-            <div>
-              <label htmlFor="category" className="block text-sm font-medium text-gray-700">
-                Service Category <span className='text-red-500'>*</span>
-              </label>
-              <select
-                id="category"
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-                required
-                className="mt-1 w-full border border-gray-300 rounded-md p-2"
-              >
-                <option value="" disabled>
-                  Select a category
-                </option>
-                {categories.map((cat, index) => (
-                  <option key={index} value={cat.name}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-
           <div className="pt-4">
             <button
               type="submit"
@@ -170,10 +181,20 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
             href={`/signup/${defaultRole === 'user' ? 'technician' : 'user'}`}
             className="text-blue-600 hover:underline font-medium"
           >
-            Sign up here
+            Sign Up here
           </a>
         </p>
       </div>
+      <p className="mt-4 text-sm text-center text-gray-600">
+        Already Sign up?
+        {/* {defaultRole === 'user' ? 'Are you a technician?' : 'Are you a user?'}{' '} */}
+        <a
+          href={`/login/${defaultRole === 'user' ? 'user' : 'technician'}`}
+          className="text-blue-600 hover:underline font-medium ms-1"
+        >
+          Sign In
+        </a>
+      </p>
     </main>
   );
 };

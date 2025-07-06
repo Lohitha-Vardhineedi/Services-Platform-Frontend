@@ -50,7 +50,7 @@ console.log("user", user)
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex-shrink-0 bg-blue-900 rounded px-1 py-0.5">
+          <div className="flex-shrink-0 bg-blue-900 rounded px-1 py-1">
             <Link to="/">
               <img
                 src="https://prnvservices.com/uploads/logo/1695377568_logo-white.png"
