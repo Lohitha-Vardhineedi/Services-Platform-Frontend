@@ -12,7 +12,7 @@ const ProfileCard = () => {
         <div className='border border-gray-300 rounded-xl p-5 flex flex-col md:flex-row '>
             <div className="flex-1">
                 <h2 className="text-xl sm:text-xl md:text-xl lg:text-xl xl:text-2xl font-semibold">
-                    BMR Services
+                    Vivek
                 </h2>
                 <div className="flex gap-4 items-center my-3 text-2xl">
                     <div className="flex items-center border border-amber-500 rounded-lg px-1  text-black text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-bold">
@@ -48,14 +48,14 @@ const ProfileCard = () => {
                         <span>9876543212</span>
                     </div>
 
-                    <div className="flex bg-neutral-200 rounded-xl  text-green px-4 py-1 font-bold items-center cursor-pointer hover:bg-neutral-300">
+                    {/* <div className="flex bg-neutral-200 rounded-xl  text-green px-4 py-1 font-bold items-center cursor-pointer hover:bg-neutral-300">
 
                         <img
                             src="https://cdn-icons-png.freepik.com/256/134/134937.png?uid=R149535454&ga=GA1.1.186113507.1743993848&semt=ais_incoming"
                             className="h-6 w-6 me-2"
                         />
                         <span className="">Whatsup</span>
-                    </div>
+                    </div> */}
 
                     <div className="flex bg-green-600 rounded-xl text-white px-4 py-1 font-bold items-center cursor-pointer hover:bg-green-500">
                         <LuMessageSquareText size={22} className="me-3" />

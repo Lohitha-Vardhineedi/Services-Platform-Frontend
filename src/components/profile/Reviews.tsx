@@ -83,9 +83,9 @@ const Reviews = () => {
                       <span className="text-md sm:text-md md:text-md lg:text-lg xl:text-lg font-extralight">
                         {review?.name}
                       </span>
-                      <span className="text-sm sm:text-sm md:text-sm lg:text-md xl:text-md text-gray-500">
+                      {/* <span className="text-sm sm:text-sm md:text-sm lg:text-md xl:text-md text-gray-500">
                         {review?.reviews} Reviews
-                      </span>
+                      </span> */}
                       <span className="text-sm sm:text-sm md:text-sm lg:text-md xl:text-md text-gray-500">
                         {review?.date}
                       </span>
@@ -102,7 +102,7 @@ const Reviews = () => {
                   <div className="my-3 text-sm sm:text-sm md:text-sm lg:text-md xl:text-md ms-2 text-gray-600">
                     {review?.data}
                   </div>
-                  <div className="flex gap-4 items-center">
+                  {/* <div className="flex gap-4 items-center">
                     <div className="flex items-center border border-gray-300 px-3 py-1 gap-2 rounded-xl cursor-pointer">
                       <FaRegThumbsUp size={18} color='#00b800'/>
                       <span className="text-sm sm:text-sm md:text-sm lg:text-md xl:text-md font-extralight">
@@ -121,7 +121,7 @@ const Reviews = () => {
                         Share
                       </span>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               ))}
              

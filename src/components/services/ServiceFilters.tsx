@@ -77,11 +77,11 @@ const FILTER_ICONS: FilterIcon[] = [
   //   label: 'Deals',
   //   icon: <RiDiscountPercentFill size={23} className='clr-purple flex'/>,
   // },
-  {
-    id: 'allFilters',
-    label: 'All Filters',
-    icon: <HiAdjustmentsHorizontal size={23} className='clr-blue flex'/>,
-  },
+  // {
+  //   id: 'allFilters',
+  //   label: 'All Filters',
+  //   icon: <HiAdjustmentsHorizontal size={23} className='clr-blue flex'/>,
+  // },
 ];
 
 export const ServiceFilters: FC = () => {
