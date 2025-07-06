@@ -1,5 +1,7 @@
 import React, { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { categories } from '../../data/categoriesData';
+import { register } from '../../api/apiMethods';
 
 interface SignupFormProps {
   defaultRole: 'user' | 'technician';
@@ -11,6 +13,8 @@ interface FormData {
   password: string;
   buildingName: string;
   areaName: string;
+  city: string;
+  state: string;
   pincode: string;
   category: string;
 }
@@ -21,12 +25,17 @@ const initialFormState: FormData = {
   password: '',
   buildingName: '',
   areaName: '',
+  city: '',
+  state: '',
   pincode: '',
   category: '',
 };
 
 const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
   const [formData, setFormData] = useState<FormData>(initialFormState);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -37,10 +46,46 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
   );
 
   const handleSubmit = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
+    async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
+      setError(null);
+      setLoading(true);
+
+      try {
+        // Prepare payload based on role
+        const payload: any = {
+          username: formData.name,
+          phoneNumber: formData.mobile,
+          password: formData.password,
+          buildingName: formData.buildingName,
+          areaName: formData.areaName,
+          city: formData.city,
+          state: formData.state,
+          pincode: formData.pincode,
+          role: defaultRole
+        };
+
+        // Only include category if the role is technician
+        if (defaultRole === 'technician') {
+          payload.category = formData.category;
+        }
+
+        const response = await register(payload) as any;
+        
+        if (response.success) {
+          // Redirect to login page on successful registration
+          navigate(`/login/${defaultRole}`);
+        } else {
+          setError(response.message || 'Registration failed. Please try again.');
+        }
+        
+      } catch (err: any) {
+        setError(err?.message || 'Registration failed. Please try again.');
+      } finally {
+        setLoading(false);
+      }
     },
-    [formData, defaultRole]
+    [formData, defaultRole, navigate]
   );
 
   return (
@@ -51,12 +96,18 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {error && (
+            <div className="text-red-600 text-sm text-center bg-red-50 p-2 rounded">{error}</div>
+          )}
+
           {[
             { id: 'name', label: 'User Name', type: 'text' },
             { id: 'mobile', label: 'Phone Number', type: 'tel', pattern: '[0-9]{10}' },
             { id: 'password', label: 'Password', type: 'password' },
             { id: 'buildingName', label: 'House/Building Name', type: 'text' },
             { id: 'areaName', label: 'Area/Street Name', type: 'text' },
+            { id: 'city', label: 'City', type: 'text' },
+            { id: 'state', label: 'State', type: 'text' },
             { id: 'pincode', label: 'Pincode', type: 'number' },
           ].map(({ id, label, type, pattern }) => (
             <div key={id}>
@@ -93,8 +144,8 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
                 <option value="" disabled>
                   Select a category
                 </option>
-                {categories.map((cat) => (
-                  <option key={cat.id} value={cat.name}>
+                {categories.map((cat, index) => (
+                  <option key={index} value={cat.name}>
                     {cat.name}
                   </option>
                 ))}
@@ -105,9 +156,10 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
           <div className="pt-4">
             <button
               type="submit"
-              className="w-full bg-green-600 text-white font-semibold py-2 rounded-md hover:bg-green-700 transition duration-200"
+              disabled={loading}
+              className="w-full bg-green-600 text-white font-semibold py-2 rounded-md hover:bg-green-700 transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
-              Sign Up
+              {loading ? 'Signing Up...' : 'Sign Up'}
             </button>
           </div>
         </form>

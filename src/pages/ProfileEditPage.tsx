@@ -1,157 +1,323 @@
-import React, { useRef, useState } from "react";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
+import { getUserProfile, updateUserProfile } from '../api/apiMethods';
 
-const ProfileEdit: React.FC = () => {
+const ProfileEditPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { user, setUser } = useUser();
   const [formData, setFormData] = useState({
-    username: "john_doe",
-    password: "",
-    building: "Flat 101",
-    area: "Green Avenue",
-    pincode: "123456",
-    phone: "9876543210",
+    profileImage: '',
+    username: '',
+    phoneNumber: '',
+    password: '',
+    confirmPassword: '',
+    houseName: '',
+    areaName: '',
+    city: '',
+    state: '',
+    pincode: ''
   });
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const [profileImage, setProfileImage] = useState<string>(
-    "https://via.placeholder.com/100"
-  );
+  // Fetch user profile data on component mount
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        
+        const userId = localStorage.getItem('userId');
+        if (!userId) {
+          setError('User ID not found. Please login again.');
+          return;
+        }
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
+        const response = await getUserProfile(userId) as any;
+        if (response.success && response.user) {
+          const userData = response.user;
+          setFormData({
+            profileImage: '',
+            username: userData.username || '',
+            phoneNumber: userData.phoneNumber || '',
+            password: '',
+            confirmPassword: '',
+            houseName: userData.buildingName || '',
+            areaName: userData.areaName || '',
+            city: userData.city || '',
+            state: userData.state || '',
+            pincode: userData.pincode || ''
+          });
+        }
+      } catch (err: any) {
+        setError(err?.message || 'Failed to fetch profile data.');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const handleImageClick = () => {
-    fileInputRef.current?.click();
-  };
+    fetchUserProfile();
+  }, []);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, files } = e.target;
+    if (name === 'profileImage' && files && files.length > 0) {
+      const file = files[0];
+      const imageUrl = URL.createObjectURL(file);
+      setFormData((prev) => ({ ...prev, profileImage: imageUrl }));
     } else {
-      alert("Please select a valid image file (jpg, png, jpeg)");
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+
+    // Validate passwords match
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    // Validate password length
+    if (formData.password && formData.password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      return;
+    }
+
+    try {
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        setError('User ID not found. Please login again.');
+        return;
+      }
+
+      // Prepare data for API (only send fields that should be updated)
+      const updateData: any = {
+        username: formData.username,
+        phoneNumber: formData.phoneNumber,
+        buildingName: formData.houseName,
+        areaName: formData.areaName,
+        city: formData.city,
+        state: formData.state,
+        pincode: formData.pincode,
+        newPassword: formData.password,
+        confirmPassword: formData.confirmPassword
+      };
+
+      const response = await updateUserProfile(userId, updateData) as any;
+      
+      if (response.success) {
+        setSuccess('Profile updated successfully!');
+        
+        // Update local user context if needed
+        if (response.user) {
+          setUser({ ...user, ...response.user });
+        }
+        
+        // Navigate back to profile page after a short delay
+        setTimeout(() => {
+          navigate('/profile');
+        }, 2000);
+      } else {
+        setError(response.message || 'Failed to update profile.');
+      }
+    } catch (err: any) {
+      setError(err?.message || 'Failed to update profile. Please try again.');
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Form Data Submitted:", { ...formData, profileImage });
-    // send to backend
-  };
+  if (loading) {
+    return (
+      <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
+          <div className="text-center">Loading profile data...</div>
+        </div>
+      </main>
+    );
+  }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-xl shadow-md w-full max-w-md"
-      >
-        <div className="flex justify-center mb-6">
-          <div className="relative">
-            <img
-              src={profileImage}
-              alt="Profile"
-              onClick={handleImageClick}
-              className="w-24 h-24 rounded-full border-2 border-gray-300 cursor-pointer hover:opacity-80 transition"
-            />
+    <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
+        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Edit Profile</h2>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {error && (
+            <div className="text-red-600 text-sm text-center bg-red-50 p-2 rounded">{error}</div>
+          )}
+          {success && (
+            <div className="text-green-600 text-sm text-center bg-green-50 p-2 rounded">{success}</div>
+          )}
+
+          {/* Profile Image */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Profile Image</label>
+            <div className="flex items-center space-x-4">
+              <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                {formData.profileImage ? (
+                  <img 
+                    src={formData.profileImage} 
+                    alt="Profile" 
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="text-gray-400 text-2xl">👤</div>
+                )}
+              </div>
+              <input
+                type="file"
+                name="profileImage"
+                accept="image/*"
+                onChange={handleChange}
+                className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              />
+            </div>
+          </div>
+
+          {/* Username (Readonly) */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Username</label>
             <input
-              type="file"
-              accept="image/png, image/jpeg, image/jpg"
-              ref={fileInputRef}
-              onChange={handleImageChange}
-              className="hidden"
+              type="text"
+              name="username"
+              value={formData.username}
+              readOnly
+              className="mt-1 w-full border border-gray-300 rounded-md p-2 bg-gray-50 text-gray-500 cursor-not-allowed"
             />
           </div>
-        </div>
 
-        {/* Username */}
-        <div className="mb-4">
-          <label className="block text-gray-700">Username</label>
-          <input
-            type="text"
-            name="username"
-            className="mt-1 block w-full px-3 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            value={formData.username}
-            onChange={handleChange}
-            required
-          />
-        </div>
+          {/* Phone Number (Readonly) */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Phone Number</label>
+            <input
+              type="tel"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              readOnly
+              className="mt-1 w-full border border-gray-300 rounded-md p-2 bg-gray-50 text-gray-500 cursor-not-allowed"
+            />
+          </div>
 
-        {/* Password */}
-        <div className="mb-4">
-          <label className="block text-gray-700">Password</label>
-          <input
-            type="password"
-            name="password"
-            className="mt-1 block w-full px-3 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
+          {/* Password */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">New Password</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Leave blank to keep current password"
+            />
+          </div>
 
-        {/* Address */}
-        <div className="mb-4">
-          <label className="block text-gray-700">Building / Flat</label>
-          <input
-            type="text"
-            name="building"
-            className="mt-1 block w-full px-3 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            value={formData.building}
-            onChange={handleChange}
-            required
-          />
-        </div>
+          {/* Confirm Password */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Confirm New Password</label>
+            <input
+              type="password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Confirm new password"
+            />
+          </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700">Area</label>
-          <input
-            type="text"
-            name="area"
-            className="mt-1 block w-full px-3 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            value={formData.area}
-            onChange={handleChange}
-            required
-          />
-        </div>
+          {/* House/Building Name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">House/Building Name</label>
+            <input
+              type="text"
+              name="houseName"
+              value={formData.houseName}
+              onChange={handleChange}
+              className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter house or building name"
+            />
+          </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700">Pincode</label>
-          <input
-            type="text"
-            name="pincode"
-            className="mt-1 block w-full px-3 py-2 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            value={formData.pincode}
-            onChange={handleChange}
-            required
-          />
-        </div>
+          {/* Area/Street Name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Area/Street Name</label>
+            <input
+              type="text"
+              name="areaName"
+              value={formData.areaName}
+              onChange={handleChange}
+              className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter area or street name"
+            />
+          </div>
 
-        {/* Non-editable phone number */}
-        <div className="mb-6">
-          <label className="block text-gray-700">Phone Number</label>
-          <input
-            type="text"
-            name="phone"
-            value={formData.phone}
-            disabled
-            className="mt-1 block w-full px-3 py-2 bg-gray-100 border rounded-lg text-gray-500 cursor-not-allowed"
-          />
-        </div>
+          {/* City */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">City</label>
+            <input
+              type="text"
+              name="city"
+              value={formData.city}
+              onChange={handleChange}
+              className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter city"
+            />
+          </div>
 
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300"
-        >
-          Save Changes
-        </button>
-      </form>
-    </div>
+          {/* State */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">State</label>
+            <input
+              type="text"
+              name="state"
+              value={formData.state}
+              onChange={handleChange}
+              className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter state"
+            />
+          </div>
+
+          {/* Pincode */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Pincode</label>
+            <input
+              type="text"
+              name="pincode"
+              value={formData.pincode}
+              onChange={handleChange}
+              pattern="[0-9]{6}"
+              maxLength={6}
+              className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter 6-digit pincode"
+            />
+          </div>
+
+          {/* Submit Button */}
+          <div className="pt-4">
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition duration-200"
+            >
+              Update Profile
+            </button>
+          </div>
+
+          {/* Cancel Button */}
+          <div className="pt-2">
+            <button
+              type="button"
+              onClick={() => navigate('/profile')}
+              className="w-full bg-gray-500 text-white font-semibold py-2 rounded-md hover:bg-gray-600 transition duration-200"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
   );
 };
 
-export default ProfileEdit;
+export default ProfileEditPage; 

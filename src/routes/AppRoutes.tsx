@@ -15,6 +15,7 @@ import CategoriesPage from '../pages/CategoriesPage';
 import KeyFeaturesPage from '../pages/KeyFeaturesPage';
 import ServicePage from '../pages/ServicePage';
 import ProfilePage from '../pages/ProfilePage';
+import ProfileEditPage from '../pages/ProfileEditPage';
 import CartPage from '../pages/CartPage';
 import ProfileEdit from '../pages/ProfileEdit';
 import TransactionPage from '../pages/TransactionPage';
@@ -39,6 +40,7 @@ const AppRoutes = () => {
             <Route path="/features" element={<KeyFeaturesPage />} />
             <Route path="/services" element={<ServicePage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile/edit" element={<ProfileEditPage />} />
             <Route path="/cart" element={<CartPage/>} />
             <Route path="/profile/edit" element={<ProfileEdit />} />
             <Route path="/transactions" element={<TransactionPage />} />

@@ -42,39 +42,19 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
 
 
     try {
-      const response = await verifyLogin(formData);
-
-      // Adjusted type for backend response
-      type LoginResponse = {
-        success: boolean;
-        message?: string;
-        user?: { id: string; username: string; token: string };
-      };
-
-      const res = response as LoginResponse;
-
-      if (res.success && res.user) {
-        // Store token and user info
-        localStorage.setItem('token', res.user.token);
-        localStorage.setItem('user', JSON.stringify(res.user.username));
-
-        setFormData({ username: '', password: '' }); // Reset form data
-
-        // Notify other components
-        window.dispatchEvent(new Event('userChanged'));
-
-        // Redirect based on role
-        if (role === 'user') {
-          navigate('/');
-        } else {
-          navigate('/technician/dashboard'); // Redirect to technician dashboard
-        }
-      } else {
-        alert(res.message || 'Login failed. Please try again.');
+      const res = await login({ ...formData, role }) as any;
+      if (res.user && res.user.token) {
+        localStorage.setItem('jwt_token', res.user.token);
       }
-    } catch (error) {
-      console.error('Login error:', error);
-      alert('An error occurred while logging in. Please try again later.');
+      if (res.user) {
+        setUser(res.user);
+        localStorage.setItem('user', JSON.stringify(res.user));
+        console.log("ID : ",res.user.id)
+        localStorage.setItem('userId', res.user.id);
+      }
+      navigate('/');
+    } catch (err: any) {
+      setError(err?.message || 'Login failed. Please try again.');
     }
   };
 

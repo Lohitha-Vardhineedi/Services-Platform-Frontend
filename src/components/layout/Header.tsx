@@ -8,19 +8,16 @@ function Header() {
   const [cartCount, setCartCount] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const modalRef = useRef(null);
-  const [user, setUser] = useState<{ name: string } | null>(null); // Will automatically show login if user is null
+  const modalRef = useRef<HTMLDivElement>(null);
 
   // Mock user data for demonstration
   // const user = { name: 'uday' };
 
- 
-useEffect(() => {
-  const updateCartCount = () => {
-    const stored = localStorage.getItem("cartItems");
-    const storedItems = stored ? JSON.parse(stored) : [];
-    setCartCount(storedItems.length);
-  };
+  useEffect(() => {
+    const updateCartCount = () => {
+      const storedItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+      setCartCount(storedItems.length);
+    };
 
   const updateUser = () => {
     const storedUser = localStorage.getItem("user");
@@ -115,7 +112,7 @@ useEffect(() => {
                     onClick={() => setShowModal(!showModal)}
                     className="text-sm text-gray-700 hover:text-blue-600 focus:outline-none"
                   >
-                    Hi, {user || 'User'} <span className="text-xs">▼</span>
+                    Hi, {user?.username || 'User'}
                   </button>
 
                   {showModal && (

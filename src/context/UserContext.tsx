@@ -2,8 +2,10 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 
 interface User {
   id: string;
-  name: string;
-  email: string;
+  name?: string;
+  email?: string;
+  username: string;
+  mobile?: string;
   // Add more fields as needed
 }
 
