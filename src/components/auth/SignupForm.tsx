@@ -138,9 +138,9 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
             { id: 'password', label: 'Password', type: 'password' },
             { id: 'buildingName', label: 'House/Building Name', type: 'text' },
             { id: 'areaName', label: 'Area/Street Name', type: 'text' },
+            { id: 'pincode', label: 'Pincode', type: 'number' },
             { id: 'city', label: 'City', type: 'text' },
             { id: 'state', label: 'State', type: 'text' },
-            { id: 'pincode', label: 'Pincode', type: 'number' },
           ].map(({ id, label, type, pattern }) => (
             <div key={id}>
               <label htmlFor={id} className="block text-sm font-medium text-gray-700">
