@@ -42,7 +42,7 @@ const AppRoutes = () => {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/profile/edit" element={<ProfileEditPage />} />
             <Route path="/cart" element={<CartPage/>} />
-            <Route path="/profile/edit" element={<ProfileEdit />} />
+            {/* <Route path="/profile/edit" element={<ProfileEdit />} /> */}
             <Route path="/transactions" element={<TransactionPage />} />
             <Route path="*" element={<NotFoundPage />} />
         </Routes>
