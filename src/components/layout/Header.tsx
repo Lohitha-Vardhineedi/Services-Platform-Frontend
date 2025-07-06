@@ -10,8 +10,7 @@ function Header() {
   const [showModal, setShowModal] = useState(false);
   const [user, setUser] = useState({});
   const modalRef = useRef<HTMLDivElement>(null);
-console.log("user", user)
-  // Mock user data for demonstration
+  console.log("user", user)
   // const user = { name: 'uday' };
 
   useEffect(() => {
@@ -20,25 +19,25 @@ console.log("user", user)
       setCartCount(storedItems.length);
     };
 
-  const updateUser = () => {
-    const storedUser = localStorage.getItem("user");
-    const parsedUser = storedUser ? JSON.parse(storedUser) : null;
-    setUser(parsedUser);
-  };
+    const updateUser = () => {
+      const storedUser = localStorage.getItem("user");
+      const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+      setUser(parsedUser);
+    };
 
-  window.addEventListener("storage", updateCartCount);
-  window.addEventListener("focus", updateCartCount);
-  window.addEventListener("userChanged", updateUser); // Listen for custom event
+    window.addEventListener("storage", updateCartCount);
+    window.addEventListener("focus", updateCartCount);
+    window.addEventListener("userChanged", updateUser); // Listen for custom event
 
-  updateCartCount();
-  updateUser();
+    updateCartCount();
+    updateUser();
 
-  return () => {
-    window.removeEventListener("storage", updateCartCount);
-    window.removeEventListener("focus", updateCartCount);
-    window.removeEventListener("userChanged", updateUser); // Clean up
-  };
-}, []);
+    return () => {
+      window.removeEventListener("storage", updateCartCount);
+      window.removeEventListener("focus", updateCartCount);
+      window.removeEventListener("userChanged", updateUser); // Clean up
+    };
+  }, []);
 
 
   // const [mobileOpen, setMobileOpen] = useState(false);

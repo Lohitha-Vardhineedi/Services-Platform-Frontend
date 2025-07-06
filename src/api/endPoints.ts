@@ -1,6 +1,6 @@
 const endpoints: any = {
-
-   verifyLogin: {
+  
+   login: {
     method: "post",
     url: () => {
       return `/api/auth/login`;

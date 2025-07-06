@@ -52,7 +52,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
       setLoading(true);
 
       try {
-        // Prepare payload based on role
         const payload: any = {
           username: formData.name,
           phoneNumber: formData.mobile,
@@ -64,8 +63,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
           pincode: formData.pincode,
           role: defaultRole
         };
-
-        // Only include category if the role is technician
         if (defaultRole === 'technician') {
           payload.category = formData.category;
         }
@@ -73,7 +70,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
         const response = await register(payload) as any;
 
         if (response.success) {
-          // Redirect to login page on successful registration
           navigate(`/login/${defaultRole}`);
         } else {
           setError(response.message || 'Registration failed. Please try again.');
@@ -111,7 +107,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
             <div className="text-red-600 text-sm text-center bg-red-50 p-2 rounded">{error}</div>
           )}
 
-            {defaultRole === 'technician' && (
+          {defaultRole === 'technician' && (
             <div>
               <label htmlFor="category" className="block text-sm font-medium text-gray-700">
                 Service Category <span className='text-red-500'>*</span>
@@ -187,7 +183,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
       </div>
       <p className="mt-4 text-sm text-center text-gray-600">
         Already Sign up?
-        {/* {defaultRole === 'user' ? 'Are you a technician?' : 'Are you a user?'}{' '} */}
         <a
           href={`/login/${defaultRole === 'user' ? 'user' : 'technician'}`}
           className="text-blue-600 hover:underline font-medium ms-1"

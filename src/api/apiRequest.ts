@@ -1,7 +1,7 @@
 import axios from "axios";
 import qs from "qs";
 import endpoints from "./endPoints";
-import { baseUrl, baseUrlLocal } from "./baseURL";
+import { baseUrl } from "./baseURL";
 
 const apiRequest = (
   endpointKey: string,
@@ -23,7 +23,7 @@ const apiRequest = (
 
     const useLocal =
       endpointKey === "getUserProfile" || endpointKey === "updateUserProfile" || endpointKey === "login" || endpointKey === "register";
-    const apiBase = useLocal ? baseUrlLocal : baseUrl;
+    const apiBase = useLocal && baseUrl ;
 
     const jwt_token = localStorage.getItem("jwt_token");
     axios({
