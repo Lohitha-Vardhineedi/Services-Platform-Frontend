@@ -1,11 +1,27 @@
 import React from 'react';
 import { Wrench, CheckCircle, DollarSign, Star, Clock } from 'lucide-react';
 
-const TechnicianHomeView: React.FC = () => {
+type TechnicianProfileData = {
+  technician: any;
+  profile: {
+    services?: any[];
+    // ...other fields
+  } | null;
+};
+
+type Props = {
+  data: TechnicianProfileData | null;
+};
+
+const TechnicianHomeView: React.FC<Props> = ({ data }) => {
+  console.log("response",data.technicianProfile.services)
+  const serviceCount = data?.technicianProfile?.services?.length ?? 0;
+  const totalServicePrice = data?.technicianProfile?.services?.reduce((sum, s) => sum + (s.servicePrice || 0), 0) ?? 0;
+
   const stats = [
-    { icon: <Wrench />, label: 'Total Services', value: 42 },
-    { icon: <CheckCircle />, label: 'Completed Jobs', value: 37 },
-    { icon: <DollarSign />, label: 'Earnings (₹)', value: 26500 },
+    { icon: <Wrench />, label: 'Total Services', value: serviceCount },
+    { icon: <CheckCircle />, label: 'Completed Jobs', value: serviceCount },
+    { icon: <DollarSign />, label: 'Earnings (₹)', value: totalServicePrice },
     { icon: <Star />, label: 'Average Rating', value: '4.8 ⭐' },
   ];
 
