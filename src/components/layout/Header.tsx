@@ -6,11 +6,11 @@ function Header() {
   const [cartCount, setCartCount] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState<any>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
   // const user = "uday"
-    console.log("user", user)
+  //   console.log("user", user)
  
   useEffect(() => {
     const updateCartCount = () => {
@@ -21,7 +21,7 @@ function Header() {
     const updateUser = () => {
       const storedUser = localStorage.getItem("user");
       const parsedUser = storedUser ? JSON.parse(storedUser) : null;
-      setUser(parsedUser);
+      // setUser(parsedUser);
     };
 
     window.addEventListener("storage", updateCartCount);
@@ -123,7 +123,7 @@ function Header() {
                           console.log("Logout clicked");
                           localStorage.removeItem('user');
                           localStorage.removeItem('token')
-                          // setUser(null);
+                          setUser(null);
                           window.location.href = '/';
                         }}
                         className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
@@ -143,10 +143,10 @@ function Header() {
                   Login
                 </Link>
                 <Link
-                  to="/signup/user"
+                  to="/contact"
                   className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                 >
-                  Sign Up
+                  Guest
                 </Link>
               </>
             )}
@@ -193,15 +193,17 @@ function Header() {
 
             <Link
               to="/login/user"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-4 text-center"
+              onClick={() => setMobileOpen(false)}
             >
               Login
             </Link>
             <Link
-              to="/signup/user"
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              to="/contact"
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2 text-center"
+              onClick={() => setMobileOpen(false)}
             >
-              Sign Up
+              Guest
             </Link>
           </div>
         </div>

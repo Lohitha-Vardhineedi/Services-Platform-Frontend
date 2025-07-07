@@ -1,6 +1,14 @@
 // import { getPlans } from "../api/apiMethods";
 
-// export const plans = getPlans;
+export const plans = async () => {
+  try {
+    const response = await getPlans(); 
+    return response.data; 
+  } catch (error) {
+    console.error("Failed to fetch plans:", error);
+    return [];
+  }
+};
 
 export const plans = [
   {
