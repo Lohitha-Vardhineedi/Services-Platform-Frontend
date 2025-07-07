@@ -6,10 +6,10 @@ function Header() {
   const [cartCount, setCartCount] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  // const [user, setUser] = useState({});
+  const [user, setUser] = useState({});
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const user = "uday"
+  // const user = "uday"
     console.log("user", user)
  
   useEffect(() => {
@@ -21,7 +21,7 @@ function Header() {
     const updateUser = () => {
       const storedUser = localStorage.getItem("user");
       const parsedUser = storedUser ? JSON.parse(storedUser) : null;
-      // setUser(parsedUser);
+      setUser(parsedUser);
     };
 
     window.addEventListener("storage", updateCartCount);
