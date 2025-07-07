@@ -2,16 +2,18 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Download, Menu, X, ShoppingCart, History } from 'lucide-react';
 
+
+// ...existing code...
+import { LogOut } from 'lucide-react'; // Add this import
+
 function Header() {
   const [cartCount, setCartCount] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState<any>(null); // Now using state
+  const [role, setRole] = useState<string | null>(null); // Track role
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // const user = "uday"
-    console.log("user", user)
- 
   useEffect(() => {
     const updateCartCount = () => {
       const storedItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
@@ -22,11 +24,12 @@ function Header() {
       const storedUser = localStorage.getItem("user");
       const parsedUser = storedUser ? JSON.parse(storedUser) : null;
       setUser(parsedUser);
+      setRole(localStorage.getItem("role"));
     };
 
     window.addEventListener("storage", updateCartCount);
     window.addEventListener("focus", updateCartCount);
-    window.addEventListener("userChanged", updateUser); 
+    window.addEventListener("userChanged", updateUser);
 
     updateCartCount();
     updateUser();
@@ -34,16 +37,28 @@ function Header() {
     return () => {
       window.removeEventListener("storage", updateCartCount);
       window.removeEventListener("focus", updateCartCount);
-      window.removeEventListener("userChanged", updateUser); 
+      window.removeEventListener("userChanged", updateUser);
     };
   }, []);
+
+  const handleLogout = () => {
+    setShowModal(false);
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    setUser(null);
+    setRole(null);
+    window.location.href = '/';
+  };
+
+  // ...existing code...
 
   return (
     <header className="bg-white shadow-sm border-b z-10 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0 bg-blue-900 rounded px-1 py-1">
-            <Link to="/">
+            <Link to={role === "technician" ? "/technician/dashboard" : "/"}>
               <img
                 src="https://prnvservices.com/uploads/logo/1695377568_logo-white.png"
                 alt="Justdial Logo"
@@ -79,61 +94,73 @@ function Header() {
             </button>
 
             {user ? (
-              <>
-                <Link to="/cart">
+              role === "technician" ? (
+                <>
+                  {/* No cart icon for technician */}
+                  <button
+                    className="text-sm text-gray-700 hover:text-blue-600 focus:outline-none"
+                    style={{ cursor: "default" }}
+                  >
+                    Hi, {user?.username || 'Technician'}
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="ml-2 text-gray-700 hover:text-red-600"
+                    title="Logout"
+                  >
+                    <LogOut className="w-6 h-6" />
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link to="/cart">
+                    <div className="relative">
+                      {cartCount > 0 && (
+                        <div className="absolute -right-1 bottom-3 w-4 h-4 bg-green-600 text-white text-xs flex items-center justify-center rounded-full z-10">
+                          {cartCount}
+                        </div>
+                      )}
+                      <ShoppingCart color="#d70000" className="w-6 h-6 text-gray-700 group-hover:text-blue-600 transition-colors" />
+                    </div>
+                  </Link>
                   <div className="relative">
-                    {cartCount > 0 && (
-                      <div className="absolute -right-1 bottom-3 w-4 h-4 bg-green-600 text-white text-xs flex items-center justify-center rounded-full z-10">
-                        {cartCount}
+                    <button
+                      onClick={() => setShowModal(!showModal)}
+                      className="text-sm text-gray-700 hover:text-blue-600 focus:outline-none"
+                    >
+                      Hi, {user?.username || 'User'}
+                    </button>
+
+                    {showModal && (
+                      <div
+                        ref={modalRef}
+                        className="fixed right-60 top-16 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 animate-fade-in"
+                      >
+                        <Link
+                          to="/profile/edit"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          onClick={() => setShowModal(false)}
+                        >
+                          Edit Profile
+                        </Link>
+                        <Link
+                          to="/transactions"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          onClick={() => setShowModal(false)}
+                        >
+                          Transactions
+                        </Link>
+                        <button
+                          onClick={handleLogout}
+                          className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                        >
+                          Logout
+                        </button>
                       </div>
                     )}
-                    <ShoppingCart color="#d70000" className="w-6 h-6 text-gray-700 group-hover:text-blue-600 transition-colors" />
                   </div>
-                </Link>
-                <div className="relative">
-                  <button
-                    onClick={() => setShowModal(!showModal)}
-                    className="text-sm text-gray-700 hover:text-blue-600 focus:outline-none"
-                  >
-                    Hi, {user?.username || 'User'}
-                  </button>
-
-                  {showModal && (
-                    <div
-                      ref={modalRef}
-                      className="fixed right-60 top-16 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 animate-fade-in"
-                    >
-                      <Link
-                        to="/profile/edit"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        onClick={() => setShowModal(false)}
-                      >
-                        Edit Profile
-                      </Link>
-                      <Link
-                        to="/transactions"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        onClick={() => setShowModal(false)}
-                      >
-                        Transactions
-                      </Link>
-                      <button
-                        onClick={() => {
-                          setShowModal(false);
-                          console.log("Logout clicked");
-                          localStorage.removeItem('user');
-                          localStorage.removeItem('token')
-                          // setUser(null);
-                          window.location.href = '/';
-                        }}
-                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                      >
-                        Logout
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </>
+                </>
+              )
             ) : (
               <>
                 <Link
@@ -191,23 +218,278 @@ function Header() {
               <span className="text-sm font-medium">Download App</span>
             </button>
 
-            <Link
-              to="/login/user"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-            >
-              Login
-            </Link>
-            <Link
-              to="/signup/user"
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-            >
-              Sign Up
-            </Link>
+            {user ? (
+              role === "technician" ? (
+                <>
+                  <button
+                    className="mt-4 text-sm text-gray-700 hover:text-blue-600 focus:outline-none w-full justify-center flex"
+                    style={{ cursor: "default" }}
+                  >
+                    Hi, {user?.username || 'Technician'}
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="mt-2 text-gray-700 hover:text-red-600 w-full flex justify-center"
+                    title="Logout"
+                  >
+                    <LogOut className="w-6 h-6" />
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/cart"
+                    className="mt-4 text-gray-700 hover:text-blue-600 py-2 text-base font-medium flex items-center"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    <ShoppingCart className="w-5 h-5 mr-2" />
+                    Cart {cartCount > 0 && <span className="ml-1 bg-green-600 text-white rounded-full px-2 text-xs">{cartCount}</span>}
+                  </Link>
+                  <button
+                    onClick={() => setShowModal(!showModal)}
+                    className="mt-2 text-sm text-gray-700 hover:text-blue-600 focus:outline-none w-full flex justify-center"
+                  >
+                    Hi, {user?.username || 'User'}
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="mt-2 text-gray-700 hover:text-red-600 w-full flex justify-center"
+                    title="Logout"
+                  >
+                    <LogOut className="w-6 h-6" />
+                  </button>
+                </>
+              )
+            ) : (
+              <>
+                <Link
+                  to="/login/user"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-4"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/signup/user"
+                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors mt-2"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}
     </header>
   );
 }
+// ...existing code...
+
+// function Header() {
+//   const [cartCount, setCartCount] = useState(0);
+//   const [mobileOpen, setMobileOpen] = useState(false);
+//   const [showModal, setShowModal] = useState(false);
+//   // const [user, setUser] = useState({});
+//   const modalRef = useRef<HTMLDivElement>(null);
+
+//   const user = "uday"
+//     console.log("user", user)
+
+//   useEffect(() => {
+//     const updateCartCount = () => {
+//       const storedItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+//       setCartCount(storedItems.length);
+//     };
+
+//     const updateUser = () => {
+//       const storedUser = localStorage.getItem("user");
+//       const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+//       // setUser(parsedUser);
+//     };
+
+//     window.addEventListener("storage", updateCartCount);
+//     window.addEventListener("focus", updateCartCount);
+//     window.addEventListener("userChanged", updateUser); 
+
+//     updateCartCount();
+//     updateUser();
+
+//     return () => {
+//       window.removeEventListener("storage", updateCartCount);
+//       window.removeEventListener("focus", updateCartCount);
+//       window.removeEventListener("userChanged", updateUser); 
+//     };
+//   }, []);
+
+//   return (
+//     <header className="bg-white shadow-sm border-b z-10 relative">
+//       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+//         <div className="flex items-center justify-between h-16">
+//           <div className="flex-shrink-0 bg-blue-900 rounded px-1 py-1">
+//             <Link to="/">
+//               <img
+//                 src="https://prnvservices.com/uploads/logo/1695377568_logo-white.png"
+//                 alt="Justdial Logo"
+//                 className="h-8 w-auto"
+//               />
+//             </Link>
+//           </div>
+
+//           <nav className="hidden md:flex space-x-4 flex-shrink items-center">
+//             <div className="flex items-center w-16">
+//               <div id="google_translate_element" className="w-full" />
+//             </div>
+//             {[
+//               ['categories', 'Categories'],
+//               ['about', 'About Us'],
+//               ['subscription', 'Subscriptions'],
+//               ['features', 'Key Features'],
+//               ['franchise', 'Franchise'],
+//             ].map(([path, label]) => (
+//               <Link
+//                 key={path}
+//                 to={`/${path}`}
+//                 className="text-gray-700 hover:text-blue-600 px-2 py-1 text-sm font-medium"
+//               >
+//                 {label}
+//               </Link>
+//             ))}
+//           </nav>
+//           <div className="flex items-center space-x-4 relative">
+//             <button className="hidden md:flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg transition-colors">
+//               <Download className="w-4 h-4" />
+//               <span className="text-sm font-medium">Download App</span>
+//             </button>
+
+//             {user ? (
+//               <>
+//                 <Link to="/cart">
+//                   <div className="relative">
+//                     {cartCount > 0 && (
+//                       <div className="absolute -right-1 bottom-3 w-4 h-4 bg-green-600 text-white text-xs flex items-center justify-center rounded-full z-10">
+//                         {cartCount}
+//                       </div>
+//                     )}
+//                     <ShoppingCart color="#d70000" className="w-6 h-6 text-gray-700 group-hover:text-blue-600 transition-colors" />
+//                   </div>
+//                 </Link>
+//                 <div className="relative">
+//                   <button
+//                     onClick={() => setShowModal(!showModal)}
+//                     className="text-sm text-gray-700 hover:text-blue-600 focus:outline-none"
+//                   >
+//                     Hi, {user?.username || 'User'}
+//                   </button>
+
+//                   {showModal && (
+//                     <div
+//                       ref={modalRef}
+//                       className="fixed right-60 top-16 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 animate-fade-in"
+//                     >
+//                       <Link
+//                         to="/profile/edit"
+//                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+//                         onClick={() => setShowModal(false)}
+//                       >
+//                         Edit Profile
+//                       </Link>
+//                       <Link
+//                         to="/transactions"
+//                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+//                         onClick={() => setShowModal(false)}
+//                       >
+//                         Transactions
+//                       </Link>
+//                       <button
+//                         onClick={() => {
+//                           setShowModal(false);
+//                           console.log("Logout clicked");
+//                           localStorage.removeItem('user');
+//                           localStorage.removeItem('token')
+//                           setUser(null);
+//                           window.location.href = '/';
+//                         }}
+//                         className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+//                       >
+//                         Logout
+//                       </button>
+//                     </div>
+//                   )}
+//                 </div>
+//               </>
+//             ) : (
+//               <>
+//                 <Link
+//                   to="/login/user"
+//                   className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+//                 >
+//                   Login
+//                 </Link>
+//                 <Link
+//                   to="/signup/user"
+//                   className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+//                 >
+//                   Sign Up
+//                 </Link>
+//               </>
+//             )}
+
+//             <button className="md:hidden" onClick={() => setMobileOpen(true)}>
+//               <Menu className="w-6 h-6" />
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+
+//       {mobileOpen && (
+//         <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex justify-end">
+//           <div className="w-64 bg-white h-full shadow-lg flex flex-col p-6 relative animate-slide-in">
+//             <button className="absolute top-4 right-4 text-gray-600" onClick={() => setMobileOpen(false)}>
+//               <X className="w-6 h-6" />
+//             </button>
+
+//             <div className="flex items-center w-16 mb-6 mt-2">
+//               <div id="google_translate_element_mobile" className="w-full" />
+//             </div>
+
+//             {[
+//               ['categories', 'Categories'],
+//               ['about', 'About Us'],
+//               ['subscription', 'Subscriptions'],
+//               ['features', 'Key Features'],
+//               ['franchise', 'Franchise'],
+//             ].map(([path, label]) => (
+//               <Link
+//                 key={path}
+//                 to={`/${path}`}
+//                 className="text-gray-700 hover:text-blue-600 py-2 text-base font-medium"
+//                 onClick={() => setMobileOpen(false)}
+//               >
+//                 {label}
+//               </Link>
+//             ))}
+
+//             <button className="mt-6 flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg transition-colors w-full justify-center">
+//               <Download className="w-4 h-4" />
+//               <span className="text-sm font-medium">Download App</span>
+//             </button>
+
+//             <Link
+//               to="/login/user"
+//               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+//             >
+//               Login
+//             </Link>
+//             <Link
+//               to="/signup/user"
+//               className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+//             >
+//               Sign Up
+//             </Link>
+//           </div>
+//         </div>
+//       )}
+//     </header>
+//   );
+// }
 
 export default Header;

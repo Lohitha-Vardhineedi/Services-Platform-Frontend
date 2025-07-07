@@ -20,9 +20,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Redirect based on URL if applicable
   useEffect(() => {
     if (location.pathname.includes('/login/technician')) {
-      setRole('technician');
+      setRole('technician');1
     } else {
       setRole('user');
     }
