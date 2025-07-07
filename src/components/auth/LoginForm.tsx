@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { login } from '../../api/apiMethods';
+import { technicianLogin, userLogin } from '../../api/apiMethods';
 
 type UserRole = 'user' | 'technician';
 
@@ -9,20 +9,21 @@ interface LoginFormProps {
 }
 
 interface LoginData {
-  username: string;
+  phoneNumber: string;
   password: string;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
   const [role, setRole] = useState<UserRole>(defaultRole);
-  const [formData, setFormData] = useState<LoginData>({ username: '', password: '' });
+  const [formData, setFormData] = useState<LoginData>({ phoneNumber: '', password: '' });
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Redirect based on URL if applicable
   useEffect(() => {
     if (location.pathname.includes('/login/technician')) {
-      setRole('technician');
+      setRole('technician');1
     } else {
       setRole('user');
     }
@@ -45,22 +46,24 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
     setError(null);
 
     try {
-      const response = await login({ ...formData, role }) as any;
-  console.log("response",response)
-
-      if (response?.user?.token) {
-      
-        localStorage.setItem('jwt_token', response.user.token);
-        localStorage.setItem('user', JSON.stringify(response.user));
-        localStorage.setItem('userId', response.user.id);
-        console.log('Login success:', response.user);
-
-        // navigate(`/${role}`);
-         if (role === 'technician') {
-        navigate('/technician');  
+      let response;
+      if (role === 'technician') {
+        response = await technicianLogin({ ...formData }) as any;
       } else {
-        navigate('/');
+        response = await userLogin({ ...formData }) as any;
       }
+      console.log("asdasdsad", response.result.token)
+      if (response?.result?.token) {
+        console.log('Done')
+        localStorage.setItem('jwt_token', response.result.token);
+        localStorage.setItem('user', JSON.stringify(response.result));
+        localStorage.setItem('userId', response.result.id);
+
+        if (role === 'technician') {
+          navigate('/technician');
+        } else {
+          navigate('/')
+        }
       } else {
         throw new Error('Invalid credentials or server error');
       }
@@ -107,9 +110,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
             </label>
             <input
               type="text"
-              name="username"
+              name="phoneNumber"
               required
-              value={formData.username}
+              value={formData.phoneNumber}
               onChange={handleChange}
               className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
             />

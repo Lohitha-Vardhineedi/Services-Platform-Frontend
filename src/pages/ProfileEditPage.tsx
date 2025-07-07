@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
-import { getUserProfile, updateUserProfile } from '../api/apiMethods';
+import { userGetProfile, userEditProfile, technicianGetProfile, technicianEditProfile } from '../api/apiMethods';
 
 const ProfileEditPage: React.FC = () => {
     const navigate = useNavigate();
@@ -22,19 +22,30 @@ const ProfileEditPage: React.FC = () => {
     const [success, setSuccess] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
 
+    const role = user?.role || localStorage.getItem('role') || 'user'; // adjust as needed
+
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
-
+                console.log("role",role)
                 const userId = localStorage.getItem('userId');
+                console.log("User ID : ",userId)
                 if (!userId) {
                     setError('User ID not found. Please login again.');
                     return;
                 }
 
-                const response = await getUserProfile(userId) as any;
-                if (response.success && response.user) {
+                let response;
+                console.log("ID : ",userId)
+                if (role === 'technician') {
+                    response = await technicianGetProfile(userId);
+                } else {
+                    response = await userGetProfile(userId);
+                }
+                console.log("response : ",response)
+                if (response) {
                     const userData = response.user;
+                    console.log("Response : ",userData)
                     setFormData({
                         profileImage: '',
                         username: userData.username || '',
@@ -58,10 +69,10 @@ const ProfileEditPage: React.FC = () => {
         fetchUserProfile();
     }, []);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value, files } = e.target;
-        if (name === 'profileImage' && files && files.length > 0) {
-            const file = files[0];
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        if (name === 'profileImage' && 'files' in e.target && e.target.files && e.target.files.length > 0) {
+            const file = e.target.files[0];
             const imageUrl = URL.createObjectURL(file);
             setFormData((prev) => ({ ...prev, profileImage: imageUrl }));
         } else {
@@ -79,8 +90,8 @@ const ProfileEditPage: React.FC = () => {
             return;
         }
 
-        if (formData.password && formData.password.length < 6) {
-            setError('Password must be at least 6 characters long');
+        if (formData.password && (formData.password.length < 6 || formData.password.length > 10)) {
+            setError('Password must be between 6 and 10 characters long');
             return;
         }
 
@@ -92,31 +103,30 @@ const ProfileEditPage: React.FC = () => {
             }
 
             const updateData: any = {
+                id: userId,
                 username: formData.username,
-                phoneNumber: formData.phoneNumber,
+                password: formData.password,
                 buildingName: formData.houseName,
                 areaName: formData.areaName,
                 city: formData.city,
                 state: formData.state,
-                pincode: formData.pincode,
-                newPassword: formData.password,
-                confirmPassword: formData.confirmPassword
+                pincode: formData.pincode
             };
 
-            const response = await updateUserProfile(userId, updateData) as any;
+            let response;
+            if (role === 'technician') {
+                response = await technicianEditProfile(updateData);
+            } else {
+                response = await userEditProfile(updateData);
+            }
 
-            if (response.success) {
+            if (response && response.success) {
                 setSuccess('Profile updated successfully!');
-
-                if (response.user) {
-                    setUser({ ...user, ...response.user });
-                }
-
                 setTimeout(() => {
                     navigate('/');
                 }, 2000);
             } else {
-                setError(response.message || 'Failed to update profile.');
+                setError(response?.message || 'Failed to update profile.');
             }
         } catch (err: any) {
             setError(err?.message || 'Failed to update profile. Please try again.');
@@ -199,6 +209,8 @@ const ProfileEditPage: React.FC = () => {
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
+                            maxLength={10}
+                            minLength={6}
                             className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="New Password"
                         />
@@ -211,6 +223,8 @@ const ProfileEditPage: React.FC = () => {
                             name="confirmPassword"
                             value={formData.confirmPassword}
                             onChange={handleChange}
+                            maxLength={10}
+                            minLength={6}
                             className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Confirm New Password"
                         />
@@ -242,26 +256,30 @@ const ProfileEditPage: React.FC = () => {
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700">City</label>
-                        <input
-                            type="text"
+                        <select
                             name="city"
                             value={formData.city}
                             onChange={handleChange}
                             className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Enter city"
-                        />
+                        >
+                            <option value="">Select City</option>
+                            <option value="Hyderabad">Hyderabad</option>
+                           
+                        </select>
                     </div>
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700">State</label>
-                        <input
-                            type="text"
+                        <select
                             name="state"
                             value={formData.state}
                             onChange={handleChange}
                             className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Enter state"
-                        />
+                        >
+                            <option value="">Select State</option>
+                            <option value="Telangana">Telangana</option>
+                        
+                        </select>
                     </div>
 
                     <div>
