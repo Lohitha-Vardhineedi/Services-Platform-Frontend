@@ -18,9 +18,11 @@ import ProfilePage from '../pages/ProfilePage';
 import CartPage from '../pages/CartPage';
 import ContactPage from '../pages/ContactPage';
 import ProfileEditPage from '../pages/ProfileEditPage';
-import ProfileEdit from '../components/profile/ProfileEdit';
-import TransactionPage from '../pages/TransactionPage';
+// import ProfileEdit from '../components/profile/ProfileEdit';
+// import TransactionPage from '../pages/TransactionPage';
 import TechnicianDashboard from '../pages/TechnicianDashboard';
+import ProfileEdit from '../pages/ProfileEdit';
+import TransactionPage from '../pages/TransactionPage';
 
 const AppRoutes = () => {
     return (
@@ -44,8 +46,8 @@ const AppRoutes = () => {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/cart" element={<CartPage/>} />
             <Route path="/contact" element={<ContactPage />} />
-            <Route path="/profile/edit" element={<ProfileEdit />} />
-            <Route path="/transactions" element={<TransactionPage />} />
+            <Route path="/profile/edit" element={<ProfileEdit/>} />
+            <Route path="/transactions" element={<TransactionPage/>} />
             <Route path="/technician/dashboard" element={<TechnicianDashboard />} />
             <Route path="*" element={<NotFoundPage />} />
         </Routes>
