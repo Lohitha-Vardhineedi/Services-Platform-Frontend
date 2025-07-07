@@ -11,7 +11,7 @@ function Header() {
 
   const user = "uday"
     console.log("user", user)
-
+ 
   useEffect(() => {
     const updateCartCount = () => {
       const storedItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
