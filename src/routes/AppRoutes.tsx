@@ -17,7 +17,10 @@ import ServicePage from '../pages/ServicePage';
 import ProfilePage from '../pages/ProfilePage';
 import CartPage from '../pages/CartPage';
 import ContactPage from '../pages/ContactPage';
-
+import ProfileEditPage from '../pages/ProfileEditPage';
+import ProfileEdit from '../components/profile/ProfileEdit';
+import TransactionPage from '../pages/TransactionPage';
+import TechnicianDashboard from '../pages/TechnicianDashboard';
 
 const AppRoutes = () => {
     return (
