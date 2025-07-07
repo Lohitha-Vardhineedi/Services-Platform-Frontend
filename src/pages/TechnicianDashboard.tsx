@@ -3,16 +3,13 @@ import {
     LayoutDashboard, UserCog, PlusSquare, Image, List, CreditCard,
     Star
 } from 'lucide-react';
-import ProfileEdit from './ProfileEdit';
-import ServicePage from './ServicePage';
 import SubscriptionPage from './SubscriptionPage';
-import { FaComment } from 'react-icons/fa6';
 import Reviews from '../components/profile/Reviews';
 import Photos from '../components/profile/Photos';
 import TransactionPage from './TransactionPage';
-import ProfilePage from './ProfilePage';
 import Services from '../components/profile/Services';
 import ProfileCard from '../components/profile/ProfileCard';
+import TechnicianHomeView from '../components/profile/TechnicianHomeView';
 
 const TechnicianDashboard: React.FC = () => {
     const [selectedTab, setSelectedTab] = useState('dashboard');
@@ -31,7 +28,7 @@ const TechnicianDashboard: React.FC = () => {
     const renderContent = () => {
         switch (selectedTab) {
             case 'dashboard':
-                return <h1 className="text-xl font-semibold">Welcome to your Dashboard</h1>;
+                return <TechnicianHomeView />;
             case 'profile':
                 return <ProfileCard />;
             case 'service':
