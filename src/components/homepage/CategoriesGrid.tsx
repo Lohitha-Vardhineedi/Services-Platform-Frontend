@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllCategories } from '../../api/apiMethods';
+// import { getAllCategories } from '../../api/apiMethods';
 
 interface Category {
   id: number;

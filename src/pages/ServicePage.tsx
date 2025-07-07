@@ -3,10 +3,10 @@ import { IoCall, IoLocationOutline } from "react-icons/io5";
 import { LuMessageSquareText } from "react-icons/lu";
 import { MdOutlineStar } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import AdvertisementBanner from "../components/services/AdvertisementBanner.tsx";
-import { ServiceFilters } from "../components/services/ServiceFilters.tsx";
-import {  ServicesList } from "../data/ServicesList.ts";
-import { ContactForm } from "../components/services/ContactForms.tsx";
+import AdvertisementBanner from "../components/services/AdvertisementBanner";
+import { ServiceFilters } from "../components/services/ServiceFilters";
+import { ServicesList } from "../data/ServicesList";
+import { ContactForm } from "../components/services/ContactForms";
 
 const ServicePage = () => {
   const navigate = useNavigate()
@@ -24,7 +24,7 @@ const ServicePage = () => {
           Technicians
         </h2>
         <div>
-          <ServiceFilters />
+          <ServiceFilters/>
         </div>
         <div className="flex flex-col md:flex-row p-2 gap-3">
           <div onClick={()=>navigate("/profile")} className="flex-1 space-y-3  overflow-y-auto scrollbar-hide max-h-[calc(100vh-220px)] sm:max-h-[calc(100vh-180px)] md:max-h-[calc(100vh-160px)] ">
