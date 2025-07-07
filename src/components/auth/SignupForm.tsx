@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { categories } from '../../data/categoriesData';
-import { register } from '../../api/apiMethods';
+import { userRegister, technicianRegister, getAllCategories } from '../../api/apiMethods';
+import { categories as categoryList } from '../../data/categoryData';
 
 interface SignupFormProps {
   defaultRole: 'user' | 'technician';
@@ -36,6 +36,29 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [apiCategories, setApiCategories] = useState<{ _id: string; category_name: string }[]>([]);
+  const [catLoading, setCatLoading] = useState(false);
+  const [catError, setCatError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (defaultRole === 'technician') {
+      setCatLoading(true);
+      getAllCategories(null)
+        .then((res: any) => {
+          if (Array.isArray(res?.data)) {
+            setApiCategories(res.data);
+          } else {
+            setApiCategories([]);
+            setCatError('Failed to load categories');
+          }
+        })
+        .catch(() => {
+          setApiCategories([]);
+          setCatError('Failed to load categories');
+        })
+        .finally(() => setCatLoading(false));
+    }
+  }, [defaultRole]);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -52,29 +75,53 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
       setLoading(true);
 
       try {
-        const payload: any = {
-          username: formData.name,
-          phoneNumber: formData.mobile,
-          password: formData.password,
-          buildingName: formData.buildingName,
-          areaName: formData.areaName,
-          city: formData.city,
-          state: formData.state,
-          pincode: formData.pincode,
-          role: defaultRole
-        };
-        if (defaultRole === 'technician') {
-          payload.category = formData.category;
+        // Validate pincode
+        if (!formData.pincode || formData.pincode.length !== 6) {
+          setError('Pincode must be exactly 6 digits');
+          setLoading(false);
+          return;
         }
 
-        const response = await register(payload) as any;
-
+        let response;
+        if (defaultRole === 'user') {
+          const payload = {
+            username: formData.name,
+            phoneNumber: formData.mobile,
+            password: formData.password,
+            buildingName: formData.buildingName,
+            areaName: formData.areaName,
+            city: formData.city,
+            state: formData.state,
+            pincode: formData.pincode
+          };
+          response = await userRegister(payload) as any;
+        } else {
+          if (!formData.category) {
+            
+            setError('Please select a category.');
+            setLoading(false);
+            return;
+          }
+          console.log("as", apiCategories[0]._id);   
+          const payload = {
+            username: formData.name,
+            phoneNumber: formData.mobile,
+            password: formData.password,
+            buildingName: formData.buildingName,
+            areaName: formData.areaName,
+            city: formData.city,
+            state: formData.state,
+            pincode: formData.pincode,
+            category: apiCategories[0]._id
+          };
+          console.log("----",payload)
+          response = await technicianRegister(payload) as any;
+        }
         if (response.success) {
           navigate(`/login/${defaultRole}`);
         } else {
           setError(response.message || 'Registration failed. Please try again.');
         }
-
       } catch (err: any) {
         setError(err?.message || 'Registration failed. Please try again.');
       } finally {
@@ -119,28 +166,27 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
                 onChange={handleChange}
                 required
                 className="mt-1 w-full border border-gray-300 rounded-md p-2"
+                disabled={catLoading}
               >
                 <option value="" disabled>
-                  Select a category
+                  {catLoading ? 'Loading categories...' : 'Select a category'}
                 </option>
-                {categories.map((cat, index) => (
-                  <option key={index} value={cat.name}>
-                    {cat.name}
+                {apiCategories.map((cat, index) => (
+                  <option key={index} value={cat._id}>
+                    {cat.category_name}
                   </option>
                 ))}
               </select>
+              {catError && <div className="text-red-500 text-xs mt-1">{catError}</div>}
             </div>
           )}
 
           {[
             { id: 'name', label: 'Name', type: 'text' },
             { id: 'mobile', label: 'Phone Number', type: 'tel', pattern: '[0-9]{10}' },
-            { id: 'password', label: 'Password', type: 'password' },
+            { id: 'password', label: 'Password', type: 'password', minLength: 6, maxLength: 10 },
             { id: 'buildingName', label: 'House/Building Name', type: 'text' },
             { id: 'areaName', label: 'Area/Street Name', type: 'text' },
-            { id: 'pincode', label: 'Pincode', type: 'number' },
-            { id: 'city', label: 'City', type: 'text' },
-            { id: 'state', label: 'State', type: 'text' },
           ].map(({ id, label, type, pattern }) => (
             <div key={id}>
               <label htmlFor={id} className="block text-sm font-medium text-gray-700">
@@ -150,15 +196,70 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
                 id={id}
                 name={id}
                 type={type}
-                placeholder={label}
+                placeholder={id === 'password' ? 'Password (6-10 characters)' : label}
                 required
                 value={(formData as any)[id]}
                 onChange={handleChange}
                 pattern={pattern}
+                minLength={id === 'password' ? 6 : undefined}
+                maxLength={id === 'password' ? 10 : undefined}
                 className="mt-1 w-full border border-gray-300 rounded-md p-2"
               />
             </div>
           ))}
+
+          <div>
+            <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+              City <span className='text-red-600'>*</span>
+            </label>
+            <select
+              id="city"
+              name="city"
+              value={formData.city}
+              onChange={handleChange}
+              required
+              className="mt-1 w-full border border-gray-300 rounded-md p-2"
+            >
+              <option value="">Select City</option>
+              <option value="Hyderabad">Hyderabad</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="state" className="block text-sm font-medium text-gray-700">
+              State <span className='text-red-600'>*</span>
+            </label>
+            <select
+              id="state"
+              name="state"
+              value={formData.state}
+              onChange={handleChange}
+              required
+              className="mt-1 w-full border border-gray-300 rounded-md p-2"
+            >
+              <option value="">Select State</option>
+              <option value="Telangana">Telangana</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="pincode" className="block text-sm font-medium text-gray-700">
+              Pincode <span className='text-red-600'>*</span>
+            </label>
+            <input
+              id="pincode"
+              name="pincode"
+              type="number"
+              placeholder="Pincode"
+              required
+              maxLength={6}
+              minLength={6}
+              pattern="[0-9]{6}"
+              value={formData.pincode}
+              onChange={handleChange}
+              className="mt-1 w-full border border-gray-300 rounded-md p-2"
+            />
+          </div>
 
           <div className="pt-4">
             <button
