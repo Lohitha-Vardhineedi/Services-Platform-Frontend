@@ -35,8 +35,14 @@ const endpoints: any = {
   updateUserProfile: {
     method: "put",
     url: (userId: string) => `/api/auth/profile/${userId}`
-  }
+  },
   
+  getPlans: {
+    method: "get",
+    url: () => {
+      return `/api/subscriptions/plans`;
+    }
+  }
 }
 
 export default endpoints;

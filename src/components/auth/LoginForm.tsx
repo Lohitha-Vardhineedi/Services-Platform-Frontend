@@ -58,7 +58,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
 
         // navigate(`/${role}`);
          if (role === 'technician') {
-        navigate('/technician');
+        navigate('/technician');  
       } else {
         navigate('/');
       }

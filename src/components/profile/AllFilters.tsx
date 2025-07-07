@@ -34,7 +34,7 @@ const AllFilters = () => {
           <Photos />
           <Services />
           <Reviews />
-          {role !== "technician" && <FreqQ />}
+          {/* <FreqQ /> */}
         </>
       );
     }
