@@ -15,7 +15,7 @@ interface LoginData {
 
 const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
   const [role, setRole] = useState<UserRole>(defaultRole);
-  const [formData, setFormData] = useState<LoginData>({ phoneNumber : '', password: '' });
+  const [formData, setFormData] = useState<LoginData>({ phoneNumber: '', password: '' });
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -51,13 +51,18 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
       } else {
         response = await userLogin({ ...formData }) as any;
       }
-      console.log("asdasdsad",response.result.token)
+      console.log("asdasdsad", response.result.token)
       if (response?.result?.token) {
         console.log('Done')
         localStorage.setItem('jwt_token', response.result.token);
         localStorage.setItem('user', JSON.stringify(response.result));
         localStorage.setItem('userId', response.result.id);
-        navigate('/');
+
+        if (role === 'technician') {
+          navigate('/technician');
+        } else {
+          navigate('/')
+        }
       } else {
         throw new Error('Invalid credentials or server error');
       }
