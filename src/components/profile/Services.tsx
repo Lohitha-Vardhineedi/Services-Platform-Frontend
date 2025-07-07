@@ -210,8 +210,8 @@ const Services = () => {
               </div>
               <div className="flex flex-col items-center gap-2">
                 <img
-                  src={item.image}
-                  alt={item.name}
+                  src={item?.image}
+                  alt={item?.name}
                   className="rounded-t-lg object-cover w-20 sm:w-28 md:w-36 lg:w-40 xl:w-45 h-30"
                 />
                 {role === "technician" ? (
