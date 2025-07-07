@@ -12,3 +12,5 @@ export const register = (data: any) => apiRequest("register", data);
 export const getUserProfile = (userId: string) => apiRequest("getUserProfile", null, userId);
 
 export const updateUserProfile = (userId: string, data: any) => apiRequest("updateUserProfile", data, userId);
+
+export const getPlans = (data) => apiRequest("getPlans", data);
