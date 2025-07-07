@@ -32,7 +32,7 @@ const renderContent = () => {
           <Photos />
           <Services />
           <Reviews />
-          <FreqQ />
+          {/* <FreqQ /> */}
         </>
       );
     }
