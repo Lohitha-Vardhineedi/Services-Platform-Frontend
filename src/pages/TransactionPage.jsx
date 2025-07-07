@@ -704,7 +704,7 @@ function TransactionPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">My Transactions</h1>
           <div className="flex items-center space-x-2 text-sm text-gray-500">
-            <Link to={"/"}>Home</Link>
+            <Link to={"/technician/dashboard"}>dashboard</Link>
             <ChevronRight className="w-4 h-4" />
             <span>My Transactions</span>
           </div>

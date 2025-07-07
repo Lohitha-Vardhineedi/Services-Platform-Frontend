@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
 import {
-    LayoutDashboard, UserCog, PlusSquare, Image, List, CreditCard
+    LayoutDashboard, UserCog, PlusSquare, Image, List, CreditCard,
+    Star
 } from 'lucide-react';
+import ProfileEdit from './ProfileEdit';
+import ServicePage from './ServicePage';
+import SubscriptionPage from './SubscriptionPage';
+import { FaComment } from 'react-icons/fa6';
+import Reviews from '../components/profile/Reviews';
+import Photos from '../components/profile/Photos';
+import TransactionPage from './TransactionPage';
+import ProfilePage from './ProfilePage';
+import Services from '../components/profile/Services';
+import ProfileCard from '../components/profile/ProfileCard';
 
 const TechnicianDashboard: React.FC = () => {
     const [selectedTab, setSelectedTab] = useState('dashboard');
@@ -9,9 +20,10 @@ const TechnicianDashboard: React.FC = () => {
 
     const menuItems = [
         { key: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
-        { key: 'edit-profile', label: 'Edit Profile', icon: <UserCog size={20} /> },
+        { key: 'profile', label: 'Profile', icon: <UserCog size={20} /> },
         { key: 'service', label: 'Service', icon: <PlusSquare size={20} /> },
         { key: 'photos', label: 'Photos', icon: <Image size={20} /> },
+        { key: 'reviews', label: 'Reviews ', icon: <Star size={20} /> },
         { key: 'transactions', label: 'Transactions', icon: <List size={20} /> },
         { key: 'subscriptions', label: 'Subscriptions', icon: <CreditCard size={20} /> },
     ];
@@ -19,17 +31,19 @@ const TechnicianDashboard: React.FC = () => {
     const renderContent = () => {
         switch (selectedTab) {
             case 'dashboard':
-                return <h2 className="text-xl font-semibold">Welcome to the Dashboard</h2>;
-            case 'edit-profile':
-                return <h2 className="text-xl font-semibold">Edit Profile</h2>;
+                return <h1 className="text-xl font-semibold">Welcome to your Dashboard</h1>;
+            case 'profile':
+                return <ProfileCard />;
             case 'service':
-                return <h2 className="text-xl font-semibold">Service Management</h2>;
+                return <Services />; ;
             case 'photos':
-                return <h2 className="text-xl font-semibold">Manage Photos</h2>;
+                return <Photos />;
+            case 'reviews':
+                return <Reviews />;
             case 'transactions':
-                return <h2 className="text-xl font-semibold">Transaction History</h2>;
+                return <TransactionPage />;
             case 'subscriptions':
-                return <h2 className="text-xl font-semibold">Manage Subscriptions</h2>;
+                return <SubscriptionPage />;
             default:
                 return <h2 className="text-xl font-semibold">Dashboard</h2>;
         }

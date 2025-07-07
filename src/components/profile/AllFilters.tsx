@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FaCartPlus,
   FaRegComment,
@@ -16,23 +16,25 @@ import FreqQ from "./FreqQ.jsx";
 
 const AllFilters = () => {
   const [activeTab, setActiveTab] = useState("Overview");
+  const [role, setRole] = useState<string | null>(null);
 
- const FILTERS = [
-  "Overview",
-  "Photos",
-  "Services",
-  "Reviews",
-  "Frequent Q & A",
-];
+  useEffect(() => {
+    setRole(localStorage.getItem("role"));
+  }, []);
 
-const renderContent = () => {
+  const FILTERS =
+    role === "technician"
+      ? ["Overview", "Photos", "Services", "Reviews"]
+      : ["Overview", "Photos", "Services", "Reviews", "Frequent Q & A"];
+
+  const renderContent = () => {
     if (activeTab === "Overview") {
       return (
         <>
           <Photos />
           <Services />
           <Reviews />
-          <FreqQ />
+          {role !== "technician" && <FreqQ />}
         </>
       );
     }
@@ -44,7 +46,7 @@ const renderContent = () => {
       case "Reviews":
         return <Reviews />;
       case "Frequent Q & A":
-        return <FreqQ />;
+        return role !== "technician" ? <FreqQ /> : null;
       default:
         return null;
     }
@@ -76,57 +78,3 @@ const renderContent = () => {
 };
 
 export default AllFilters;
-
-
-
-// import React from "react";
-// import {
-//   FaCartPlus,
-//   FaRegComment,
-//   FaRegThumbsUp,
-//   FaThumbsUp,
-// } from "react-icons/fa6";
-// import { IoMdCloudUpload } from "react-icons/io";
-// import { MdOutlineStar } from "react-icons/md";
-// import { PiShareFatBold } from "react-icons/pi";
-// import { TiStarOutline } from "react-icons/ti";
-// import Photos from "./Photos.jsx";
-// import Services from "./Services.jsx";
-// import Reviews from "./Reviews.jsx";
-// import FreqQ from "./FreqQ.jsx";
-
-// const AllFilters = () => {
-//   const filters = [
-//     { filter: "Overview" },
-//     { filter: "Photos"},
-//     { filter: "Services" },
-//     { filter: "Reviews" },
-//     { filter: "Frequent Q & A" },
-//   ];
-
-//   return (
-//     <div className="mb-4  mt-8 flex flex-col md:felx-row gap-3 p-2">
-//       <div className="flex-1">
-//         <div className="flex gap-6">
-//           {filters.map((item, index) => (
-//             <div
-//               className="flex border border-gray-400 rounded-xl py-2 px-6 text-md sm:text-md md:text-lg lg:text-lg xl:text-lg font-extralight hover:bg-fuchsia-300 cursor-pointer shadow"
-//               key={index}
-//             >
-//               {item?.filter}
-//             </div>
-//           ))}
-//         </div>
-
-//         <div className="my-5 ">
-//           <Photos />
-//           <Services />
-//           <Reviews />
-//           <FreqQ/>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AllFilters;
