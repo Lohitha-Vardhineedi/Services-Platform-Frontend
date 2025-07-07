@@ -13,4 +13,4 @@ export const getUserProfile = (userId: string) => apiRequest("getUserProfile", n
 
 export const updateUserProfile = (userId: string, data: any) => apiRequest("updateUserProfile", data, userId);
 
-export const getPlans = (data) => apiRequest("getPlans", data);
+export const getPlans = () => apiRequest("getPlans");
