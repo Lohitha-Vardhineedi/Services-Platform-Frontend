@@ -24,7 +24,7 @@ export const ContactForm = () => {
     <div className="flex border border-gray-300 rounded-xl shadow p-3">
       <div className="rounded-xl shadow-xl p-4">
         <div className=" text-sm sm:text-sm md:text-md lg:text-md xl:text-lg text-center">
-          Get the list of Top <span className="clr-purple">Services</span>
+          Get in<span className="clr-purple ms-1">Touch</span>
         </div>
         <form onSubmit={handleSubmit} className="">
           <div className="flex flex-col my-4">
@@ -60,7 +60,7 @@ export const ContactForm = () => {
             >
               <div className=" flex items-center justify-center">
                 <span className="text-sm sm:text-sm md:text-md lg:text-md xl:text-lg font-600 me-1">
-                  Get Best Services
+                  Get
                 </span>
 
                 <MdKeyboardDoubleArrowRight size={30} />

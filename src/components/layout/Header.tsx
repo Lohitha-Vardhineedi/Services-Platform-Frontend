@@ -1,58 +1,48 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Download, Menu, X, ShoppingCart, History } from 'lucide-react';
-import { useUser } from '../../context/UserContext';
-// import { useUser } from '../../context/UserContext';
 
 function Header() {
   const [cartCount, setCartCount] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const modalRef = useRef(null);
-  const [user, setUser] = useState<{ name: string } | null>(null); // Will automatically show login if user is null
+  // const [user, setUser] = useState({});
+  const modalRef = useRef<HTMLDivElement>(null);
 
-  // Mock user data for demonstration
-  // const user = { name: 'uday' };
+  const user = "uday"
+    console.log("user", user)
 
- 
-useEffect(() => {
-  const updateCartCount = () => {
-    const stored = localStorage.getItem("cartItems");
-    const storedItems = stored ? JSON.parse(stored) : [];
-    setCartCount(storedItems.length);
-  };
+  useEffect(() => {
+    const updateCartCount = () => {
+      const storedItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+      setCartCount(storedItems.length);
+    };
 
-  const updateUser = () => {
-    const storedUser = localStorage.getItem("user");
-    const parsedUser = storedUser ? JSON.parse(storedUser) : null;
-    setUser(parsedUser);
-  };
+    const updateUser = () => {
+      const storedUser = localStorage.getItem("user");
+      const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+      // setUser(parsedUser);
+    };
 
-  window.addEventListener("storage", updateCartCount);
-  window.addEventListener("focus", updateCartCount);
-  window.addEventListener("userChanged", updateUser); // Listen for custom event
+    window.addEventListener("storage", updateCartCount);
+    window.addEventListener("focus", updateCartCount);
+    window.addEventListener("userChanged", updateUser); 
 
-  updateCartCount();
-  updateUser();
+    updateCartCount();
+    updateUser();
 
-  return () => {
-    window.removeEventListener("storage", updateCartCount);
-    window.removeEventListener("focus", updateCartCount);
-    window.removeEventListener("userChanged", updateUser); // Clean up
-  };
-}, []);
-
-
-  // const [mobileOpen, setMobileOpen] = useState(false);
-  // const {user} = useUser();
-  // const user = {"name": "uday"};
+    return () => {
+      window.removeEventListener("storage", updateCartCount);
+      window.removeEventListener("focus", updateCartCount);
+      window.removeEventListener("userChanged", updateUser); 
+    };
+  }, []);
 
   return (
     <header className="bg-white shadow-sm border-b z-10 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0 bg-blue-900 rounded px-1 py-0.5">
+          <div className="flex-shrink-0 bg-blue-900 rounded px-1 py-1">
             <Link to="/">
               <img
                 src="https://prnvservices.com/uploads/logo/1695377568_logo-white.png"
@@ -62,7 +52,6 @@ useEffect(() => {
             </Link>
           </div>
 
-          {/* Navigation */}
           <nav className="hidden md:flex space-x-4 flex-shrink items-center">
             <div className="flex items-center w-16">
               <div id="google_translate_element" className="w-full" />
@@ -83,8 +72,6 @@ useEffect(() => {
               </Link>
             ))}
           </nav>
-
-          {/* Right Side */}
           <div className="flex items-center space-x-4 relative">
             <button className="hidden md:flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg transition-colors">
               <Download className="w-4 h-4" />
@@ -103,19 +90,12 @@ useEffect(() => {
                     <ShoppingCart color="#d70000" className="w-6 h-6 text-gray-700 group-hover:text-blue-600 transition-colors" />
                   </div>
                 </Link>
-
-                {/* <Link to="/transactions" className="relative group">
-                  <History className="w-6 h-6 text-gray-700 group-hover:text-blue-600 transition-colors" />
-                </Link> */}
-
-                {/* Profile Dropdown */}
-
                 <div className="relative">
                   <button
                     onClick={() => setShowModal(!showModal)}
                     className="text-sm text-gray-700 hover:text-blue-600 focus:outline-none"
                   >
-                    Hi, {user || 'User'} <span className="text-xs">▼</span>
+                    Hi, {user?.username || 'User'}
                   </button>
 
                   {showModal && (
@@ -142,12 +122,9 @@ useEffect(() => {
                           setShowModal(false);
                           console.log("Logout clicked");
                           localStorage.removeItem('user');
-                          localStorage.removeItem('token') // Clear user token
-                          // Optionally, redirect to home or login page
+                          localStorage.removeItem('token')
                           setUser(null);
-                          window.location.href = '/'; // Redirect to home page
-
-                          // logout logic here
+                          window.location.href = '/';
                         }}
                         className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                       >
@@ -181,7 +158,6 @@ useEffect(() => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex justify-end">
           <div className="w-64 bg-white h-full shadow-lg flex flex-col p-6 relative animate-slide-in">

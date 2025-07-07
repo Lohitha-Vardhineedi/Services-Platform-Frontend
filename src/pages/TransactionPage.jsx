@@ -727,9 +727,9 @@ function TransactionPage() {
                       {tab.name}
                     </span>
                   </div>
-                  <ChevronRight className={`w-4 h-4 ${
+                  {/* <ChevronRight className={`w-4 h-4 ${
                     activeTab === tab.id ? tab.color : 'text-gray-400'
-                  }`} />
+                  }`} /> */}
                 </button>
               ))}
             </nav>

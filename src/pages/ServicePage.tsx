@@ -21,7 +21,7 @@ const ServicePage = () => {
 
       <div>
         <h2 className="text-lg sm:text-lg md:text-lg lg:text-xl xl:text-2xl fw-600 my-4">
-          Best Services
+          Technicians
         </h2>
         <div>
           <ServiceFilters />
@@ -71,18 +71,18 @@ const ServicePage = () => {
                      <span className="text-sm sm:text-sm md:text-md lg:text-md xl:text-lg fw-500">{profile?.phn}</span> 
                     </div>
 
-                    <div className="flex bg-neutral-200 rounded text-green px-2 items-center cursor-pointer hover:bg-neutral-300">
+                    {/* <div className="flex bg-neutral-200 rounded text-green px-2 items-center cursor-pointer hover:bg-neutral-300">
 
                       <img
                         src="https://cdn-icons-png.freepik.com/256/134/134937.png?uid=R149535454&ga=GA1.1.186113507.1743993848&semt=ais_incoming"
                         className="h-6 w-6 me-2"
                       />
                       <span className="text-sm sm:text-sm md:text-md lg:text-md xl:text-lg fw-600">Whatsup</span>
-                    </div>
+                    </div> */}
 
                     <div className="flex bg-green-600 rounded text-white px-2 items-center cursor-pointer hover:bg-green-500">
                       <LuMessageSquareText size={22} className="me-2" />
-                      <span className="text-sm sm:text-sm md:text-md lg:text-md xl:text-lg fw-500">Enquiry</span>
+                      <span className="text-sm sm:text-sm md:text-md lg:text-md xl:text-lg fw-500">Message</span>
                     </div>
 
                   </div>
