@@ -1,5 +1,7 @@
 // import { getPlans } from "../api/apiMethods";
 
+import { getPlans } from "../api/apiMethods";
+
 export const plans = async () => {
   try {
     const response = await getPlans(); 
