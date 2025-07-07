@@ -68,6 +68,12 @@ const endpoints: any = {
   technicianEditProfile: {
     method: "post",
     url: () => `/api/techAuth/editProfile`
+  
+  getPlans: {
+    method: "get",
+    url: () => {
+      return `/api/subscriptions/plans`;
+    }
   }
 }
 
