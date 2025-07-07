@@ -23,6 +23,8 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
       const response = await getAllCategories();
       if (response.success === true && Array.isArray(response.data)) {
         setAllCategories(response.data);
+        console.log(response,"==>response");
+        
       } else {
         setError('Invalid response format');
       }
@@ -30,7 +32,6 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
       setError(err?.message || 'Failed to fetch categories');
     }
   };
-
   useEffect(() => {
     fetchCategories();
   }, []);

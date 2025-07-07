@@ -4,10 +4,10 @@ import endpoints from "./endPoints";
 import { baseUrl } from "./baseURL";
 
 const apiRequest = (
-  endpointKey,
-  data = null,
-  pathParams = null,
-  queryParams = null
+  endpointKey: string,
+  data: any = null,
+  pathParams: string | null = null,
+  queryParams: any = null
 ) => {
   return new Promise((res, rej) => {
     const endpoint = endpoints[endpointKey];
@@ -20,10 +20,15 @@ const apiRequest = (
       const queryString = qs.stringify(queryParams, { addQueryPrefix: true });
       url += queryString;
     }
+
+    const useLocal =
+      endpointKey === "getUserProfile" || endpointKey === "updateUserProfile" || endpointKey === "login" || endpointKey === "register";
+    const apiBase = useLocal && baseUrl ;
+
     const jwt_token = localStorage.getItem("jwt_token");
     axios({
       method: endpoint.method,
-      url: `${baseUrl}${url}`,
+      url: `${apiBase}${url}`,
       data: data,
       headers: {
         Authorization: `Bearer ${jwt_token}`,
