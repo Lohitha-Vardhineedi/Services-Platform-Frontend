@@ -1,21 +1,29 @@
 import React, { useRef, useState, useEffect } from "react";
 import { IoMdCloudUpload } from "react-icons/io";
 import { FaChevronDown, FaChevronUp, FaTrash, FaPencilAlt } from "react-icons/fa";
+import { getTechImagesByTechId, createTechImagesControl } from '../../api/apiMethods';
 
 const Photos = () => {
-  const [images, setImages] = useState([
-    "https://img.freepik.com/free-photo/electrician-installing-electricity_1398-1567.jpg",
-    "https://media.istockphoto.com/id/1516511531/photo/a-plumber-carefully-fixes-a-leak-in-a-sink-using-a-wrench.jpg?b=1&s=612x612&w=0&k=20&c=NUX8oizSVtCWuC9VqFkjUc-EYq3c2Yypzqx-hcaMSKs=",
-    "https://img.freepik.com/free-photo/electrician-installing-electricity_1398-1567.jpg",
-    "https://media.istockphoto.com/id/1516511531/photo/a-plumber-carefully-fixes-a-leak-in-a-sink-using-a-wrench.jpg?b=1&s=612x612&w=0&k=20&c=NUX8oizSVtCWuC9VqFkjUc-EYq3c2Yypzqx-hcaMSKs=",
-    "https://img.freepik.com/free-photo/electrician-installing-electricity_1398-1567.jpg",
-  ]);
+  const [images, setImages] = useState<string[]>([]);
   const [showAll, setShowAll] = useState(false);
   const [role, setRole] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setRole(localStorage.getItem("role"));
+    let id = localStorage.getItem("userId");
+    id = "686a65eb4551a5e01e71afb6"
+    if (id) {
+      getTechImagesByTechId(id)
+        .then((data: any) => {
+          if (data?.result && Array.isArray(data.result.imageUrl)) {
+            setImages(data.result.imageUrl);
+          }
+        })
+        .catch((err: any) => {
+          console.error('Failed to fetch technician images:', err);
+        });
+    }
   }, []);
 
   const visibleImages = showAll ? images : images.slice(0, 6);
@@ -24,12 +32,22 @@ const Photos = () => {
     inputRef.current?.click();
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setImages((prev) => [imageUrl, ...prev]);
+    if (!file) return;
+    let id = localStorage.getItem("userId");
+    id = "686a65eb4551a5e01e71afb6"
+    // id = "686a65eb4551a5e01e71afb6"
+    const formData = new FormData();
+    formData.append("technicianId", id || "");
+    if (file instanceof File) {
+      formData.append("photos", file);
     }
+    for (let pair of formData.entries()) {
+      console.log("debug : ", pair[0] + ':', pair[1]);
+    }
+    await createTechImagesControl(formData);
+    setImages((prev) => [URL.createObjectURL(file), ...prev]);
   };
 
   const handleDelete = (index: number) => {

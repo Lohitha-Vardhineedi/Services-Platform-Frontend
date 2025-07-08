@@ -61,9 +61,9 @@ const endpoints: any = {
     method: "put",
     url: () => `/api/userAuth/editProfile`
   },
-  technicianGetProfile: {
+  technicianGetProfileDetails: {
     method: "get",
-    url: (userId: string) => `/api/techAuth/profile/${userId}`
+    url: (userId: string) => `/api/techAuth/getTechProfile/${userId}`
   },
   technicianEditProfile: {
     method: "post",
@@ -74,6 +74,38 @@ const endpoints: any = {
     url: () => {
       return `/api/subscriptions/plans`;
     }
+  },
+  getTechImagesByTechId: {
+    method: "get",
+    url: (id: string) => `/api/techImages/getTechImagesByTechId/${id}`
+  },
+  getServicesByTechId: {
+    method: "get",
+    url: (id: string) => `/api/services/getServicesByTechId/${id}`
+  },
+  updateTechnicianControl: {
+    method: "put",
+    url: () => `/api/techAuth/updateTechnicianControl`
+  },
+  updateServiceControl: {
+    method: "put",
+    url: () => `/api/services/updateServiceControl`
+  },
+  createServiceControl: {
+    method: "post",
+    url: () => `/api/services/createServiceControl`
+  },
+  deleteServiceById: {
+    method: "delete",
+    url: (id: string) => `/api/services/deleteServiceById/${id}`
+  },
+  createTechImagesControl: {
+    method: "post",
+    url: () => `/api/techImages/createTechImagesControl`
+  },
+  getAllPincodes: {
+    method: "get",
+    url: () => `/api/pincodes/allAreas`
   }
 }
 

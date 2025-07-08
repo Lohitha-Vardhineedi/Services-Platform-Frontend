@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { userRegister, technicianRegister, getAllCategories } from '../../api/apiMethods';
+import { userRegister, technicianRegister, getAllCategories, getAllPincodes } from '../../api/apiMethods';
 import { categories as categoryList } from '../../data/categoryData';
 
 interface SignupFormProps {
@@ -39,6 +39,10 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
   const [apiCategories, setApiCategories] = useState<{ _id: string; category_name: string }[]>([]);
   const [catLoading, setCatLoading] = useState(false);
   const [catError, setCatError] = useState<string | null>(null);
+  const [pincodeData, setPincodeData] = useState<any[]>([]);
+  const [selectedPincode, setSelectedPincode] = useState<string>("");
+  const [areaOptions, setAreaOptions] = useState<any[]>([]);
+  const [selectedArea, setSelectedArea] = useState<string>("");
 
   useEffect(() => {
     if (defaultRole === 'technician') {
@@ -60,10 +64,39 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
     }
   }, [defaultRole]);
 
+  useEffect(() => {
+    getAllPincodes()
+      .then((res: any) => {
+        if (Array.isArray(res?.data)) {
+          setPincodeData(res.data);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (selectedPincode) {
+      const found = pincodeData.find((p) => p.code === selectedPincode);
+      if (found && found.areas) {
+        setAreaOptions(found.areas);
+      } else {
+        setAreaOptions([]);
+      }
+    } else {
+      setAreaOptions([]);
+    }
+  }, [selectedPincode, pincodeData]);
+
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       const { name, value } = e.target;
       setFormData((prev) => ({ ...prev, [name]: value }));
+      if (name === "pincode") {
+        setSelectedPincode(value);
+      }
+      if (name === "areaName") {
+        setSelectedArea(value);
+      }
     },
     []
   );
@@ -186,80 +219,100 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
             { id: 'mobile', label: 'Phone Number', type: 'tel', pattern: '[0-9]{10}' },
             { id: 'password', label: 'Password', type: 'password', minLength: 6, maxLength: 10 },
             { id: 'buildingName', label: 'House/Building Name', type: 'text' },
+            { id: 'pincode', label: 'Pincode', type: 'text' },
+            { id: 'city', label: 'City', type: 'text' },
+            { id: 'state', label: 'State', type: 'text' },
             { id: 'areaName', label: 'Area/Street Name', type: 'text' },
           ].map(({ id, label, type, pattern }) => (
             <div key={id}>
               <label htmlFor={id} className="block text-sm font-medium text-gray-700">
                 {label} <span className='text-red-600'>*</span>
               </label>
-              <input
-                id={id}
-                name={id}
-                type={type}
-                placeholder={id === 'password' ? 'Password (6-10 characters)' : label}
-                required
-                value={(formData as any)[id]}
-                onChange={handleChange}
-                pattern={pattern}
-                minLength={id === 'password' ? 6 : undefined}
-                maxLength={id === 'password' ? 10 : undefined}
-                className="mt-1 w-full border border-gray-300 rounded-md p-2"
-              />
+              {id === 'pincode' ? (
+                <select
+                  id="pincode"
+                  name="pincode"
+                  value={formData.pincode}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 w-full border border-gray-300 rounded-md p-2"
+                >
+                  <option value="">Select Pincode</option>
+                  {pincodeData.map((p) => (
+                    <option key={p._id} value={p.code}>{p.code}</option>
+                  ))}
+                </select>
+              ) : id === 'city' ? (
+                <select
+                  id="city"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 w-full border border-gray-300 rounded-md p-2"
+                >
+                  <option value="">Select City</option>
+                  {selectedPincode && pincodeData.find((p) => p.code === selectedPincode) ? (
+                    <option value={pincodeData.find((p) => p.code === selectedPincode)?.city}>
+                      {pincodeData.find((p) => p.code === selectedPincode)?.city}
+                    </option>
+                  ) : (
+                    pincodeData.map((p) => (
+                      <option key={p._id} value={p.city}>{p.city}</option>
+                    ))
+                  )}
+                </select>
+              ) : id === 'state' ? (
+                <select
+                  id="state"
+                  name="state"
+                  value={formData.state}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 w-full border border-gray-300 rounded-md p-2"
+                >
+                  <option value="">Select State</option>
+                  {selectedPincode && pincodeData.find((p) => p.code === selectedPincode) ? (
+                    <option value={pincodeData.find((p) => p.code === selectedPincode)?.state}>
+                      {pincodeData.find((p) => p.code === selectedPincode)?.state}
+                    </option>
+                  ) : (
+                    pincodeData.map((p) => (
+                      <option key={p._id} value={p.state}>{p.state}</option>
+                    ))
+                  )}
+                </select>
+              ) : id === 'areaName' ? (
+                <select
+                  id="areaName"
+                  name="areaName"
+                  value={formData.areaName}
+                  onChange={handleChange}
+                  required
+                  className="mt-1 w-full border border-gray-300 rounded-md p-2"
+                >
+                  <option value="">Select Area</option>
+                  {areaOptions.map((a: any) => (
+                    <option key={a._id} value={a.name}>{a.name}</option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  id={id}
+                  name={id}
+                  type={type}
+                  placeholder={id === 'password' ? 'Password (6-10 characters)' : label}
+                  required
+                  value={(formData as any)[id]}
+                  onChange={handleChange}
+                  pattern={pattern}
+                  minLength={id === 'password' ? 6 : undefined}
+                  maxLength={id === 'password' ? 10 : undefined}
+                  className="mt-1 w-full border border-gray-300 rounded-md p-2"
+                />
+              )}
             </div>
           ))}
-
-          <div>
-            <label htmlFor="city" className="block text-sm font-medium text-gray-700">
-              City <span className='text-red-600'>*</span>
-            </label>
-            <select
-              id="city"
-              name="city"
-              value={formData.city}
-              onChange={handleChange}
-              required
-              className="mt-1 w-full border border-gray-300 rounded-md p-2"
-            >
-              <option value="">Select City</option>
-              <option value="Hyderabad">Hyderabad</option>
-            </select>
-          </div>
-
-          <div>
-            <label htmlFor="state" className="block text-sm font-medium text-gray-700">
-              State <span className='text-red-600'>*</span>
-            </label>
-            <select
-              id="state"
-              name="state"
-              value={formData.state}
-              onChange={handleChange}
-              required
-              className="mt-1 w-full border border-gray-300 rounded-md p-2"
-            >
-              <option value="">Select State</option>
-              <option value="Telangana">Telangana</option>
-            </select>
-          </div>
-
-          <div>
-            <label htmlFor="pincode" className="block text-sm font-medium text-gray-700">
-              Pincode <span className='text-red-600'>*</span>
-            </label>
-            <input
-              id="pincode"
-              name="pincode"
-              type="number"
-              placeholder="Pincode"
-              required
-              maxLength={6}
-              minLength={6}
-              pattern="[0-9]{6}"
-              value={formData.pincode}
-              onChange={handleChange}
-              className="mt-1 w-full border border-gray-300 rounded-md p-2"
-            />
-          </div>
 
           <div className="pt-4">
             <button

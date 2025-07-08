@@ -4,24 +4,43 @@ import { FaThumbsUp } from 'react-icons/fa6'
 import { IoCall, IoLocationOutline, IoShareSocial } from 'react-icons/io5'
 import { LuMessageSquareText } from 'react-icons/lu'
 import { MdOutlineStar } from 'react-icons/md'
+import { technicianGetProfile, updateTechnicianControl } from '../../api/apiMethods'
 
 const ProfileCard = () => {
     const [save, setSave] = useState(false)
     const [role, setRole] = useState<string | null>(null);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [profile, setProfile] = useState({
-        name: "Vivek",
-        service: "Ac Repair & Services",
-        location: "SR Nagar, Hyderabad, Telangana",
-        years: "5",
-        image: "https://randomuser.me/api/portraits/men/32.jpg",
-        // phone, rating, reviews are not editable
+        name: "",
+        service: "",
+        location: "",
+        years: "",
+        image: "",
     });
     // For editing
     const [editProfile, setEditProfile] = useState({ ...profile });
 
     useEffect(() => {
         setRole(localStorage.getItem("role"));
+        let id = localStorage.getItem("userId");
+
+        if (id) {
+            technicianGetProfile(id)
+                .then((data: any) => {
+                    if (data?.result) {
+                        setProfile({
+                            name: data.result.username || '',
+                            service: data.result.category || '',
+                            location: `${data.result.buildingName || ''}, ${data.result.areaName || ''}, ${data.result.city || ''}, ${data.result.state || ''}, ${data.result.pincode || ''}`.replace(/(, )+/g, ', ').replace(/^, |, $/g, ''),
+                            years: data.result.description || '',
+                            image: data.result.profileImage || '',
+                        });
+                    }
+                })
+                .catch((err: any) => {
+                    console.error('Failed to fetch technician profile:', err);
+                });
+        }
     }, []);
 
     const handleEditProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +65,16 @@ const ProfileCard = () => {
         }
     };
 
-    const handleEditProfileSave = () => {
+    const handleEditProfileSave = async () => {
+        const id = localStorage.getItem("userId");
+        const formData = new FormData();
+        formData.append("username", editProfile.name);
+        formData.append("technicianId", id || "");
+        formData.append("description", editProfile.years);
+        if (editProfile.image && typeof editProfile.image !== 'string') {
+            formData.append("profileImage", editProfile.image);
+        }
+        await updateTechnicianControl(formData);
         setProfile(editProfile);
         setEditModalOpen(false);
     };
