@@ -32,7 +32,7 @@ const TechnicianDashboard: React.FC = () => {
             case 'profile':
                 return <ProfileCard />;
             case 'service':
-                return <Services />; ;
+                return <Services />;;
             case 'photos':
                 return <Photos />;
             case 'reviews':
@@ -42,7 +42,7 @@ const TechnicianDashboard: React.FC = () => {
             case 'subscriptions':
                 return <SubscriptionPage />;
             default:
-                return <h2 className="text-xl font-semibold">Dashboard</h2>;
+                return <DashboardHomeView />;
         }
     };
 
@@ -70,18 +70,25 @@ const TechnicianDashboard: React.FC = () => {
     );
 
     return (
-        <div className="flex h-screen bg-white text-gray-800 overflow-hidden">
-            {/* Sidebar for desktop */}
-            <div className="hidden md:block">{Sidebar}</div>
+        <div className="h-screen bg-gray-50 text-gray-800 overflow-hidden">
+            <div className="flex h-full max-w-7xl mx-auto px-4">
+                {/* Sidebar for desktop */}
+                <div className="hidden md:block">{Sidebar}</div>
 
-            {/* Sidebar for mobile: show only if showSidebarMobile is true */}
-            {showSidebarMobile && (
-                <div className="block md:hidden w-full">{Sidebar}</div>
-            )}
+                {/* Sidebar for mobile */}
+                {showSidebarMobile && (
+                    <div className="fixed inset-0 z-50 bg-black bg-opacity-30 md:hidden" onClick={() => setShowSidebarMobile(false)}>
+                        <div className="w-64 bg-gray-50 h-full shadow-lg" onClick={(e) => e.stopPropagation()}>
+                            {Sidebar}
+                        </div>
+                    </div>
+                )}
 
-            {/* Main Content: on mobile, full width if sidebar hidden */}
-            <div className={`flex-1 p-6 overflow-y-auto ${showSidebarMobile ? 'hidden md:block' : 'block'}`}>
-                {renderContent()}
+                {/* Main Content: on mobile, full width if sidebar hidden */}
+                <div className={`flex-1 overflow-y-auto transition-all duration-300 ${showSidebarMobile ? 'hidden md:block' : 'block'
+                    } p-6 w-full'}`}>
+                    {renderContent()}
+                </div>
             </div>
         </div>
     );

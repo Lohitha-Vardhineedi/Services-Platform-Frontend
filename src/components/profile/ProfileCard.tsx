@@ -52,14 +52,25 @@ const ProfileCard = () => {
     };
 
     return (
-        <div className='border border-gray-300 rounded-xl p-5 flex flex-col md:flex-row relative'>
+        <div className="border border-gray-300 rounded-xl p-5 flex flex-col md:flex-row relative overflow-hidden">
+            {/* Make this container relative for absolute positioning */}
+            <div className="flex flex-col items-center md:items-start md:mr-6 mb-4 md:mb-0 relative w-full md:w-auto">
 
-            {/* Profile Image */}
-            <div className="flex flex-col items-center md:items-start md:mr-6 mb-4 md:mb-0">
-                {/* Edit Profile Button for Technician */}
+                
+
+                <img
+                    src={profile.image}
+                    alt="Profile"
+                    className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover border-2 border-gray-300"
+                />
+            </div>
+
+            {/* Technician Details */}
+            <div className="flex-1 min-w-0">
+                {/* Edit Profile Button */}
                 {role === "technician" && (
                     <button
-                        className="absolute right-4 top-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium z-10"
+                        className="absolute top-0 -z-0 right-0 md:top-4 md:right-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium z-10"
                         onClick={() => {
                             setEditProfile(profile);
                             setEditModalOpen(true);
@@ -68,74 +79,67 @@ const ProfileCard = () => {
                         Edit Profile
                     </button>
                 )}
-                <img
-                    src={profile.image}
-                    alt="Profile"
-                    className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover border-2 border-gray-300"
-                />
-            </div>
+                <h2 className="text-xl font-semibold truncate">{profile.name}</h2>
 
-            <div className="flex-1">
-                <h2 className="text-xl sm:text-xl md:text-xl lg:text-xl xl:text-2xl font-semibold">
-                    {profile.name}
-                </h2>
-                <div className="flex gap-4 items-center my-3 text-2xl">
-                    <div className="flex items-center border border-amber-500 rounded-lg px-1 text-black text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-bold">
+                <div className="flex flex-wrap items-center gap-4 my-3">
+                    <div className="flex items-center border border-amber-500 rounded-lg px-2 py-1 text-black text-sm font-bold">
                         4.8
-                        <MdOutlineStar size={20} className="ms-1 " color="#ffc71b" />
+                        <MdOutlineStar size={18} className="ml-1" color="#ffc71b" />
                     </div>
-                    <div className="text-gray-600 text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight">84 Ratings</div>
+                    <div className="text-gray-600 text-sm font-light">84 Ratings</div>
                 </div>
 
-                <div className="flex gap-2">
-                    <div className="bg-fuchsia-200 px-3 py-1 rounded-xl text-black text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight">
+                <div className="flex flex-wrap gap-2">
+                    <span className="bg-fuchsia-200 px-3 py-1 rounded-xl text-black text-sm font-light">
                         {profile.service}
-                    </div>
-                </div>
-                <div className="flex my-3 items-center">
-                    <IoLocationOutline size={27} color="red" />
-                    <span className="text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
-                        {profile.location}
-                    </span>
-                </div>
-                <div className="flex items-center">
-                    <FaThumbsUp size={22} color="#00B800" className='flex' />
-                    <span className="text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
-                        {profile.years} Years in Services
                     </span>
                 </div>
 
-                <div className="flex gap-4 mt-4 flex-wrap">
-                    <div className="flex bg-fuchsia-500 rounded-xl text-white px-4 py-1 font-bold items-center cursor-pointer hover:bg-fuchsia-600">
-                        <IoCall size={22} className="me-2" />
-                        <span>9876543212</span>
+                <div className="flex items-center my-3 text-sm text-gray-700">
+                    <IoLocationOutline size={20} color="red" />
+                    <span className="ml-2">{profile.location}</span>
+                </div>
+
+                <div className="flex items-center text-sm text-gray-700">
+                    <FaThumbsUp size={18} color="#00B800" />
+                    <span className="ml-2">{profile.years} Years in Service</span>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-wrap gap-3 mt-4">
+                    <div className="flex items-center bg-fuchsia-500 hover:bg-fuchsia-600 rounded-xl text-white px-4 py-1 font-bold cursor-pointer">
+                        <IoCall size={18} className="mr-2" />
+                        9876543212
                     </div>
-                    <div className="flex bg-green-600 rounded-xl text-white px-4 py-1 font-bold items-center cursor-pointer hover:bg-green-500">
-                        <LuMessageSquareText size={22} className="me-3" />
-                        <span className="">Message</span>
+                    <div className="flex items-center bg-green-600 hover:bg-green-500 rounded-xl text-white px-4 py-1 font-bold cursor-pointer">
+                        <LuMessageSquareText size={18} className="mr-2" />
+                        Message
                     </div>
-                    <div className="flex bg-blue-500 rounded-xl text-white px-4 py-1 font-bold items-center cursor-pointer hover:bg-blue-600">
-                        <IoShareSocial size={22} className="me-3" />
-                        <span className="">Share</span>
+                    <div className="flex items-center bg-blue-500 hover:bg-blue-600 rounded-xl text-white px-4 py-1 font-bold cursor-pointer">
+                        <IoShareSocial size={18} className="mr-2" />
+                        Share
                     </div>
                 </div>
             </div>
 
-            {/* Only show rating for users */}
+            {/* Rating by User */}
             {role !== "technician" && (
-                <div className='flex flex-col justify-between mt-6 md:mt-0 md:ml-8'>
-                    <div className='text-sm sm:text-sm md:text-md lg:text-lg xl:text-lg mb-2 '>Click to Rate</div>
-                    <div className='flex gap-4'>
+                <div className="flex flex-col justify-start mt-6 md:mt-0 md:ml-8 w-full md:w-auto">
+                    <div className="text-sm font-medium mb-2">Click to Rate</div>
+                    <div className="flex gap-2">
                         {[...Array(5)].map((_, i) => (
-                            <div key={i} className='border border-gray-500 rounded-xl p-1 '>
-                                <CiStar size={25} className='hover:bg-amber-500' />
+                            <div
+                                key={i}
+                                className="border border-gray-400 rounded-xl p-1 hover:bg-yellow-100 transition cursor-pointer"
+                            >
+                                <CiStar size={24} className="text-yellow-500" />
                             </div>
                         ))}
                     </div>
                 </div>
             )}
 
-            {/* Edit Profile Modal */}
+            {/* Edit Modal */}
             {editModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
                     <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative">
@@ -222,6 +226,7 @@ const ProfileCard = () => {
                 </div>
             )}
         </div>
+
     )
 }
 

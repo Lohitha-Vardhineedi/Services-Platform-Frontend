@@ -33,11 +33,11 @@ const TechnicianHomeView: React.FC = () => {
   return (
     <div className="space-y-8">
       {/* Top Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((item, index) => (
           <div
             key={index}
-            className="flex items-center gap-4 p-4 bg-white rounded-2xl shadow hover:shadow-md transition"
+            className="flex items-center gap-4 p-4 bg-white rounded-2xl shadow hover:shadow-lg transition-transform hover:-translate-y-1 cursor-pointer"
           >
             <div className="p-3 bg-gray-100 rounded-full text-gray-600">{item.icon}</div>
             <div>
@@ -53,9 +53,13 @@ const TechnicianHomeView: React.FC = () => {
         <h3 className="text-lg font-semibold mb-4 text-gray-800 flex items-center gap-2">
           <Clock size={20} /> Recent Activity
         </h3>
+
         <div className="divide-y divide-gray-100">
           {recentActivities.map((activity, i) => (
-            <div key={i} className="py-3 flex justify-between items-center">
+            <div
+              key={i}
+              className="py-3 px-2 flex justify-between items-center hover:bg-gray-50 rounded transition"
+            >
               <div>
                 <p className="font-medium text-gray-700">{activity.customer}</p>
                 <p className="text-sm text-gray-500">
@@ -63,7 +67,7 @@ const TechnicianHomeView: React.FC = () => {
                 </p>
               </div>
               <span
-                className={`text-xs px-2 py-1 rounded-full font-medium ${
+                className={`text-xs px-3 py-1 rounded-full font-medium ${
                   activity.status === 'Completed'
                     ? 'bg-green-100 text-green-700'
                     : 'bg-yellow-100 text-yellow-700'
