@@ -10,10 +10,12 @@ import {
   LucideIcon,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { plans } from '../data/subscriptionPlans';
 import { getPlans } from '../api/apiMethods';
+// import { plans } from '../data/subscriptionPlans';
 
-// getPlans
+
+
+
 
 // Icon mapping based on string stored in DB
 const iconMap: { [key: string]: LucideIcon } = {
@@ -54,28 +56,33 @@ const SubscriptionPage: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleFullDetails = (plan: Plan): void => {
-    navigate(`/plans/${plan.id}`);
-  };
+  // const [plans,setPlans] = useState([])
+    const [plans, setPlans] = useState<any[]>([]);
 
-
-  const fetchPlans = async () => {
+ const fetchPlans = async () => {
       try {
         const response = await getPlans();
         if (response) {
-          // setAllPlans(response);
+          setPlans(response);
           console.log(response,"==>response");
           
-        } else {
+        } 
+        // else {
           // setError('Invalid response format');
-        }
+        // }
       } catch (err: any) {
         // setError(err?.message || 'Failed to fetch categories');
+        console.log(err,"==>err");
       }
     };
     useEffect(() => {
       fetchPlans();
     }, []);
+
+
+  const handleFullDetails = (plan: Plan): void => {
+    navigate(`/plans/${plan.id}`);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-10">
