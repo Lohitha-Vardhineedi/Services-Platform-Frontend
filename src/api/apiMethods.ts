@@ -23,4 +23,4 @@ export const userGetProfile = (userId: string) => apiRequest("getUserProfile", n
 export const userEditProfile = (data: any) => apiRequest("userEditProfile", data);
 export const technicianGetProfile = (userId: string) => apiRequest("technicianGetProfile", null, userId);
 export const technicianEditProfile = (data: any) => apiRequest("technicianEditProfile", data);
-export const getPlans = () => apiRequest("getPlans");
+export const getPlans = (data: any) => apiRequest("getPlans",data);

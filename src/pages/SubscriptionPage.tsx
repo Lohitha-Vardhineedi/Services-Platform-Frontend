@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Check,
   X,
@@ -10,7 +10,12 @@ import {
   LucideIcon,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { plans } from '../data/subscriptionPlans';
+import { getPlans } from '../api/apiMethods';
+// import { plans } from '../data/subscriptionPlans';
+
+
+
+
 
 // Icon mapping based on string stored in DB
 const iconMap: { [key: string]: LucideIcon } = {
@@ -50,6 +55,30 @@ interface Plan {
 const SubscriptionPage: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  // const [plans,setPlans] = useState([])
+    const [plans, setPlans] = useState<any[]>([]);
+
+ const fetchPlans = async () => {
+      try {
+        const response = await getPlans();
+        if (response) {
+          setPlans(response);
+          console.log(response,"==>response");
+          
+        } 
+        // else {
+          // setError('Invalid response format');
+        // }
+      } catch (err: any) {
+        // setError(err?.message || 'Failed to fetch categories');
+        console.log(err,"==>err");
+      }
+    };
+    useEffect(() => {
+      fetchPlans();
+    }, []);
+
 
   const handleFullDetails = (plan: Plan): void => {
     navigate(`/plans/${plan.id}`);

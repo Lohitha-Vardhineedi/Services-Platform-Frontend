@@ -46,7 +46,15 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
       </h2>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}
-
+{!allCategories || allCategories.length === 0 ? (
+      <div className="flex justify-center items-center py-6">
+        <div className="flex space-x-2">
+          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.2s]"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.4s]"></div>
+        </div>
+      </div>
+    ) : (
       <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
         {allCategories
           .filter(category => category.status === 1)
@@ -73,7 +81,7 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
             </div>
           ))}
       </div>
-
+    )}
     </div>
           <div className="bg-white rounded-2xl shadow p-6 mb-12">
       <h2 className="text-2xl font-bold text-gray-900 mb-4 text-left">
@@ -81,7 +89,15 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
       </h2>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}
-
+{!allCategories || allCategories.length === 0 ? (
+      <div className="flex justify-center items-center py-6">
+        <div className="flex space-x-2">
+          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.2s]"></div>
+          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.4s]"></div>
+        </div>
+      </div>
+    ) : (
       <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
         {allCategories
           .filter(category => category.status === 0)
@@ -108,6 +124,7 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
             </div>
           ))}
       </div>
+    )}
 
     </div>
 
