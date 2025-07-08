@@ -13,7 +13,7 @@ import {
   Check
 } from 'lucide-react';
 
-function TransactionPage() {
+const TransactionPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('upcoming');
   const [currentStep, setCurrentStep] = useState('bookings');
   const [selectedRating, setSelectedRating] = useState(5);
