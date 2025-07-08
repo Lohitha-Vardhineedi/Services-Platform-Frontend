@@ -5,24 +5,67 @@ import { IoCall, IoLocationOutline, IoShareSocial } from 'react-icons/io5'
 import { LuMessageSquareText } from 'react-icons/lu'
 import { MdOutlineStar } from 'react-icons/md'
 
-const ProfileCard = () => {
+// Add prop type for TechnicianProfileData
+type TechnicianProfileData = {
+  technician: {
+    username?: string;
+    phoneNumber?: string;
+    buildingName?: string;
+    areaName?: string;
+    city?: string;
+    state?: string;
+    pincode?: string;
+    // ...other fields
+  };
+  technicianProfile: {
+    description?: string;
+    profileImage?: string;
+    services?: { serviceName?: string }[];
+    // ...other fields
+  } | null;
+};
+
+type Props = {
+  data: TechnicianProfileData | null;
+};
+
+const ProfileCard: React.FC<Props> = ({ data }) => {
     const [save, setSave] = useState(false)
     const [role, setRole] = useState<string | null>(null);
     const [editModalOpen, setEditModalOpen] = useState(false);
-    const [profile, setProfile] = useState({
-        name: "Vivek",
-        service: "Ac Repair & Services",
-        location: "SR Nagar, Hyderabad, Telangana",
-        years: "5",
-        image: "https://randomuser.me/api/portraits/men/32.jpg",
-        // phone, rating, reviews are not editable
-    });
+
+    // Extract values from API data
+    const name = data?.technician?.username || "-";
+    const phone = data?.technician?.phoneNumber || "-";
+    const location = [
+        data?.technician?.buildingName,
+        data?.technician?.areaName,
+        data?.technician?.city,
+        data?.technician?.state,
+        data?.technician?.pincode
+    ].filter(Boolean).join(", ");
+    const years = data?.technicianProfile?.description || "-";
+    const image = data?.technicianProfile?.profileImage || "https://randomuser.me/api/portraits/men/32.jpg";
+    // Get all service names as a comma-separated string
+    const service = data?.technicianProfile?.services && data.technicianProfile.services.length > 0
+        ? data.technicianProfile.services.map(s => s.serviceName).filter(Boolean).join(", ")
+        : "-";
+
     // For editing
+    const [profile, setProfile] = useState({
+        name,
+        service,
+        location,
+        years,
+        image,
+    });
     const [editProfile, setEditProfile] = useState({ ...profile });
 
     useEffect(() => {
         setRole(localStorage.getItem("role"));
-    }, []);
+
+        setProfile({ name, service, location, years, image });
+    }, [data]);
 
     const handleEditProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -95,21 +138,10 @@ const ProfileCard = () => {
                     </span>
                 </div>
 
-                <div className="flex items-center my-3 text-sm text-gray-700">
-                    <IoLocationOutline size={20} color="red" />
-                    <span className="ml-2">{profile.location}</span>
-                </div>
-
-                <div className="flex items-center text-sm text-gray-700">
-                    <FaThumbsUp size={18} color="#00B800" />
-                    <span className="ml-2">{profile.years} Years in Service</span>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex flex-wrap gap-3 mt-4">
-                    <div className="flex items-center bg-fuchsia-500 hover:bg-fuchsia-600 rounded-xl text-white px-4 py-1 font-bold cursor-pointer">
-                        <IoCall size={18} className="mr-2" />
-                        9876543212
+                <div className="flex gap-4 mt-4 flex-wrap">
+                    <div className="flex bg-fuchsia-500 rounded-xl text-white px-4 py-1 font-bold items-center cursor-pointer hover:bg-fuchsia-600">
+                        <IoCall size={22} className="me-2" />
+                        <span>{phone}</span>
                     </div>
                     <div className="flex items-center bg-green-600 hover:bg-green-500 rounded-xl text-white px-4 py-1 font-bold cursor-pointer">
                         <LuMessageSquareText size={18} className="mr-2" />
