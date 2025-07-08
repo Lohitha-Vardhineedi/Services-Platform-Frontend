@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { IoCall, IoPerson } from "react-icons/io5";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 
+import { BiSolidCategory } from "react-icons/bi";
+
+const categories = ["plumbing", "carpenter", "electrician"]
+
 export const ContactForm = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -24,7 +28,7 @@ export const ContactForm = () => {
     <div className="flex border border-gray-300 rounded-xl shadow p-3">
       <div className="rounded-xl shadow-xl p-4">
         <div className=" text-sm sm:text-sm md:text-md lg:text-md xl:text-lg text-center">
-          Get the list of Top <span className="clr-purple">Services</span>
+         Get in<span className="clr-purple ms-1">Touch</span>
         </div>
         <form onSubmit={handleSubmit} className="">
           <div className="flex flex-col my-4">
@@ -41,7 +45,7 @@ export const ContactForm = () => {
                 required
               />
             </div>
-            <div className="flex px-2 py-2 border border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-fuchsia-600 mt-6 mb-8">
+           <div className="flex px-2 py-2 border border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-fuchsia-600 mt-6">
               <IoCall size={20} color="#aaa" />
               <input
                 type="tel"
@@ -54,13 +58,34 @@ export const ContactForm = () => {
                 required
               />
             </div>
+            <div className="flex px-2 py-2 border border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-fuchsia-600 mt-6 mb-8">
+             
+              <BiSolidCategory size={20} color="#aaa" />
+              <select
+                id="category"
+                name="category"
+                // value={cat}
+                onChange={handleChange}
+                required
+                className="text-sm sm:text-sm md:text-md lg:text-md xl:text-md focus:outline-none ms-2 "
+              >
+                <option value="" disabled>
+                  Select a category
+                </option>
+                {categories.map((cat, index) => (
+                  <option key={index} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
+            </div>
             <button
               type="submit"
               className=" bg-fuchsia-500 text-white py-1 rounded-xl hover:bg-fuchsia-600"
             >
               <div className=" flex items-center justify-center">
                 <span className="text-sm sm:text-sm md:text-md lg:text-md xl:text-lg font-600 me-1">
-                  Get Best Services
+                   Get
                 </span>
 
                 <MdKeyboardDoubleArrowRight size={30} />

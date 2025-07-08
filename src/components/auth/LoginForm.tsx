@@ -60,7 +60,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
         localStorage.setItem('userId', response.result.id);
 
         if (role === 'technician') {
-          navigate('/technician');
+          navigate('/technician/dashboard');
         } else {
           navigate('/')
         }
