@@ -10,6 +10,10 @@ import TransactionPage from './TransactionPage';
 import Services from '../components/profile/Services';
 import ProfileCard from '../components/profile/ProfileCard';
 import TechnicianHomeView from '../components/profile/TechnicianHomeView';
+import { useTechnicianProfile } from '../context/TechnicianProfileContext';
+import { TechnicianProfileProvider } from "../context/TechnicianProfileContext";
+
+const TECHNICIAN_ID = "686a65f24551a5e01e71afb9"; // or get this dynamically
 
 const TechnicianDashboard: React.FC = () => {
     const [selectedTab, setSelectedTab] = useState('dashboard');
@@ -25,22 +29,27 @@ const TechnicianDashboard: React.FC = () => {
         { key: 'subscriptions', label: 'Subscriptions', icon: <CreditCard size={20} /> },
     ];
 
+    const { data, loading, error } = useTechnicianProfile();
+
     const renderContent = () => {
+        if (loading) return <div>Loading...</div>;
+        if (error) return <div>Error: {error}</div>;
+        console.log("technicna Data : ",data)
         switch (selectedTab) {
             case 'dashboard':
-                return <TechnicianHomeView />;
+                return <TechnicianHomeView data={data} />;
             case 'profile':
-                return <ProfileCard />;
+                return <ProfileCard data={data} />;
             case 'service':
-                return <Services />;;
+                return <Services data={data} />;
             case 'photos':
-                return <Photos />;
+                return <Photos data={data} />;
             case 'reviews':
-                return <Reviews />;
+                return <Reviews data={data} />;
             case 'transactions':
-                return <TransactionPage />;
+                return <TransactionPage data={data} />;
             case 'subscriptions':
-                return <SubscriptionPage />;
+                return <SubscriptionPage data={data} />;
             default:
                 return <DashboardHomeView />;
         }
@@ -94,4 +103,10 @@ const TechnicianDashboard: React.FC = () => {
     );
 };
 
-export default TechnicianDashboard;
+const TechnicianDashboardWithProvider = () => (
+  <TechnicianProfileProvider technicianId={TECHNICIAN_ID}>
+    <TechnicianDashboard />
+  </TechnicianProfileProvider>
+);
+
+export default TechnicianDashboardWithProvider;

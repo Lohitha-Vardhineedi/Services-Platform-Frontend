@@ -2,17 +2,34 @@ import React, { useRef, useState, useEffect } from "react";
 import { IoMdCloudUpload } from "react-icons/io";
 import { FaChevronDown, FaChevronUp, FaTrash, FaPencilAlt } from "react-icons/fa";
 
-const Photos = () => {
-  const [images, setImages] = useState([
-    "https://img.freepik.com/free-photo/electrician-installing-electricity_1398-1567.jpg",
-    "https://media.istockphoto.com/id/1516511531/photo/a-plumber-carefully-fixes-a-leak-in-a-sink-using-a-wrench.jpg?b=1&s=612x612&w=0&k=20&c=NUX8oizSVtCWuC9VqFkjUc-EYq3c2Yypzqx-hcaMSKs=",
-    "https://img.freepik.com/free-photo/electrician-installing-electricity_1398-1567.jpg",
-    "https://media.istockphoto.com/id/1516511531/photo/a-plumber-carefully-fixes-a-leak-in-a-sink-using-a-wrench.jpg?b=1&s=612x612&w=0&k=20&c=NUX8oizSVtCWuC9VqFkjUc-EYq3c2Yypzqx-hcaMSKs=",
-    "https://img.freepik.com/free-photo/electrician-installing-electricity_1398-1567.jpg",
-  ]);
+type TechnicianProfileData = {
+  technician: any;
+  technicianProfile: {
+    photos?: { imageUrl?: string }[];
+    services?: { serviceImg?: string }[];
+  } | null;
+};
+
+type Props = {
+  data?: TechnicianProfileData | null;
+};
+
+const Photos: React.FC<Props> = ({ data }) => {
+  // Use service images from services array if available, else fallback to hardcoded
+  const apiServices = data?.technicianProfile?.services;
+  const images = apiServices && apiServices.length > 0
+    ? apiServices
+        .map((s: { serviceImg?: string }) => s.serviceImg || "")
+        .filter((img: string) => img.trim() !== "")
+    : [
+      "https://img.freepik.com/free-photo/electrician-installing-electricity_1398-1567.jpg",
+      "https://media.istockphoto.com/id/1516511531/photo/a-plumber-carefully-fixes-a-leak-in-a-sink-using-a-wrench.jpg?b=1&s=612x612&w=0&k=20&c=NUX8oizSVtCWuC9VqFkjUc-EYq3c2Yypzqx-hcaMSKs=",
+      "https://img.freepik.com/free-photo/electrician-installing-electricity_1398-1567.jpg",
+      "https://media.istockphoto.com/id/1516511531/photo/a-plumber-carefully-fixes-a-leak-in-a-sink-using-a-wrench.jpg?b=1&s=612x612&w=0&k=20&c=NUX8oizSVtCWuC9VqFkjUc-EYq3c2Yypzqx-hcaMSKs=",
+      "https://img.freepik.com/free-photo/electrician-installing-electricity_1398-1567.jpg",
+    ];
   const [showAll, setShowAll] = useState(false);
   const [role, setRole] = useState<string | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setRole(localStorage.getItem("role"));
@@ -20,28 +37,10 @@ const Photos = () => {
 
   const visibleImages = showAll ? images : images.slice(0, 6);
 
-  const handleUploadClick = () => {
-    inputRef.current?.click();
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setImages((prev) => [imageUrl, ...prev]);
-    }
-  };
-
-  const handleDelete = (index: number) => {
-    setImages((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  // User: view only, Technician: manage photos
+  // Only display images, no upload/delete logic
   return (
     <div className="border border-gray-200 shadow-md rounded-xl p-4">
       <h2 className="text-xl md:text-2xl font-light mb-4">Photos</h2>
-      
-
       <div
         className="
           grid 
@@ -54,28 +53,16 @@ const Photos = () => {
           gap-3
         "
       >
-        {visibleImages.map((img, index) => (
+        {visibleImages.map((img: string, index: number) => (
           <div key={index} className="relative group">
             <img
               src={img}
               alt={`Image ${index + 1}`}
               className="w-full h-36 object-cover rounded-lg"
             />
-            {role === "technician" && (
-              <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button
-                  className="bg-white rounded-full p-1 shadow hover:bg-gray-100"
-                  title="Delete"
-                  onClick={() => handleDelete(index)}
-                >
-                  <FaTrash className="text-red-500" />
-                </button>
-              </div>
-            )}
           </div>
         ))}
       </div>
-
       {images.length > 6 && (
         <div
           className="flex justify-center mt-4 cursor-pointer text-blue-600 hover:underline text-sm"
@@ -90,25 +77,6 @@ const Photos = () => {
               View More <FaChevronDown />
             </span>
           )}
-        </div>
-      )}
-
-      {role === "technician" && (
-        <div className="mt-5">
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            ref={inputRef}
-            className="hidden"
-          />
-          <button
-            className="bg-blue-500 hover:bg-blue-600 text-white flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer"
-            onClick={handleUploadClick}
-          >
-            <IoMdCloudUpload size={22} />
-            <span className="text-sm md:text-base font-light">Upload Photo</span>
-          </button>
         </div>
       )}
     </div>
