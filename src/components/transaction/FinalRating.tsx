@@ -16,7 +16,7 @@ const FinalRating: React.FC<FinalRatingProps> = ({ selectedRating, setSelectedRa
     const [review, setReview] = useState<Review>({ star: 0, comment: '' });
     console.log('FinalRating component rendered with review:', review);
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 min-h-96 flex items-center justify-center">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 flex items-center justify-center">
       <div className="text-center max-w-md mx-auto p-8 flex flex-col items-center gap-2">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Rate Your Experience</h2>
         <div className="flex justify-center space-x-2 mb-8">
