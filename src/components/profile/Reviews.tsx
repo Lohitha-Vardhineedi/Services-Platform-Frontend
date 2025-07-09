@@ -72,32 +72,32 @@ const Reviews = () => {
             </div>
 
             {/* Technician reply section */}
-            {role === "technician" && (
-              <div className="ms-2 mt-2">
-                {replies[index] ? (
-                  <div className="bg-gray-100 rounded p-2 text-sm text-gray-700">
-                    <span className="font-semibold text-blue-700">Your Reply: </span>
-                    {replies[index]}
-                  </div>
-                ) : (
-                  <div className="flex gap-2 items-center">
-                    <input
-                      type="text"
-                      value={inputs[index] || ""}
-                      onChange={(e) => handleInputChange(index, e.target.value)}
-                      placeholder="Reply to this review..."
-                      className="border border-gray-300 rounded px-2 py-1 text-sm flex-1"
-                    />
-                    <button
-                      onClick={() => handleReply(index)}
-                      className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm"
-                    >
-                      Reply
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
+            {/* {role === "technician" && (
+              // <div className="ms-2 mt-2">
+              //   {replies[index] ? (
+              //     <div className="bg-gray-100 rounded p-2 text-sm text-gray-700">
+              //       <span className="font-semibold text-blue-700">Your Reply: </span>
+              //       {replies[index]}
+              //     </div>
+              //   ) : (
+              //     <div className="flex gap-2 items-center">
+              //       <input
+              //         type="text"
+              //         value={inputs[index] || ""}
+              //         onChange={(e) => handleInputChange(index, e.target.value)}
+              //         placeholder="Reply to this review..."
+              //         className="border border-gray-300 rounded px-2 py-1 text-sm flex-1"
+              //       />
+              //       <button
+              //         onClick={() => handleReply(index)}
+              //         className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm"
+              //       >
+              //         Reply
+              //       </button>
+              //     </div>
+              //   )}
+              // </div>
+            )} */}
           </div>
         ))}
       </div>
