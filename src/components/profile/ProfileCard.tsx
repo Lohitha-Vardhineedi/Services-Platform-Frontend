@@ -4,6 +4,7 @@ import { FaThumbsUp } from 'react-icons/fa6'
 import { IoCall, IoLocationOutline, IoShareSocial } from 'react-icons/io5'
 import { LuMessageSquareText } from 'react-icons/lu'
 import { MdOutlineStar } from 'react-icons/md'
+import { technicianGetProfile, updateTechnicianControl } from '../../api/apiMethods'
 
 // Add prop type for TechnicianProfileData
 type TechnicianProfileData = {
@@ -33,24 +34,13 @@ const ProfileCard: React.FC<Props> = ({ data }) => {
     const [save, setSave] = useState(false)
     const [role, setRole] = useState<string | null>(null);
     const [editModalOpen, setEditModalOpen] = useState(false);
-
-    // Extract values from API data
-    const name = data?.technician?.username || "-";
-    const phone = data?.technician?.phoneNumber || "-";
-    const location = [
-        data?.technician?.buildingName,
-        data?.technician?.areaName,
-        data?.technician?.city,
-        data?.technician?.state,
-        data?.technician?.pincode
-    ].filter(Boolean).join(", ");
-    const years = data?.technicianProfile?.description || "-";
-    const image = data?.technicianProfile?.profileImage || "https://randomuser.me/api/portraits/men/32.jpg";
-    // Get all service names as a comma-separated string
-    const service = data?.technicianProfile?.services && data.technicianProfile.services.length > 0
-        ? data.technicianProfile.services.map(s => s.serviceName).filter(Boolean).join(", ")
-        : "-";
-
+    const [profile, setProfile] = useState({
+        name: "",
+        service: "",
+        location: "",
+        years: "",
+        image: "",
+    });
     // For editing
     const [profile, setProfile] = useState({
         name,
@@ -63,9 +53,26 @@ const ProfileCard: React.FC<Props> = ({ data }) => {
 
     useEffect(() => {
         setRole(localStorage.getItem("role"));
+        let id = localStorage.getItem("userId");
 
-        setProfile({ name, service, location, years, image });
-    }, [data]);
+        if (id) {
+            technicianGetProfile(id)
+                .then((data: any) => {
+                    if (data?.result) {
+                        setProfile({
+                            name: data.result.username || '',
+                            service: data.result.category || '',
+                            location: `${data.result.buildingName || ''}, ${data.result.areaName || ''}, ${data.result.city || ''}, ${data.result.state || ''}, ${data.result.pincode || ''}`.replace(/(, )+/g, ', ').replace(/^, |, $/g, ''),
+                            years: data.result.description || '',
+                            image: data.result.profileImage || '',
+                        });
+                    }
+                })
+                .catch((err: any) => {
+                    console.error('Failed to fetch technician profile:', err);
+                });
+        }
+    }, []);
 
     const handleEditProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -89,7 +96,16 @@ const ProfileCard: React.FC<Props> = ({ data }) => {
         }
     };
 
-    const handleEditProfileSave = () => {
+    const handleEditProfileSave = async () => {
+        const id = localStorage.getItem("userId");
+        const formData = new FormData();
+        formData.append("username", editProfile.name);
+        formData.append("technicianId", id || "");
+        formData.append("description", editProfile.years);
+        if (editProfile.image && typeof editProfile.image !== 'string') {
+            formData.append("profileImage", editProfile.image);
+        }
+        await updateTechnicianControl(formData);
         setProfile(editProfile);
         setEditModalOpen(false);
     };

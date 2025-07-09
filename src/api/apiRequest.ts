@@ -1,7 +1,7 @@
 import axios from "axios";
 import qs from "qs";
 import endpoints from "./endPoints";
-import { baseUrl } from "./baseURL";
+import { baseUrl,useLocal} from "./baseURL";
 
 const apiRequest = (
   endpointKey: string,
@@ -22,17 +22,25 @@ const apiRequest = (
     }
 
     const useLocal =
-      endpointKey === "getUserProfile" || endpointKey === "updateUserProfile" || endpointKey === "login" || endpointKey === "register" || endpointKey === "getAllCategories" || endpointKey === "technicianRegister" || endpointKey === "userRegister" || endpointKey === "technicianLogin" || endpointKey === "userLogin" || endpointKey === "userGetProfile" || endpointKey === "userEditProfile" || endpointKey === "technicianGetProfile" || endpointKey === "technicianEditProfile";
-    const apiBase = useLocal && baseUrl ;
+      endpointKey === "getUserProfile" || endpointKey === "updateUserProfile" || endpointKey === "login" || endpointKey === "register" || endpointKey === "getAllCategories" || endpointKey === "technicianRegister" || endpointKey === "userRegister" || endpointKey === "technicianLogin" || endpointKey === "userLogin" || endpointKey === "userGetProfile" || endpointKey === "userEditProfile" || endpointKey === "technicianGetProfileDetails" || endpointKey === "technicianEditProfile" || endpointKey === "getTechImagesByTechId" || endpointKey === "getServicesByTechId" || endpointKey === "updateTechnicianControl" || endpointKey === "updateServiceControl" || endpointKey === "createServiceControl" || endpointKey === "deleteServiceById";
+    let apiBase = useLocal && baseUrl ;
+
+    const my = "deleteServiceById"
+    if(endpointKey===my || "createServiceControl" || "createTechImagesControl")
+      apiBase = "http://localhost:5000"
 
     const jwt_token = localStorage.getItem("jwt_token");
+    const headers: any = {};
+    if (jwt_token) headers["Authorization"] = `Bearer ${jwt_token}`;
+    if (data && !(data instanceof FormData)) headers["Content-Type"] = "application/json";
+
+    console.log("apiBase:", apiBase, "endpointKey:", endpointKey, "url:", url);
+
     axios({
       method: endpoint.method,
       url: `${apiBase}${url}`,
       data: data,
-      headers: {
-        Authorization: `Bearer ${jwt_token}`,
-      },
+      headers: headers,
     })
       .then((response) => {
         res(response?.data);

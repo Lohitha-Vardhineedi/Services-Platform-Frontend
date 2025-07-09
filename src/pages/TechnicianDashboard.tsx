@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     LayoutDashboard, UserCog, PlusSquare, Image, List, CreditCard,
     Star
@@ -18,6 +18,13 @@ const TECHNICIAN_ID = "686a65f24551a5e01e71afb9"; // or get this dynamically
 const TechnicianDashboard: React.FC = () => {
     const [selectedTab, setSelectedTab] = useState('dashboard');
     const [showSidebarMobile, setShowSidebarMobile] = useState(true);
+    const [role, setRole] = useState<string | null>(null);
+
+    useEffect(() => {
+        const storedRole = localStorage.getItem('role');
+        console.log("Stored Value",storedRole)
+        setRole(storedRole);
+    }, []);
 
     const menuItems = [
         { key: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },

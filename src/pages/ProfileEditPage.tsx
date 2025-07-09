@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
-import { userGetProfile, userEditProfile, technicianGetProfile, technicianEditProfile } from '../api/apiMethods';
+import { userGetProfile, userEditProfile, technicianGetProfile, technicianEditProfile, getAllPincodes } from '../api/apiMethods';
 
 const ProfileEditPage: React.FC = () => {
     const navigate = useNavigate();
@@ -21,8 +21,11 @@ const ProfileEditPage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
+    const [pincodeData, setPincodeData] = useState<any[]>([]);
+    const [selectedPincode, setSelectedPincode] = useState<string>("");
+    const [areaOptions, setAreaOptions] = useState<any[]>([]);
 
-    const role = user?.role || localStorage.getItem('role') || 'user'; // adjust as needed
+    const role = (user && (user as any).role) || localStorage.getItem('role') || 'user'; // adjust as needed
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -44,7 +47,7 @@ const ProfileEditPage: React.FC = () => {
                 }
                 console.log("response : ",response)
                 if (response) {
-                    const userData = response.user;
+                    const userData = (response as any).user || response;
                     console.log("Response : ",userData)
                     setFormData({
                         profileImage: '',
@@ -69,6 +72,29 @@ const ProfileEditPage: React.FC = () => {
         fetchUserProfile();
     }, []);
 
+    useEffect(() => {
+        getAllPincodes()
+            .then((res: any) => {
+                if (Array.isArray(res?.data)) {
+                    setPincodeData(res.data);
+                }
+            })
+            .catch(() => {});
+    }, []);
+
+    useEffect(() => {
+        if (selectedPincode) {
+            const found = pincodeData.find((p) => p.code === selectedPincode);
+            if (found && found.areas) {
+                setAreaOptions(found.areas);
+            } else {
+                setAreaOptions([]);
+            }
+        } else {
+            setAreaOptions([]);
+        }
+    }, [selectedPincode, pincodeData]);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         if (name === 'profileImage' && 'files' in e.target && e.target.files && e.target.files.length > 0) {
@@ -77,6 +103,9 @@ const ProfileEditPage: React.FC = () => {
             setFormData((prev) => ({ ...prev, profileImage: imageUrl }));
         } else {
             setFormData((prev) => ({ ...prev, [name]: value }));
+            if (name === "pincode") {
+                setSelectedPincode(value);
+            }
         }
     };
 
@@ -120,13 +149,13 @@ const ProfileEditPage: React.FC = () => {
                 response = await userEditProfile(updateData);
             }
 
-            if (response && response.success) {
+            if (response && (response as any).success) {
                 setSuccess('Profile updated successfully!');
                 setTimeout(() => {
                     navigate('/');
                 }, 2000);
             } else {
-                setError(response?.message || 'Failed to update profile.');
+                setError((response as any)?.message || 'Failed to update profile.');
             }
         } catch (err: any) {
             setError(err?.message || 'Failed to update profile. Please try again.');
@@ -243,15 +272,18 @@ const ProfileEditPage: React.FC = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Area/Street Name</label>
-                        <input
-                            type="text"
-                            name="areaName"
-                            value={formData.areaName}
+                        <label className="block text-sm font-medium text-gray-700">Pincode</label>
+                        <select
+                            name="pincode"
+                            value={formData.pincode}
                             onChange={handleChange}
                             className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Enter area or street name"
-                        />
+                        >
+                            <option value="">Select Pincode</option>
+                            {pincodeData.map((p) => (
+                                <option key={p._id} value={p.code}>{p.code}</option>
+                            ))}
+                        </select>
                     </div>
 
                     <div>
@@ -263,8 +295,15 @@ const ProfileEditPage: React.FC = () => {
                             className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
                         >
                             <option value="">Select City</option>
-                            <option value="Hyderabad">Hyderabad</option>
-                           
+                            {selectedPincode && pincodeData.find((p) => p.code === selectedPincode) ? (
+                                <option value={pincodeData.find((p) => p.code === selectedPincode)?.city}>
+                                    {pincodeData.find((p) => p.code === selectedPincode)?.city}
+                                </option>
+                            ) : (
+                                pincodeData.map((p) => (
+                                    <option key={p._id} value={p.city}>{p.city}</option>
+                                ))
+                            )}
                         </select>
                     </div>
 
@@ -277,23 +316,31 @@ const ProfileEditPage: React.FC = () => {
                             className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
                         >
                             <option value="">Select State</option>
-                            <option value="Telangana">Telangana</option>
-                        
+                            {selectedPincode && pincodeData.find((p) => p.code === selectedPincode) ? (
+                                <option value={pincodeData.find((p) => p.code === selectedPincode)?.state}>
+                                    {pincodeData.find((p) => p.code === selectedPincode)?.state}
+                                </option>
+                            ) : (
+                                pincodeData.map((p) => (
+                                    <option key={p._id} value={p.state}>{p.state}</option>
+                                ))
+                            )}
                         </select>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Pincode</label>
-                        <input
-                            type="text"
-                            name="pincode"
-                            value={formData.pincode}
+                        <label className="block text-sm font-medium text-gray-700">Area/Street Name</label>
+                        <select
+                            name="areaName"
+                            value={formData.areaName}
                             onChange={handleChange}
-                            pattern="[0-9]{6}"
-                            maxLength={6}
                             className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Enter 6-digit pincode"
-                        />
+                        >
+                            <option value="">Select Area</option>
+                            {areaOptions.map((a: any) => (
+                                <option key={a._id} value={a.name}>{a.name}</option>
+                            ))}
+                        </select>
                     </div>
 
                     <div className="pt-4">
