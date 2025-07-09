@@ -7,6 +7,7 @@ import { MdOutlineStar } from 'react-icons/md'
 import { technicianGetProfile, updateTechnicianControl } from '../../api/apiMethods'
 
 const ProfileCard = () => {
+    const [save, setSave] = useState(false)
     const [role, setRole] = useState<string | null>(null);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [profile, setProfile] = useState({
@@ -16,7 +17,7 @@ const ProfileCard = () => {
         years: "",
         image: "",
     });
-
+    // For editing
     const [editProfile, setEditProfile] = useState({ ...profile });
 
     useEffect(() => {
@@ -124,21 +125,10 @@ const ProfileCard = () => {
                     </span>
                 </div>
 
-                <div className="flex items-center my-3 text-sm text-gray-700">
-                    <IoLocationOutline size={20} color="red" />
-                    <span className="ml-2">{profile.location}</span>
-                </div>
-
-                <div className="flex items-center text-sm text-gray-700">
-                    <FaThumbsUp size={18} color="#00B800" />
-                    <span className="ml-2">{profile.years} Years in Service</span>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex flex-wrap gap-3 mt-4">
-                    <div className="flex items-center bg-fuchsia-500 hover:bg-fuchsia-600 rounded-xl text-white px-4 py-1 font-bold cursor-pointer">
-                        <IoCall size={18} className="mr-2" />
-                        9876543212
+                <div className="flex gap-4 mt-4 flex-wrap">
+                    <div className="flex bg-fuchsia-500 rounded-xl text-white px-4 py-1 font-bold items-center cursor-pointer hover:bg-fuchsia-600">
+                        <IoCall size={22} className="me-2" />
+                        <span>{phone}</span>
                     </div>
                     <div className="flex items-center bg-green-600 hover:bg-green-500 rounded-xl text-white px-4 py-1 font-bold cursor-pointer">
                         <LuMessageSquareText size={18} className="mr-2" />

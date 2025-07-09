@@ -7,7 +7,6 @@ const Photos = () => {
   const [images, setImages] = useState<string[]>([]);
   const [showAll, setShowAll] = useState(false);
   const [role, setRole] = useState<string | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setRole(localStorage.getItem("role"));
@@ -58,8 +57,6 @@ const Photos = () => {
   return (
     <div className="border border-gray-200 shadow-md rounded-xl p-4">
       <h2 className="text-xl md:text-2xl font-light mb-4">Photos</h2>
-      
-
       <div
         className="
           grid 
@@ -72,28 +69,16 @@ const Photos = () => {
           gap-3
         "
       >
-        {visibleImages.map((img, index) => (
+        {visibleImages.map((img: string, index: number) => (
           <div key={index} className="relative group">
             <img
               src={img}
               alt={`Image ${index + 1}`}
               className="w-full h-36 object-cover rounded-lg"
             />
-            {role === "technician" && (
-              <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button
-                  className="bg-white rounded-full p-1 shadow hover:bg-gray-100"
-                  title="Delete"
-                  onClick={() => handleDelete(index)}
-                >
-                  <FaTrash className="text-red-500" />
-                </button>
-              </div>
-            )}
           </div>
         ))}
       </div>
-
       {images.length > 6 && (
         <div
           className="flex justify-center mt-4 cursor-pointer text-blue-600 hover:underline text-sm"
@@ -108,25 +93,6 @@ const Photos = () => {
               View More <FaChevronDown />
             </span>
           )}
-        </div>
-      )}
-
-      {role === "technician" && (
-        <div className="mt-5">
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            ref={inputRef}
-            className="hidden"
-          />
-          <button
-            className="bg-blue-500 hover:bg-blue-600 text-white flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer"
-            onClick={handleUploadClick}
-          >
-            <IoMdCloudUpload size={22} />
-            <span className="text-sm md:text-base font-light">Upload Photo</span>
-          </button>
         </div>
       )}
     </div>

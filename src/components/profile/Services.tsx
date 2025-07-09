@@ -159,16 +159,6 @@ const Services = () => {
         <div className="text-xl sm:text-xl md:text-2xl lg:text-xl xl:text-2xl font-extralight">
           Services
         </div>
-        {role === "technician" && (
-          <button
-            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-green-400 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md"
-            onClick={() => setAddModalOpen(true)}
-          >
-            <Plus className="w-4 h-4" />
-            Add Service
-          </button>
-
-        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
@@ -205,41 +195,24 @@ const Services = () => {
                   alt={item?.serv}
                   className="rounded-t-lg object-cover w-20 sm:w-28 md:w-36 lg:w-40 xl:w-45 h-30"
                 />
-                {role === "technician" ? (
-                  <div className="flex gap-2 mt-2">
-                    <button
-                      className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded flex items-center gap-1 text-sm"
-                      onClick={() => handleEdit(item.id)}
-                    >
-                     <Pencil className="w-4 h-4" /> Edit
-                    </button>
-                    <button
-                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded flex items-center gap-1 text-sm"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      <FaTrash /> Delete
-                    </button>
+                <div
+                  className={`rounded-b-lg px-2 py-1 flex cursor-pointer items-center justify-center 
+                    ${isInCart
+                      ? "text-red-600 border border-red-600"
+                      : " bg-red-600 border-b text-white hover:bg-red-700"
+                    }
+                    `}
+                  onClick={() => handleCartToggle(item.id)}
+                >
+                  {isInCart ? (
+                    <BsCartDash size={16} className="flex" />
+                  ) : (
+                    <FaCartPlus size={18} className="flex" />
+                  )}
+                  <div className="text-sm sm:text-sm md:text-sm lg:text-lg xl:text-lg font-extralight ms-2 whitespace-nowrap">
+                    {isInCart ? "Remove" : "Add to Cart"}
                   </div>
-                ) : (
-                  <div
-                    className={`rounded-b-lg px-2 py-1 flex cursor-pointer items-center justify-center 
-                      ${isInCart
-                        ? "text-red-600 border border-red-600"
-                        : " bg-red-600 border-b text-white hover:bg-red-700"
-                      }
-                      `}
-                    onClick={() => handleCartToggle(item.id)}
-                  >
-                    {isInCart ? (
-                      <BsCartDash size={16} className="flex" />
-                    ) : (
-                      <FaCartPlus size={18} className="flex" />
-                    )}
-                    <div className="text-sm sm:text-sm md:text-sm lg:text-lg xl:text-lg font-extralight ms-2 whitespace-nowrap">
-                      {isInCart ? "Remove" : "Add to Cart"}
-                    </div>
-                  </div>
-                )}
+                </div>
               </div>
             </div>
           );
