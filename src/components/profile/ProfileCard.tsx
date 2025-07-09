@@ -41,14 +41,14 @@ const ProfileCard: React.FC<Props> = ({ data }) => {
         years: "",
         image: "",
     });
-    // For editing
-    const [profile, setProfile] = useState({
-        name,
-        service,
-        location,
-        years,
-        image,
-    });
+    // // For editing
+    // const [profile, setProfile] = useState({
+    //     name,
+    //     service,
+    //     location,
+    //     years,
+    //     image,
+    // });
     const [editProfile, setEditProfile] = useState({ ...profile });
 
     useEffect(() => {
