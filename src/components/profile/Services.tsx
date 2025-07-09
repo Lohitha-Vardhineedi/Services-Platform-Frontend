@@ -117,7 +117,6 @@ const Services = () => {
     setEditModalOpen(false);
   };
 
-  // Add new service handlers
   const handleAddServiceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewService((prev) => ({
       ...prev,
