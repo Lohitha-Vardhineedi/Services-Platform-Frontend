@@ -219,11 +219,11 @@ function Header() {
             ref={reviewModalRef}
             className="bg-white p-6 rounded-lg shadow-lg w-96 animate-fade-in"
           >
-            <h2 className="text-lg font-medium mb-4 text-gray-700 text-center">💥Boom! Review Time!</h2>
+            <h2 className="text-lg font-medium mb-4 text-gray-700 text-center">💥Boom ! Review Time!</h2>
             <form onSubmit={handleReviewSubmit} className='flex flex-col'>
-              <p className='text-sm font-medium mb-4 text-gray-700'>Name : </p>
+              <p className='text-sm font-medium mb-2 text-gray-700'>Name</p>
               <input type="text" className='p-2 border border-gray-300 rounded-lg mb-4' value={user?.username} />
-              <p className='text-sm font-medium mb-4 text-gray-700'>Rate:</p>
+              <p className='text-sm font-medium mb-2 text-gray-700'>Rating</p>
               <div className="flex justify-center space-x-2 mb-8">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
@@ -236,7 +236,7 @@ function Header() {
                   />
                 ))}
               </div>
-              <p className='text-sm font-medium mb-4 text-gray-700'>Review:</p>
+              <p className='text-sm font-medium mb-2 text-gray-700'>Review</p>
               <textarea
                 className="w-full p-2 border border-gray-300 rounded-lg mb-4"
                 rows={4}
