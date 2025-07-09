@@ -7,7 +7,6 @@ import { MdOutlineStar } from 'react-icons/md'
 import { technicianGetProfile, updateTechnicianControl } from '../../api/apiMethods'
 
 const ProfileCard = () => {
-    const [save, setSave] = useState(false)
     const [role, setRole] = useState<string | null>(null);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [profile, setProfile] = useState({
@@ -17,12 +16,14 @@ const ProfileCard = () => {
         years: "",
         image: "",
     });
-    // For editing
+
     const [editProfile, setEditProfile] = useState({ ...profile });
 
     useEffect(() => {
+
         setRole(localStorage.getItem("role"));
         let id = localStorage.getItem("userId");
+        console.log("ID : ",id)
 
         if (id) {
             technicianGetProfile(id)

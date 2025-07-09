@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import { userGetProfile, userEditProfile, technicianGetProfile, technicianEditProfile, getAllPincodes } from '../api/apiMethods';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const ProfileEditPage: React.FC = () => {
     const navigate = useNavigate();
@@ -24,6 +25,8 @@ const ProfileEditPage: React.FC = () => {
     const [pincodeData, setPincodeData] = useState<any[]>([]);
     const [selectedPincode, setSelectedPincode] = useState<string>("");
     const [areaOptions, setAreaOptions] = useState<any[]>([]);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const role = (user && (user as any).role) || localStorage.getItem('role') || 'user'; // adjust as needed
 
@@ -45,9 +48,9 @@ const ProfileEditPage: React.FC = () => {
                 } else {
                     response = await userGetProfile(userId);
                 }
-                console.log("response : ",response)
+                console.log("response : -- ",response)
                 if (response) {
-                    const userData = (response as any).user || response;
+                    const userData = (response as any)?.result?.user || (response as any)?.result || response;
                     console.log("Response : ",userData)
                     setFormData({
                         profileImage: '',
@@ -233,30 +236,46 @@ const ProfileEditPage: React.FC = () => {
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700">New Password</label>
-                        <input
-                            type="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            maxLength={10}
-                            minLength={6}
-                            className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="New Password"
-                        />
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                maxLength={10}
+                                minLength={6}
+                                className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500 pr-10"
+                                placeholder="New Password"
+                            />
+                            <span
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                                onClick={() => setShowPassword((prev) => !prev)}
+                            >
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </span>
+                        </div>
                     </div>
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Confirm New Password</label>
-                        <input
-                            type="password"
-                            name="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
-                            maxLength={10}
-                            minLength={6}
-                            className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Confirm New Password"
-                        />
+                        <div className="relative">
+                            <input
+                                type={showConfirmPassword ? "text" : "password"}
+                                name="confirmPassword"
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
+                                maxLength={10}
+                                minLength={6}
+                                className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500 pr-10"
+                                placeholder="Confirm New Password"
+                            />
+                            <span
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                            >
+                                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                            </span>
+                        </div>
                     </div>
 
                     <div>
