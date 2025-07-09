@@ -58,6 +58,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
         localStorage.setItem('jwt_token', response.result.token);
         localStorage.setItem('user', JSON.stringify(response.result));
         localStorage.setItem('userId', response.result.id);
+        localStorage.setItem('role', response.result.role);
         
         if (role === 'technician') {
           navigate('/technician/dashboard');
