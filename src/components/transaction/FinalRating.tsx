@@ -41,7 +41,7 @@ const FinalRating: React.FC<FinalRatingProps> = ({ selectedRating, setSelectedRa
 
         <button
           className="w-full bg-purple-500 text-white py-4 rounded-2xl font-semibold shadowing-lg hover:bg-purple-600 transition-colors"
-          onClick={() => setCurrentStep('bookings')}
+          onClick={() => setCurrentStep('congratulations')}
         >
           Submit Rating
         </button>

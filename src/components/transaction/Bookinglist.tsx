@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { act } from 'react';
 import { ChevronRight } from 'lucide-react';
 
 interface Booking {
@@ -46,7 +46,7 @@ const BookingsList: React.FC<BookingsListProps> = ({ bookings, activeTab, setCur
           />
         </div>
         <h2 className="text-xl font-semibold text-gray-900">
-          {activeTab === 'upcoming' ? 'Upcoming' : activeTab === 'completed' ? 'Completed' : 'Cancelled'}
+          {activeTab === 'upcoming' ? 'Upcoming' : activeTab === 'completed' ? 'Completed' : 'com'}
         </h2>
       </div>
       <div className="p-6 space-y-4">
@@ -55,7 +55,7 @@ const BookingsList: React.FC<BookingsListProps> = ({ bookings, activeTab, setCur
             key={booking.id}
             className="bg-gray-50 rounded-2xl p-4 cursor-pointer border border-gray-100 hover:bg-gray-100 transition-colors"
             onClick={() =>
-              setCurrentStep(activeTab === 'upcoming' ? 'upcoming-details' : 'completed-details')
+              setCurrentStep(activeTab === 'upcoming' ? 'upcoming-details' : activeTab === 'completed' ? 'completed-details' : 'bookings')
             }
           >
             <div className="flex items-center space-x-4">
@@ -84,7 +84,7 @@ const BookingsList: React.FC<BookingsListProps> = ({ bookings, activeTab, setCur
                   <span className="text-gray-400 text-xs">{booking.date}</span>
                 </div>
               </div>
-              <ChevronRight className="w-5 h-5 text-gray-400 flex-shrink-0" />
+              {activeTab === 'completed' ? <ChevronRight className="w-5 h-5 text-gray-400 flex-shrink-0" /> : activeTab === 'upcoming' ? <ChevronRight className="w-5 h-5 text-gray-400 flex-shrink-0" /> : null}
             </div>
           </div>
         ))}

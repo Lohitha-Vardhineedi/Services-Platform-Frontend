@@ -13,7 +13,7 @@ import TechnicianHomeView from '../components/profile/TechnicianHomeView';
 import { useTechnicianProfile } from '../context/TechnicianProfileContext';
 import { TechnicianProfileProvider } from "../context/TechnicianProfileContext";
 
-const TECHNICIAN_ID = "686a65f24551a5e01e71afb9"; // or get this dynamically
+const TECHNICIAN_ID = localStorage.getItem('userId') || "686a65f24551a5e01e71afb9"; // or get this dynamically
 
 const TechnicianDashboard: React.FC = () => {
     const [selectedTab, setSelectedTab] = useState('dashboard');
@@ -29,7 +29,9 @@ const TechnicianDashboard: React.FC = () => {
         { key: 'subscriptions', label: 'Subscriptions', icon: <CreditCard size={20} /> },
     ];
 
-    const { data, loading, error } = useTechnicianProfile();
+    const { loading, error } = useTechnicianProfile();
+    const { data } = localStorage.getItem('user') ? JSON.stringify(localStorage.getItem('user')) : {};
+
 
     const renderContent = () => {
         if (loading) return <div>Loading...</div>;
@@ -51,7 +53,7 @@ const TechnicianDashboard: React.FC = () => {
             case 'subscriptions':
                 return <SubscriptionPage data={data} />;
             default:
-                return <DashboardHomeView />;
+                return <DashboardHomeView data={data} />;
         }
     };
 

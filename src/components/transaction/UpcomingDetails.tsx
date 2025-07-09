@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { ChevronLeft, User, Wrench, Phone, MapPin, Key } from 'lucide-react';
 import OTPModel from './OTPModel';
+import SuccessModal from './SuccessModel';
 
 interface Booking {
     id: string;
@@ -26,44 +27,11 @@ interface UpcomingDetailsProps {
 }
 
 const UpcomingDetails: React.FC<UpcomingDetailsProps> = ({ booking, setCurrentStep, role, setActiveTab }) => {
-    const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']); // 6-digit OTP
-    // Create a ref to store input elements
-    const inputsRef = useRef<Array<HTMLInputElement | null>>([]);
-
-    const handleChange = (index: number, value: string) => {
-        if (!/^\d?$/.test(value)) return; // Only allow digits
-
-        const newOtp = [...otp];
-        newOtp[index] = value;
-        setOtp(newOtp);
-
-        // Move focus to next input
-        if (value && index < otp.length - 1) {
-            inputsRef.current[index + 1]?.focus();
-        }
-    };
-
-    const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
-        if (e.key === 'Backspace' && !otp[index] && index > 0) {
-            inputsRef.current[index - 1]?.focus();
-        }
-    };
 
     const handleCancel = () => {
         // Implement cancellation logic
         setActiveTab('cancelled');
         setCurrentStep('bookings');
-    };
-
-    const handleOTPSubmit = () => {
-        // Validate OTP logic here
-        const otpValue = otp.join('');
-        if (otpValue === booking.otp) {
-            setCurrentStep('completed-details');
-            setActiveTab('completed');
-        } else {
-            console.log('Invalid OTP');
-        }
     };
 
     const handleCompleted = () => {
@@ -151,7 +119,11 @@ const UpcomingDetails: React.FC<UpcomingDetailsProps> = ({ booking, setCurrentSt
                         </div>
                     )}
                     {role === 'technician' && (
-                        <OTPModel/>
+                        <OTPModel
+                            setCurrentStep={setCurrentStep}
+                            setActiveTab={setActiveTab}
+                            setShowSuccess={() => {SuccessModal}}
+                        />
                     )}
                 </div>
                 {role === 'user' && (

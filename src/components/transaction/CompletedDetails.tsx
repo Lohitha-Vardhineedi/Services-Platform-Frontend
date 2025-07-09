@@ -66,7 +66,7 @@ const CompletedDetails: React.FC<CompletedDetailsProps> = ({
             </div>
             <div className="flex-1 min-w-0">
               <span className="text-gray-600">Name:</span>
-              <span className="text-gray-900 font-medium ml-2">{booking.floor}</span>
+              <span className="text-gray-900 font-medium ml-2">{booking.name}</span>
             </div>
           </div>
           <div className="flex items-center space-x-4">

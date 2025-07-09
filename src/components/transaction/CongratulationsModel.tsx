@@ -20,7 +20,7 @@ const CongratulationsModal: React.FC<CongratulationsModalProps> = ({ setCurrentS
         </div>
         <button
           className="w-full bg-purple-500 text-white py-4 rounded-2xl font-semibold shadow-lg hover:bg-purple-600 transition-colors"
-          onClick={() => setCurrentStep(role === 'user' ? 'final-rating' : 'bookings')}
+          onClick={() => setCurrentStep(role === 'user' ? 'bookings' : 'bookings')}
         >
           OK
         </button>

@@ -49,7 +49,7 @@ const Savings: React.FC<SavingsProps> = ({ setCurrentStep }) => {
         <div className="max-w-md mx-auto">
           <button
             className="w-full bg-purple-500 text-white py-4 rounded-2xl font-semibold shadow-lg hover:bg-purple-600 transition-colors"
-            onClick={() => setCurrentStep(role === 'user' ? 'congratulations' : 'bookings')}
+            onClick={() => setCurrentStep(role === 'user' ? 'final-rating' : 'bookings')}
           >
             Done
           </button>
