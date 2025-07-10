@@ -3,7 +3,7 @@ import { IoMdCloudUpload } from "react-icons/io";
 import { FaChevronDown, FaChevronUp, FaTrash, FaPencilAlt } from "react-icons/fa";
 import { getTechImagesByTechId, createTechImagesControl } from '../../api/apiMethods';
 
-const Photos = () => {
+const TechnicianPhotos = () => {
   const [images, setImages] = useState<string[]>([]);
   const [showAll, setShowAll] = useState(false);
   const [role, setRole] = useState<string | null>(null);
@@ -99,4 +99,4 @@ const Photos = () => {
   );
 };
 
-export default Photos;
+export default TechnicianPhotos;

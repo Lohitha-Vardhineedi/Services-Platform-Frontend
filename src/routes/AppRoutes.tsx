@@ -23,6 +23,12 @@ import TechnicianDashboard from '../pages/TechnicianDashboard';
 import ProfileEdit from '../pages/ProfileEdit';
 import TransactionPage from '../pages/TransactionPage';
 import SubscriptionPage from '../pages/SubscriptionPage';
+import TechnicianPhotos from '../pages/technician/TechnicianPhotos';
+import TechnicianServices from '../pages/technician/TechnicianService';
+import TechnicianReviews from '../pages/technician/TechnicianReviews';
+import TechnicianProfile from '../pages/technician/TechnicianProfile';
+import TechnicianSubscription from '../pages/technician/TechnicianSubscription';
+import TechnicianTransactions from '../pages/technician/TechnicianTransactions';
 
 const AppRoutes = () => {
     return (
@@ -53,6 +59,12 @@ const AppRoutes = () => {
 
 
             <Route path="/technician/dashboard" element={<TechnicianDashboard />} />
+            <Route path="/technician/photos" element={<TechnicianPhotos />} />
+            <Route path="/technician/services" element={<TechnicianServices/>} />
+            <Route path="/technician/reviews" element={<TechnicianReviews />} />
+            <Route path="/technician/profile" element={<TechnicianProfile />} />
+            <Route path="/technician/subscription" element={<TechnicianSubscription />} />
+            <Route path="/technician/transactions" element={<TechnicianTransactions />} />
 
             
 
