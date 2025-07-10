@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { IoCall, IoLocationOutline } from "react-icons/io5";
 import { LuMessageSquareText } from "react-icons/lu";
 import { MdOutlineStar } from "react-icons/md";
@@ -8,7 +8,7 @@ import { ServiceFilters } from "../components/services/ServiceFilters";
 import { ServicesList } from "../data/ServicesList";
 import { ContactForm } from "../components/services/ContactForms";
 
-const ServicePage = () => {
+const ServicePage: React.FC = () => {
   const navigate = useNavigate()
   return (
     <div className="max-w-7xl mx-auto px-4 py-4">
@@ -27,7 +27,7 @@ const ServicePage = () => {
           <ServiceFilters/>
         </div>
         <div className="flex flex-col md:flex-row p-2 gap-3">
-          <div onClick={()=>navigate("/technicain/id")} className="flex-1 space-y-3  overflow-y-auto scrollbar-hide max-h-[calc(100vh-220px)] sm:max-h-[calc(100vh-180px)] md:max-h-[calc(100vh-160px)] ">
+          <div onClick={()=>navigate("/technicianById")} className="flex-1 space-y-3  overflow-y-auto scrollbar-hide max-h-[calc(100vh-220px)] sm:max-h-[calc(100vh-180px)] md:max-h-[calc(100vh-160px)] ">
             {ServicesList.map((profile, index) => (
               <div
                 key={index}

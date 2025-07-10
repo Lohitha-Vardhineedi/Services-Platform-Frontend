@@ -13,7 +13,7 @@ type Props = {
   data: TechnicianProfileData | null;
 };
 
-const TechnicianDashboard: React.FC<Props> = ({ data }) => {
+const Dashboard: React.FC<Props> = ({ data }) => {
   console.log("response",data.technicianProfile.services)
   const serviceCount = data?.technicianProfile?.services?.length ?? 0;
   const totalServicePrice = data?.technicianProfile?.services?.reduce((sum, s) => sum + (s.servicePrice || 0), 0) ?? 0;
@@ -99,5 +99,5 @@ const TechnicianDashboard: React.FC<Props> = ({ data }) => {
   );
 };
 
-export default TechnicianDashboard;
+export default Dashboard;
 

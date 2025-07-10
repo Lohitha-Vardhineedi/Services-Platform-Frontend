@@ -16,6 +16,7 @@ const TechnicianProfile = () => {
         location: "",
         years: "",
         image: "",
+        phone:"",
     });
     // For editing
     const [editProfile, setEditProfile] = useState({ ...profile });
@@ -36,6 +37,7 @@ const TechnicianProfile = () => {
                             location: `${data.result.buildingName || ''}, ${data.result.areaName || ''}, ${data.result.city || ''}, ${data.result.state || ''}, ${data.result.pincode || ''}`.replace(/(, )+/g, ', ').replace(/^, |, $/g, ''),
                             years: data.result.description || '',
                             image: data.result.profileImage || '',
+                            phone: data.result.ProfilePhone || '',
                         });
                     }
                 })
@@ -121,14 +123,14 @@ const TechnicianProfile = () => {
 
                 <div className="flex flex-wrap gap-2">
                     <span className="bg-fuchsia-200 px-3 py-1 rounded-xl text-black text-sm font-light">
-                        {profile.service}
+                        {profile.location}
                     </span>
                 </div>
 
                 <div className="flex gap-4 mt-4 flex-wrap">
                     <div className="flex bg-fuchsia-500 rounded-xl text-white px-4 py-1 font-bold items-center cursor-pointer hover:bg-fuchsia-600">
                         <IoCall size={22} className="me-2" />
-                        <span>{phone}</span>
+                        <span>{profile.phone}</span>
                     </div>
                     <div className="flex items-center bg-green-600 hover:bg-green-500 rounded-xl text-white px-4 py-1 font-bold cursor-pointer">
                         <LuMessageSquareText size={18} className="mr-2" />

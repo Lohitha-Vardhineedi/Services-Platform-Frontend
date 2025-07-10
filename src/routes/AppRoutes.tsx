@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { data, Route, Routes } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
 import AboutPage from '../pages/AboutPage';
 import NotFoundPage from '../pages/NotFoundPage';
@@ -29,6 +29,8 @@ import TechnicianReviews from '../pages/technician/TechnicianReviews';
 import TechnicianProfile from '../pages/technician/TechnicianProfile';
 import TechnicianSubscription from '../pages/technician/TechnicianSubscription';
 import TechnicianTransactions from '../pages/technician/TechnicianTransactions';
+import Dashboard from '../pages/technician/Dashboard';
+import TechnicianDashboardWithProvider from '../pages/TechnicianDashboard';
 
 const AppRoutes = () => {
     return (
@@ -58,7 +60,8 @@ const AppRoutes = () => {
             <Route path="/transactions" element={<TransactionPage/>} />
 
 
-            <Route path="/technician/dashboard" element={<TechnicianDashboard />} />
+            <Route path="/technician/dashboard" element={<TechnicianDashboardWithProvider />} />
+            <Route path='/technician/dashboardById' element= {<Dashboard/>} />
             <Route path="/technician/photos" element={<TechnicianPhotos />} />
             <Route path="/technician/services" element={<TechnicianServices/>} />
             <Route path="/technician/reviews" element={<TechnicianReviews />} />

@@ -5,6 +5,7 @@ import { IoCall, IoLocationOutline, IoShareSocial } from 'react-icons/io5'
 import { LuMessageSquareText } from 'react-icons/lu'
 import { MdOutlineStar } from 'react-icons/md'
 import { technicianGetProfile, updateTechnicianControl } from '../../api/apiMethods'
+import { Phone } from 'lucide-react'
 
 const ProfileCard = () => {
     const [save, setSave] = useState(false)
@@ -16,6 +17,7 @@ const ProfileCard = () => {
         location: "",
         years: "",
         image: "",
+        phone: "",
     });
     // For editing
     const [editProfile, setEditProfile] = useState({ ...profile });
@@ -36,6 +38,7 @@ const ProfileCard = () => {
                             location: `${data.result.buildingName || ''}, ${data.result.areaName || ''}, ${data.result.city || ''}, ${data.result.state || ''}, ${data.result.pincode || ''}`.replace(/(, )+/g, ', ').replace(/^, |, $/g, ''),
                             years: data.result.description || '',
                             image: data.result.profileImage || '',
+                            phone: data.result.phonenumber || '',
                         });
                     }
                 })
@@ -98,17 +101,6 @@ const ProfileCard = () => {
             {/* Technician Details */}
             <div className="flex-1 min-w-0">
                 {/* Edit Profile Button */}
-                {role === "technician" && (
-                    <button
-                        className="absolute top-0 -z-0 right-0 md:top-4 md:right-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium z-10"
-                        onClick={() => {
-                            setEditProfile(profile);
-                            setEditModalOpen(true);
-                        }}
-                    >
-                        Edit Profile
-                    </button>
-                )}
                 <h2 className="text-xl font-semibold truncate">{profile.name}</h2>
 
                 <div className="flex flex-wrap items-center gap-4 my-3">
@@ -140,9 +132,20 @@ const ProfileCard = () => {
                     </div>
                 </div>
             </div>
+                {role === "technician" && (
+                    <button
+                        className="absolute top-0 -z-0 right-0 md:top-4 md:right-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium z-10"
+                        onClick={() => {
+                            setEditProfile(profile);
+                            setEditModalOpen(true);
+                        }}
+                    >
+                        Edit Profile
+                    </button>
+                )}
 
             {/* Rating by User */}
-            {role !== "technician" && (
+            {/* {role !== "technician" && (
                 <div className="flex flex-col justify-start mt-6 md:mt-0 md:ml-8 w-full md:w-auto">
                     <div className="text-sm font-medium mb-2">Click to Rate</div>
                     <div className="flex gap-2">
@@ -156,7 +159,7 @@ const ProfileCard = () => {
                         ))}
                     </div>
                 </div>
-            )}
+            )} */}
 
             {/* Edit Modal */}
             {editModalOpen && (
