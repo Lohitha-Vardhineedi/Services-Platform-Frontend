@@ -374,7 +374,7 @@ const ProfileEditPage: React.FC = () => {
                     <div className="pt-2">
                         <button
                             type="button"
-                            onClick={() => navigate('/profile')}
+                            onClick={() => navigate('/technicianById')}
                             className="w-full bg-gray-500 text-white font-semibold py-2 rounded-md hover:bg-gray-600 transition duration-200"
                         >
                             Cancel

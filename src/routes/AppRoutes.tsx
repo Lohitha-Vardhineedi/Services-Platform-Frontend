@@ -7,7 +7,6 @@ import TechnicianLogin from '../pages/login/TechnicianLogin';
 import UserSignup from '../pages/signup/UserSignup';
 import TechnicianSignup from '../pages/signup/TechnicianSignup';
 import AuthLayout from '../components/layout/AuthLayout'; 
-import SubscriptionPage from '../pages/SubscriptionPage';
 import FranchisePage from '../pages/FranchisePage';
 import PlanDetailsPage from '../pages/PlanDetailsPage';
 import ComingSoonPage from '../pages/ComingSoonPage';
@@ -23,32 +22,43 @@ import ProfileEditPage from '../pages/ProfileEditPage';
 import TechnicianDashboard from '../pages/TechnicianDashboard';
 import ProfileEdit from '../pages/ProfileEdit';
 import TransactionPage from '../pages/TransactionPage';
+import SubscriptionPage from '../pages/SubscriptionPage';
 
 const AppRoutes = () => {
     return (
         <Routes>
             <Route path="/" element={<HomePage />}/>
-            <Route path="/about" element={<AboutPage />} />
             <Route element={<AuthLayout />}>
                 <Route path="/login/user" element={<UserLogin />} />
                 <Route path="/login/technician" element={<TechnicianLogin />}/>
                 <Route path="/signup/user" element={<UserSignup />}/>
                 <Route path="/signup/technician" element={<TechnicianSignup />}/>
             </Route>   
+
+
+             <Route path="/categories" element={<CategoriesPage />} />
+            <Route path="/about" element={<AboutPage />} />
             <Route path="/subscription" element={<SubscriptionPage/>}/>
-            <Route path="/franchise" element={<FranchisePage />} />
             <Route path="/plans/:id" element={<PlanDetailsPage />} />
-            <Route path="/comingsoon" element={<ComingSoonPage />} />
-            <Route path="/categories" element={<CategoriesPage />} />
             <Route path="/features" element={<KeyFeaturesPage />} />
-            <Route path="/services" element={<ServicePage />} />
-            <Route path="/profile/edit" element={<ProfileEditPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/cart" element={<CartPage/>} />
+            <Route path="/franchise" element={<FranchisePage />} />
+
+
+            <Route path="/technicians" element={<ServicePage />} />
             <Route path="/contact" element={<ContactPage />} />
-            <Route path="/profile/edit" element={<ProfileEdit/>} />
+            <Route path="/technicianById" element={<ProfilePage />} />
+            <Route path="/cart" element={<CartPage/>} />
+            <Route path="/userEdit" element={<ProfileEditPage />} />
             <Route path="/transactions" element={<TransactionPage/>} />
+
+
             <Route path="/technician/dashboard" element={<TechnicianDashboard />} />
+
+            
+
+            {/* <Route path="/comingsoon" element={<ComingSoonPage />} /> */}
+            {/* <Route path="/profile/edit" element={<ProfileEdit/>} /> */}
+            
             <Route path="*" element={<NotFoundPage />} />
         </Routes>
     );
