@@ -74,7 +74,7 @@ const TechnicianSubscription: React.FC = () => {
 
 
   const handleFullDetails = (plan: Plan): void => {
-    navigate(`/plans/${plan.id}`);
+    navigate(`/subscription/${plan.id}`);
   };
 
   return (
