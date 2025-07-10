@@ -1,43 +1,59 @@
 import React, { useRef, useState, useEffect } from "react";
 import { IoMdCloudUpload } from "react-icons/io";
 import { FaChevronDown, FaChevronUp, FaTrash, FaPencilAlt } from "react-icons/fa";
+import { getTechImagesByTechId, createTechImagesControl } from '../../api/apiMethods';
 
-type TechnicianProfileData = {
-  technician: any;
-  technicianProfile: {
-    photos?: { imageUrl?: string }[];
-    services?: { serviceImg?: string }[];
-  } | null;
-};
-
-type Props = {
-  data?: TechnicianProfileData | null;
-};
-
-const Photos: React.FC<Props> = ({ data }) => {
-  // Use service images from services array if available, else fallback to hardcoded
-  const apiServices = data?.technicianProfile?.services;
-  const images = apiServices && apiServices.length > 0
-    ? apiServices
-        .map((s: { serviceImg?: string }) => s.serviceImg || "")
-        .filter((img: string) => img.trim() !== "")
-    : [
-      "https://img.freepik.com/free-photo/electrician-installing-electricity_1398-1567.jpg",
-      "https://media.istockphoto.com/id/1516511531/photo/a-plumber-carefully-fixes-a-leak-in-a-sink-using-a-wrench.jpg?b=1&s=612x612&w=0&k=20&c=NUX8oizSVtCWuC9VqFkjUc-EYq3c2Yypzqx-hcaMSKs=",
-      "https://img.freepik.com/free-photo/electrician-installing-electricity_1398-1567.jpg",
-      "https://media.istockphoto.com/id/1516511531/photo/a-plumber-carefully-fixes-a-leak-in-a-sink-using-a-wrench.jpg?b=1&s=612x612&w=0&k=20&c=NUX8oizSVtCWuC9VqFkjUc-EYq3c2Yypzqx-hcaMSKs=",
-      "https://img.freepik.com/free-photo/electrician-installing-electricity_1398-1567.jpg",
-    ];
+const Photos = () => {
+  const [images, setImages] = useState<string[]>([]);
   const [showAll, setShowAll] = useState(false);
   const [role, setRole] = useState<string | null>(null);
 
   useEffect(() => {
     setRole(localStorage.getItem("role"));
+    let id = localStorage.getItem("userId");
+    id = "686a65eb4551a5e01e71afb6"
+    if (id) {
+      getTechImagesByTechId(id)
+        .then((data: any) => {
+          if (data?.result && Array.isArray(data.result.imageUrl)) {
+            setImages(data.result.imageUrl);
+          }
+        })
+        .catch((err: any) => {
+          console.error('Failed to fetch technician images:', err);
+        });
+    }
   }, []);
 
   const visibleImages = showAll ? images : images.slice(0, 6);
 
-  // Only display images, no upload/delete logic
+  const handleUploadClick = () => {
+    inputRef.current?.click();
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    let id = localStorage.getItem("userId");
+    id = "686a65eb4551a5e01e71afb6"
+    // id = "686a65eb4551a5e01e71afb6"
+    const formData = new FormData();
+    formData.append("technicianId", id || "");
+    if (file instanceof File) {
+      formData.append("photos", file);
+    }
+    for (let pair of formData.entries()) {
+      console.log("debug : ", pair[0] + ':', pair[1]);
+    }
+    await createTechImagesControl(formData);
+    setImages((prev) => [URL.createObjectURL(file), ...prev]);
+  };
+
+  const handleDelete = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // User: view only, Technician: manage photos
   return (
     <div className="border border-gray-200 shadow-md rounded-xl p-4">
       <h2 className="text-xl md:text-2xl font-light mb-4">Photos</h2>
