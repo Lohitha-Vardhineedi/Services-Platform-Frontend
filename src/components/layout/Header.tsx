@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Download, Menu, X, ShoppingCart, Star } from 'lucide-react';
+import { TbLogout } from "react-icons/tb";
 
 interface User {
   username: string;
@@ -186,8 +187,16 @@ function Header() {
                   onClick={() => setShowReviewModal(true)}
                   className="text-gray-700 hover:text-yellow-600"
                 >
-                  <Star className="w-4 h-4" />
+                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
                 </button>
+                {user?.role === 'technician' && (
+                  <button
+                  onClick={handleLogout}
+                  className="text-gray-700 hover:text-red-800 fill-current"
+                >
+                  <TbLogout className='w-5 h-5 text-red-500' />
+                </button>
+                )}
               </>
             ) : (
               <>

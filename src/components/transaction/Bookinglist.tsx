@@ -46,7 +46,7 @@ const BookingsList: React.FC<BookingsListProps> = ({ bookings, activeTab, setCur
           />
         </div>
         <h2 className="text-xl font-semibold text-gray-900">
-          {activeTab === 'upcoming' ? 'Upcoming' : activeTab === 'completed' ? 'Completed' : 'com'}
+          {activeTab === 'upcoming' ? 'Upcoming' : activeTab === 'completed' ? 'Completed' : 'cancelled'}
         </h2>
       </div>
       <div className="p-6 space-y-4">
