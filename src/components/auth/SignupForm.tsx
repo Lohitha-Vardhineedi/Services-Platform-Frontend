@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { userRegister, technicianRegister, getAllCategories, getAllPincodes } from '../../api/apiMethods';
 import { categories as categoryList } from '../../data/categoryData';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 interface SignupFormProps {
   defaultRole: 'user' | 'technician';
@@ -43,6 +44,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
   const [selectedPincode, setSelectedPincode] = useState<string>("");
   const [areaOptions, setAreaOptions] = useState<any[]>([]);
   const [selectedArea, setSelectedArea] = useState<string>("");
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (defaultRole === 'technician') {
@@ -152,11 +154,9 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
         }
         if (response.success) {
           navigate(`/login/${defaultRole}`);
-        } else {
-          setError(response.message || 'Registration failed. Please try again.');
-        }
+        } 
       } catch (err: any) {
-        setError(err?.message || 'Registration failed. Please try again.');
+        setError(err.data.error[0] || 'Registration failed. Please try again.');
       } finally {
         setLoading(false);
       }
@@ -229,7 +229,29 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
               <label htmlFor={id} className="block text-sm font-medium text-gray-700">
                 {label} <span className='text-red-600'>*</span>
               </label>
-              {id === 'pincode' ? (
+              {id === 'password' ? (
+                <div className="relative">
+                  <input
+                    id={id}
+                    name={id}
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder={id === 'password' ? 'Password (6-10 characters)' : label}
+                    required
+                    value={(formData as any)[id]}
+                    onChange={handleChange}
+                    pattern={pattern}
+                    minLength={id === 'password' ? 6 : undefined}
+                    maxLength={id === 'password' ? 10 : undefined}
+                    className="mt-1 w-full border border-gray-300 rounded-md p-2 pr-10"
+                  />
+                  <span
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </span>
+                </div>
+              ) : id === 'pincode' ? (
                 <select
                   id="pincode"
                   name="pincode"
