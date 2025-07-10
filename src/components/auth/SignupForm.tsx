@@ -220,9 +220,10 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
             { id: 'password', label: 'Password', type: 'password', minLength: 6, maxLength: 10 },
             { id: 'buildingName', label: 'House/Building Name', type: 'text' },
             { id: 'pincode', label: 'Pincode', type: 'text' },
+             { id: 'areaName', label: 'Area/Street Name', type: 'text' },
             { id: 'city', label: 'City', type: 'text' },
             { id: 'state', label: 'State', type: 'text' },
-            { id: 'areaName', label: 'Area/Street Name', type: 'text' },
+           
           ].map(({ id, label, type, pattern }) => (
             <div key={id}>
               <label htmlFor={id} className="block text-sm font-medium text-gray-700">
