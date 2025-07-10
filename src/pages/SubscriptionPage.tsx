@@ -50,6 +50,7 @@ const SubscriptionPage: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  // const [plans, setPlans] = useState({});
   const [plans, setPlans] = useState<any[]>([]);
 
   const fetchPlans = async () => {
@@ -90,7 +91,6 @@ const SubscriptionPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Plans Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {plans?.map((plan: Plan) => {
             const IconComponent = iconMap[plan.icon] || Star;

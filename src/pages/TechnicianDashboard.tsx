@@ -3,15 +3,14 @@ import {
     LayoutDashboard, UserCog, PlusSquare, Image, List, CreditCard,
     Star
 } from 'lucide-react';
-import SubscriptionPage from './SubscriptionPage';
-import Reviews from '../components/profile/Reviews';
-import Photos from '../components/profile/Photos';
-import TransactionPage from './TransactionPage';
-import Services from '../components/profile/Services';
-import ProfileCard from '../components/profile/ProfileCard';
-import TechnicianHomeView from '../components/profile/TechnicianHomeView';
 import { useTechnicianProfile } from '../context/TechnicianProfileContext';
 import { TechnicianProfileProvider } from "../context/TechnicianProfileContext";
+import TechnicianProfile from './technician/TechnicianProfile';
+import TechnicianServices from './technician/TechnicianService';
+import TechnicianPhotos from './technician/TechnicianPhotos';
+import TechnicianReviews from './technician/TechnicianReviews';
+import TechnicianTransactions from './technician/TechnicianTransactions';
+import TechnicianSubscription from './technician/TechnicianSubscription';
 
 const TECHNICIAN_ID = localStorage.getItem('userId') || "686a65f24551a5e01e71afb9"; // or get this dynamically
 
@@ -46,21 +45,21 @@ const TechnicianDashboard: React.FC = () => {
         console.log("technicna Data : ",data)
         switch (selectedTab) {
             case 'dashboard':
-                return <TechnicianHomeView data={data} />;
+                return <TechnicianDashboard data={data} />;
             case 'profile':
-                return <ProfileCard data={data} />;
+                return <TechnicianProfile data={data} />;
             case 'service':
-                return <Services data={data} />;
+                return <TechnicianServices data={data} />;
             case 'photos':
-                return <Photos data={data} />;
+                return <TechnicianPhotos data={data} />;
             case 'reviews':
-                return <Reviews data={data} />;
+                return <TechnicianReviews data={data} />;
             case 'transactions':
-                return <TransactionPage data={data} />;
+                return <TechnicianTransactions data={data} />;
             case 'subscriptions':
-                return <SubscriptionPage data={data} />;
+                return <TechnicianSubscription data={data} />;
             default:
-                return <DashboardHomeView data={data} />;
+                return <TechnicianDashboard data={data} />;
         }
     };
 

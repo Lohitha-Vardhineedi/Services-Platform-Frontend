@@ -11,7 +11,6 @@ const endpoints: any = {
     url: () => {
       return `/api/categories/get`;
     },
-
   },
   getAvgReviews: {
     method: "get",

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { categories } from '../data/categoryData';
 import { useNavigate } from 'react-router-dom';
+import { getAllCategories } from '../api/apiMethods';
 
 interface Category {
   id: string;
@@ -18,17 +19,43 @@ const getRandomBgColor = (): string => {
   return bgColors[i];
 };
 
+
+
 const CategoriesPage: React.FC = () => {
 const navigate= useNavigate()
 
+const [allCategories, setAllCategories] = useState<Category[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await getAllCategories();
+      if (response.success === true && Array.isArray(response.data)) {
+        setAllCategories(response.data);
+        console.log(response,"==>response");
+        
+      } else {
+        setError('Invalid response format');
+      }
+    } catch (err: any) {
+      setError(err?.message || 'Failed to fetch categories');
+    }
+  };
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-4">
+        <h2 className="text-xl font-bold text-gray-900 mb-4 text-left">
+        Most Popular Categories
+      </h2>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {categories.map(({ id, category_name, category_image }) => {
+        {allCategories.filter(category => category.status === 1).map((category, index) => {
           const bgColor = getRandomBgColor();
           return (
             <div
-              key={id}
+              key={category.id}
               className="flex flex-col items-center p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105 bg-white"
               onClick={()=>navigate("/technicians")}
             >
@@ -36,15 +63,18 @@ const navigate= useNavigate()
                 className={`w-20 h-20 ${bgColor} rounded-full flex items-center justify-center mb-4 overflow-hidden transition-transform duration-300 hover:scale-110`}
               >
                 <img
-                  src={`https://prnvservices.com/${category_image}`}
-                  alt={category_name}
+                src={`${category.category_image}`}
+                  alt={category.category_name}
+                  // src={`https://prnvservices.com/${category_image}`}
+                  // alt={category_name}
                   className="w-12 h-12 object-contain"
                 />
               </div>
               <h3 className="text-sm font-medium text-gray-700 text-center leading-tight">
-                {category_name}
+                 {category.category_name}
               </h3>
             </div>
+       
           );
         })}
       </div>
