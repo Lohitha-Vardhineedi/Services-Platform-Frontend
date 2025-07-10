@@ -135,12 +135,6 @@ const UpcomingDetails: React.FC<UpcomingDetailsProps> = ({ booking, setCurrentSt
                         >
                             Cancel
                         </button>
-                        <button
-                            className="py-2 px-4 bg-green-500 text-white rounded-2xl font-semibold shadow-lg hover:bg-green-600 transition-colors"
-                            onClick={handleCompleted}
-                        >
-                            Mark as Completed
-                        </button>
                     </div>
 
                 )}
