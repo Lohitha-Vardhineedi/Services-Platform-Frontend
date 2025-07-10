@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { technicianLogin, userLogin } from '../../api/apiMethods';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 type UserRole = 'user' | 'technician';
 
@@ -19,6 +20,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const [showPassword, setShowPassword] = useState(false);
 
   // Redirect based on URL if applicable
   useEffect(() => {
@@ -123,14 +125,22 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
             <label className="block text-sm font-medium text-gray-700">
               Password <span className="text-red-500">*</span>
             </label>
-            <input
-              type="password"
-              name="password"
-              required
-              value={formData.password}
-              onChange={handleChange}
-              className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                required
+                value={formData.password}
+                onChange={handleChange}
+                className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500 pr-10"
+              />
+              <span
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
           </div>
 
           <button

@@ -6,31 +6,7 @@ import { LuMessageSquareText } from 'react-icons/lu'
 import { MdOutlineStar } from 'react-icons/md'
 import { technicianGetProfile, updateTechnicianControl } from '../../api/apiMethods'
 
-// Add prop type for TechnicianProfileData
-type TechnicianProfileData = {
-  technician: {
-    username?: string;
-    phoneNumber?: string;
-    buildingName?: string;
-    areaName?: string;
-    city?: string;
-    state?: string;
-    pincode?: string;
-    // ...other fields
-  };
-  technicianProfile: {
-    description?: string;
-    profileImage?: string;
-    services?: { serviceName?: string }[];
-    // ...other fields
-  } | null;
-};
-
-type Props = {
-  data: TechnicianProfileData | null;
-};
-
-const ProfileCard: React.FC<Props> = ({ data }) => {
+const ProfileCard = () => {
     const [save, setSave] = useState(false)
     const [role, setRole] = useState<string | null>(null);
     const [editModalOpen, setEditModalOpen] = useState(false);
@@ -41,19 +17,14 @@ const ProfileCard: React.FC<Props> = ({ data }) => {
         years: "",
         image: "",
     });
-    // // For editing
-    // const [profile, setProfile] = useState({
-    //     name,
-    //     service,
-    //     location,
-    //     years,
-    //     image,
-    // });
+    // For editing
     const [editProfile, setEditProfile] = useState({ ...profile });
 
     useEffect(() => {
+
         setRole(localStorage.getItem("role"));
         let id = localStorage.getItem("userId");
+        console.log("ID : ",id)
 
         if (id) {
             technicianGetProfile(id)

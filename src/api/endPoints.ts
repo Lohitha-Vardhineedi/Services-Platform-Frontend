@@ -66,7 +66,7 @@ const endpoints: any = {
     url: (userId: string) => `/api/techAuth/getTechProfile/${userId}`
   },
   technicianEditProfile: {
-    method: "post",
+    method: "put",
     url: () => `/api/techAuth/editProfile`
   },
   getPlans: {
