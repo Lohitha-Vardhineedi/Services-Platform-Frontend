@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllCategories } from '../../api/apiMethods';
 // import { getAllCategories } from '../../api/apiMethods';
+import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 interface Category {
   id: number;
@@ -18,12 +20,19 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
   const navigate = useNavigate();
   const [allCategories, setAllCategories] = useState<Category[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const { categoryId } = useParams();
+  const location = useLocation();
+  const categoryIdFromState = location.state?.categoryId;
 
   const fetchCategories = async () => {
     try {
       const response = await getAllCategories();
+      console.log("category Response : ",response)
       if (response.success === true && Array.isArray(response.data)) {
-        setAllCategories(response.data);
+        setAllCategories(response.data.map(cat => ({
+          ...cat,
+          id: cat.id || cat._id // fallback to _id if id is missing
+        })));
         console.log(response,"==>response");
         
       } else {
@@ -66,7 +75,10 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
                 animationDelay: `${index * 60}ms`,
                 animationFillMode: 'both',
               }}
-              onClick={() => navigate('/services')}
+              onClick={() => {
+                console.log('Clicked category:', category);
+                navigate('/services', { state: { categoryId: category.id } });
+              }}
             >
               <div className="w-12 h-12 rounded-full flex items-center justify-center mb-2 overflow-hidden">
                 <img
@@ -109,7 +121,10 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
                 animationDelay: `${index * 60}ms`,
                 animationFillMode: 'both',
               }}
-              onClick={() => navigate('/services')}
+              onClick={() => {
+                console.log('Clicked category:', category);
+                navigate('/services', { state: { categoryId: category.id } });
+              }}
             >
               <div className="w-12 h-12 rounded-full flex items-center justify-center mb-2 overflow-hidden">
                 <img

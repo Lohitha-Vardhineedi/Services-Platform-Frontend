@@ -5,8 +5,13 @@ import { IoCall, IoLocationOutline, IoShareSocial } from 'react-icons/io5'
 import { LuMessageSquareText } from 'react-icons/lu'
 import { MdOutlineStar } from 'react-icons/md'
 import { technicianGetProfile, updateTechnicianControl } from '../../api/apiMethods'
+import axios from 'axios'
 
-const ProfileCard = () => {
+interface ProfileCardProps {
+  technicianId?: string;
+}
+
+const ProfileCard = ({ technicianId }: ProfileCardProps) => {
     const [save, setSave] = useState(false)
     const [role, setRole] = useState<string | null>(null);
     const [editModalOpen, setEditModalOpen] = useState(false);
@@ -16,34 +21,59 @@ const ProfileCard = () => {
         location: "",
         years: "",
         image: "",
+        phoneNumber:""
     });
     // For editing
     const [editProfile, setEditProfile] = useState({ ...profile });
 
     useEffect(() => {
-
         setRole(localStorage.getItem("role"));
-        let id = localStorage.getItem("userId");
-        console.log("ID : ",id)
-
-        if (id) {
-            technicianGetProfile(id)
+        
+        // If technicianId is provided, use the new API
+        if (technicianId) {
+            axios.get(`http://localhost:5000/api/techDetails/getTechAllDetails/${technicianId}`)
                 .then((data: any) => {
-                    if (data?.result) {
+                    if (data?.data?.result) {
+                        const techData = data.data.result.technician;
+                        console.log("TechData : ",techData)
                         setProfile({
-                            name: data.result.username || '',
-                            service: data.result.category || '',
-                            location: `${data.result.buildingName || ''}, ${data.result.areaName || ''}, ${data.result.city || ''}, ${data.result.state || ''}, ${data.result.pincode || ''}`.replace(/(, )+/g, ', ').replace(/^, |, $/g, ''),
-                            years: data.result.description || '',
-                            image: data.result.profileImage || '',
+                            name: techData.username || '',
+                            service: techData.category || '',
+                            location: `${techData.buildingName || ''}, ${techData.areaName || ''}, ${techData.city || ''}, ${techData.state || ''}, ${techData.pincode || ''}`.replace(/(, )+/g, ', ').replace(/^, |, $/g, ''),
+                            years: techData.description || '',
+                            image: techData.profileImage || '',
+                            phoneNumber: techData.phoneNumber || ''
                         });
                     }
                 })
                 .catch((err: any) => {
-                    console.error('Failed to fetch technician profile:', err);
+                    console.error('Failed to fetch technician details:', err);
                 });
+        } else {
+            // Use existing logic for current user
+            let id = localStorage.getItem("userId");
+            console.log("ID : ",id)
+
+            if (id) {
+                technicianGetProfile(id)
+                    .then((data: any) => {
+                        if (data?.result) {
+                            setProfile({
+                                name: data.result.username || '',
+                                service: data.result.category || '',
+                                location: `${data.result.buildingName || ''}, ${data.result.areaName || ''}, ${data.result.city || ''}, ${data.result.state || ''}, ${data.result.pincode || ''}`.replace(/(, )+/g, ', ').replace(/^, |, $/g, ''),
+                                years: data.result.description || '',
+                                image: data.result.profileImage || '',
+                                phoneNumber:data.result.phoneNumber || ''
+                            });
+                        }
+                    })
+                    .catch((err: any) => {
+                        console.error('Failed to fetch technician profile:', err);
+                    });
+            }
         }
-    }, []);
+    }, [technicianId]);
 
     const handleEditProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -73,6 +103,7 @@ const ProfileCard = () => {
         formData.append("username", editProfile.name);
         formData.append("technicianId", id || "");
         formData.append("description", editProfile.years);
+        
         if (editProfile.image && typeof editProfile.image !== 'string') {
             formData.append("profileImage", editProfile.image);
         }
@@ -128,7 +159,7 @@ const ProfileCard = () => {
                 <div className="flex gap-4 mt-4 flex-wrap">
                     <div className="flex bg-fuchsia-500 rounded-xl text-white px-4 py-1 font-bold items-center cursor-pointer hover:bg-fuchsia-600">
                         <IoCall size={22} className="me-2" />
-                        <span>{phone}</span>
+                        <span>{profile.phoneNumber}</span>
                     </div>
                     <div className="flex items-center bg-green-600 hover:bg-green-500 rounded-xl text-white px-4 py-1 font-bold cursor-pointer">
                         <LuMessageSquareText size={18} className="mr-2" />

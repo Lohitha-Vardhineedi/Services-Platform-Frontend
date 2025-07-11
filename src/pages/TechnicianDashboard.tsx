@@ -48,7 +48,7 @@ const TechnicianDashboard: React.FC = () => {
             case 'dashboard':
                 return <TechnicianHomeView data={data} />;
             case 'profile':
-                return <ProfileCard data={data} />;
+                return <ProfileCard />;
             case 'service':
                 return <Services data={data} />;
             case 'photos':

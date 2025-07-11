@@ -1,5 +1,5 @@
-import React from 'react';
-import { categories } from '../data/categoryData';
+import React, { useEffect, useState } from 'react';
+import { getAllCategories } from '../api/apiMethods';
 import { useNavigate } from 'react-router-dom';
 
 interface Category {
@@ -19,7 +19,19 @@ const getRandomBgColor = (): string => {
 };
 
 const CategoriesPage: React.FC = () => {
-const navigate= useNavigate()
+  const navigate = useNavigate();
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    getAllCategories({}).then((res: any) => {
+      if (res.success && Array.isArray(res.data)) {
+        setCategories(res.data.map((cat: any) => ({
+          ...cat,
+          id: cat.id || cat._id
+        })));
+      }
+    });
+  }, []);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-4">
@@ -30,13 +42,13 @@ const navigate= useNavigate()
             <div
               key={id}
               className="flex flex-col items-center p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105 bg-white"
-              onClick={()=>navigate("/services")}
+              onClick={() => navigate("/services", { state: { categoryId: id } })}
             >
               <div
                 className={`w-20 h-20 ${bgColor} rounded-full flex items-center justify-center mb-4 overflow-hidden transition-transform duration-300 hover:scale-110`}
               >
                 <img
-                  src={`https://prnvservices.com/${category_image}`}
+                  src={category_image}
                   alt={category_name}
                   className="w-12 h-12 object-contain"
                 />

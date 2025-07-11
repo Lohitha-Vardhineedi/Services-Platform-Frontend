@@ -1,28 +1,19 @@
 import React from 'react';
 import { Wrench, CheckCircle, DollarSign, Star, Clock } from 'lucide-react';
 
-type TechnicianProfileData = {
-  technician: any;
-  profile: {
-    services?: any[];
-    // ...other fields
-  } | null;
-};
-
-type Props = {
-  data: TechnicianProfileData | null;
-};
-
-const TechnicianHomeView: React.FC<Props> = ({ data }) => {
-  console.log("response",data.technicianProfile.services)
-  const serviceCount = data?.technicianProfile?.services?.length ?? 0;
-  const totalServicePrice = data?.technicianProfile?.services?.reduce((sum, s) => sum + (s.servicePrice || 0), 0) ?? 0;
+// No props or API data needed
+const TechnicianHomeView: React.FC = () => {
+  // Hardcoded values for demonstration
+  const serviceCount = 12;
+  const completedJobs = 10;
+  const totalServicePrice = 15000;
+  const averageRating = '4.8 ⭐';
 
   const stats = [
     { icon: <Wrench />, label: 'Total Services', value: serviceCount },
-    { icon: <CheckCircle />, label: 'Completed Jobs', value: serviceCount },
+    { icon: <CheckCircle />, label: 'Completed Jobs', value: completedJobs },
     { icon: <DollarSign />, label: 'Earnings (₹)', value: totalServicePrice },
-    { icon: <Star />, label: 'Average Rating', value: '4.8 ⭐' },
+    { icon: <Star />, label: 'Average Rating', value: averageRating },
   ];
 
   const recentActivities = [
