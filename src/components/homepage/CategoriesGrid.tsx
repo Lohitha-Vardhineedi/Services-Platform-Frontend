@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllCategories } from '../../api/apiMethods';
-// import { getAllCategories } from '../../api/apiMethods';
 
 interface Category {
   id: number;
@@ -85,7 +84,7 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
     </div>
           <div className="bg-white rounded-2xl shadow p-6 mb-12">
       <h2 className="text-2xl font-bold text-gray-900 mb-4 text-left">
-        {lang === 'hi' ? 'श्रेणियाँ' : 'Other Categories'}
+        {lang === 'hi' ? 'श्रेणियाँ' : 'Upcoming Categories'}
       </h2>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}

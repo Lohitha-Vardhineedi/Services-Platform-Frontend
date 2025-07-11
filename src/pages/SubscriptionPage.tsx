@@ -50,21 +50,21 @@ const SubscriptionPage: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  // const [plans, setPlans] = useState({});
   const [plans, setPlans] = useState<any[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchPlans = async () => {
     try {
       const response = await getPlans();
       if (response) {
-        setPlans(response);
-        console.log(response, "==>response");
-
+        setPlans(response?.data);
       }
-      // else {
-      // setError('Invalid response format');
-      // }
+      else {
+      setError('Invalid response format');
+      }
     } catch (err: any) {
-      // setError(err?.message || 'Failed to fetch categories');
+      setError(err?.message || 'Failed to fetch categories');
       console.log(err, "==>err");
     }
   };
@@ -74,7 +74,7 @@ const SubscriptionPage: React.FC = () => {
 
 
   const handleFullDetails = (plan: Plan): void => {
-    navigate(`/plans/${plan.id}`);
+    navigate(`/subscription/${plan.id}`);
   };
 
   return (
@@ -90,9 +90,8 @@ const SubscriptionPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Plans Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {plans?.map((plan: Plan) => {
+          {plans.map((plan: Plan) => {
             const IconComponent = iconMap[plan.icon] || Star;
 
             return (
@@ -113,20 +112,20 @@ const SubscriptionPage: React.FC = () => {
                 {plan.discount && (
                   <div className="absolute -top-2 -right-2 z-10">
                     <div className="bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-md">
-                      {plan.discount}% OFF
+                      {plan?.discount}% OFF
                     </div>
                   </div>
                 )}
 
                 <div className="p-8 pb-6">
                   <div className="text-center mb-6">
-                    <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${plan.color} flex items-center justify-center mx-auto mb-4 shadow-md`}>
+                    <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${plan?.color} flex items-center justify-center mx-auto mb-4 shadow-md`}>
                       <IconComponent className="text-white" size={28} />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-800">{plan.name}</h3>
+                    <h3 className="text-xl font-bold text-gray-800">{plan?.name}</h3>
 
                     <div className="mt-2">
-                      <div className="text-2xl font-extrabold text-gray-900">₹{plan.price}</div>
+                      <div className="text-2xl font-extrabold text-gray-900">₹{plan?.price}</div>
                       {plan.originalPrice && (
                         <div className="text-sm text-gray-500 line-through">
                           ₹{plan.originalPrice} + ₹{plan.gst} (GST 18%)
@@ -157,13 +156,13 @@ const SubscriptionPage: React.FC = () => {
 
                   <div className="space-y-3">
                     <button
-                      onClick={() => setSelectedPlan(plan.id)}
+                      onClick={() => setSelectedPlan(plan?.name)}
                       className={`w-full py-3 px-4 rounded-xl font-semibold transition duration-300 ${plan.buttonColor} text-white shadow-md hover:shadow-lg hover:scale-[1.02]`}
                     >
-                      {selectedPlan === plan.id ? 'Selected' : 'Choose Plan'}
+                      {selectedPlan === plan?.name ? 'Selected' : 'Choose Plan'}
                     </button>
                     <button
-                      onClick={() => handleFullDetails(plan)}
+                      onClick={() => handleFullDetails(plan?.id)}
                       className="w-full py-2 px-4 text-gray-600 hover:text-blue-600 font-medium transition duration-300"
                     >
                       Full Details →

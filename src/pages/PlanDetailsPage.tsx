@@ -2,7 +2,6 @@ import { useParams } from 'react-router-dom';
 import { plans } from '../data/subscriptionPlans';
 import { LucideIcon } from 'lucide-react';
 
-// Define the shape of a feature and plan
 interface PlanFeature {
   text: string;
   included?: boolean;
