@@ -128,7 +128,7 @@ const ProfileCard = () => {
                 <div className="flex gap-4 mt-4 flex-wrap">
                     <div className="flex bg-fuchsia-500 rounded-xl text-white px-4 py-1 font-bold items-center cursor-pointer hover:bg-fuchsia-600">
                         <IoCall size={22} className="me-2" />
-                        <span>{phone}</span>
+                        <span>9748263</span>
                     </div>
                     <div className="flex items-center bg-green-600 hover:bg-green-500 rounded-xl text-white px-4 py-1 font-bold cursor-pointer">
                         <LuMessageSquareText size={18} className="mr-2" />
