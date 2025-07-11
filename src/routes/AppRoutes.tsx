@@ -29,8 +29,7 @@ import TechnicianReviews from '../pages/technician/TechnicianReviews';
 import TechnicianProfile from '../pages/technician/TechnicianProfile';
 import TechnicianSubscription from '../pages/technician/TechnicianSubscription';
 import TechnicianTransactions from '../pages/technician/TechnicianTransactions';
-import Dashboard from '../pages/technician/Dashboard';
-import TechnicianDashboardWithProvider from '../pages/TechnicianDashboard';
+import TechnicianPanel from '../pages/technician/TechnicianPanel';
 
 const AppRoutes = () => {
     return (
@@ -60,8 +59,8 @@ const AppRoutes = () => {
             <Route path="/transactions" element={<TransactionPage/>} />
 
 
-            <Route path="/technician/dashboard" element={<TechnicianDashboardWithProvider />} />
-            <Route path='/technician/dashboardById' element= {<Dashboard/>} />
+            <Route path="/technician/dashboard" element={<TechnicianDashboard />} />
+            <Route path='/technician/dashboardById' element= {<TechnicianPanel/>} />
             <Route path="/technician/photos" element={<TechnicianPhotos />} />
             <Route path="/technician/services" element={<TechnicianServices/>} />
             <Route path="/technician/reviews" element={<TechnicianReviews />} />

@@ -1,6 +1,6 @@
 import React from 'react'
-import ProfileCard from '../components/profile/ProfileCard.tsx'
-import AllFilters from '../components/profile/AllFilters.tsx'
+import ProfileCard from '../components/profile/ProfileCard'
+import AllFilters from '../components/profile/AllFilters'
 
 const ProfilePage = () => {
   return (

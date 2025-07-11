@@ -57,7 +57,7 @@ export const TechnicianProfileProvider = ({
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get(`http://localhost:4105/api/techProfile/getTechProfileData/${technicianId}`);
+      const res = await axios.get(`http://localhost:5000/api/techProfile/getTechProfileData/${technicianId}`);
       setData(res.data.result);
     } catch (err: any) {
       setError(err.message || "Error fetching data");
