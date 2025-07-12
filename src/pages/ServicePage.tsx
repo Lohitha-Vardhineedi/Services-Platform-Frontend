@@ -27,7 +27,7 @@ const ServicePage = () => {
   }, [categoryId]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-4">
+    <div className="max-w-7xl mx-auto px-4 py-4">``
       <AdvertisementBanner />
       <h2 className="text-xl font-semibold my-4">Technicians</h2>
       <ServiceFilters />
