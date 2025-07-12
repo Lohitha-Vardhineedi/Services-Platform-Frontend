@@ -5,7 +5,6 @@ import { LuMessageSquareText } from 'react-icons/lu';
 import { technicianGetProfile, updateTechnicianControl } from '../../api/apiMethods';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 
 // Define interfaces for type safety
 interface Profile {
@@ -87,7 +86,7 @@ const TechnicianProfile: React.FC = () => {
       const reader = new FileReader();
       reader.onload = (ev) => {
         if (ev.target?.result) {
-          setEditProfile((prev) => ({ ...prev, image: ev.target?.result as string }));
+          setEditProfile((prev) => ({ ...prev, image: ev.target.result as string }));
         }
       };
       reader.readAsDataURL(file);
@@ -117,33 +116,26 @@ const TechnicianProfile: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-8">
+    <div className="bg-gray-50 py-8 overflow-auto scrollbar-none">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="relative mb-8"
-        >
+        <div className="relative mb-8">
           <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900">My Profile</h1>
           <div className="flex items-center text-sm text-gray-500 mt-2">
-            <Link to="/technician/dashboard" className="hover:text-blue-600 transition-colors">Dashboard</Link>
+            <Link to="/technician/dashboard" className="hover:text-blue-600 transition-colors duration-200">Dashboard</Link>
             <ChevronRight className="w-4 h-4 mx-2 text-gray-400" />
             <span className="text-gray-600">My Profile</span>
           </div>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="absolute top-0 right-0 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-md"
+          <button
+            className="absolute top-0 right-0 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-md transition-transform duration-200 hover:scale-105 active:scale-95"
             onClick={() => {
               setEditProfile(profile);
               setEditModalOpen(true);
             }}
           >
             Edit Profile
-          </motion.button>
-        </motion.div>
+          </button>
+        </div>
 
         {/* Main Content */}
         {isLoading ? (
@@ -153,19 +145,13 @@ const TechnicianProfile: React.FC = () => {
         ) : error ? (
           <div className="text-red-500 text-center">{error}</div>
         ) : (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="flex flex-col md:flex-row gap-8 bg-white rounded-xl shadow-lg p-6"
-          >
+          <div className="flex flex-col md:flex-row gap-8 bg-white rounded-xl shadow-lg p-6">
             {/* Profile Image */}
             <div className="flex justify-center md:justify-start md:w-1/3">
-              <motion.img
-                whileHover={{ scale: 1.1 }}
+              <img
                 src={profile.image}
                 alt="Profile"
-                className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-blue-100 shadow-md"
+                className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-blue-100 shadow-md transition-transform duration-200"
               />
             </div>
             {/* Profile Details */}
@@ -183,119 +169,97 @@ const TechnicianProfile: React.FC = () => {
               </div>
               <p className="text-sm text-gray-600">Experience: {profile.years} years</p>
               <div className="flex flex-wrap gap-4">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center bg-blue-500 text-white px-5 py-2 rounded-lg text-sm font-medium shadow"
+                <button
+                  className="flex items-center bg-blue-500 text-white px-5 py-2 rounded-lg text-sm font-medium shadow transition-transform duration-200 hover:scale-105 active:scale-95"
                 >
                   <IoCall size={20} className="mr-2" /> {profile.phone}
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center bg-green-500 text-white px-5 py-2 rounded-lg text-sm font-medium shadow"
+                </button>
+                <button
+                  className="flex items-center bg-green-500 text-white px-5 py-2 rounded-lg text-sm font-medium shadow transition-transform duration-200 hover:scale-105 active:scale-95"
                 >
                   <LuMessageSquareText size={20} className="mr-2" /> Message
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center bg-indigo-500 text-white px-5 py-2 rounded-lg text-sm font-medium shadow"
+                </button>
+                <button
+                  className="flex items-center bg-indigo-500 text-white px-5 py-2 rounded-lg text-sm font-medium shadow transition-transform duration-200 hover:scale-105 active:scale-95"
                 >
                   <IoShareSocial size={20} className="mr-2" /> Share
-                </motion.button>
+                </button>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
 
         {/* Edit Modal */}
-        <AnimatePresence>
-          {editModalOpen && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4"
-            >
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                className="bg-white rounded-lg w-full max-w-md p-6 relative overflow-y-auto max-h-[90vh] shadow-xl"
+        {editModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4 transition-opacity duration-200">
+            <div className="bg-white rounded-lg w-full max-w-md p-6 relative overflow-y-auto max-h-[90vh] shadow-xl">
+              <button
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl transition-colors duration-200"
+                onClick={() => setEditModalOpen(false)}
               >
-                <button
-                  className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl"
-                  onClick={() => setEditModalOpen(false)}
-                >
-                  &times;
-                </button>
-                <h2 className="text-xl font-semibold mb-6 text-gray-800">Edit Profile</h2>
-                <div className="space-y-5">
-                  <div>
-                    <label className="text-sm font-medium text-gray-700">Profile Image</label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      className="block w-full mt-1 text-sm border border-gray-300 px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                ×
+              </button>
+              <h2 className="text-xl font-semibold mb-6 text-gray-800">Edit Profile</h2>
+              <div className="space-y-5">
+                <div>
+                  <label className="text-sm font-medium text-gray-700">Profile Image</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="block w-full mt-1 text-sm border border-gray-300 px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                  />
+                  {editProfile.image && (
+                    <img
+                      src={editProfile.image}
+                      alt="Preview"
+                      className="w-20 h-20 rounded-full object-cover mt-3 border border-gray-200"
                     />
-                    {editProfile.image && (
-                      <img
-                        src={editProfile.image}
-                        alt="Preview"
-                        className="w-20 h-20 rounded-full object-cover mt-3 border border-gray-200"
-                      />
-                    )}
-                  </div>
-                  <InputField
-                    label="Name"
-                    name="name"
-                    value={editProfile.name}
-                    onChange={handleEditChange}
-                  />
-                  <InputField
-                    label="Service"
-                    name="service"
-                    value={editProfile.service}
-                    onChange={handleEditChange}
-                  />
-                  <InputField
-                    label="Location"
-                    name="location"
-                    value={editProfile.location}
-                    onChange={handleEditChange}
-                  />
-                  <InputField
-                    label="Years in Service"
-                    name="years"
-                    value={editProfile.years}
-                    onChange={handleEditChange}
-                  />
-                  <div className="flex justify-end gap-3 pt-4">
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-5 py-2 rounded-lg font-medium"
-                      onClick={() => setEditModalOpen(false)}
-                    >
-                      Cancel
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium"
-                      onClick={handleSave}
-                      disabled={isLoading}
-                    >
-                      {isLoading ? 'Saving...' : 'Save'}
-                    </motion.button>
-                  </div>
+                  )}
                 </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                <InputField
+                  label="Name"
+                  name="name"
+                  value={editProfile.name}
+                  onChange={handleEditChange}
+                />
+                <InputField
+                  label="Service"
+                  name="service"
+                  value={editProfile.service}
+                  onChange={handleEditChange}
+                />
+                <InputField
+                  label="Location"
+                  name="location"
+                  value={editProfile.location}
+                  onChange={handleEditChange}
+                />
+                <InputField
+                  label="Years in Service"
+                  name="years"
+                  value={editProfile.years}
+                  onChange={handleEditChange}
+                />
+                <div className="flex justify-end gap-3 pt-4">
+                  <button
+                    className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-5 py-2 rounded-lg font-medium transition-transform duration-200 hover:scale-105 active:scale-95"
+                    onClick={() => setEditModalOpen(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium transition-transform duration-200 hover:scale-105 active:scale-95"
+                    onClick={handleSave}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? 'Saving...' : 'Save'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -317,7 +281,7 @@ const InputField: React.FC<InputFieldProps> = ({ label, name, value, onChange })
       type="text"
       value={value}
       onChange={onChange}
-      className="block w-full mt-1 border border-gray-300 px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      className="block w-full mt-1 border border-gray-300 px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
     />
   </div>
 );
