@@ -142,7 +142,7 @@ const TechnicianProfile = () => {
             </div>
 
             {/* Rating by User */}
-            {role !== "technician" && (
+            {/* {role !== "technician" && (
                 <div className="flex flex-col justify-start mt-6 md:mt-0 md:ml-8 w-full md:w-auto">
                     <div className="text-sm font-medium mb-2">Click to Rate</div>
                     <div className="flex gap-2">
@@ -156,7 +156,7 @@ const TechnicianProfile = () => {
                         ))}
                     </div>
                 </div>
-            )}
+            )} */}
 
             {/* Edit Modal */}
             {editModalOpen && (

@@ -40,3 +40,11 @@ export const deleteServiceById = (id: string) => apiRequest("deleteServiceById",
 export const createTechImagesControl = (formData: FormData) => apiRequest("createTechImagesControl", formData);
 
 export const getAllPincodes = () => apiRequest("getAllPincodes");
+
+export const getAllTechnicianDetails = (id: string) => apiRequest("getAllTechnicianDetails", null, id);
+
+// export const getAllTechnicianDetails = async (id: string) => {
+//   const res = await fetch(`/api/techDetails/getTechAllDetails/${id}`);
+//   const data = await res.json();
+//   return data;
+// };

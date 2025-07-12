@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllCategories } from '../../api/apiMethods';
-// import { getAllCategories } from '../../api/apiMethods';
 import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
@@ -20,19 +19,15 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
   const navigate = useNavigate();
   const [allCategories, setAllCategories] = useState<Category[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const { categoryId } = useParams();
+  const {categoryId} = useParams<{ categoryId: string }>();
   const location = useLocation();
-  const categoryIdFromState = location.state?.categoryId;
 
   const fetchCategories = async () => {
     try {
       const response = await getAllCategories();
       console.log("category Response : ",response)
       if (response.success === true && Array.isArray(response.data)) {
-        setAllCategories(response.data.map(cat => ({
-          ...cat,
-          id: cat.id || cat._id // fallback to _id if id is missing
-        })));
+        setAllCategories(response.data);
         console.log(response,"==>response");
         
       } else {
@@ -77,7 +72,7 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
               }}
               onClick={() => {
                 console.log('Clicked category:', category);
-                navigate('/technicians', { state: { categoryId: category.id } });
+                navigate(`/technicians/${category?._id}`);
               }}
             >
               <div className="w-12 h-12 rounded-full flex items-center justify-center mb-2 overflow-hidden">
@@ -123,7 +118,7 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
               }}
               onClick={() => {
                 console.log('Clicked category:', category);
-                navigate('/technicians', { state: { categoryId: category.id } });
+                navigate(`/technicians/${category?._id}`);
               }}
             >
               <div className="w-12 h-12 rounded-full flex items-center justify-center mb-2 overflow-hidden">

@@ -105,7 +105,14 @@ const endpoints: any = {
   getAllPincodes: {
     method: "get",
     url: () => `/api/pincodes/allAreas`
-  }
+  },
+
+  getAllTechnicianDetails: {
+    method: "get",
+    url: (id: string) => {
+      return `/api/techDetails/getTechAllDetails/${id}`;
+    },
+  },
 }
 
 export default endpoints;
