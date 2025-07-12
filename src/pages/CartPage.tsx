@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Trash2, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { GoPlus, FiMinus } from "react-icons/go";
+import { GoPlus } from "react-icons/go";
+import { FiMinus } from "react-icons/fi";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import axios from "axios";
 
@@ -9,14 +10,19 @@ interface CartItem {
   _id: string;
   serviceId: {
     _id: string;
+    technicianId: string;
     serviceName: string;
     serviceImg?: string;
     servicePrice?: number;
+    price?: number;
+    image?: string;
     ratings?: number;
     reviews?: number;
   };
   quantity: number;
   bookingDate: string;
+  otp?: number;
+  isSelected: boolean; // Added to track selection
 }
 
 interface CartData {
@@ -24,6 +30,7 @@ interface CartData {
     _id: string;
     username: string;
     phoneNumber: string;
+    role: string;
     buildingName: string;
     areaName: string;
     city: string;
@@ -37,7 +44,7 @@ interface CartData {
   };
 }
 
-const CartPage: React.FC = () => {
+const CartPage = () => {
   const navigate = useNavigate();
   const [cartData, setCartData] = useState<CartData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -46,105 +53,47 @@ const CartPage: React.FC = () => {
   const dateInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
 
   useEffect(() => {
-    const fetchCartData = async () => {
-      try {
-        setLoading(true);
-        const userId = localStorage.getItem("userId") || "686f37ca7e3a2d2d4c3be95b";
-        if (!userId) {
-          setError("User not logged in");
-          return;
-        }
-
-        const response = await axios.get(`http://localhost:5000/api/cart/getCart/${userId}`);
-        if (response.data.success) {
-          setCartData(response.data.result);
-        } else {
-          setError("Failed to fetch cart data");
-        }
-      } catch (err: any) {
-        console.error("Error fetching cart:", err);
-        setError(err?.message || "Failed to fetch cart data");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchCartData();
   }, []);
 
-  const handleQuantityChange = async (itemId: string, delta: number) => {
+  const fetchCartData = async () => {
     try {
-      const userId = localStorage.getItem("userId") || "686f37ca7e3a2d2d4c3be95b";
-      const updatedQuantity = Math.max(1, (cartData?.cart.items.find(item => item._id === itemId)?.quantity || 1) + delta);
-
-      await axios.put(`http://localhost:5000/api/cart/updateCart/${userId}`, {
-        itemId,
-        quantity: updatedQuantity,
-      });
-
-      setCartData(prev => {
-        if (!prev) return prev;
-        return {
-          ...prev,
+      setLoading(true);
+      const userId = "686f37ca7e3a2d2d4c3be95b"; // Hardcoded as per original code
+      const response = await axios.get(`http://localhost:5000/api/cart/getCart/${userId}`);
+      
+      if (response.data.success) {
+        // Initialize isSelected for each item
+        const updatedCartData = {
+          ...response.data.result,
           cart: {
-            ...prev.cart,
-            items: prev.cart.items.map(item =>
-              item._id === itemId ? { ...item, quantity: updatedQuantity } : item
-            ),
+            ...response.data.result.cart,
+            items: response.data.result.cart.items.map((item: CartItem) => ({
+              ...item,
+              isSelected: item.isSelected ?? false, // Default to false if not set
+            })),
           },
         };
-      });
-    } catch (err) {
-      console.error("Error updating quantity:", err);
-      setError("Failed to update cart");
+        setCartData(updatedCartData);
+      } else {
+        setError("Failed to fetch cart data");
+      }
+    } catch (err: any) {
+      console.error("Error fetching cart:", err);
+      setError(err?.message || "Failed to fetch cart data");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleRemove = async (itemId: string) => {
+  const updateCartItem = async (itemId: string, updates: Partial<CartItem>) => {
     try {
-      const userId = localStorage.getItem("userId") || "686f37ca7e3a2d2d4c3be95b";
-      await axios.delete(`http://localhost:5000/api/cart/removeItem/${userId}/${itemId}`);
-
-      setCartData(prev => {
-        if (!prev) return prev;
-        return {
-          ...prev,
-          cart: {
-            ...prev.cart,
-            items: prev.cart.items.filter(item => item._id !== itemId),
-          },
-        };
-      });
-    } catch (err) {
-      console.error("Error removing item:", err);
-      setError("Failed to remove item");
-    }
-  };
-
-  const handleDateChange = async (itemId: string, date: string) => {
-    try {
-      const userId = localStorage.getItem("userId") || "686f37ca7e3a2d2d4c3be95b";
-      await axios.put(`http://localhost:5000/api/cart/updateCart/${userId}`, {
-        itemId,
-        bookingDate: date,
-      });
-
-      setCartData(prev => {
-        if (!prev) return prev;
-        return {
-          ...prev,
-          cart: {
-            ...prev.cart,
-            items: prev.cart.items.map(item =>
-              item._id === itemId ? { ...item, bookingDate: date } : item
-            ),
-          },
-        };
-      });
-      setSelectedItemId(null);
-    } catch (err) {
-      console.error("Error updating date:", err);
-      setError("Failed to update date");
+      const userId = "686f37ca7e3a2d2d4c3be95b";
+      await axios.put(`http://localhost:5000/api/cart/updateCart/${userId}/${itemId}`, updates);
+      await fetchCartData(); // Refresh cart data after update
+    } catch (err: any) {
+      console.error("Error updating cart item:", err);
+      setError("Failed to update cart item");
     }
   };
 
@@ -156,59 +105,134 @@ const CartPage: React.FC = () => {
     }
   };
 
+  const handleDateChange = async (e: React.ChangeEvent<HTMLInputElement>, itemId: string) => {
+    const selectedDate = e.target.value;
+    await updateCartItem(itemId, { bookingDate: selectedDate });
+    setSelectedItemId(null);
+  };
+
+  const handleClearDate = async (itemId: string) => {
+    await updateCartItem(itemId, { bookingDate: "" });
+  };
+
+  const handleQuantityChange = async (itemId: string, delta: number) => {
+    const item = cartData?.cart.items.find((item) => item._id === itemId);
+    if (item) {
+      const newQuantity = Math.max(1, item.quantity + delta);
+      await updateCartItem(itemId, { quantity: newQuantity });
+    }
+  };
+
+  const handleRemove = async (itemId: string) => {
+    try {
+      const userId = "686f37ca7e3a2d2d4c3be95b";
+      await axios.delete(`http://localhost:5000/api/cart/removeItem/${userId}/${itemId}`);
+      await fetchCartData();
+    } catch (err: any) {
+      console.error("Error removing cart item:", err);
+      setError("Failed to remove cart item");
+    }
+  };
+
+  const handleCheckboxChange = async (itemId: string) => {
+    const item = cartData?.cart.items.find((item) => item._id === itemId);
+    if (item) {
+      await updateCartItem(itemId, { isSelected: !item.isSelected });
+    }
+  };
+
   const getMaxDate = () => {
+    const today = new Date();
     const nextMonth = new Date();
-    nextMonth.setMonth(nextMonth.getMonth() + 1);
+    nextMonth.setMonth(today.getMonth() + 1);
     return nextMonth.toISOString().split("T")[0];
   };
 
   if (loading) {
-    return <div className="max-w-4xl mx-auto p-6 text-center">Loading...</div>;
+    return <div className="max-w-4xl mx-auto p-6">Loading...</div>;
   }
 
   if (error) {
     return (
-      <div className="max-w-4xl mx-auto p-6 text-center text-red-500">{error}</div>
+      <div className="max-w-4xl mx-auto p-6">
+        <p className="text-red-500 text-center">{error}</p>
+      </div>
     );
   }
 
-  if (!cartData || !cartData.cart.items.length) {
+  if (!cartData || !cartData.cart.items || cartData.cart.items.length === 0) {
     return (
       <div className="max-w-4xl mx-auto p-6">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Your Cart</h1>
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">Your Cart</h1>
         <p className="text-gray-500">Your cart is empty.</p>
       </div>
     );
   }
 
-  const subtotal = cartData.cart.items.reduce(
-    (sum, item) => sum + ((item.serviceId.servicePrice || 0) * item.quantity),
+  const selectedItems = cartData.cart.items.filter((item) => item.isSelected);
+  const subtotal = selectedItems.reduce(
+    (sum, item) => sum + ((item.serviceId.servicePrice || item.serviceId.price || 0) * item.quantity),
     0
   );
   const tax = Math.round(subtotal * 0.18);
   const total = subtotal + tax;
-
-  const isBookingDisabled = cartData.cart.items.length === 0 || cartData.cart.items.some(item => !item.bookingDate);
+  const isBookingDisabled = selectedItems.length === 0 || selectedItems.some((item) => !item.bookingDate);
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Your Cart</h1>
+    <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl w-full py-6">
+      <style>
+        {`
+          .calendar-container {
+            display: block;
+            position: relative;
+          }
+          .calendar-container .hidden-input {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 4px;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            padding: 0;
+            border: none;
+            z-index: -1;
+          }
+          .calendar-container:focus-within .hidden-input {
+            opacity: 0;
+          }
+          @media (min-width: 640px) {
+            .calendar-container .hidden-input {
+              margin-top: 6px;
+            }
+          }
+        `}
+      </style>
+      <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">Your Cart</h1>
+
       <div className="space-y-4">
-        {cartData.cart.items.map(item => (
+        {cartData.cart.items.map((item) => (
           <div
             key={item._id}
-            className="flex flex-col sm:flex-row items-center justify-between border border-gray-300 p-4 rounded-xl bg-white shadow-sm"
+            className="flex items-center justify-between border border-gray-300 p-4 rounded-xl bg-white shadow"
           >
-            <div className="flex items-center mb-4 sm:mb-0">
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                checked={item.isSelected}
+                onChange={() => handleCheckboxChange(item._id)}
+                className="h-5 w-5 text-fuchsia-500 focus:ring-fuchsia-400 mr-3 sm:mr-4"
+                aria-label={`Select ${item.serviceId.serviceName}`}
+              />
               <img
-                src={item.serviceId.serviceImg || "https://via.placeholder.com/64"}
+                src={item.serviceId.serviceImg || item.serviceId.image || "https://via.placeholder.com/64"}
                 alt={item.serviceId.serviceName}
                 className="rounded-xl w-16 h-16 object-cover"
               />
               <div className="ml-4">
-                <p className="text-lg font-semibold text-gray-800">{item.serviceId.serviceName}</p>
+                <p className="text-lg font-semibold">{item.serviceId.serviceName}</p>
                 <p className="text-gray-600">
-                  ₹ <span className="text-fuchsia-500">{item.serviceId.servicePrice || 0}</span> per unit
+                  ₹ <span className="clr-blue">{item.serviceId.servicePrice || item.serviceId.price}</span> per unit
                 </p>
                 {item.serviceId.ratings && (
                   <div className="flex items-center gap-1 mt-1">
@@ -221,11 +245,11 @@ const CartPage: React.FC = () => {
             </div>
 
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 bg-fuchsia-100 rounded-lg px-2 py-1 border border-fuchsia-400">
+              <div className="flex items-center space-x-2 bg-fuchsia-100 rounded-lg px-2 border border-fuchsia-400">
                 {item.quantity === 1 ? (
                   <button
                     onClick={() => handleRemove(item._id)}
-                    className="p-2 rounded-full hover:bg-gray-200"
+                    className="p-1 rounded-full hover:bg-gray-200"
                     aria-label={`Remove ${item.serviceId.serviceName}`}
                   >
                     <Trash2 size={16} className="text-red-500 hover:text-red-700" />
@@ -233,7 +257,7 @@ const CartPage: React.FC = () => {
                 ) : (
                   <button
                     onClick={() => handleQuantityChange(item._id, -1)}
-                    className="p-2 rounded-full hover:bg-gray-200 text-fuchsia-500"
+                    className="p-1 rounded-full hover:bg-gray-200 clr-purple"
                     aria-label={`Decrease quantity of ${item.serviceId.serviceName}`}
                   >
                     <FiMinus size={12} />
@@ -242,7 +266,7 @@ const CartPage: React.FC = () => {
                 <span className="text-sm text-black w-8 text-center">{item.quantity}</span>
                 <button
                   onClick={() => handleQuantityChange(item._id, 1)}
-                  className="p-2 rounded-full hover:bg-gray-200 text-fuchsia-500"
+                  className="p-1 rounded-full hover:bg-gray-200 clr-purple"
                   aria-label={`Increase quantity of ${item.serviceId.serviceName}`}
                 >
                   <GoPlus size={16} />
@@ -250,10 +274,10 @@ const CartPage: React.FC = () => {
               </div>
 
               <div className="font-semibold text-gray-800">
-                ₹ {(item.serviceId.servicePrice || 0) * item.quantity}
+                ₹ {(item.serviceId.servicePrice || item.serviceId.price || 0) * item.quantity}
               </div>
 
-              <div className="relative">
+              <div className="calendar-container">
                 {item.bookingDate ? (
                   <div className="flex items-center space-x-2">
                     <span
@@ -264,7 +288,7 @@ const CartPage: React.FC = () => {
                       📅 {new Date(item.bookingDate).toLocaleDateString()}
                     </span>
                     <button
-                      onClick={() => handleDateChange(item._id, "")}
+                      onClick={() => handleClearDate(item._id)}
                       className="p-1 rounded-full hover:bg-gray-200"
                       aria-label={`Clear date for ${item.serviceId.serviceName}`}
                     >
@@ -274,17 +298,19 @@ const CartPage: React.FC = () => {
                 ) : (
                   <FaRegCalendarAlt
                     size={20}
-                    className="cursor-pointer text-blue-600"
+                    className="cursor-pointer clr-blue"
                     onClick={() => handleCalendarClick(item._id)}
                     aria-label={`Select date for ${item.serviceId.serviceName}`}
                   />
                 )}
+
                 <input
-                  ref={el => (dateInputRefs.current[item._id] = el)}
+                  id={`date-picker-${item._id}`}
+                  ref={(el) => (dateInputRefs.current[item._id] = el)}
                   type="date"
-                  onChange={e => handleDateChange(item._id, e.target.value)}
+                  onChange={(e) => handleDateChange(e, item._id)}
                   value={item.bookingDate}
-                  className={`absolute top-full mt-1 right-0 z-10 border rounded px-2 py-1 text-sm shadow bg-white ${selectedItemId === item._id ? "block" : "hidden"}`}
+                  className="hidden-input"
                   min={new Date().toISOString().split("T")[0]}
                   max={getMaxDate()}
                 />
@@ -294,39 +320,43 @@ const CartPage: React.FC = () => {
         ))}
       </div>
 
-      <div className="flex flex-col sm:flex-row justify-between items-center text-sm font-medium mt-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center text-sm sm:text-base font-medium mt-4 sm:mt-6">
         <span className="text-gray-800 mb-2 sm:mb-0">Missed Something?</span>
-        <button
-          className="bg-red-600 text-white hover:bg-red-700 px-3 py-1.5 rounded-lg"
+        <div
+          className="bg-red-600 text-white hover:bg-red-700 px-3 py-1.5 rounded-lg cursor-pointer text-sm sm:text-base"
           onClick={() => navigate("/technicianById")}
         >
           Add More Items
-        </button>
+        </div>
       </div>
 
       <div className="mt-6 border-t pt-4">
-        <div className="flex justify-between text-gray-700 mb-2 text-sm">
+        <div className="flex justify-between text-gray-700 mb-2 text-sm sm:text-base">
           <span>Subtotal</span>
           <span>₹{subtotal}</span>
         </div>
-        <div className="flex justify-between text-gray-700 mb-2 text-sm">
+        <div className="flex justify-between text-gray-700 mb-2 text-sm sm:text-base">
           <span>GST (18%)</span>
           <span>₹{tax}</span>
         </div>
-        <div className="flex justify-between text-xl font-bold mt-4 text-gray-800">
+        <div className="flex justify-between text-lg sm:text-xl font-bold mt-4 text-gray-800">
           <span>Total</span>
           <span>₹{total}</span>
         </div>
 
         <button
-          className={`w-full mt-6 py-2 rounded-xl text-lg font-semibold transition-all ${
+          className={`w-full mt-4 sm:mt-6 py-2 rounded-xl text-sm sm:text-lg font-semibold transition-all ${
             isBookingDisabled
               ? "bg-gray-400 text-gray-700 cursor-not-allowed"
               : "bg-fuchsia-500 text-white hover:bg-fuchsia-600"
           }`}
           disabled={isBookingDisabled}
         >
-          {isBookingDisabled ? "Select dates for all items" : "Book Now"}
+          {isBookingDisabled
+            ? selectedItems.length === 0
+              ? "Select at least one item"
+              : "Select dates for all selected items"
+            : "Book Now"}
         </button>
       </div>
     </div>
@@ -334,6 +364,342 @@ const CartPage: React.FC = () => {
 };
 
 export default CartPage;
+// import React, { useEffect, useState, useRef } from "react";
+// import { Trash2, X } from "lucide-react";
+// import { useNavigate } from "react-router-dom";
+// import { GoPlus } from "react-icons/go";
+// import { FaMinus, FaRegCalendarAlt } from "react-icons/fa";
+// import axios from "axios";
+
+// interface CartItem {
+//   _id: string;
+//   serviceId: {
+//     _id: string;
+//     serviceName: string;
+//     serviceImg?: string;
+//     servicePrice?: number;
+//     ratings?: number;
+//     reviews?: number;
+//   };
+//   quantity: number;
+//   bookingDate: string;
+// }
+
+// interface CartData {
+//   user: {
+//     _id: string;
+//     username: string;
+//     phoneNumber: string;
+//     buildingName: string;
+//     areaName: string;
+//     city: string;
+//     state: string;
+//     pincode: string;
+//   };
+//   cart: {
+//     _id: string;
+//     userId: string;
+//     items: CartItem[];
+//   };
+// }
+
+// const CartPage: React.FC = () => {
+//   const navigate = useNavigate();
+//   const [cartData, setCartData] = useState<CartData | null>(null);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState<string | null>(null);
+//   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+//   const dateInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
+
+//   useEffect(() => {
+//     const fetchCartData = async () => {
+//       try {
+//         setLoading(true);
+//         const userId = localStorage.getItem("userId") || "686f37ca7e3a2d2d4c3be95b";
+//         if (!userId) {
+//           setError("User not logged in");
+//           return;
+//         }
+
+//         const response = await axios.get(`http://localhost:5000/api/cart/getCart/${userId}`);
+//         if (response.data.success) {
+//           setCartData(response.data.result);
+//         } else {
+//           setError("Failed to fetch cart data");
+//         }
+//       } catch (err: any) {
+//         console.error("Error fetching cart:", err);
+//         setError(err?.message || "Failed to fetch cart data");
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchCartData();
+//   }, []);
+
+//   const handleQuantityChange = async (itemId: string, delta: number) => {
+//     try {
+//       const userId = localStorage.getItem("userId") || "686f37ca7e3a2d2d4c3be95b";
+//       const updatedQuantity = Math.max(1, (cartData?.cart.items.find(item => item._id === itemId)?.quantity || 1) + delta);
+
+//       await axios.put(`http://localhost:5000/api/cart/updateCart/${userId}`, {
+//         itemId,
+//         quantity: updatedQuantity,
+//       });
+
+//       setCartData(prev => {
+//         if (!prev) return prev;
+//         return {
+//           ...prev,
+//           cart: {
+//             ...prev.cart,
+//             items: prev.cart.items.map(item =>
+//               item._id === itemId ? { ...item, quantity: updatedQuantity } : item
+//             ),
+//           },
+//         };
+//       });
+//     } catch (err) {
+//       console.error("Error updating quantity:", err);
+//       setError("Failed to update cart");
+//     }
+//   };
+
+//   const handleRemove = async (itemId: string) => {
+//     try {
+//       const userId = localStorage.getItem("userId") || "686f37ca7e3a2d2d4c3be95b";
+//       await axios.delete(`http://localhost:5000/api/cart/removeItem/${userId}/${itemId}`);
+
+//       setCartData(prev => {
+//         if (!prev) return prev;
+//         return {
+//           ...prev,
+//           cart: {
+//             ...prev.cart,
+//             items: prev.cart.items.filter(item => item._id !== itemId),
+//           },
+//         };
+//       });
+//     } catch (err) {
+//       console.error("Error removing item:", err);
+//       setError("Failed to remove item");
+//     }
+//   };
+
+//   const handleDateChange = async (itemId: string, date: string) => {
+//     try {
+//       const userId = localStorage.getItem("userId") || "686f37ca7e3a2d2d4c3be95b";
+//       await axios.put(`http://localhost:5000/api/cart/updateCart/${userId}`, {
+//         itemId,
+//         bookingDate: date,
+//       });
+
+//       setCartData(prev => {
+//         if (!prev) return prev;
+//         return {
+//           ...prev,
+//           cart: {
+//             ...prev.cart,
+//             items: prev.cart.items.map(item =>
+//               item._id === itemId ? { ...item, bookingDate: date } : item
+//             ),
+//           },
+//         };
+//       });
+//       setSelectedItemId(null);
+//     } catch (err) {
+//       console.error("Error updating date:", err);
+//       setError("Failed to update date");
+//     }
+//   };
+
+//   const handleCalendarClick = (itemId: string) => {
+//     setSelectedItemId(itemId);
+//     if (dateInputRefs.current[itemId]) {
+//       dateInputRefs.current[itemId]?.showPicker?.();
+//       dateInputRefs.current[itemId]?.focus();
+//     }
+//   };
+
+//   const getMaxDate = () => {
+//     const nextMonth = new Date();
+//     nextMonth.setMonth(nextMonth.getMonth() + 1);
+//     return nextMonth.toISOString().split("T")[0];
+//   };
+
+//   if (loading) {
+//     return <div className="max-w-4xl mx-auto p-6 text-center">Loading...</div>;
+//   }
+
+//   if (error) {
+//     return (
+//       <div className="max-w-4xl mx-auto p-6 text-center text-red-500">{error}</div>
+//     );
+//   }
+
+//   if (!cartData || !cartData.cart.items.length) {
+//     return (
+//       <div className="max-w-4xl mx-auto p-6">
+//         <h1 className="text-3xl font-bold text-gray-800 mb-6">Your Cart</h1>
+//         <p className="text-gray-500">Your cart is empty.</p>
+//       </div>
+//     );
+//   }
+
+//   const subtotal = cartData.cart.items.reduce(
+//     (sum, item) => sum + ((item.serviceId.servicePrice || 0) * item.quantity),
+//     0
+//   );
+//   const tax = Math.round(subtotal * 0.18);
+//   const total = subtotal + tax;
+
+//   const isBookingDisabled = cartData.cart.items.length === 0 || cartData.cart.items.some(item => !item.bookingDate);
+
+//   return (
+//     <div className="max-w-4xl mx-auto p-6">
+//       <h1 className="text-3xl font-bold text-gray-800 mb-6">Your Cart</h1>
+//       <div className="space-y-4">
+//         {cartData.cart.items.map(item => (
+//           <div
+//             key={item._id}
+//             className="flex flex-col sm:flex-row items-center justify-between border border-gray-300 p-4 rounded-xl bg-white shadow-sm"
+//           >
+//             <div className="flex items-center mb-4 sm:mb-0">
+//               <img
+//                 src={item.serviceId.serviceImg || "https://via.placeholder.com/64"}
+//                 alt={item.serviceId.serviceName}
+//                 className="rounded-xl w-16 h-16 object-cover"
+//               />
+//               <div className="ml-4">
+//                 <p className="text-lg font-semibold text-gray-800">{item.serviceId.serviceName}</p>
+//                 <p className="text-gray-600">
+//                   ₹ <span className="text-fuchsia-500">{item.serviceId.servicePrice || 0}</span> per unit
+//                 </p>
+//                 {item.serviceId.ratings && (
+//                   <div className="flex items-center gap-1 mt-1">
+//                     <span className="text-sm text-yellow-500">★</span>
+//                     <span className="text-sm text-gray-600">{item.serviceId.ratings}</span>
+//                     <span className="text-sm text-gray-500">({item.serviceId.reviews} reviews)</span>
+//                   </div>
+//                 )}
+//               </div>
+//             </div>
+
+//             <div className="flex items-center space-x-4">
+//               <div className="flex items-center space-x-2 bg-fuchsia-100 rounded-lg px-2 py-1 border border-fuchsia-400">
+//                 {item.quantity === 1 ? (
+//                   <button
+//                     onClick={() => handleRemove(item._id)}
+//                     className="p-2 rounded-full hover:bg-gray-200"
+//                     aria-label={`Remove ${item.serviceId.serviceName}`}
+//                   >
+//                     <Trash2 size={16} className="text-red-500 hover:text-red-700" />
+//                   </button>
+//                 ) : (
+//                   <button
+//                     onClick={() => handleQuantityChange(item._id, -1)}
+//                     className="p-2 rounded-full hover:bg-gray-200 text-fuchsia-500"
+//                     aria-label={`Decrease quantity of ${item.serviceId.serviceName}`}
+//                   >
+//                     <FaMinus size={12} />
+//                   </button>
+//                 )}
+//                 <span className="text-sm text-black w-8 text-center">{item.quantity}</span>
+//                 <button
+//                   onClick={() => handleQuantityChange(item._id, 1)}
+//                   className="p-2 rounded-full hover:bg-gray-200 text-fuchsia-500"
+//                   aria-label={`Increase quantity of ${item.serviceId.serviceName}`}
+//                 >
+//                   <GoPlus size={16} />
+//                 </button>
+//               </div>
+
+//               <div className="font-semibold text-gray-800">
+//                 ₹ {(item.serviceId.servicePrice || 0) * item.quantity}
+//               </div>
+
+//               <div className="relative">
+//                 {item.bookingDate ? (
+//                   <div className="flex items-center space-x-2">
+//                     <span
+//                       className="text-sm text-blue-600 cursor-pointer hover:underline"
+//                       onClick={() => handleCalendarClick(item._id)}
+//                       aria-label={`Edit date for ${item.serviceId.serviceName}`}
+//                     >
+//                       📅 {new Date(item.bookingDate).toLocaleDateString()}
+//                     </span>
+//                     <button
+//                       onClick={() => handleDateChange(item._id, "")}
+//                       className="p-1 rounded-full hover:bg-gray-200"
+//                       aria-label={`Clear date for ${item.serviceId.serviceName}`}
+//                     >
+//                       <X size={16} className="text-gray-500 hover:text-gray-700" />
+//                     </button>
+//                   </div>
+//                 ) : (
+//                   <FaRegCalendarAlt
+//                     size={20}
+//                     className="cursor-pointer text-blue-600"
+//                     onClick={() => handleCalendarClick(item._id)}
+//                     aria-label={`Select date for ${item.serviceId.serviceName}`}
+//                   />
+//                 )}
+//                 <input
+//                   ref={el => (dateInputRefs.current[item._id] = el)}
+//                   type="date"
+//                   onChange={e => handleDateChange(item._id, e.target.value)}
+//                   value={item.bookingDate}
+//                   className={`absolute top-full mt-1 right-0 z-10 border rounded px-2 py-1 text-sm shadow bg-white ${selectedItemId === item._id ? "block" : "hidden"}`}
+//                   min={new Date().toISOString().split("T")[0]}
+//                   max={getMaxDate()}
+//                 />
+//               </div>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+
+//       <div className="flex flex-col sm:flex-row justify-between items-center text-sm font-medium mt-6">
+//         <span className="text-gray-800 mb-2 sm:mb-0">Missed Something?</span>
+//         <button
+//           className="bg-red-600 text-white hover:bg-red-700 px-3 py-1.5 rounded-lg"
+//           onClick={() => navigate("/technicianById")}
+//         >
+//           Add More Items
+//         </button>
+//       </div>
+
+//       <div className="mt-6 border-t pt-4">
+//         <div className="flex justify-between text-gray-700 mb-2 text-sm">
+//           <span>Subtotal</span>
+//           <span>₹{subtotal}</span>
+//         </div>
+//         <div className="flex justify-between text-gray-700 mb-2 text-sm">
+//           <span>GST (18%)</span>
+//           <span>₹{tax}</span>
+//         </div>
+//         <div className="flex justify-between text-xl font-bold mt-4 text-gray-800">
+//           <span>Total</span>
+//           <span>₹{total}</span>
+//         </div>
+
+//         <button
+//           className={`w-full mt-6 py-2 rounded-xl text-lg font-semibold transition-all ${
+//             isBookingDisabled
+//               ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+//               : "bg-fuchsia-500 text-white hover:bg-fuchsia-600"
+//           }`}
+//           disabled={isBookingDisabled}
+//         >
+//           {isBookingDisabled ? "Select dates for all items" : "Book Now"}
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default CartPage;
 
 // import React, { useEffect, useState, useRef } from "react";
 // import { Trash2, X } from "lucide-react";
