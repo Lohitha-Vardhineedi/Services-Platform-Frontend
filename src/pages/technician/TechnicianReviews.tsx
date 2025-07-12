@@ -37,7 +37,7 @@ const TechnicianReviews = () => {
   };
 
   return (
-    <div className="border border-gray-200 shadow-md rounded-xl p-4 overflow-y-auto scrollbar-hide max-h-[80vh]">
+    <div className="rounded-xl p-4 overflow-y-auto scrollbar-hide max-w-7xl mx-auto">
       <div className="text-xl sm:text-xl md:text-2xl lg:text-xl xl:text-2xl font-extralight mb-4">
       <h1 className="text-3xl font-bold text-gray-900 mb-2">My Reviews</h1>
           <div className="flex items-center space-x-2 text-sm text-gray-500">
