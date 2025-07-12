@@ -18,7 +18,7 @@ const ServicePage = () => {
   useEffect(() => {
     if (!categoryId) return;
     axios
-      .get(http://localhost:5000/api/techDetails/getAllTechniciansByCateId/${categoryId})
+      .get(`http://localhost:5000/api/techDetails/getAllTechniciansByCateId/${categoryId}`)
       .then((res) => {
         const data = res.data?.result || [];
         setTechnicians(Array.isArray(data) ? data : []);
@@ -39,7 +39,7 @@ const ServicePage = () => {
               <div
                 key={index}
                 className="border border-gray-300 rounded-2xl shadow p-3 flex flex-col md:flex-row items-center gap-4 hover:bg-gray-100 cursor-pointer"
-                onClick={() => navigate(/technicianById/${profile.technician._id})}
+                onClick={() => navigate(`/technicianById/${profile.technician._id}`)}
               >
                 <img
                   src={profile.technician.profileImage || "https://via.placeholder.com/150"}
