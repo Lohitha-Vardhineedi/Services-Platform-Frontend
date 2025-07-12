@@ -1,3 +1,15 @@
+interface ServicesList {
+  image: string;
+  name: string;
+  reviews: string; 
+  ratings: string;
+  location: string;
+  services: string;
+  phn: string;
+  availability: string;
+  years: string;
+}
+
 export const ServicesList = [
   {
     image:

@@ -1,5 +1,7 @@
+import { ChevronRight } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { MdOutlineStar } from 'react-icons/md';
+import { Link } from 'react-router-dom';
 
 const TechnicianReviews = () => {
   const [role, setRole] = useState<string | null>(null);
@@ -35,10 +37,17 @@ const TechnicianReviews = () => {
   };
 
   return (
-    <div className="border border-gray-200 shadow-md rounded-xl p-4 overflow-y-auto scrollbar-hide max-h-[80vh]">
+    <div className="rounded-xl p-4 overflow-y-auto scrollbar-hide max-w-7xl mx-auto">
       <div className="text-xl sm:text-xl md:text-2xl lg:text-xl xl:text-2xl font-extralight mb-4">
-        Reviews
-      </div>
+      <h1 className="text-3xl font-bold text-gray-900 mb-2">My Reviews</h1>
+          <div className="flex items-center space-x-2 text-sm text-gray-500">
+            <Link to="/technician/dashboard" className="hover:underline">
+              Dashboard
+            </Link>
+            <ChevronRight className="w-4 h-4" />
+            <span>My Reviews</span>
+          </div>
+        </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {reviews.map((review, index) => (

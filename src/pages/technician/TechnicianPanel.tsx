@@ -13,10 +13,10 @@ type Props = {
   data: TechnicianProfileData | null;
 };
 
-const TechnicianDashboard: React.FC<Props> = ({ data }) => {
-  console.log("response",data.technicianProfile.services)
-  const serviceCount = data?.technicianProfile?.services?.length ?? 0;
-  const totalServicePrice = data?.technicianProfile?.services?.reduce((sum, s) => sum + (s.servicePrice || 0), 0) ?? 0;
+const TechnicianPanel: React.FC<Props> = ({ data }) => {
+  console.log("response",data?.technician.services)
+  const serviceCount = data?.technician.services?.length ?? 0;
+  const totalServicePrice = data?.technician.services?.reduce((sum, s) => sum + (s.servicePrice || 0), 0) ?? 0;
 
   const stats = [
     { icon: <Wrench />, label: 'Total Services', value: serviceCount },
@@ -47,7 +47,7 @@ const TechnicianDashboard: React.FC<Props> = ({ data }) => {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-w-7xl mx-auto">
       {/* Top Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((item, index) => (
@@ -99,5 +99,5 @@ const TechnicianDashboard: React.FC<Props> = ({ data }) => {
   );
 };
 
-export default TechnicianDashboard;
+export default TechnicianPanel;
 

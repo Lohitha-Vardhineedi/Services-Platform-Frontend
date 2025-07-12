@@ -161,7 +161,7 @@ function Header() {
                       className="fixed right-0 md:right-10 lg:right-40 top-16 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 animate-fade-in"
                     >
                       <Link
-                        to="/userEdit/id"
+                        to="/userEdit"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         onClick={() => setShowUserModal(false)}
                       >
