@@ -1,52 +1,42 @@
 import React, { useState, useEffect } from "react";
-import {
-  FaCartPlus,
-  FaRegComment,
-  FaRegThumbsUp,
-  FaThumbsUp,
-} from "react-icons/fa6";
-import { IoMdCloudUpload } from "react-icons/io";
-import { MdOutlineStar } from "react-icons/md";
-import { PiShareFatBold } from "react-icons/pi";
-import { TiStarOutline } from "react-icons/ti";
 import Photos from "./Photos.jsx";
 import Services from "./Services.jsx";
 import Reviews from "./Reviews.jsx";
-import FreqQ from "./FreqQ.jsx";
+import { TechnicianService } from "../../pages/ProfilePage.js";
 
-const AllFilters = () => {
+interface AllFiltersProps {
+  services: TechnicianService[];
+  technicianImages: string[];
+  ratings: any;
+}
+const AllFilters: React.FC<AllFiltersProps> = ({
+  services,
+  technicianImages,
+  ratings,
+}) => {
+
   const [activeTab, setActiveTab] = useState("Overview");
-  const [role, setRole] = useState<string | null>(null);
 
-  useEffect(() => {
-    setRole(localStorage.getItem("role"));
-  }, []);
-
-  const FILTERS =
-    role === "technician"
-      ? ["Overview", "Photos", "Services", "Reviews"]
-      : ["Overview", "Photos", "Services", "Reviews", "Frequent Q & A"];
+  const FILTERS =["Overview", "Photos", "Services", "Reviews"]
 
   const renderContent = () => {
     if (activeTab === "Overview") {
       return (
         <>
-          <Photos />
-          <Services />
-          <Reviews />
+          <Photos images={technicianImages}/>
+            <Services services={services} />
+          <Reviews ratings={ratings} />
           {/* <FreqQ /> */}
         </>
       );
     }
     switch (activeTab) {
       case "Photos":
-        return <Photos />;
+        return <Photos images={technicianImages} />;
       case "Services":
-        return <Services />;
+        return <Services services={services} />;
       case "Reviews":
-        return <Reviews />;
-      case "Frequent Q & A":
-        return role !== "technician" ? <FreqQ /> : null;
+        return <Reviews ratings={ratings} />;
       default:
         return null;
     }

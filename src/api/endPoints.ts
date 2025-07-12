@@ -74,15 +74,15 @@ const endpoints: any = {
       return `/api/subscriptions/plans`;
     }
   },
-  getTechImagesByTechId: {
+  getTechImagesByTechId: { //images
     method: "get",
     url: (id: string) => `/api/techImages/getTechImagesByTechId/${id}`
   },
-  getServicesByTechId: {
+  getServicesByTechId: { // services - get
     method: "get",
     url: (id: string) => `/api/services/getServicesByTechId/${id}`
   },
-  updateTechnicianControl: {
+  updateTechnicianControl: { // 
     method: "put",
     url: () => `/api/techAuth/updateTechnicianControl`
   },
@@ -105,7 +105,14 @@ const endpoints: any = {
   getAllPincodes: {
     method: "get",
     url: () => `/api/pincodes/allAreas`
-  }
+  },
+
+  getAllTechnicianDetails: {
+    method: "get",
+    url: (id: string) => {
+      return `/api/techDetails/getTechAllDetails/${id}`;
+    },
+  },
 }
 
 export default endpoints;

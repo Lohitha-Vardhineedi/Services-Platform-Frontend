@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { categories } from '../data/categoryData';
 import { useNavigate } from 'react-router-dom';
 import { getAllCategories } from '../api/apiMethods';
 
@@ -22,7 +21,19 @@ const getRandomBgColor = (): string => {
 
 
 const CategoriesPage: React.FC = () => {
-const navigate= useNavigate()
+  const navigate = useNavigate();
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    getAllCategories({}).then((res: any) => {
+      if (res.success && Array.isArray(res.data)) {
+        setCategories(res.data.map((cat: any) => ({
+          ...cat,
+          id: cat.id || cat._id
+        })));
+      }
+    });
+  }, []);
 
 const [allCategories, setAllCategories] = useState<Category[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -51,13 +62,13 @@ const [allCategories, setAllCategories] = useState<Category[]>([]);
         Most Popular Categories
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {allCategories.filter(category => category.status === 1).map((category, index) => {
+        {allCategories.filter(category => category?.status === 1).map((category, index) => {
           const bgColor = getRandomBgColor();
           return (
             <div
               key={category.id}
               className="flex flex-col items-center p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-all duration-300 cursor-pointer hover:scale-105 bg-white"
-              onClick={()=>navigate("/technicians")}
+              onClick={() => navigate(`/technicians/${category.id}`)}
             >
               <div
                 className={`w-20 h-20 ${bgColor} rounded-full flex items-center justify-center mb-4 overflow-hidden transition-transform duration-300 hover:scale-110`}
