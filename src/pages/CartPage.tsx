@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Trash2, X } from "lucide-react";
+import { FileMinus, Trash2, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { GoPlus, FiMinus } from "react-icons/go";
+import { GoPlus} from "react-icons/go";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import axios from "axios";
 
@@ -236,7 +236,7 @@ const CartPage: React.FC = () => {
                     className="p-2 rounded-full hover:bg-gray-200 text-fuchsia-500"
                     aria-label={`Decrease quantity of ${item.serviceId.serviceName}`}
                   >
-                    <FiMinus size={12} />
+                    <FileMinus size={12} />
                   </button>
                 )}
                 <span className="text-sm text-black w-8 text-center">{item.quantity}</span>
