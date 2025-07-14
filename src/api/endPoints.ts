@@ -113,6 +113,12 @@ const endpoints: any = {
       return `/api/techDetails/getTechAllDetails/${id}`;
     },
   },
+  getTechnicianReviews: {
+    method: "get",
+    url: (id: string) => {
+      return `/api/techReview/getTechReviewsById/${id}`;
+    },
+  },
 }
 
 export default endpoints;

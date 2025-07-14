@@ -43,6 +43,8 @@ export const getAllPincodes = () => apiRequest("getAllPincodes");
 
 export const getAllTechnicianDetails = (id: string) => apiRequest("getAllTechnicianDetails", null, id);
 
+export const getTechnicianReviews = (id: string) => apiRequest("getTechnicianReviews", null, id);
+
 // export const getAllTechnicianDetails = async (id: string) => {
 //   const res = await fetch(`/api/techDetails/getTechAllDetails/${id}`);
 //   const data = await res.json();
