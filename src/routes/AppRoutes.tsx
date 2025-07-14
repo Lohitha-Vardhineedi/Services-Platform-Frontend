@@ -15,7 +15,6 @@ import KeyFeaturesPage from '../pages/KeyFeaturesPage';
 import ServicePage from '../pages/ServicePage';
 import ProfilePage from '../pages/ProfilePage';
 import CartPage from '../pages/CartPage';
-import ContactPage from '../pages/ContactPage';
 import ProfileEditPage from '../pages/ProfileEditPage';
 // import ProfileEdit from '../components/profile/ProfileEdit';
 // import TransactionPage from '../pages/TransactionPage';
@@ -30,6 +29,7 @@ import TechnicianProfile from '../pages/technician/TechnicianProfile';
 import TechnicianSubscription from '../pages/technician/TechnicianSubscription';
 import TechnicianTransactions from '../pages/technician/TechnicianTransactions';
 import TechnicianPanel from '../pages/technician/TechnicianPanel';
+import { GuestBooking } from '../pages/GuestBooking';
 
 const AppRoutes = () => {
     return (
@@ -53,7 +53,7 @@ const AppRoutes = () => {
 
 
             <Route path="/technicians/:categoryId" element={<ServicePage />} />
-            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/contact" element={<GuestBooking />} />
             <Route path="/technicianById/:technicianId" element={<ProfilePage />} />
             <Route path="/cart" element={<CartPage/>} />
             <Route path="/userEdit" element={<ProfileEditPage />} />

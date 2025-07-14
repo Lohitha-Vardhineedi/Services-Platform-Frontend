@@ -71,6 +71,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
       .then((res: any) => {
         if (Array.isArray(res?.data)) {
           setPincodeData(res.data);
+          console.log('picode responces', res.data)
         }
       })
       .catch(() => {});

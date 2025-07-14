@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Download, Menu, X, ShoppingCart, Star } from 'lucide-react';
 import { TbLogout } from "react-icons/tb";
+import CompanyReviewModel from '../homepage/CompanyReviewModel'
 
 interface User {
   username: string;
@@ -223,46 +224,10 @@ function Header() {
       </div>
 
       {showReviewModal && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center">
-          <div
-            ref={reviewModalRef}
-            className="bg-white p-6 rounded-lg shadow-lg w-96 animate-fade-in"
-          >
-            <h2 className="text-lg font-medium mb-4 text-gray-700 text-center">💥Boom ! Review Time!</h2>
-            <form onSubmit={handleReviewSubmit} className='flex flex-col'>
-              <p className='text-sm font-medium mb-2 text-gray-700'>Name</p>
-              <input type="text" className='p-2 border border-gray-300 rounded-lg mb-4' value={user?.username} />
-              <p className='text-sm font-medium mb-2 text-gray-700'>Rating</p>
-              <div className="flex justify-center space-x-2 mb-8">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star
-                    key={star}
-                    className={`w-12 h-12 cursor-pointer transition-colors ${star <= selectedRating
-                        ? 'text-yellow-400 fill-current'
-                        : 'text-gray-300'
-                      }`}
-                    onClick={() => setSelectedRating(star)}
-                  />
-                ))}
-              </div>
-              <p className='text-sm font-medium mb-2 text-gray-700'>Review</p>
-              <textarea
-                className="w-full p-2 border border-gray-300 rounded-lg mb-4"
-                rows={4}
-                placeholder="Write your review here..."
-                required
-              />
-              <div className="flex justify-end space-x-2">
-                <button
-                  type="submit"
-                  className="px-4 py-2 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded-lg"
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <CompanyReviewModel
+        showReviewModal={showReviewModal}
+        setShowReviewModal={setShowReviewModal}
+      />
       )}
 
       {mobileOpen && (
