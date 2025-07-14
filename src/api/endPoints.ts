@@ -1,3 +1,5 @@
+import { addToCart } from "./apiMethods";
+
 const endpoints: any = {
   
    login: {
@@ -112,6 +114,24 @@ const endpoints: any = {
     url: (id: string) => {
       return `/api/techDetails/getTechAllDetails/${id}`;
     },
+  },
+    addToCart: {
+    method: "post",
+    url: () => `/api/cart/addToCart`
+  },
+   getCartItems: {
+    method: "get",
+    url: (id: string) => {
+      return `/api/cart/getCart/${id}`;
+    },
+  },
+     removeFromCart: {
+    method: "put",
+    url: () => `/api/cart/removeFromCartService`
+  },
+     createBookService: {
+    method: "post",
+    url: () => `/api/bookingServices/createBookService`
   },
 }
 

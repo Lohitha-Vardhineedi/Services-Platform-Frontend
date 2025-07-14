@@ -5,6 +5,7 @@ import { GoPlus } from "react-icons/go";
 import { FiMinus } from "react-icons/fi";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import axios from "axios";
+import { removeFromCart, addToCart, getCartItems, createBookService } from "../api/apiMethods";
 
 interface CartItem {
   _id: string;
@@ -22,7 +23,7 @@ interface CartItem {
   quantity: number;
   bookingDate: string;
   otp?: number;
-  isSelected: boolean; // Added to track selection
+  isSelected: boolean;
 }
 
 interface CartData {
@@ -50,6 +51,9 @@ const CartPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const [processingItems, setProcessingItems] = useState<{ [key: string]: boolean }>({});
+  const [isBooking, setIsBooking] = useState(false);
+  const [selectedItems, setSelectedItems] = useState<CartItem[]>([]);
   const dateInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
 
   useEffect(() => {
@@ -59,22 +63,43 @@ const CartPage = () => {
   const fetchCartData = async () => {
     try {
       setLoading(true);
-      const userId = "686f37ca7e3a2d2d4c3be95b"; // Hardcoded as per original code
-      const response = await axios.get(`http://localhost:5000/api/cart/getCart/${userId}`);
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        setError("User not logged in");
+        return;
+      }
       
-      if (response.data.success) {
-        // Initialize isSelected for each item
+      const response = await getCartItems(userId);
+      
+      if (response.success && response.result.cart) {
+        const formattedItems = response.result.cart.items.map((item: any) => ({
+          _id: item._id,
+          serviceId: {
+            _id: item.serviceId._id,
+            technicianId: item.serviceId.technicianId,
+            serviceName: item.serviceId.serviceName,
+            serviceImg: item.serviceId.serviceImg,
+            servicePrice: item.serviceId.servicePrice,
+            price: item.serviceId.price,
+            image: item.serviceId.image,
+            ratings: item.serviceId.ratings,
+            reviews: item.serviceId.reviews,
+          },
+          quantity: item.quantity,
+          bookingDate: item.bookingDate,
+          isSelected: false, // Initialize all as not selected
+        }));
+
         const updatedCartData = {
-          ...response.data.result,
+          user: response.result.user,
           cart: {
-            ...response.data.result.cart,
-            items: response.data.result.cart.items.map((item: CartItem) => ({
-              ...item,
-              isSelected: item.isSelected ?? false, // Default to false if not set
-            })),
+            ...response.result.cart,
+            items: formattedItems,
           },
         };
+        
         setCartData(updatedCartData);
+        setSelectedItems([]);
       } else {
         setError("Failed to fetch cart data");
       }
@@ -83,17 +108,6 @@ const CartPage = () => {
       setError(err?.message || "Failed to fetch cart data");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const updateCartItem = async (itemId: string, updates: Partial<CartItem>) => {
-    try {
-      const userId = "686f37ca7e3a2d2d4c3be95b";
-      await axios.put(`http://localhost:5000/api/cart/updateCart/${userId}/${itemId}`, updates);
-      await fetchCartData(); // Refresh cart data after update
-    } catch (err: any) {
-      console.error("Error updating cart item:", err);
-      setError("Failed to update cart item");
     }
   };
 
@@ -107,45 +121,224 @@ const CartPage = () => {
 
   const handleDateChange = async (e: React.ChangeEvent<HTMLInputElement>, itemId: string) => {
     const selectedDate = e.target.value;
-    await updateCartItem(itemId, { bookingDate: selectedDate });
-    setSelectedItemId(null);
+    setCartData(prev => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        cart: {
+          ...prev.cart,
+          items: prev.cart.items.map(item => 
+            item._id === itemId ? { ...item, bookingDate: selectedDate } : item
+          )
+        }
+      };
+    });
+
+    // Update selected items if this item is selected
+    setSelectedItems(prev => 
+      prev.map(item => 
+        item._id === itemId ? { ...item, bookingDate: selectedDate } : item
+      )
+    );
   };
 
   const handleClearDate = async (itemId: string) => {
-    await updateCartItem(itemId, { bookingDate: "" });
+    setCartData(prev => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        cart: {
+          ...prev.cart,
+          items: prev.cart.items.map(item => 
+            item._id === itemId ? { ...item, bookingDate: "" } : item
+          )
+        }
+      };
+    });
+
+    // Update selected items if this item is selected
+    setSelectedItems(prev => 
+      prev.map(item => 
+        item._id === itemId ? { ...item, bookingDate: "" } : item
+      )
+    );
   };
 
   const handleQuantityChange = async (itemId: string, delta: number) => {
-    const item = cartData?.cart.items.find((item) => item._id === itemId);
-    if (item) {
+    try {
+      setProcessingItems(prev => ({ ...prev, [itemId]: true }));
+      
+      const userId = localStorage.getItem('userId');
+      if (!userId) return;
+
+      const item = cartData?.cart.items.find((item) => item._id === itemId);
+      if (!item) return;
+
       const newQuantity = Math.max(1, item.quantity + delta);
-      await updateCartItem(itemId, { quantity: newQuantity });
+      
+      // Update local state
+      setCartData(prev => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          cart: {
+            ...prev.cart,
+            items: prev.cart.items.map(cartItem => 
+              cartItem._id === itemId ? { ...cartItem, quantity: newQuantity } : cartItem
+            )
+          }
+        };
+      });
+
+      // Update selected items if this item is selected
+      setSelectedItems(prev => 
+        prev.map(item => 
+          item._id === itemId ? { ...item, quantity: newQuantity } : item
+        )
+      );
+      
+      const payload = {
+        userId,
+        serviceId: item.serviceId._id,
+        quantity: newQuantity
+      };
+
+      await addToCart(payload);
+    } catch (err: any) {
+      console.error("Error changing quantity:", err);
+      setError("Failed to update quantity");
+      await fetchCartData();
+    } finally {
+      setProcessingItems(prev => ({ ...prev, [itemId]: false }));
     }
   };
 
   const handleRemove = async (itemId: string) => {
     try {
-      const userId = "686f37ca7e3a2d2d4c3be95b";
-      await axios.delete(`http://localhost:5000/api/cart/removeItem/${userId}/${itemId}`);
-      await fetchCartData();
+      setProcessingItems(prev => ({ ...prev, [itemId]: true }));
+      
+      const userId = localStorage.getItem('userId');
+      if (!userId) return;
+
+      const item = cartData?.cart.items.find((item) => item._id === itemId);
+      if (!item) return;
+
+      // Remove from cart data
+      setCartData(prev => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          cart: {
+            ...prev.cart,
+            items: prev.cart.items.filter(cartItem => cartItem._id !== itemId)
+          }
+        };
+      });
+
+      // Remove from selected items if present
+      setSelectedItems(prev => prev.filter(item => item._id !== itemId));
+
+      await removeFromCart({ userId, serviceId: item.serviceId._id });
     } catch (err: any) {
-      console.error("Error removing cart item:", err);
-      setError("Failed to remove cart item");
+      console.error("Error removing item:", err);
+      setError("Failed to remove item");
+      await fetchCartData();
+    } finally {
+      setProcessingItems(prev => ({ ...prev, [itemId]: false }));
     }
   };
 
-  const handleCheckboxChange = async (itemId: string) => {
-    const item = cartData?.cart.items.find((item) => item._id === itemId);
-    if (item) {
-      await updateCartItem(itemId, { isSelected: !item.isSelected });
+const handleCheckboxChange = (itemId: string) => {
+  setCartData(prev => {
+    if (!prev) return null;
+
+    const updatedItems = prev.cart.items.map(item => {
+      if (item._id === itemId) {
+        const newSelectedState = !item.isSelected;
+
+        setSelectedItems(prev => {
+          const exists = prev.some(selected => selected._id === itemId);
+          if (newSelectedState && !exists) {
+            return [...prev, { ...item, isSelected: true }];
+          } else if (!newSelectedState) {
+            return prev.filter(selected => selected._id !== itemId);
+          }
+          return prev;
+        });
+
+        return { ...item, isSelected: newSelectedState };
+      }
+      return item;
+    });
+
+    return {
+      ...prev,
+      cart: {
+        ...prev.cart,
+        items: updatedItems,
+      },
+    };
+  });
+};
+
+
+  const handleBookNow = async () => {
+  try {
+    setIsBooking(true);
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      setError("User not logged in");
+      return;
     }
-  };
+
+    if (selectedItems.length === 0) {
+      setError("No items selected for booking");
+      return;
+    }
+
+    // Prepare all bookings as an array of objects
+    const bookings = selectedItems.map(item => ({
+      userId,
+      serviceId: item.serviceId._id,
+      technicianId: item.serviceId.technicianId,
+      quantity: item.quantity.toString(),
+      bookingDate: item.bookingDate,
+      servicePrice: ((item.serviceId.servicePrice || item.serviceId.price || 0) * item.quantity).toString(),
+      gst: Math.round((item.serviceId.servicePrice || item.serviceId.price || 0) * item.quantity * 0.18).toString(),
+      totalPrice: Math.round((item.serviceId.servicePrice || item.serviceId.price || 0) * item.quantity * 1.18).toString()
+    }));
+
+    // Send all bookings in a single request
+    const response = await createBookService(bookings);
+
+    if (response.success) {
+      // alert(`Successfully booked ${response.result.length} services!`);
+      await fetchCartData(); // Refresh cart after successful booking
+    } else {
+      setError(response.message || "Booking failed");
+    }
+  } catch (err: any) {
+    console.error("Error creating bookings:", err);
+    setError(err?.message || "Failed to create bookings");
+  } finally {
+    setIsBooking(false);
+  }
+};
 
   const getMaxDate = () => {
     const today = new Date();
     const nextMonth = new Date();
     nextMonth.setMonth(today.getMonth() + 1);
     return nextMonth.toISOString().split("T")[0];
+  };
+
+  // Calculate totals for display
+  const calculateItemTotal = (item: CartItem) => {
+    const price = item.serviceId.servicePrice || item.serviceId.price || 0;
+    const subtotal = price * item.quantity;
+    const gst = Math.round(subtotal * 0.18);
+    const total = subtotal + gst;
+    return { subtotal, gst, total };
   };
 
   if (loading) {
@@ -156,6 +349,12 @@ const CartPage = () => {
     return (
       <div className="max-w-4xl mx-auto p-6">
         <p className="text-red-500 text-center">{error}</p>
+        <button
+          onClick={() => setError(null)}
+          className="mt-4 bg-fuchsia-500 text-white px-4 py-2 rounded-lg hover:bg-fuchsia-600"
+        >
+          Try Again
+        </button>
       </div>
     );
   }
@@ -165,198 +364,201 @@ const CartPage = () => {
       <div className="max-w-4xl mx-auto p-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-6">Your Cart</h1>
         <p className="text-gray-500">Your cart is empty.</p>
+        <button
+          onClick={() => navigate("/technicianById")}
+          className="mt-4 bg-fuchsia-500 text-white px-4 py-2 rounded-lg hover:bg-fuchsia-600"
+        >
+          Browse Services
+        </button>
       </div>
     );
   }
 
-  const selectedItems = cartData.cart.items.filter((item) => item.isSelected);
-  const subtotal = selectedItems.reduce(
-    (sum, item) => sum + ((item.serviceId.servicePrice || item.serviceId.price || 0) * item.quantity),
-    0
-  );
-  const tax = Math.round(subtotal * 0.18);
-  const total = subtotal + tax;
-  const isBookingDisabled = selectedItems.length === 0 || selectedItems.some((item) => !item.bookingDate);
+  const isBookingDisabled = selectedItems.length === 0 || 
+    selectedItems.some((item) => !item.bookingDate);
 
   return (
     <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl w-full py-6">
-      <style>
-        {`
-          .calendar-container {
-            display: block;
-            position: relative;
-          }
-          .calendar-container .hidden-input {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 4px;
-            opacity: 0;
-            width: 0;
-            height: 0;
-            padding: 0;
-            border: none;
-            z-index: -1;
-          }
-          .calendar-container:focus-within .hidden-input {
-            opacity: 0;
-          }
-          @media (min-width: 640px) {
-            .calendar-container .hidden-input {
-              margin-top: 6px;
-            }
-          }
-        `}
-      </style>
       <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">Your Cart</h1>
 
       <div className="space-y-4">
-        {cartData.cart.items.map((item) => (
-          <div
-            key={item._id}
-            className="flex items-center justify-between border border-gray-300 p-4 rounded-xl bg-white shadow"
-          >
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                checked={item.isSelected}
-                onChange={() => handleCheckboxChange(item._id)}
-                className="h-5 w-5 text-fuchsia-500 focus:ring-fuchsia-400 mr-3 sm:mr-4"
-                aria-label={`Select ${item.serviceId.serviceName}`}
-              />
-              <img
-                src={item.serviceId.serviceImg || item.serviceId.image || "https://via.placeholder.com/64"}
-                alt={item.serviceId.serviceName}
-                className="rounded-xl w-16 h-16 object-cover"
-              />
-              <div className="ml-4">
-                <p className="text-lg font-semibold">{item.serviceId.serviceName}</p>
-                <p className="text-gray-600">
-                  ₹ <span className="clr-blue">{item.serviceId.servicePrice || item.serviceId.price}</span> per unit
-                </p>
-                {item.serviceId.ratings && (
-                  <div className="flex items-center gap-1 mt-1">
-                    <span className="text-sm text-yellow-500">★</span>
-                    <span className="text-sm text-gray-600">{item.serviceId.ratings}</span>
-                    <span className="text-sm text-gray-500">({item.serviceId.reviews} reviews)</span>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 bg-fuchsia-100 rounded-lg px-2 border border-fuchsia-400">
-                {item.quantity === 1 ? (
-                  <button
-                    onClick={() => handleRemove(item._id)}
-                    className="p-1 rounded-full hover:bg-gray-200"
-                    aria-label={`Remove ${item.serviceId.serviceName}`}
-                  >
-                    <Trash2 size={16} className="text-red-500 hover:text-red-700" />
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => handleQuantityChange(item._id, -1)}
-                    className="p-1 rounded-full hover:bg-gray-200 clr-purple"
-                    aria-label={`Decrease quantity of ${item.serviceId.serviceName}`}
-                  >
-                    <FileMinus size={12} />
-                  </button>
-                )}
-                <span className="text-sm text-black w-8 text-center">{item.quantity}</span>
-                <button
-                  onClick={() => handleQuantityChange(item._id, 1)}
-                  className="p-1 rounded-full hover:bg-gray-200 clr-purple"
-                  aria-label={`Increase quantity of ${item.serviceId.serviceName}`}
-                >
-                  <GoPlus size={16} />
-                </button>
-              </div>
-
-              <div className="font-semibold text-gray-800">
-                ₹ {(item.serviceId.servicePrice || item.serviceId.price || 0) * item.quantity}
-              </div>
-
-              <div className="calendar-container">
-                {item.bookingDate ? (
-                  <div className="flex items-center space-x-2">
-                    <span
-                      className="text-sm text-blue-600 cursor-pointer hover:underline"
-                      onClick={() => handleCalendarClick(item._id)}
-                      aria-label={`Edit date for ${item.serviceId.serviceName}`}
-                    >
-                      📅 {new Date(item.bookingDate).toLocaleDateString()}
-                    </span>
-                    <button
-                      onClick={() => handleClearDate(item._id)}
-                      className="p-1 rounded-full hover:bg-gray-200"
-                      aria-label={`Clear date for ${item.serviceId.serviceName}`}
-                    >
-                      <X size={16} className="text-gray-500 hover:text-gray-700" />
-                    </button>
-                  </div>
-                ) : (
-                  <FaRegCalendarAlt
-                    size={20}
-                    className="cursor-pointer clr-blue"
-                    onClick={() => handleCalendarClick(item._id)}
-                    aria-label={`Select date for ${item.serviceId.serviceName}`}
-                  />
-                )}
-
+        {cartData.cart.items.map((item) => {
+          const isProcessing = processingItems[item._id];
+          return (
+            <div
+              key={item._id}
+              className={`flex items-center justify-between border border-gray-300 p-4 rounded-xl bg-white shadow ${
+                isProcessing ? "opacity-70" : ""
+              }`}
+            >
+              <div className="flex items-center">
                 <input
-                  id={`date-picker-${item._id}`}
-                  ref={(el) => (dateInputRefs.current[item._id] = el)}
-                  type="date"
-                  onChange={(e) => handleDateChange(e, item._id)}
-                  value={item.bookingDate}
-                  className="hidden-input"
-                  min={new Date().toISOString().split("T")[0]}
-                  max={getMaxDate()}
+                  type="checkbox"
+                  checked={item.isSelected}
+                  onChange={() => handleCheckboxChange(item._id)}
+                  className="h-5 w-5 text-fuchsia-500 focus:ring-fuchsia-400 mr-3 sm:mr-4"
+                  disabled={isProcessing}
                 />
+                <img
+                  src={item.serviceId.serviceImg || item.serviceId.image || "https://via.placeholder.com/64"}
+                  alt={item.serviceId.serviceName}
+                  className="rounded-xl w-16 h-16 object-cover"
+                />
+                <div className="ml-4">
+                  <p className="text-lg font-semibold">{item.serviceId.serviceName}</p>
+                  <p className="text-gray-600">
+                    ₹ <span className="clr-blue">{item.serviceId.servicePrice || item.serviceId.price}</span> per unit
+                  </p>
+                  {item.serviceId.ratings && (
+                    <div className="flex items-center gap-1 mt-1">
+                      <span className="text-sm text-yellow-500">★</span>
+                      <span className="text-sm text-gray-600">{item.serviceId.ratings}</span>
+                      <span className="text-sm text-gray-500">({item.serviceId.reviews} reviews)</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2 bg-fuchsia-100 rounded-lg px-2 border border-fuchsia-400">
+                  {item.quantity === 1 ? (
+                    <button
+                      onClick={() => !isProcessing && handleRemove(item._id)}
+                      className="p-1 rounded-full hover:bg-gray-200"
+                      disabled={isProcessing}
+                      aria-label={`Remove ${item.serviceId.serviceName}`}
+                    >
+                      <Trash2 size={16} className="text-red-500 hover:text-red-700" />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => !isProcessing && handleQuantityChange(item._id, -1)}
+                      className="p-1 rounded-full hover:bg-gray-200 clr-purple"
+                      disabled={isProcessing}
+                      aria-label={`Decrease quantity of ${item.serviceId.serviceName}`}
+                    >
+                      <FileMinus size={12} />
+                    </button>
+                  )}
+                  <span className="text-sm text-black w-8 text-center">
+                    {isProcessing ? "..." : item.quantity}
+                  </span>
+                  <button
+                    onClick={() => !isProcessing && handleQuantityChange(item._id, 1)}
+                    className="p-1 rounded-full hover:bg-gray-200 clr-purple"
+                    disabled={isProcessing}
+                    aria-label={`Increase quantity of ${item.serviceId.serviceName}`}
+                  >
+                    <GoPlus size={16} />
+                  </button>
+                </div>
+
+                <div className="font-semibold text-gray-800">
+                  ₹ {(item.serviceId.servicePrice || item.serviceId.price || 0) * item.quantity}
+                </div>
+
+                <div className="calendar-container">
+                  {item.bookingDate ? (
+                    <div className="flex items-center space-x-2">
+                      <span
+                        className="text-sm text-blue-600 cursor-pointer hover:underline"
+                        onClick={() => !isProcessing && handleCalendarClick(item._id)}
+                        aria-label={`Edit date for ${item.serviceId.serviceName}`}
+                      >
+                        📅 {new Date(item.bookingDate).toLocaleDateString()}
+                      </span>
+                      <button
+                        onClick={() => !isProcessing && handleClearDate(item._id)}
+                        className="p-1 rounded-full hover:bg-gray-200"
+                        disabled={isProcessing}
+                        aria-label={`Clear date for ${item.serviceId.serviceName}`}
+                      >
+                        <X size={16} className="text-gray-500 hover:text-gray-700" />
+                      </button>
+                    </div>
+                  ) : (
+                    <FaRegCalendarAlt
+                      size={20}
+                      className="cursor-pointer clr-blue"
+                      onClick={() => !isProcessing && handleCalendarClick(item._id)}
+                      aria-label={`Select date for ${item.serviceId.serviceName}`}
+                    />
+                  )}
+
+                  <input
+                    id={`date-picker-${item._id}`}
+                    ref={(el) => (dateInputRefs.current[item._id] = el)}
+                    type="date"
+                    onChange={(e) => !isProcessing && handleDateChange(e, item._id)}
+                    value={item.bookingDate}
+                    className="hidden-input"
+                    min={new Date().toISOString().split("T")[0]}
+                    max={getMaxDate()}
+                    disabled={isProcessing}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
+
+      {/* Selected Items Summary */}
+      {selectedItems.length > 0 && (
+        <div className="mt-6 border-t pt-4">
+          <h2 className="text-lg font-semibold mb-4">Selected Items</h2>
+          {selectedItems.map((item) => {
+            const { subtotal, gst, total } = calculateItemTotal(item);
+            return (
+              <div key={item._id} className="mb-4 p-3 border rounded-lg">
+                <div className="flex justify-between">
+                  <span>{item.serviceId.serviceName} (x{item.quantity})</span>
+                  <span>₹{subtotal}</span>
+                </div>
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>Booking Date:</span>
+                  <span>{item.bookingDate ? new Date(item.bookingDate).toLocaleDateString() : "Not set"}</span>
+                </div>
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>GST (18%):</span>
+                  <span>₹{gst}</span>
+                </div>
+                <div className="flex justify-between font-medium mt-1">
+                  <span>Total:</span>
+                  <span>₹{total}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       <div className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center text-sm sm:text-base font-medium mt-4 sm:mt-6">
         <span className="text-gray-800 mb-2 sm:mb-0">Missed Something?</span>
-        <div
+        <button
           className="bg-red-600 text-white hover:bg-red-700 px-3 py-1.5 rounded-lg cursor-pointer text-sm sm:text-base"
           onClick={() => navigate("/technicianById")}
         >
           Add More Items
-        </div>
+        </button>
       </div>
 
       <div className="mt-6 border-t pt-4">
-        <div className="flex justify-between text-gray-700 mb-2 text-sm sm:text-base">
-          <span>Subtotal</span>
-          <span>₹{subtotal}</span>
-        </div>
-        <div className="flex justify-between text-gray-700 mb-2 text-sm sm:text-base">
-          <span>GST (18%)</span>
-          <span>₹{tax}</span>
-        </div>
-        <div className="flex justify-between text-lg sm:text-xl font-bold mt-4 text-gray-800">
-          <span>Total</span>
-          <span>₹{total}</span>
-        </div>
-
         <button
           className={`w-full mt-4 sm:mt-6 py-2 rounded-xl text-sm sm:text-lg font-semibold transition-all ${
             isBookingDisabled
               ? "bg-gray-400 text-gray-700 cursor-not-allowed"
               : "bg-fuchsia-500 text-white hover:bg-fuchsia-600"
-          }`}
-          disabled={isBookingDisabled}
+          } ${isBooking ? "opacity-70" : ""}`}
+          disabled={isBookingDisabled || isBooking}
+          onClick={handleBookNow}
         >
-          {isBookingDisabled
-            ? selectedItems.length === 0
-              ? "Select at least one item"
-              : "Select dates for all selected items"
-            : "Book Now"}
+          {isBooking ? "Processing..." : 
+            isBookingDisabled
+              ? selectedItems.length === 0
+                ? "Select at least one item"
+                : "Select dates for all selected items"
+              : "Book Now"}
         </button>
       </div>
     </div>

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { BsCartDash } from "react-icons/bs";
-import { FaCartPlus, FaTrash } from "react-icons/fa6";
+import { FaCartPlus } from "react-icons/fa6";
 import { MdOutlineStar } from "react-icons/md";
-import { createServiceControl} from '../../api/apiMethods';
-import { TechnicianService } from "../../pages/ProfilePage";
+import { addToCart, removeFromCart, getCartItems } from '../../api/apiMethods';
 
 interface ServicesProps {
   services: TechnicianService[];
@@ -14,72 +13,88 @@ interface CartItem {
   serviceName: string;
   servicePrice: number;
   serviceImg: string;
+  quantity: number;
 }
 
 const Services: React.FC<ServicesProps> = ({ services }) => {
-const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-    const stored = localStorage.getItem("cartItems");
-    return stored ? JSON.parse(stored) : [];
-  });
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [loading, setLoading] = useState<{ [key: string]: boolean }>({});
 
-    useEffect(() => {
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
-  }, [cartItems]);
-
-   const handleCartToggle = (serviceId: string) => {
-    const isInCart = cartItems.some((item) => item.id === serviceId);
-    if (isInCart) {
-      setCartItems(cartItems.filter((item) => item.id !== serviceId));
-    } else {
-      const service = services.find((s) => s._id === serviceId);
-      if (service) {
-        setCartItems([
-          ...cartItems,
-          {
-            id: service._id,
-            serviceName: service.serviceName,
-            servicePrice: service.servicePrice,
-            serviceImg: service.serviceImg,
-          },
-        ]);
+  const fetchCartItems = async () => {
+    try {
+      const userId = localStorage.getItem('userId');
+      if (!userId) return;
+      
+      const response = await getCartItems(userId);
+      if (response.success && response.result.cart) {
+        const formattedItems = response.result.cart.items.map((item: any) => ({
+          id: item.serviceId._id,
+          serviceName: item.serviceId.serviceName,
+          servicePrice: item.serviceId.servicePrice,
+          serviceImg: item.serviceId.serviceImg,
+          quantity: item.quantity
+        }));
+        setCartItems(formattedItems);
       }
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
     }
   };
 
-  // const handleCartToggle = (serviceId: number) => {
-  //   setCartItems((prev: any[]) => {
-  //     const isAlreadyInCart = prev.find((item: any) => item.id === serviceId);
-  //     if (isAlreadyInCart) {
-  //       return prev.filter((item: any) => item.id !== serviceId);
-  //     } else {
-  //       const serviceToAdd = services.find((s: any) => s.id === serviceId);
-  //       return [...prev, { ...serviceToAdd }];
-  //     }
-  //   });
-  // };
+  useEffect(() => {
+    fetchCartItems();
+  }, []);
 
-      const technicianId = localStorage.getItem("userId");
-    if (!technicianId) return;
+  const handleCartToggle = async (serviceId: string) => {
+    try {
+      const userId = localStorage.getItem('userId');
+      if (!userId) return;
 
-  //     const formData = new FormData();
-  //   formData.append("technicianId", technicianId);
-  //   formData.append("serviceName", newService.serviceName);
-  //   formData.append("servicePrice", newService.servicePrice);
-  //   formData.append("serviceImg", newService.serviceImg);
+      setLoading(prev => ({ ...prev, [serviceId]: true }));
+      const isInCart = cartItems.some(item => item.id === serviceId);
+      
+      if (isInCart) {
+        // Call removeFromCart API
+        const response = await removeFromCart({ userId, serviceId });
+        if (response.success) {
+          // Update local state immediately for better UX
+          setCartItems(prev => prev.filter(item => item.id !== serviceId));
+          // Refresh cart items from server to ensure consistency
+          await fetchCartItems();
+        }
+      } else {
+        const payload = {
+          userId,
+          serviceId,
+          quantity: 1
+        };
 
-  //   for (let pair of formData.entries()) {
-  //     console.log(`${pair[0]}: ${pair[1]}`);
-  //   }
-
-  //   try {
-  //     await createServiceControl(formData);
-  //     setNewService({ serviceName: "", servicePrice: "", serviceImg: null });
-  //     setAddModalOpen(false);
-  //     // Consider refreshing the service list after creation
-  //   } catch (error) {
-  //     console.error("Error creating service:", error);
-  //   }
-  // };
+        const response = await addToCart(payload);
+        if (response.success) {
+          // Update local state immediately for better UX
+          const service = services.find(s => s._id === serviceId);
+          if (service) {
+            setCartItems(prev => [
+              ...prev,
+              {
+                id: service._id,
+                serviceName: service.serviceName,
+                servicePrice: service.servicePrice,
+                serviceImg: service.serviceImg,
+                quantity: 1
+              }
+            ]);
+          }
+          // Refresh cart items from server to ensure consistency
+          await fetchCartItems();
+        }
+      }
+    } catch (error) {
+      console.error("Error toggling cart item:", error);
+    } finally {
+      setLoading(prev => ({ ...prev, [serviceId]: false }));
+    }
+  };
 
   return (
     <div className="border border-gray-200 shadow-md rounded-xl p-4 my-4 overflow-y-auto scrollbar-hide max-h-[calc(100vh-220px)] sm:max-h-[calc(100vh-180px)] md:max-h-[calc(100vh-160px)]">
@@ -89,9 +104,11 @@ const [cartItems, setCartItems] = useState<CartItem[]>(() => {
         </div>
       </div>
 
-       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {services.map((service) => {
           const isInCart = cartItems.some((item) => item.id === service._id);
+          const isLoading = loading[service._id];
+
           return (
             <div
               key={service._id}
@@ -121,10 +138,13 @@ const [cartItems, setCartItems] = useState<CartItem[]>(() => {
                     ${isInCart
                       ? "text-red-600 border border-red-600"
                       : "bg-red-600 text-white hover:bg-red-700"
-                    }`}
-                  onClick={() => handleCartToggle(service._id)}
+                    } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                  onClick={() => !isLoading && handleCartToggle(service._id)}
+                  disabled={isLoading}
                 >
-                  {isInCart ? (
+                  {isLoading ? (
+                    <span>Processing...</span>
+                  ) : isInCart ? (
                     <>
                       <BsCartDash size={16} />
                       <span className="ml-2">Remove</span>
