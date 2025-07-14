@@ -119,6 +119,16 @@ const endpoints: any = {
       return `/api/techReview/getTechReviewsById/${id}`;
     },
   },
+
+  getCompanyReviews: {
+    method: "get",
+    url : '/api/companyReview/getCompanyReviews'
+  },
+
+  createGuestBooking: {
+    method: "post",
+    url:"/api/guestBooking/addGuestBooking"
+  }
 }
 
 export default endpoints;
