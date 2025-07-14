@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Download, Menu, X, ShoppingCart, Star } from 'lucide-react';
 import { TbLogout } from "react-icons/tb";
-import CompanyReviewModel from '../services/CompanyReviewModel'
+import CompanyReviewModel from '../homepage/CompanyReviewModel'
 
 interface User {
   username: string;
