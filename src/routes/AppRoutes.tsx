@@ -47,7 +47,7 @@ const AppRoutes = () => {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/subscription" element={<SubscriptionPage/>}/>
             {/* <Route path="/subscriptions" element={<PlanDetailsPage />} /> */}
-            <Route path="/subscription/:id" element={<PlanDetailsPage />} />
+            <Route path="/subscription/:subscriptionId" element={<PlanDetailsPage />} />
             <Route path="/features" element={<KeyFeaturesPage />} />
             <Route path="/franchise" element={<FranchisePage />} />
 

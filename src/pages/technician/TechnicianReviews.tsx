@@ -4,24 +4,38 @@ import { MdOutlineStar } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { getTechnicianReviews } from '../../api/apiMethods';
 
+interface TechnicianReview {
+  _id: string;
+  review: string;
+  rating: number;
+  createdAt: string;
+  serviceId?: {
+    _id: string;
+    serviceName: string;
+    serviceImg: string;
+    servicePrice: number;
+  };
+  userId: {
+    _id: string;
+    username: string;
+    buildingName: string;
+    areaName: string;
+    city: string;
+    profileImage?: string;
+  };
+}
+
+
 const TechnicianReviews = () => {
   const [replies, setReplies] = useState<{ [key: number]: string }>({});
   const [inputs, setInputs] = useState<{ [key: number]: string }>({});
-  const [reviews, setReviews] = useState();
+  // const [reviews, setReviews] = useState();
   const [error, setError] = useState<string | null>(null)
 
+  const [reviews, setReviews] = useState<TechnicianReview[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // const reviews = [
-  //   {
-  //     image:
-  //       "https://img.freepik.com/free-photo/portrait-smiling-blonde-woman_23-2148316635.jpg?uid=R149535454&ga=GA1.1.186113507.1743993848&semt=ais_hybrid&w=740",
-  //     name: "Lohitha",
-  //     ratings: "4.0",
-  //     reviews: "320",
-  //     date: "13-June-2025",
-  //     data: "I am Very happy with this Service.",
-  //   },
-  // ];
+
 
   const handleInputChange = (index: number, value: string) => {
     setInputs((prev) => ({ ...prev, [index]: value }));
@@ -34,22 +48,37 @@ const TechnicianReviews = () => {
     }
   };
 
+  const id = localStorage.getItem("userId");
+   const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month:"short",
+      year: "numeric",
+    });
+  };
+
    const fetchTechReviews = async () => {
       try {
-        const response = await getTechnicianReviews();
+        const response = await getTechnicianReviews(id);
         if (response) {
-          setReviews(response);
+          setReviews(response?.result?.ratings ?? []);
           console.log(response,"==>response");
+        //  setLoading(false)
         } else {
           setError('Invalid response format');
         }
       } catch (err: any) {
-        setError(err?.message || 'Failed to fetch categories');
+        setError(err?.message || 'Failed to fetch Reviews');
+      }
+      finally{
+        setLoading(false)
       }
     };
     useEffect(() => {
+      if(id)
       fetchTechReviews();
-    }, []);
+    }, [id]);
 
 
   return (
@@ -65,6 +94,13 @@ const TechnicianReviews = () => {
           </div>
         </div>
 
+{loading ? (
+        <p className="text-gray-500">Loading reviews...</p>
+      ) : error ? (
+        <p className="text-red-600">{error}</p>
+      ) : reviews.length === 0 ? (
+        <p className="text-gray-500">No reviews yet.</p>
+      ) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {reviews.map((review, index) => (
           <div
@@ -73,27 +109,29 @@ const TechnicianReviews = () => {
           >
             <div className="flex gap-3 items-center">
               <img
-                src={review?.image}
-                alt={review?.name}
+                src={review?.userId?.profileImage}
+                alt={review?.userId?.username}
                 className="w-14 h-14 object-cover rounded-full"
               />
               <div className="flex flex-col">
                 <span className="text-md sm:text-md md:text-md lg:text-lg xl:text-lg font-extralight">
-                  {review?.name}
+                  {review?.userId?.username}
                 </span>
                 <span className="text-sm text-gray-500">
-                  {review?.date}
+                  {/* {review?.date} */}
+                  {formatDate(review.createdAt)}
+                  {/* {new Date(review.createdAt).toDateString()} */}
                 </span>
               </div>
             </div>
 
             <div className="flex ms-1 mt-2">
               {[...Array(5)].map((_, i) => (
-                <MdOutlineStar key={i} size={20} color="#aaa" />
+                <MdOutlineStar key={i} size={20} color={i < review.rating ? "#facc15" : "#d1d5db"} />
               ))}
             </div>
             <div className="my-3 text-sm sm:text-base md:text-base lg:text-md xl:text-md ms-2 text-gray-600">
-              {review?.data}
+              {review?.review}
             </div>
 
             {/* Technician reply section */}
@@ -126,6 +164,7 @@ const TechnicianReviews = () => {
           </div>
         ))}
       </div>
+      )}
     </div>
   )
 }

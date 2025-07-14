@@ -29,6 +29,8 @@ export const getTechImagesByTechId = (id: string) => apiRequest("getTechImagesBy
 
 export const getServicesByTechId = (id: string) => apiRequest("getServicesByTechId", null, id);
 
+export const getTechnicianReviews = (id: string) => apiRequest("getTechnicianReviews", null, id);
+
 export const updateTechnicianControl = (formData: FormData) => apiRequest("updateTechnicianControl", formData);
 
 export const updateServiceControl = (formData: FormData) => apiRequest("updateServiceControl", formData);
@@ -43,7 +45,7 @@ export const getAllPincodes = () => apiRequest("getAllPincodes");
 
 export const getAllTechnicianDetails = (id: string) => apiRequest("getAllTechnicianDetails", null, id);
 
-export const getTechnicianReviews = (id: string) => apiRequest("getTechnicianReviews", null, id);
+
 
 // export const getAllTechnicianDetails = async (id: string) => {
 //   const res = await fetch(`/api/techDetails/getTechAllDetails/${id}`);

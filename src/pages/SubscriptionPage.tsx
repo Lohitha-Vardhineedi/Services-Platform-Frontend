@@ -9,7 +9,7 @@ import {
   BadgeIndianRupee,
   LucideIcon,
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getPlans } from '../api/apiMethods';
 
 const iconMap: { [key: string]: LucideIcon } = {
@@ -28,8 +28,8 @@ interface FullFeature {
   text: string;
 }
 
-interface Plan {
-  id: string;
+export interface Plan {
+  _id: string;
   name: string;
   price: number;
   originalPrice?: number;
@@ -50,7 +50,6 @@ const SubscriptionPage: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  // const [plans, setPlans] = useState({});
   const [plans, setPlans] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -74,13 +73,12 @@ const SubscriptionPage: React.FC = () => {
 
 
   const handleFullDetails = (plan: Plan): void => {
-    navigate(`/subscription/${plan.id}`);
+    navigate(`/subscription/${plan._id}`, { state: { plan } });
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-10">
       <div className="max-w-7xl mx-auto px-4">
-        {/* Header */}
         <div className="text-center mb-14">
           <h1 className="text-4xl font-extrabold text-gray-800">
             Technician Subscription Plans
@@ -96,9 +94,9 @@ const SubscriptionPage: React.FC = () => {
 
             return (
               <div
-                key={plan.id}
+                key={plan._id}
                 className={`relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105 border 
-                  ${selectedPlan === plan.id ? 'ring-2 ring-blue-500' : ''} 
+                  ${selectedPlan === plan._id ? 'ring-2 ring-blue-500' : ''} 
                   ${plan.isPopular ? 'border-yellow-400 ring-2 ring-yellow-400' : 'border-gray-200'}`}
               >
                 {plan.isPopular && (
@@ -162,7 +160,7 @@ const SubscriptionPage: React.FC = () => {
                       {selectedPlan === plan?.name ? 'Selected' : 'Choose Plan'}
                     </button>
                     <button
-                      onClick={() => handleFullDetails(plan?.id)}
+                      onClick={() => handleFullDetails(plan)}
                       className="w-full py-2 px-4 text-gray-600 hover:text-blue-600 font-medium transition duration-300"
                     >
                       Full Details →

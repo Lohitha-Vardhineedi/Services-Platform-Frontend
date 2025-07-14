@@ -89,6 +89,39 @@ const [allCategories, setAllCategories] = useState<Category[]>([]);
           );
         })}
       </div>
+      <div className='mt-7'>
+       <h2 className="text-xl font-bold text-gray-900 mb-4 text-left">
+        Upcoming Categories
+      </h2>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {allCategories.filter(category => category?.status === 0).map((category, index) => {
+          const bgColor = getRandomBgColor();
+          return (
+            <div
+              key={category.id}
+              className="flex flex-col items-center p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-all duration-300 bg-white"
+              // onClick={() => navigate(`/technicians/${category.id}`)}
+            >
+              <div
+                className={`w-20 h-20 ${bgColor} rounded-full flex items-center justify-center mb-4 overflow-hidden transition-transform duration-300 hover:scale-110`}
+              >
+                <img
+                src={`${category.category_image}`}
+                  alt={category.category_name}
+                  // src={`https://prnvservices.com/${category_image}`}
+                  // alt={category_name}
+                  className="w-12 h-12 object-contain"
+                />
+              </div>
+              <h3 className="text-sm font-medium text-gray-700 text-center leading-tight">
+                 {category.category_name}
+              </h3>
+            </div>
+       
+          );
+        })}
+      </div>
+      </div>
     </div>
   );
 };
