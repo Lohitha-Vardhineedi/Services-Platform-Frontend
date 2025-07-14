@@ -2,28 +2,26 @@ import { ChevronRight } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { MdOutlineStar } from 'react-icons/md';
 import { Link } from 'react-router-dom';
+import { getTechnicianReviews } from '../../api/apiMethods';
 
 const TechnicianReviews = () => {
-  const [role, setRole] = useState<string | null>(null);
   const [replies, setReplies] = useState<{ [key: number]: string }>({});
   const [inputs, setInputs] = useState<{ [key: number]: string }>({});
+  const [reviews, setReviews] = useState();
+  const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    setRole(localStorage.getItem("role"));
-  }, []);
 
-  const reviews = [
-    {
-      image:
-        "https://img.freepik.com/free-photo/portrait-smiling-blonde-woman_23-2148316635.jpg?uid=R149535454&ga=GA1.1.186113507.1743993848&semt=ais_hybrid&w=740",
-      name: "Lohitha",
-      ratings: "4.0",
-      reviews: "320",
-      date: "13-June-2025",
-      data: "I am Very happy with this Service.",
-    },
-    // ...other reviews...
-  ];
+  // const reviews = [
+  //   {
+  //     image:
+  //       "https://img.freepik.com/free-photo/portrait-smiling-blonde-woman_23-2148316635.jpg?uid=R149535454&ga=GA1.1.186113507.1743993848&semt=ais_hybrid&w=740",
+  //     name: "Lohitha",
+  //     ratings: "4.0",
+  //     reviews: "320",
+  //     date: "13-June-2025",
+  //     data: "I am Very happy with this Service.",
+  //   },
+  // ];
 
   const handleInputChange = (index: number, value: string) => {
     setInputs((prev) => ({ ...prev, [index]: value }));
@@ -35,6 +33,24 @@ const TechnicianReviews = () => {
       setInputs((prev) => ({ ...prev, [index]: "" }));
     }
   };
+
+   const fetchTechReviews = async () => {
+      try {
+        const response = await getTechnicianReviews();
+        if (response) {
+          setReviews(response);
+          console.log(response,"==>response");
+        } else {
+          setError('Invalid response format');
+        }
+      } catch (err: any) {
+        setError(err?.message || 'Failed to fetch categories');
+      }
+    };
+    useEffect(() => {
+      fetchTechReviews();
+    }, []);
+
 
   return (
     <div className="rounded-xl p-4 overflow-y-auto scrollbar-hide max-w-7xl mx-auto">

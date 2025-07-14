@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Trash2, X } from "lucide-react";
+import { FileMinus, Trash2, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import { FiMinus } from "react-icons/fi";
@@ -260,7 +260,7 @@ const CartPage = () => {
                     className="p-1 rounded-full hover:bg-gray-200 clr-purple"
                     aria-label={`Decrease quantity of ${item.serviceId.serviceName}`}
                   >
-                    <FiMinus size={12} />
+                    <FileMinus size={12} />
                   </button>
                 )}
                 <span className="text-sm text-black w-8 text-center">{item.quantity}</span>

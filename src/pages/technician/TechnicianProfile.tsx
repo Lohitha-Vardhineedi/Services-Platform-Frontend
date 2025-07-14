@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { MdOutlineStar } from 'react-icons/md';
-import { IoCall, IoShareSocial } from 'react-icons/io5';
+import { IoCall, IoLocationOutline, IoShareSocial } from 'react-icons/io5';
 import { LuMessageSquareText } from 'react-icons/lu';
 import { technicianGetProfile, updateTechnicianControl } from '../../api/apiMethods';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
+import { FaThumbsUp } from 'react-icons/fa';
 
 // Define interfaces for type safety
 interface Profile {
@@ -14,6 +15,7 @@ interface Profile {
   years: string;
   image: string;
   phone: string;
+  description: string;
 }
 
 interface ApiResponse {
@@ -40,6 +42,7 @@ const TechnicianProfile: React.FC = () => {
     years: '',
     image: '',
     phone: '',
+    description: ''
   });
   const [editProfile, setEditProfile] = useState<Profile>({ ...profile });
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -55,13 +58,14 @@ const TechnicianProfile: React.FC = () => {
           if (data?.result) {
             setProfile({
               name: data.result.username || '',
-              service: data.result.category || '',
-              location: `${data.result.buildingName || ''}, ${data.result.areaName || ''}, ${data.result.city || ''}, ${data.result.state || ''}, ${data.result.pincode || ''}`
+              service: data.result.service || '',
+              location: ` ${data.result.areaName || ''}, ${data.result.city || ''}, ${data.result.state || ''}, ${data.result.pincode || ''}`
                 .replace(/(, )+/g, ', ')
                 .replace(/^, |, $/g, ''),
               years: data.result.description || '',
               image: data.result.profileImage || 'https://via.placeholder.com/150',
-              phone: data.result.ProfilePhone || '',
+              phone: data.result.phoneNumber || '',
+              description: data.result.description || '',
             });
           }
         }
@@ -145,48 +149,65 @@ const TechnicianProfile: React.FC = () => {
         ) : error ? (
           <div className="text-red-500 text-center">{error}</div>
         ) : (
-          <div className="flex flex-col md:flex-row gap-8 bg-white rounded-xl shadow-lg p-6">
-            {/* Profile Image */}
-            <div className="flex justify-center md:justify-start md:w-1/3">
-              <img
-                src={profile.image}
-                alt="Profile"
-                className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-blue-100 shadow-md transition-transform duration-200"
-              />
-            </div>
-            {/* Profile Details */}
-            <div className="flex-1 space-y-4">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-800 break-words">{profile.name}</h2>
-              <p className="text-lg text-gray-600">{profile.service}</p>
-              <div className="flex items-center space-x-4 text-sm text-gray-600">
-                <div className="flex items-center bg-amber-100 px-3 py-1 rounded-lg text-black font-semibold">
-                  4.8 <MdOutlineStar size={20} className="ml-1 text-amber-500" />
+          <div className="border border-gray-300 rounded-xl p-5 flex flex-col md:flex-row relative overflow-hidden">
+                <div className="flex flex-col items-center md:items-start md:mr-6 mb-4 md:mb-0 relative w-full md:w-auto">
+                  <img
+                    src={profile.image}
+                    alt={profile.name}
+                    className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover border-2 border-gray-300"
+                  />
                 </div>
-                <span className="text-gray-500">84 Ratings</span>
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-xl font-semibold truncate">{profile.name}</h2>
+          
+                  <div className="flex flex-wrap items-center gap-4 my-3">
+                    <div className="flex items-center border border-amber-500 rounded-lg px-2 py-1 text-black text-sm font-bold">
+                      4.8
+                      <MdOutlineStar size={18} className="ml-1" color="#ffc71b" />
+                    </div>
+                    <div className="text-gray-600 text-sm font-light">84 Ratings</div>
+                  </div>
+                  {profile.service && (
+                    <div className="flex flex-wrap gap-2">
+                      <span className="bg-fuchsia-200 px-3 py-1 rounded-xl text-black text-sm font-light">
+                        {profile.service}
+                      </span>
+                    </div>
+                  )}
+          
+                  <div className="flex my-3 items-center">
+                    <IoLocationOutline size={27} color="red" />
+                    <span className="text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
+                      {profile.location}
+                      
+                    </span>
+                  </div>
+                  {profile?.description && (
+                    <div className="flex items-center">
+                      <FaThumbsUp size={22} color="#00B800" className='flex' />
+                      <span className="text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
+                        {" "}
+                        {profile?.description} Years in Services
+                      </span>
+                    </div>
+                  )}
+          
+                  <div className="flex gap-4 mt-4 flex-wrap">
+                    <div className="flex bg-fuchsia-500 rounded-xl text-white px-4 py-1 font-bold items-center cursor-pointer hover:bg-fuchsia-600">
+                      <IoCall size={22} className="me-2" />
+                      <span> {profile?.phone}</span>
+                    </div>
+                    <div className="flex items-center bg-green-600 hover:bg-green-500 rounded-xl text-white px-4 py-1 font-bold cursor-pointer">
+                      <LuMessageSquareText size={18} className="mr-2" />
+                      Message
+                    </div>
+                    <div className="flex items-center bg-blue-500 hover:bg-blue-600 rounded-xl text-white px-4 py-1 font-bold cursor-pointer">
+                      <IoShareSocial size={18} className="mr-2" />
+                      Share
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="bg-blue-50 px-4 py-2 rounded-xl text-gray-800 text-sm font-medium">
-                {profile.location}
-              </div>
-              <p className="text-sm text-gray-600">Experience: {profile.years} years</p>
-              <div className="flex flex-wrap gap-4">
-                <button
-                  className="flex items-center bg-blue-500 text-white px-5 py-2 rounded-lg text-sm font-medium shadow transition-transform duration-200 hover:scale-105 active:scale-95"
-                >
-                  <IoCall size={20} className="mr-2" /> {profile.phone}
-                </button>
-                <button
-                  className="flex items-center bg-green-500 text-white px-5 py-2 rounded-lg text-sm font-medium shadow transition-transform duration-200 hover:scale-105 active:scale-95"
-                >
-                  <LuMessageSquareText size={20} className="mr-2" /> Message
-                </button>
-                <button
-                  className="flex items-center bg-indigo-500 text-white px-5 py-2 rounded-lg text-sm font-medium shadow transition-transform duration-200 hover:scale-105 active:scale-95"
-                >
-                  <IoShareSocial size={20} className="mr-2" /> Share
-                </button>
-              </div>
-            </div>
-          </div>
         )}
 
         {/* Edit Modal */}
@@ -287,6 +308,80 @@ const InputField: React.FC<InputFieldProps> = ({ label, name, value, onChange })
 );
 
 export default TechnicianProfile;
+
+{/* <div className="border border-gray-300 rounded-xl p-5 flex flex-col md:flex-row relative overflow-hidden">
+      <div className="flex flex-col items-center md:items-start md:mr-6 mb-4 md:mb-0 relative w-full md:w-auto">
+        <img
+          src={technician.profileImage}
+          alt={technician.username}
+          className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover border-2 border-gray-300"
+        />
+      </div>
+      <div className="flex-1 min-w-0">
+        <h2 className="text-xl font-semibold truncate">{technician.username}</h2>
+
+        <div className="flex flex-wrap items-center gap-4 my-3">
+          <div className="flex items-center border border-amber-500 rounded-lg px-2 py-1 text-black text-sm font-bold">
+            4.8
+            <MdOutlineStar size={18} className="ml-1" color="#ffc71b" />
+          </div>
+          <div className="text-gray-600 text-sm font-light">84 Ratings</div>
+        </div>
+        {technician.service && (
+          <div className="flex flex-wrap gap-2">
+            <span className="bg-fuchsia-200 px-3 py-1 rounded-xl text-black text-sm font-light">
+              {technician.service}
+            </span>
+          </div>
+        )}
+
+        {/* <div className="flex flex-wrap gap-2">
+                    {profile.services?.map((s, i) => (
+                      <div
+                        key={i}
+                        className="bg-fuchsia-200 px-3 py-1 rounded-xl text-black text-sm"
+                      >
+                        {s.serviceName}
+                      </div>
+                    ))}
+                  </div> */}
+
+    //     <div className="flex my-3 items-center">
+    //       <IoLocationOutline size={27} color="red" />
+    //       <span className="text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
+    //         {" "}
+    //         {technician.buildingName}, {technician.areaName}, {technician.city}, {technician.state}
+    //       </span>
+    //     </div>
+    //     {technician?.description && (
+    //       <div className="flex items-center">
+    //         <FaThumbsUp size={22} color="#00B800" className='flex' />
+    //         <span className="text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
+    //           {" "}
+    //           {technician?.description}
+    //           {/* Years in Services */}
+    //         </span>
+    //       </div>
+    //     )}
+
+    //     <div className="flex gap-4 mt-4 flex-wrap">
+    //       <div className="flex bg-fuchsia-500 rounded-xl text-white px-4 py-1 font-bold items-center cursor-pointer hover:bg-fuchsia-600">
+    //         <IoCall size={22} className="me-2" />
+    //         <span> {technician?.phoneNumber}</span>
+    //       </div>
+    //       <div className="flex items-center bg-green-600 hover:bg-green-500 rounded-xl text-white px-4 py-1 font-bold cursor-pointer">
+    //         <LuMessageSquareText size={18} className="mr-2" />
+    //         Message
+    //       </div>
+    //       <div className="flex items-center bg-blue-500 hover:bg-blue-600 rounded-xl text-white px-4 py-1 font-bold cursor-pointer">
+    //         <IoShareSocial size={18} className="mr-2" />
+    //         Share
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div> */}
+
+
 // import React, { useState, useEffect } from 'react';
 // import { MdOutlineStar } from 'react-icons/md';
 // import { IoCall, IoShareSocial } from 'react-icons/io5';
