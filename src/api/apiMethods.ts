@@ -50,6 +50,13 @@ export const getAllTechnicianDetails = (id: string) => apiRequest("getAllTechnic
 export const getCompanyReviews = (data: any) => apiRequest('getCompanyReviews', data)
 
 export const createGuestBooking = (formData: any) =>apiRequest('createGuestBooking', formData)
+export const addToCart = (data: any) => apiRequest("addToCart", data);
+
+export const getCartItems = (id: string) => apiRequest("getCartItems", null, id);
+
+export const removeFromCart = (data: any) => apiRequest("removeFromCart", data);
+
+export const createBookService = (data: any) => apiRequest("createBookService", data);
 
 // export const getAllTechnicianDetails = async (id: string) => {
 //   const res = await fetch(`/api/techDetails/getTechAllDetails/${id}`);
