@@ -1,4 +1,4 @@
-import { ChevronRight, Pencil, Plus } from "lucide-react";
+import { ChevronRight, Pencil, PencilIcon, Plus, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa6";
 import { MdOutlineStar } from "react-icons/md";
@@ -32,8 +32,8 @@ const TechnicianServices = () => {
               serv: service.serviceName,
               price: service.servicePrice,
               image: service.serviceImg,
-              ratings: "0.0",
-              reviews: "0"
+              // ratings: "0.0",
+              // reviews: "0"
             })));
           }
         })
@@ -154,27 +154,37 @@ const TechnicianServices = () => {
         {services.map((item) => (
           <div key={item.id} className="flex items-center justify-between border border-gray-300 rounded-xl p-4">
             <div>
-              <div className="text-lg font-medium">{item.serv}</div>
-              <div className="text-sm text-gray-600">₹ {item.price} per Unit</div>
-              <div className="flex items-center text-sm">
+               <h3 className="text-md md:text-lg">{item.serv}</h3>
+              <p className="text-sm text-gray-700">
+                  ₹ <span className="text-blue-600">{item.price}</span> per Unit
+                </p>
+              {/* <div className="flex items-center text-sm">
                 <MdOutlineStar size={18} color="#ffc71b" />
                 <span className="ml-1">{item.ratings} ({item.reviews} Reviews)</span>
-              </div>
+              </div> */}
+
+              <div className="flex items-center text-sm mt-1">
+                                <MdOutlineStar size={18} color="#ffc71b" />
+                                <span className="ms-1 text-gray-700">
+                                  4.5 <span className="text-gray-400">(25 Reviews)</span>
+                                </span>
+                              </div>
             </div>
             <div className="flex flex-col items-center gap-2">
               <img src={item.image} alt={item.serv} className="w-24 h-20 object-cover rounded border" />
               <div className="flex gap-2">
                 <button
-                  className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded"
+                  className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
                   onClick={() => handleEdit(item.id)}
                 >
-                  Edit
+                  <PencilIcon size={16} />
                 </button>
                 <button
-                  className="text-sm bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded"
+                  className="text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
                   onClick={() => handleDelete(item.id)}
                 >
-                  Delete
+                 
+                  <Trash2 size={18}/>
                 </button>
               </div>
             </div>

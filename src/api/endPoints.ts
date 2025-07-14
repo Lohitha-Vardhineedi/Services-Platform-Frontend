@@ -133,6 +133,12 @@ const endpoints: any = {
     method: "post",
     url: () => `/api/bookingServices/createBookService`
   },
+  getTechnicianReviews: {
+    method: "get",
+    url: (id: string) => {
+      return `/api/techReview/getTechReviewsById/${id}`;
+    },
+  },
 }
 
 export default endpoints;

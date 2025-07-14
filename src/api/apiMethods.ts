@@ -51,6 +51,8 @@ export const removeFromCart = (data: any) => apiRequest("removeFromCart", data);
 
 export const createBookService = (data: any) => apiRequest("createBookService", data);
 
+export const getTechnicianReviews = (id: string) => apiRequest("getTechnicianReviews", null, id);
+
 // export const getAllTechnicianDetails = async (id: string) => {
 //   const res = await fetch(`/api/techDetails/getTechAllDetails/${id}`);
 //   const data = await res.json();
