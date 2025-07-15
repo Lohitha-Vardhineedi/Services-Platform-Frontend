@@ -16,6 +16,7 @@ export const GuestBooking = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [success, setSuccess] = useState(null);
 
   // Fetch categories
   const fetchCategoriesForSearch = async () => {

@@ -16,9 +16,6 @@ import ServicePage from '../pages/ServicePage';
 import ProfilePage from '../pages/ProfilePage';
 import CartPage from '../pages/CartPage';
 import ProfileEditPage from '../pages/ProfileEditPage';
-// import ProfileEdit from '../components/profile/ProfileEdit';
-// import TransactionPage from '../pages/TransactionPage';
-import TechnicianDashboard from '../pages/TechnicianDashboard';
 import ProfileEdit from '../pages/ProfileEdit';
 import TransactionPage from '../pages/TransactionPage';
 import SubscriptionPage from '../pages/SubscriptionPage';
@@ -28,8 +25,9 @@ import TechnicianReviews from '../pages/technician/TechnicianReviews';
 import TechnicianProfile from '../pages/technician/TechnicianProfile';
 import TechnicianSubscription from '../pages/technician/TechnicianSubscription';
 import TechnicianTransactions from '../pages/technician/TechnicianTransactions';
-import TechnicianPanel from '../pages/technician/TechnicianPanel';
 import { GuestBooking } from '../pages/GuestBooking';
+import TechnicianPanel from '../pages/technician/TechnicianPanel';
+import TechnicianDashboard from '../pages/technician/TechnicianDashboard';
 
 const AppRoutes = () => {
     return (
@@ -46,7 +44,6 @@ const AppRoutes = () => {
              <Route path="/categories" element={<CategoriesPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/subscription" element={<SubscriptionPage/>}/>
-            {/* <Route path="/subscriptions" element={<PlanDetailsPage />} /> */}
             <Route path="/subscription/:subscriptionId" element={<PlanDetailsPage />} />
             <Route path="/features" element={<KeyFeaturesPage />} />
             <Route path="/franchise" element={<FranchisePage />} />
@@ -60,8 +57,8 @@ const AppRoutes = () => {
             <Route path="/transactions" element={<TransactionPage/>} />
 
 
-            <Route path="/technician/dashboard" element={<TechnicianDashboard />} />
-            <Route path='/technician/dashboardById' element= {<TechnicianPanel/>} />
+            <Route path="/technician/dashboard" element={<TechnicianPanel />} />
+            <Route path='/technician/dashboardById' element= {<TechnicianDashboard/>} />
             <Route path="/technician/photos" element={<TechnicianPhotos />} />
             <Route path="/technician/services" element={<TechnicianServices/>} />
             <Route path="/technician/reviews" element={<TechnicianReviews />} />

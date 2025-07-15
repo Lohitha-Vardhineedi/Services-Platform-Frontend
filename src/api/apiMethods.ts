@@ -63,6 +63,9 @@ export const getOrdersByUserId = (id: string) => apiRequest("getOrdersByUserId",
 export const getOrdersByTechnicianId = (id: string) => apiRequest("getOrdersByTechnicianId", null, id);
 
 export const bookingCancleByUser = (data: any) => apiRequest("bookingCancleByUser", data);
+export const createGetInTouch = (formData: any) =>apiRequest('createGetInTouch', formData)
+
+export const createFranchaseEnquiry = (formData: any) => apiRequest('createFranchaseEnquiry',formData)
 
 // export const getAllTechnicianDetails = async (id: string) => {
 //   const res = await fetch(`/api/techDetails/getTechAllDetails/${id}`);

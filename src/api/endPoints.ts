@@ -165,6 +165,16 @@ const endpoints: any = {
   createGuestBooking: {
     method: "post",
     url:"/api/guestBooking/addGuestBooking"
+  },
+
+   createGetInTouch: {
+    method: "post",
+    url:"/api/getInTouch/addGetInTouch"
+  },
+
+  createFranchaseEnquiry: {
+    method: "post",
+    url:"/api/franchaseEnquiry/addFranchaseEnquiry"
   }
 }
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { IoCall, IoPerson } from "react-icons/io5";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { BiSolidCategory } from "react-icons/bi";
-import { getAllCategories, createGuestBooking } from "../../api/apiMethods";
+import { getAllCategories, createGuestBooking, createGetInTouch } from "../../api/apiMethods";
 
 export const ContactForm = () => {
   const [categories, setCategories] = useState([]);
@@ -100,7 +100,7 @@ export const ContactForm = () => {
 
     setIsLoading(true);
     try {
-      const response = await createGuestBooking(formData);
+      const response = await createGetInTouch(formData);
       if (response.success) {
         // setSuccess("Thanks for contacting us! We'll get back to you soon.");
         alert("Thanks for contacting us! We'll get back to you soon.");

@@ -1,10 +1,12 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { CheckCircle, Phone, Mail, MapPin, AlertCircle, Users, TrendingUp, Award, DollarSign, Calendar, Target, BookOpen, Briefcase, Clock, Globe, FileText, CreditCard, Shield } from 'lucide-react';
 import { franchiseTerms } from '../data/FranchiseData';
+import { createFranchaseEnquiry } from '../api/apiMethods';
 
 interface FormData {
   name: string;
   mobile: string;
+  phoneNumber: string;
   message: string;
 }
 
@@ -15,8 +17,9 @@ interface Term {
 
 const FranchisePage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    name: '',
+   name: '',
     mobile: '',
+    phoneNumber: '',
     message: ''
   });
 
@@ -30,10 +33,35 @@ const FranchisePage: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit =  async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
-  };
+        if (!/^\d{10}$/.test(formData.phoneNumber)) {
+          // setError("Please enter a valid 10-digit phone number (e.g., 9876543210)");
+          return;
+        }
+  
+        if (!formData.message) {
+          // setError("Please select a category");
+          return;
+        }
+    
+        try {
+          const response = await createFranchaseEnquiry(formData);
+          if (response.success) {
+            alert("Thanks for contacting us! We'll get back to you soon.");
+            setFormData({ name: "", phoneNumber: "", message: "" });
+          } else {
+            console.log(response?.message || "Failed to submit contact form")
+            // setError(response.message || "Failed to submit contact form");
+          }
+        } catch (err) {
+          console.log(err?.message || "An error occurred while submitting the form")
+          // setError(err?.message || "An error occurred while submitting the form");
+        } finally {
+          // setIsLoading(false);
+        }
+  }
 
   const termIcons = [
     DollarSign, CreditCard, Calendar, BookOpen, Clock, Shield,
@@ -55,7 +83,6 @@ const FranchisePage: React.FC = () => {
         </div>
 
         <div className="grid lg:grid-cols-4 gap-8">
-          {/* Terms */}
           <div className="lg:col-span-3">
             <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 p-4">
               <div className="text-center mb-8">
@@ -98,10 +125,8 @@ const FranchisePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Sidebar */}
           <div className="lg:col-span-1">
             <div className="sticky top-8 space-y-6">
-              {/* Contact Form */}
               <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 p-6">
                 <div className="text-center mb-6">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center mx-auto mb-3 shadow-lg animate-bounce">
@@ -125,13 +150,13 @@ const FranchisePage: React.FC = () => {
                       placeholder="Enter your full name"
                     />
                   </div>
-                  <div>
-                    <label htmlFor="mobile" className="block text-sm font-medium text-gray-700 mb-2">Mobile Number <span className='text-red-500'>*</span></label>
+                  <div> 
+                    <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700 mb-2">Mobile Number <span className='text-red-500'>*</span></label>
                     <input
                       type="tel"
-                      id="mobile"
-                      name="mobile"
-                      value={formData.mobile}
+                       id="phoneNumber"
+                      name="phoneNumber"
+                      value={formData.phoneNumber}
                       onChange={handleInputChange}
                       required
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
