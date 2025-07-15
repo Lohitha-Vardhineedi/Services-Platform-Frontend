@@ -37,7 +37,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [apiCategories, setApiCategories] = useState<{ _id: string; category_name: string }[]>([]);
+  const [apiCategories, setApiCategories] = useState<{ _id: string; category_name: string; status :number }[]>([]);
   const [catLoading, setCatLoading] = useState(false);
   const [catError, setCatError] = useState<string | null>(null);
   const [pincodeData, setPincodeData] = useState<any[]>([]);
@@ -205,11 +205,19 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
                 <option value="" disabled>
                   {catLoading ? 'Loading categories...' : 'Select a category'}
                 </option>
-                {apiCategories.map((cat, index) => (
+                {/* {apiCategories.map((cat, index) => (
                   <option key={index} value={cat._id}>
                     {cat.category_name}
                   </option>
-                ))}
+                ))} */}
+
+                 {apiCategories
+                      .filter((category) => category?.status === 1)
+                      .map((item) => (
+                        <option key={item._id} value={item._id}>
+                          {item.category_name}
+                        </option>
+                      ))}
               </select>
               {catError && <div className="text-red-500 text-xs mt-1">{catError}</div>}
             </div>

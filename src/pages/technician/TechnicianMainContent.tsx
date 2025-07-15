@@ -1,12 +1,12 @@
 import React from 'react';
 import { useTechnicianProfile } from '../../context/TechnicianProfileContext';
-import TechnicianPanel from './TechnicianPanel';
 import TechnicianProfile from './TechnicianProfile';
 import TechnicianServices from './TechnicianService';
 import TechnicianPhotos from './TechnicianPhotos';
 import TechnicianReviews from './TechnicianReviews';
 import TechnicianTransactions from './TechnicianTransactions';
 import TechnicianSubscription from './TechnicianSubscription';
+import TechnicianDashboard from './TechnicianDashboard';
 
 
 interface TechnicianMainContentProps {
@@ -23,7 +23,7 @@ const TechnicianMainContent: React.FC<TechnicianMainContentProps> = ({
     const renderContent = () => {
         switch (activeTab) {
             case 'dashboard':
-                return <TechnicianPanel />;
+                return <TechnicianDashboard />;
             case 'profile':
                 return <TechnicianProfile/>;
             case 'services':
@@ -37,7 +37,7 @@ const TechnicianMainContent: React.FC<TechnicianMainContentProps> = ({
             case 'subscription':
                 return <TechnicianSubscription />;
             default:
-                return <TechnicianPanel />;
+                return <TechnicianDashboard/>;
         }
     };
 

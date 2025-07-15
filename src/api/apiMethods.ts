@@ -58,6 +58,10 @@ export const removeFromCart = (data: any) => apiRequest("removeFromCart", data);
 
 export const createBookService = (data: any) => apiRequest("createBookService", data);
 
+export const createGetInTouch = (formData: any) =>apiRequest('createGetInTouch', formData)
+
+export const createFranchaseEnquiry = (formData: any) => apiRequest('createFranchaseEnquiry',formData)
+
 // export const getAllTechnicianDetails = async (id: string) => {
 //   const res = await fetch(`/api/techDetails/getTechAllDetails/${id}`);
 //   const data = await res.json();
