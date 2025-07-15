@@ -4,6 +4,7 @@ import MonthlyEarningsChart from '../../components/techDashboard/MonthlyEarningC
 import RecentHistory from '../../components/techDashboard/RecentHistory';
 import StatsCard from '../../components/techDashboard/StatusCards';
 import { getServicesByTechId } from '../../api/apiMethods';
+import AvgRatingChart from '../../components/techDashboard/AvgRating';
 
 type Props = {
   data: TechnicianProfileData | null;
@@ -110,9 +111,13 @@ const TechnicianDashboard: React.FC<Props> = ({ data }) => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <MonthlyEarningsChart/>     
+            
         <RecentHistory/>
+        <AvgRatingChart/>
       </div>
+       <div className="mb-8">
+          <MonthlyEarningsChart/>
+        </div>
      
     </div>
   );
