@@ -29,6 +29,7 @@ const ProfileEditPage: React.FC = () => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const role = (user && (user as any).role) || localStorage.getItem('role') || 'user'; // adjust as needed
+    const token = localStorage.getItem('jwt_token') as string || ""; 
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -113,57 +114,136 @@ const ProfileEditPage: React.FC = () => {
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setError(null);
-        setSuccess(null);
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
 
-        if (formData.password !== formData.confirmPassword) {
-            setError('Passwords do not match');
+    if (formData.password !== formData.confirmPassword) {
+        setError('Passwords do not match');
+        return;
+    }
+
+    if (formData.password && (formData.password.length < 6 || formData.password.length > 10)) {
+        setError('Password must be between 6 and 10 characters long');
+        return;
+    }
+
+    try {
+        const userId = localStorage.getItem('userId');
+        if (!userId) {
+            setError('User ID not found. Please login again.');
             return;
         }
 
-        if (formData.password && (formData.password.length < 6 || formData.password.length > 10)) {
-            setError('Password must be between 6 and 10 characters long');
-            return;
+        const updateData: any = {
+            id: userId,
+            username: formData.username,
+            password: formData.password,
+            buildingName: formData.houseName,
+            areaName: formData.areaName,
+            city: formData.city,
+            state: formData.state,
+            pincode: formData.pincode
+        };
+
+        let response;
+        if (role === 'technician') {
+            response = await technicianEditProfile(updateData);
+        } else {
+            response = await userEditProfile(updateData);
         }
 
-        try {
-            const userId = localStorage.getItem('userId');
-            if (!userId) {
-                setError('User ID not found. Please login again.');
-                return;
-            }
+        if (response && (response as any).success) {
+            setSuccess('Profile updated successfully!');
 
-            const updateData: any = {
+            
+
+            // Extract relevant fields from response
+            const userData = (response as any).result;
+            const updatedUser = {...userData,
                 id: userId,
-                username: formData.username,
-                password: formData.password,
-                buildingName: formData.houseName,
-                areaName: formData.areaName,
-                city: formData.city,
-                state: formData.state,
-                pincode: formData.pincode
+                username: userData.username,
+                buildingName: userData.buildingName ,
+                phoneNumber: userData.phoneNumber,
+                areaName: userData.areaName,
+                pincode: userData.pincode,
+                state: userData.state,
+                role: userData.role,
+                token: token,
+                city: userData.city,
             };
+            
+            
+            // Update local storage with only username and address
+            localStorage.setItem('user', JSON.stringify(updatedUser));
 
-            let response;
-            if (role === 'technician') {
-                response = await technicianEditProfile(updateData);
-            } else {
-                response = await userEditProfile(updateData);
-            }
+            // Optionally update the user context if needed
+            setUser(updatedUser);
 
-            if (response && (response as any).success) {
-                setSuccess('Profile updated successfully!');
-                setTimeout(() => {
-                    navigate('/');
-                }, 2000);
-            } else {
-                setError((response as any)?.message || 'Failed to update profile.');
-            }
-        } catch (err: any) {
-            setError(err?.message || 'Failed to update profile. Please try again.');
+            setTimeout(() => {
+                navigate('/');
+            }, 4000);
+        } else {
+            setError((response as any)?.message || 'Failed to update profile.');
         }
-    };
+    } catch (err: any) {
+        setError(err?.message || 'Failed to update profile. Please try again.');
+    }
+};
+
+    // const handleSubmit = async (e: React.FormEvent) => {
+    //     e.preventDefault();
+    //     setError(null);
+    //     setSuccess(null);
+
+    //     if (formData.password !== formData.confirmPassword) {
+    //         setError('Passwords do not match');
+    //         return;
+    //     }
+
+    //     if (formData.password && (formData.password.length < 6 || formData.password.length > 10)) {
+    //         setError('Password must be between 6 and 10 characters long');
+    //         return;
+    //     }
+
+    //     try {
+    //         const userId = localStorage.getItem('userId');
+    //         if (!userId) {
+    //             setError('User ID not found. Please login again.');
+    //             return;
+    //         }
+
+    //         const updateData: any = {
+    //             id: userId,
+    //             username: formData.username,
+    //             password: formData.password,
+    //             buildingName: formData.houseName,
+    //             areaName: formData.areaName,
+    //             city: formData.city,
+    //             state: formData.state,
+    //             pincode: formData.pincode
+    //         };
+
+    //         let response;
+    //         if (role === 'technician') {
+    //             response = await technicianEditProfile(updateData);
+    //         } else {
+    //             response = await userEditProfile(updateData);
+    //         }
+
+    //         if (response && (response as any).success) {
+    //             setSuccess('Profile updated successfully!');
+
+    //             setTimeout(() => {
+    //                 navigate('/');
+    //             }, 2000);
+    //         } else {
+    //             setError((response as any)?.message || 'Failed to update profile.');
+    //         }
+    //     } catch (err: any) {
+    //         setError(err?.message || 'Failed to update profile. Please try again.');
+    //     }
+    // };
 
     if (loading) {
         return (
@@ -218,8 +298,8 @@ const ProfileEditPage: React.FC = () => {
                             type="text"
                             name="username"
                             value={formData.username}
-                            readOnly
-                            className="mt-1 w-full border border-gray-300 rounded-md p-2 bg-gray-50 text-gray-500 cursor-not-allowed"
+                            onChange={handleChange}
+                            className="mt-1 w-full border border-gray-300 rounded-md p-2 bg-gray-50 text-gray-500 "
                         />
                     </div>
 
@@ -306,6 +386,21 @@ const ProfileEditPage: React.FC = () => {
                     </div>
 
                     <div>
+                        <label className="block text-sm font-medium text-gray-700">Area/Street Name</label>
+                        <select
+                            name="areaName"
+                            value={formData.areaName}
+                            onChange={handleChange}
+                            className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
+                        >
+                            <option value="">Select Area</option>
+                            {areaOptions.map((a: any) => (
+                                <option key={a._id} value={a.name}>{a.name}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div>
                         <label className="block text-sm font-medium text-gray-700">City</label>
                         <select
                             name="city"
@@ -344,21 +439,6 @@ const ProfileEditPage: React.FC = () => {
                                     <option key={p._id} value={p.state}>{p.state}</option>
                                 ))
                             )}
-                        </select>
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">Area/Street Name</label>
-                        <select
-                            name="areaName"
-                            value={formData.areaName}
-                            onChange={handleChange}
-                            className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
-                        >
-                            <option value="">Select Area</option>
-                            {areaOptions.map((a: any) => (
-                                <option key={a._id} value={a.name}>{a.name}</option>
-                            ))}
                         </select>
                     </div>
 

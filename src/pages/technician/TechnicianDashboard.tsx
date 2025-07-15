@@ -1,16 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Wrench, CheckCircle, DollarSign, Star, Clock, TrendingUp, Users, MapPin } from 'lucide-react';
 import MonthlyEarningsChart from '../../components/techDashboard/MonthlyEarningChart';
 import RecentHistory from '../../components/techDashboard/RecentHistory';
 import StatsCard from '../../components/techDashboard/StatusCards';
+import { getServicesByTechId } from '../../api/apiMethods';
 
 type Props = {
   data: TechnicianProfileData | null;
 };
 
 const TechnicianDashboard: React.FC<Props> = ({ data }) => {
-  const serviceCount = data?.technicianProfile?.services?.length ?? 4;
-  const totalServicePrice = data?.technicianProfile?.services?.reduce((sum, s) => sum + (s.servicePrice || 0), 0) ?? 5900;
+    const [role, setRole] = useState<string | null>(null);
+  const totalServicePrice = data?.technicianProfile?.services?.reduce((sum, s) => sum + (s.servicePrice || 0), 0) ?? 300;
+  const [services, setServices] = useState<any[]>([]); // Adjust type as needed
+  const [serviceCount, setServiceCount] = useState<number>(0); // State for count
+
+  useEffect(() => {
+    const storedRole = localStorage.getItem("role");
+    setRole(storedRole);
+    if (storedRole !== "technician") return;
+
+    const id = localStorage.getItem("userId");
+    if (id) {
+      getServicesByTechId(id)
+        .then((data: any) => {
+          if (data?.result && Array.isArray(data.result)) {
+            const fetchedServices = data.result.map((service: any) => ({
+              id: service._id,
+              serv: service.serviceName,
+              price: service.servicePrice,
+              image: service.serviceImg,
+            }));
+            setServices(fetchedServices);
+            setServiceCount(fetchedServices.length); // Set the count
+          }
+        })
+        .catch((err: any) => {
+          console.error('Failed to fetch technician services:', err);
+        });
+    }
+  }, []);
 
   const currentDate = new Date().toLocaleDateString('en-IN', { 
     weekday: 'long', 
@@ -24,32 +53,28 @@ const TechnicianDashboard: React.FC<Props> = ({ data }) => {
       icon: <Wrench className="w-6 h-6" />, 
       label: 'Total Services', 
       value: serviceCount,
-      trend: { value: 12, isPositive: true },
       color: 'bg-blue-100'
     },
     { 
       icon: <CheckCircle className="w-6 h-6" />, 
-      label: 'Completed Works', 
-      value: 128,
-      trend: { value: 8, isPositive: true },
+      label: 'Completed services', 
+      value: 2,
       color: 'bg-green-100'
     },
     { 
-      icon: <DollarSign className="w-6 h-6" />, 
+      icon: <DollarSign className="w-6 h-6 " />, 
       label: 'Monthly Earnings', 
       value: `₹${totalServicePrice.toLocaleString()}`,
-      trend: { value: 15, isPositive: true },
       color: 'bg-yellow-100'
     },
     { 
-      icon: <Star className="w-6 h-6" />, 
+      icon: <Star className="w-6 h-6 text-yellow-400 fill-current" />, 
       label: 'Average Rating', 
-      value: '4.8 ⭐',
-      trend: { value: 2, isPositive: true },
+      value: '4.8 ',
       color: 'bg-purple-100'
     }
   ];
-
+// ⭐
   return (
     <div className="space-y-8 px-6  bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen max-w-7xl mx-auto">
       <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-2xl p-8 text-white shadow-xl hover:shadow-2xl transition-all duration-500 relative overflow-hidden group">
