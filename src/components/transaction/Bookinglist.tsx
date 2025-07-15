@@ -1,28 +1,85 @@
-import React, { act } from 'react';
+import React from 'react';
 import { ChevronRight } from 'lucide-react';
 
-interface Booking {
-  id: string;
-  name: string;
-  service: string;
-  contact: string;
-  address: string;
-  otp: string;
-  date: string;
-  provider: string;
-  rating: number;
-  review: string;
-  image: string;
+interface BookingData {
+  booking: {
+    _id: string;
+    status: string;
+    bookingDate: string;
+    totalPrice: number;
+    quantity: number;
+    servicePrice: number;
+  };
+  technician: {
+    username: string;
+    profileImage?: string;
+  };
+  service: {
+    serviceName: string;
+    serviceImg: string;
+  } | null;
 }
 
 interface BookingsListProps {
-  bookings: Booking[];
-  activeTab: string;
-  setCurrentStep: (step: string) => void;
+  bookings: BookingData[];
+  activeTab: 'upcoming' | 'completed' | 'cancelled';
+  onBookingSelect: (booking: BookingData) => void;
   role: 'user' | 'technician' | null;
 }
 
-const BookingsList: React.FC<BookingsListProps> = ({ bookings, activeTab, setCurrentStep, role }) => {
+const BookingsList: React.FC<BookingsListProps> = ({ 
+  bookings, 
+  activeTab, 
+  onBookingSelect,
+  role 
+}) => {
+  // Filter bookings based on activeTab
+  const filteredBookings = bookings.filter((bookingData) => {
+    const status = bookingData.booking.status.toLowerCase();
+    if (activeTab === 'upcoming') {
+      return status === 'upcomming'; // Note the API uses 'upcomming' (with two m's)
+    } else if (activeTab === 'completed') {
+      return status === 'completed';
+    } else if (activeTab === 'cancelled') {
+      return status === 'cancelled' || status === 'declined';
+    }
+    return false;
+  });
+
+  if (filteredBookings.length === 0) {
+    return (
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 min-h-96">
+        <div className="border-b border-gray-200 px-6 py-4 flex items-center space-x-3">
+          <div
+            className={`w-8 h-8 rounded-lg ${
+              activeTab === 'upcoming'
+                ? 'bg-purple-100'
+                : activeTab === 'completed'
+                ? 'bg-green-100'
+                : 'bg-red-100'
+            } flex items-center justify-center`}
+          >
+            <ChevronRight
+              className={`w-4 h-4 ${
+                activeTab === 'upcoming'
+                  ? 'text-purple-600'
+                  : activeTab === 'completed'
+                  ? 'text-green-600'
+                  : 'text-red-600'
+              }`}
+            />
+          </div>
+          <h2 className="text-xl font-semibold text-gray-900">
+            {activeTab === 'upcoming' ? 'Upcoming' : activeTab === 'completed' ? 'Completed' : 'Cancelled'}
+          </h2>
+        </div>
+        <div className="p-6 flex items-center justify-center h-64">
+          <p className="text-gray-500">No {activeTab} bookings found</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 min-h-96">
       <div className="border-b border-gray-200 px-6 py-4 flex items-center space-x-3">
@@ -46,29 +103,31 @@ const BookingsList: React.FC<BookingsListProps> = ({ bookings, activeTab, setCur
           />
         </div>
         <h2 className="text-xl font-semibold text-gray-900">
-          {activeTab === 'upcoming' ? 'Upcoming' : activeTab === 'completed' ? 'Completed' : 'cancelled'}
+          {activeTab === 'upcoming' ? 'Upcoming' : activeTab === 'completed' ? 'Completed' : 'Cancelled'}
         </h2>
       </div>
       <div className="p-6 space-y-4">
-        {bookings.map((booking) => (
+        {filteredBookings.map((bookingData) => (
           <div
-            key={booking.id}
+            key={bookingData.booking._id}
             className="bg-gray-50 rounded-2xl p-4 cursor-pointer border border-gray-100 hover:bg-gray-100 transition-colors"
-            onClick={() =>
-              setCurrentStep(activeTab === 'upcoming' ? 'upcoming-details' : activeTab === 'completed' ? 'completed-details' : 'bookings')
-            }
+            onClick={() => onBookingSelect(bookingData)}
           >
             <div className="flex items-center space-x-4">
               <div className="w-16 h-16 bg-gray-200 rounded-xl overflow-hidden flex-shrink-0">
                 <img
-                  src={booking.image}
-                  alt={booking.service}
+                  src={bookingData.service?.serviceImg || bookingData.technician.profileImage || 'https://via.placeholder.com/80'}
+                  alt={bookingData.service?.serviceName || 'Service'}
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-gray-900 text-lg truncate">{booking.service}</h3>
-                <p className="text-gray-500 text-sm truncate">{booking.provider}</p>
+                <h3 className="font-semibold text-gray-900 text-lg truncate">
+                  {bookingData.service?.serviceName || 'Service not specified'}
+                </h3>
+                <p className="text-gray-500 text-sm truncate">
+                  Technician: {bookingData.technician.username}
+                </p>
                 <div className="flex items-center justify-between mt-2">
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-medium ${
@@ -79,12 +138,18 @@ const BookingsList: React.FC<BookingsListProps> = ({ bookings, activeTab, setCur
                         : 'bg-red-100 text-red-600'
                     }`}
                   >
-                    {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+                    {bookingData.booking.status.charAt(0).toUpperCase() + 
+                     bookingData.booking.status.slice(1).toLowerCase()}
                   </span>
-                  <span className="text-gray-400 text-xs">{booking.date}</span>
+                  <span className="text-gray-400 text-xs">
+                    {new Date(bookingData.booking.bookingDate).toLocaleDateString()}
+                  </span>
+                </div>
+                <div className="mt-2 text-sm text-gray-700">
+                  ₹{bookingData.booking.totalPrice.toFixed(2)} • {bookingData.booking.quantity} {bookingData.booking.quantity > 1 ? 'services' : 'service'}
                 </div>
               </div>
-              {activeTab === 'completed' ? <ChevronRight className="w-5 h-5 text-gray-400 flex-shrink-0" /> : activeTab === 'upcoming' ? <ChevronRight className="w-5 h-5 text-gray-400 flex-shrink-0" /> : null}
+              <ChevronRight className="w-5 h-5 text-gray-400 flex-shrink-0" />
             </div>
           </div>
         ))}

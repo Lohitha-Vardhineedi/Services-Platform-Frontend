@@ -46,6 +46,7 @@ const endpoints: any = {
     method: "post",
     url: () => `/api/techAuth/register`
   },
+  
   userLogin: {
     method: "post",
     url: () => `/api/userAuth/login`
@@ -132,6 +133,22 @@ const endpoints: any = {
      createBookService: {
     method: "post",
     url: () => `/api/bookingServices/createBookService`
+  },
+  getOrdersByUserId: {
+    method: "get",
+    url: (id: string) => {
+      return `/api/bookingServices/getBookServiceByUserId/${id}`;
+    },
+  },
+  getOrdersByTechnicianId: {
+    method: "get",
+    url: (id: string) => {
+      return `/api/bookingServices/getBookServiceByTechnicianId/${id}`;
+    },
+  },
+  bookingCancleByUser: {
+    method: "put",
+    url: () => `/api/bookingServices/BookingCancleByUser`
   },
   getTechnicianReviews: {
     method: "get",
