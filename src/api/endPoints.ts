@@ -158,6 +158,11 @@ const endpoints: any = {
   createFranchaseEnquiry: {
     method: "post",
     url:"/api/franchaseEnquiry/addFranchaseEnquiry"
+  },
+
+  createCompanyReview: {
+    method: "post",
+    url:"/api/companyReview/createReview"
   }
 }
 

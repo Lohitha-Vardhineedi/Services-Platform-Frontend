@@ -62,6 +62,8 @@ export const createGetInTouch = (formData: any) =>apiRequest('createGetInTouch',
 
 export const createFranchaseEnquiry = (formData: any) => apiRequest('createFranchaseEnquiry',formData)
 
+export const createCompanyReview = (formData: any) => apiRequest('createCompanyReview',formData)
+
 // export const getAllTechnicianDetails = async (id: string) => {
 //   const res = await fetch(`/api/techDetails/getTechAllDetails/${id}`);
 //   const data = await res.json();
