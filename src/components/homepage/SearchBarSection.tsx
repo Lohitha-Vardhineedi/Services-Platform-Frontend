@@ -11,7 +11,9 @@ function SearchBarSection() {
   const [selectedPincode, setSelectedPincode] = useState("");
   const [areaOptions, setAreaOptions] = useState([]);
   const [selectedArea, setSelectedArea] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState("");
+  const [selectedCity, setSelectedCity] = useState('');
+  const cityOptions = ['Hyderabad'];
+  const [selectedCategories, setSelectedCategories] = useState('')
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -59,8 +61,8 @@ function SearchBarSection() {
   };
 
   const handleSearch = (e) => {
-    setSelectedCategories(e.target.value);
-  };
+    setSelectedCategories(e.target.value)
+  }
 
   // Fetch data on component mount
   useEffect(() => {
@@ -134,6 +136,26 @@ function SearchBarSection() {
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-300 w-5 h-5 pointer-events-none"
             />
           </div>
+          <div className="relative flex-1">
+            <select
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-700 appearance-none"
+              value={selectedCity}
+              onChange={(e) => setSelectedCity(e.target.value)}
+            // disabled={!areaOptions.length}
+            >
+              <option value="" disabled>Select City</option>
+              {cityOptions.map((city, index) => (
+                <option key={index} value={city}>
+                  {city}
+                </option>
+              ))}
+
+            </select>
+            <MapPin
+              size={20}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-300 w-5 h-5 pointer-events-none"
+            />
+          </div>
           {/* Pincode Dropdown */}
           <div className="relative flex-1">
             <select
@@ -153,12 +175,12 @@ function SearchBarSection() {
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-300 w-5 h-5 pointer-events-none"
             />
           </div>
-          {/* Area Dropdown */}
           <div className="relative flex-1">
             <select
               className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-700 appearance-none"
               value={selectedArea}
               onChange={(e) => setSelectedArea(e.target.value)}
+            // disabled={!areaOptions.length}
             >
               <option value="" disabled>Select Area</option>
               {areaOptions.map((area) => (
@@ -174,9 +196,8 @@ function SearchBarSection() {
           </div>
           {/* Search and Reset Buttons */}
           <div className="flex flex-row gap-2 mt-4 md:mt-0">
-            <button
-              className="flex gap-2 justify-center items-center bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold shadow transition-colors"
-              onClick={handleSearchNavigation}
+            <button className="flex gap-2  justify-center items-center bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold shadow transition-colors"
+              onClick={() => navigate("/categoryname/cityname/areaname-pincode")}
             >
               <Search size={20} />
               Search
