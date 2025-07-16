@@ -163,6 +163,11 @@ const endpoints: any = {
   createCompanyReview: {
     method: "post",
     url:"/api/companyReview/createReview"
+  },
+
+  getAllTechByAddress: {
+    method: "get",
+    url:'api/techDetails/getAllTechByAddress'
   }
 }
 

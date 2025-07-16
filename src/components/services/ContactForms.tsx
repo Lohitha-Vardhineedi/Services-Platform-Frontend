@@ -22,7 +22,6 @@ export const ContactForm = () => {
   const fetchCategoriesForSearch = async () => {
     try {
       const response = await getAllCategories();
-      console.log("category Response : ", response);
       if (response.success === true && Array.isArray(response.data)) {
         setCategories(response.data);
       } else {
