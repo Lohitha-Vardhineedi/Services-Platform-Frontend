@@ -43,11 +43,11 @@ const TechnicianMainContent: React.FC<TechnicianMainContentProps> = ({
 
     return (
         <div
-            className={`flex-1 overflow-y-auto transition-all duration-300 ${
+            className={`flex-1 overflow-y-auto scrollbar-hide transition-all duration-300 ${
                 showSidebarMobile ? 'blur-sm md:blur-none' : ''
             } p-6 ml-0 md:ml-0`}
         >
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-6xl mx-auto overflow-y-auto scrollbar-hide">
                 {renderContent()}
             </div>
         </div>

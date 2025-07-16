@@ -1,51 +1,45 @@
 import React from 'react';
+import '../../index.css'
+import { useNavigate } from 'react-router-dom';
 
 const RecentHistory: React.FC = () => {
+  const navigate = useNavigate();
+
   const recentActivities = [
     {
       id: 1,
       title: 'AC Repair Completed',
       client: 'John Smith',
-      location: 'Downtown Office',
-      time: '2 hours ago',
-      status: 'completed',
-      earnings: '₹2,500'
+      time: '15-07-2025',
+      status: 'completed'
     },
     {
       id: 2,
       title: 'Plumbing Service',
       client: 'Sarah Johnson',
-      location: 'Residential Complex',
-      time: '4 hours ago',
-      status: 'completed',
-      earnings: '₹1,800'
+      time: '12-07-2025',
+      status: 'completed'
     },
     {
       id: 3,
       title: 'Electrical Installation',
       client: 'Mike Wilson',
-      location: 'New Construction',
-      time: '6 hours ago',
-      status: 'in-progress',
-      earnings: '₹3,200'
+      time: '17-07-2025',
+      status: 'upcomming'
     },
     {
       id: 4,
       title: 'HVAC Maintenance',
       client: 'Corporate Plaza',
-      location: 'Business District',
-      time: '1 day ago',
-      status: 'completed',
-      earnings: '₹4,500'
+      time: '10-07-2025',
+      status: 'completed'
     },
     {
       id: 5,
       title: 'Emergency Repair',
       client: 'Lisa Brown',
-      location: 'Suburban Home',
-      time: '2 days ago',
-      status: 'completed',
-      earnings: '₹2,100'
+      time: '9-07-2025',
+      status: 'completed'
     }
   ];
 
@@ -53,7 +47,7 @@ const RecentHistory: React.FC = () => {
     switch (status) {
       case 'completed':
         return 'bg-green-100 text-green-700';
-      case 'in-progress':
+      case 'up-comming':
         return 'bg-blue-100 text-blue-700';
       case 'pending':
         return 'bg-yellow-100 text-yellow-700';
@@ -72,16 +66,17 @@ const RecentHistory: React.FC = () => {
             </svg>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-800">Recent History</h3>
-            <p className="text-sm text-gray-500">Latest activities</p>
+            <h3 className="text-lg font-semibold text-gray-800">Recent Activities</h3>
           </div>
         </div>
-        <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+        <button className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+          onClick={()=>{navigate('/technician/transactions')}}
+        >
           View All
         </button>
       </div>
 
-      <div className="space-y-4 max-h-80 overflow-y-auto">
+      <div className="space-y-4 max-h-80 overflow-y-auto scrollbar-hide">
         {recentActivities.map((activity, index) => (
           <div
             key={activity.id}
@@ -93,27 +88,33 @@ const RecentHistory: React.FC = () => {
               </svg>
             </div>
             
-            <div className="flex-1 min-w-0">
-              <div className="flex items-start justify-between">
+            <div className="flex-1 min-w-0 scrollbar-hide">
+              <div className="flex items-start justify-between ">
                 <div className="flex-1">
                   <h4 className="text-sm font-semibold text-gray-800 group-hover/item:text-blue-600 transition-colors">
                     {activity.title}
                   </h4>
                   <p className="text-xs text-gray-600 mt-1">
-                    {activity.client} • {activity.location}
+                    {activity.client} 
                   </p>
-                  <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
-                </div>
-                
-                <div className="flex flex-col items-end gap-2">
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(activity.status)}`}
                   >
                     {activity.status.replace('-', ' ')}
                   </span>
-                  <span className="text-sm font-bold text-green-600">
+                  
+                </div>
+                
+                <div className="flex flex-col items-end gap-2">
+                  <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
+                  {/* <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(activity.status)}`}
+                  >
+                    {activity.status.replace('-', ' ')}
+                  </span> */}
+                  {/* <span className="text-sm font-bold text-green-600">
                     {activity.earnings}
-                  </span>
+                  </span> */}
                 </div>
               </div>
             </div>
@@ -127,7 +128,9 @@ const RecentHistory: React.FC = () => {
              <p className="text-sm text-gray-600">Today's Schedule</p>
              <p className="font-semibold text-gray-800">3 Services</p>
            </div>
-           <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors">
+           <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors" 
+           onClick={()=>{navigate('/technician/transactions')}}
+           >
              View Schedule
            </button>
          </div>

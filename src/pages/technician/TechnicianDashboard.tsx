@@ -77,7 +77,7 @@ const TechnicianDashboard: React.FC<Props> = ({ data }) => {
   ];
 // ⭐
   return (
-    <div className="space-y-8 px-6  bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen max-w-7xl mx-auto">
+    <div className="space-y-8 px-6  bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen max-w-7xl mx-auto ">
       <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-2xl p-8 text-white shadow-xl hover:shadow-2xl transition-all duration-500 relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 transform rotate-45 group-hover:rotate-90 transition-transform duration-1000"></div>
         <div className="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-5 animate-pulse group-hover:animate-bounce"></div>
