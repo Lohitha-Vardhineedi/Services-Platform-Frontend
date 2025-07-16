@@ -30,20 +30,28 @@ const PlanDetailsPage: React.FC = () => {
         </div>
 
 
-        <div className="mt-2 text-center">
-          <div className="text-3xl font-extrabold text-gray-900">₹{subscription?.price}</div>
-          {subscription.originalPrice && (
+        <div className="mt-2 text-center mb-2">
+          <div className="text-3xl font-extrabold text-gray-900">₹ {subscription?.price}</div>
+          {/* {subscription.originalPrice && (
             <div className="text-sm text-gray-500 line-through">
               ₹{subscription.originalPrice} + ₹{subscription.gst} (GST 18%)
             </div>
-          )}
-          <div className="text-sm text-gray-600">
-            INCL 18% GST: ₹{subscription.totalPrice}
+          )} */}
+           {Number(subscription.originalPrice) > 0 && (
+                        <div className="text-sm text-gray-500 line-through">
+                          ₹{subscription.originalPrice} + (GST 18%)
+                        </div>
+                      )}
+                        {Number(subscription.finalPrice) > 0 && (
+          <div className="text-sm text-gray-600 ">
+            ₹{subscription.finalPrice} +  ₹{subscription.gst} (GST 18%)
+            {/* INCL 18% GST: ₹ {subscription.finalPrice} */}
           </div>
+                        )}
         </div>
 
 
-        {subscription.discount && (
+        {Number(subscription.discount) > 0 && (
           <div className="text-center my-4">
             <span className="inline-block bg-red-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
               {subscription.discount} % OFF
