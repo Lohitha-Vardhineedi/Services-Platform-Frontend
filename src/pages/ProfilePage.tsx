@@ -76,7 +76,7 @@ console.log("id", technicianId)
     <div className='max-w-7xl mx-auto p-4'>
       <ProfileCard technician={technicianDetails.technician}/>
       <AllFilters  services={technicianDetails.services}
-        technicianImages={technicianDetails.technicianImages.imageUrl}
+        technicianImages={technicianDetails?.technicianImages?.imageUrl}
         ratings={technicianDetails.ratings}/>
     </div>
   )

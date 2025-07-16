@@ -116,10 +116,10 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
                 animationDelay: `${index * 60}ms`,
                 animationFillMode: 'both',
               }}
-              // onClick={() => {
-              //   console.log('Clicked category:', category);
-              //   navigate(`/technicians/${category?._id}`);
-              // }}
+              onClick={() => {
+                console.log('Clicked category:', category);
+                navigate(`/technicians/${category?._id}`);
+              }}
             >
               <div className="w-12 h-12 rounded-full flex items-center justify-center mb-2 overflow-hidden">
                 <img

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Clock, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
+import TransactionSidebar from '../../components/transaction/TransactionSidebar';
 import BookingsList from '../../components/transaction/Bookinglist';
 import UpcomingDetails from '../../components/transaction/UpcomingDetails';
 import CompletedDetails from '../../components/transaction/CompletedDetails';
@@ -9,20 +10,58 @@ import Savings from '../../components/transaction/Savings';
 import FinalRating from '../../components/transaction/FinalRating';
 import SuccessModal from '../../components/transaction/SuccessModel';
 import OTPModal from '../../components/transaction/OTPModel';
-import TransactionSidebar from '../../components/transaction/TransactionSidebar';
+import CancelledCard from '../../components/transaction/CancellationDetails';
+import { getOrdersByTechnicianId } from '../../api/apiMethods';
 
 interface Booking {
-  id: string;
-  name: string;
-  service: string;
-  contact: string;
-  address: string;
-  otp: string;
-  date: string;
-  provider: string;
-  rating: number;
-  review: string;
-  image: string;
+  _id: string;
+  userId: string;
+  technicianId: string;
+  serviceId: string;
+  quantity: number;
+  bookingDate: string;
+  servicePrice: number;
+  gst: number;
+  totalPrice: number;
+  status: string;
+  otp: number;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+interface User {
+  _id: string;
+  username: string;
+  phoneNumber: string;
+  buildingName: string;
+  areaName: string;
+  city: string;
+  state: string;
+  pincode: string;
+  profileImage?: string;
+}
+
+interface Service {
+  _id: string;
+  serviceName: string;
+  serviceImg: string;
+  servicePrice: number;
+}
+
+interface BookingData {
+  booking: Booking;
+  user: User;
+  service: Service | null;
+}
+
+interface ApiResponse {
+  success: boolean;
+  message: string;
+  result: {
+    technician: User;
+    bookings: BookingData[];
+  };
 }
 
 const TechnicianTransactions: React.FC = () => {
@@ -31,24 +70,10 @@ const TechnicianTransactions: React.FC = () => {
   const [selectedRating, setSelectedRating] = useState<number>(5);
   const [reviewText, setReviewText] = useState<string>('Great service, very professional!');
   const [role, setRole] = useState<'user' | 'technician' | null>(null);
-
-  // Sample booking data
-  const bookings: Booking[] = [
-    {
-      id: '1',
-      name: 'Madipally Soujanya',
-      service: 'Home Cleaning',
-      contact: '8978023927',
-      address: '123 Main Street, City Hyderabad',
-      otp: '123456',
-      date: '2024-06-10',
-      provider: 'Uday Kumar',
-      rating: 5,
-      review: 'Great service, very professional!',
-      image: 'https://images.pexels.com/photos/4099355/pexels-photo-4099355.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop',
-    },
-    // Add more sample bookings as needed
-  ];
+  const [bookingsData, setBookingsData] = useState<BookingData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedBooking, setSelectedBooking] = useState<BookingData | null>(null);
 
   // Transaction status options
   const transactionTabs = [
@@ -57,32 +82,101 @@ const TechnicianTransactions: React.FC = () => {
     { id: 'cancelled', name: 'Cancelled', color: 'text-red-600', bgColor: 'bg-red-100' },
   ];
 
-  // Get role from localStorage
+  // Get role from localStorage and fetch bookings
   useEffect(() => {
     const storedRole = localStorage.getItem('role') as 'user' | 'technician' | null;
     setRole(storedRole);
   }, []);
 
+  const fetchBookings = async () => {
+    try {
+      setLoading(true);
+      const techId = localStorage.getItem('userId');
+      if (!techId) {
+        throw new Error('Technician ID not found');
+      }
+
+      const response: ApiResponse = await getOrdersByTechnicianId(techId);
+      if (response.success) {
+        setBookingsData(response.result.bookings);
+      } else {
+        throw new Error(response.message || 'Failed to fetch bookings');
+      }
+    } catch (err) {
+      setError(err.message || 'An error occurred while fetching bookings');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  console.log("bookingsData", bookingsData)
+  useEffect(() => {
+    fetchBookings();
+  }, [activeTab]);
+
+  const handleBookingSelect = (booking: BookingData) => {
+    console.log("booking", booking);
+    setSelectedBooking(booking);
+
+    const status = booking.booking.status;
+
+    if (status === 'completed') {
+      setActiveTab('completed');
+      setCurrentStep('completed-details');
+    } else if (status === 'cancelled' || status === 'declined') {
+      setActiveTab('cancelled');
+      setCurrentStep('cancelled-details');
+    } else {
+      setActiveTab('upcoming');
+      setCurrentStep('upcoming-details');
+    }
+  };
+
   const renderMainContent = () => {
+    if (loading) {
+      return <div className="text-center py-8">Loading bookings...</div>;
+    }
+
+    if (error) {
+      return <div className="text-center py-8 text-red-500">{error}</div>;
+    }
+
     switch (currentStep) {
       case 'upcoming-details':
-        return (
+        return selectedBooking ? (
           <UpcomingDetails
-            booking={bookings[0]}
+            booking={selectedBooking}
             setCurrentStep={setCurrentStep}
             role={role}
             setActiveTab={setActiveTab}
+            onBookingCancelled={fetchBookings}
           />
+        ) : (
+          <div className="text-center py-8">No booking selected</div>
         );
       case 'completed-details':
-        return (
+        return selectedBooking ? (
           <CompletedDetails
-            booking={bookings[0]}
+            booking={selectedBooking}
             setCurrentStep={setCurrentStep}
             reviewText={reviewText}
             selectedRating={selectedRating}
             role={role}
           />
+        ) : (
+          <div className="text-center py-8">No booking selected</div>
+        );
+      case 'cancelled-details':
+        return selectedBooking ? (
+          <CancelledCard
+            booking={selectedBooking}
+            setCurrentStep={setCurrentStep}
+            reviewText={reviewText}
+            selectedRating={selectedRating}
+            role={role}
+          />
+        ) : (
+          <div className="text-center py-8">No booking selected</div>
         );
       case 'congratulations':
         return (
@@ -118,9 +212,9 @@ const TechnicianTransactions: React.FC = () => {
       default:
         return (
           <BookingsList
-            bookings={bookings}
+            bookings={bookingsData}
             activeTab={activeTab}
-            setCurrentStep={setCurrentStep}
+            onBookingSelect={handleBookingSelect}
             role={role}
           />
         );

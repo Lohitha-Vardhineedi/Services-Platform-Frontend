@@ -9,7 +9,7 @@ interface PhotosProps {
 const Photos: React.FC<PhotosProps> = ({ images }) => {
   const [showAll, setShowAll] = useState(false);
 
-  const visibleImages = showAll ? images : images.slice(0, 6);
+  const visibleImages = showAll ? images : images?.slice(0, 6);
 
   return (
     <div className="border border-gray-200 shadow-md rounded-xl p-4">
@@ -26,7 +26,7 @@ const Photos: React.FC<PhotosProps> = ({ images }) => {
           gap-3
         "
       >
-        {visibleImages.map((img: string, index: number) => (
+        {visibleImages?.map((img: string, index: number) => (
           <div key={index} className="relative group">
             <img
               src={img}
@@ -36,7 +36,7 @@ const Photos: React.FC<PhotosProps> = ({ images }) => {
           </div>
         ))}
       </div>
-      {images.length > 6 && (
+      {images?.length > 6 && (
         <div
           className="flex justify-center mt-4 cursor-pointer text-blue-600 hover:underline text-sm"
           onClick={() => setShowAll(!showAll)}
