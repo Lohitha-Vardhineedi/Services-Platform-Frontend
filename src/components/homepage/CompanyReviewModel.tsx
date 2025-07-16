@@ -14,20 +14,20 @@ interface ReviewModalProps {
 
 }
 
-// interface ReviewData {
-//   [key: string]: string | number; 
-//   role: string;
-//   rating: number;
-//   comment: string;
-// }
-
 interface ReviewData {
-  userId?: string;
-  technicianId?: string;
-  role: 'user' | 'technician';
+  [key: string]: string | number; 
+  role: string;
   rating: number;
   comment: string;
 }
+
+// interface ReviewData {
+//   userId?: string;
+//   technicianId?: string;
+//   role: 'user' | 'technician';
+//   rating: number;
+//   comment: string;
+// }
 
 interface AuthenticatedUser {
   id: string;
@@ -52,90 +52,90 @@ const CompanyReviewModal: React.FC<ReviewModalProps> = ({ showReviewModal, setSh
     }
   };
 
-  // const handleReviewSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
+  const handleReviewSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  //   if (!user || !user.id || !user.role) {
-  //     alert('User information is missing. Please log in.');
-  //     return;
-  //   }
+    if (!user || !user.id || !user.role) {
+      alert('User information is missing. Please log in.');
+      return;
+    }
 
-  //   const reviewData: ReviewData = {
-  //     [user.role === 'user' ? 'userId' : 'technicianId']: user.id,
-  //     role: user.role,
-  //     rating: selectedRating,
-  //     comment: comment,
-  //   };
+    const reviewData: ReviewData = {
+      [user.role === 'user' ? 'userId' : 'technicianId']: user.id,
+      role: user.role,
+      rating: selectedRating,
+      comment: comment,
+    };
 
-  //   console.log(reviewData);
+    console.log(reviewData);
 
-  //   try {
-  //     const response = await createCompanyReview(reviewData);
-  //     if (response) {
-  //       console.log('Review submitted successfully!');
-  //       setShowReviewModal(false); 
-  //       setSelectedRating(0); 
-  //       setComment('');
-  //     } else {
-  //       console.error('Failed to submit review:', response.statusText);
-  //       alert('Failed to submit review. Please try again.');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error submitting review:', error);
-  //     alert('An error occurred. Please try again later.');
-  //   }
-  // };
-
-  const handleReviewSubmit = async (
-  e: React.FormEvent<HTMLFormElement>,
-  {
-    user,
-    selectedRating,
-    comment,
-    setSelectedRating,
-    setComment,
-    setShowReviewModal,
-  }: ReviewModalProps
-) => {
-  e.preventDefault();
-
-  if (!user?.id || !user.role) {
-    alert('User information is missing. Please log in.');
-    return;
-  }
-
-  if (!selectedRating || !comment.trim()) {
-    alert('Please provide both a rating and a comment.');
-    return;
-  }
-
-  const reviewData: ReviewData = {
-    role: user.role,
-    rating: selectedRating,
-    comment: comment.trim(),
-    ...(user.role === 'user' ? { userId: user.id } : { technicianId: user.id }),
+    try {
+      const response = await createCompanyReview(reviewData);
+      if (response) {
+        console.log('Review submitted successfully!');
+        setShowReviewModal(false); 
+        setSelectedRating(0); 
+        setComment('');
+      } else {
+        console.error('Failed to submit review:', response.statusText);
+        alert('Failed to submit review. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      alert('An error occurred. Please try again later.');
+    }
   };
 
-  try {
-    const response = await createCompanyReview(reviewData);
+//   const handleReviewSubmit = async (
+//   e: React.FormEvent<HTMLFormElement>,
+//   {
+//     user,
+//     selectedRating,
+//     comment,
+//     setSelectedRating,
+//     setComment,
+//     setShowReviewModal,
+//   }: ReviewModalProps
+// ) => {
+//   e.preventDefault();
 
-    if (response?.status === 201 || response?.status === 200) {
-      console.log('Review submitted successfully!');
-      alert('Thank you for your review!');
-      // Step 5: Reset state
-      setSelectedRating(0);
-      setComment('');
-      setShowReviewModal(false);
-    } else {
-      console.error('Review submission failed:', response);
-      alert(response?.data?.errors?.[0] || 'Failed to submit review. Try again.');
-    }
-  } catch (err: any) {
-    console.error('Error submitting review:', err);
-    const errorMessage = err?.response?.data?.errors?.[0] || 'An unexpected error occurred.';
-    alert(errorMessage);
-  }
-};
+//   if (!user?.id || !user.role) {
+//     alert('User information is missing. Please log in.');
+//     return;
+//   }
+
+//   if (!selectedRating || !comment.trim()) {
+//     alert('Please provide both a rating and a comment.');
+//     return;
+//   }
+
+//   const reviewData: ReviewData = {
+//     role: user.role,
+//     rating: selectedRating,
+//     comment: comment.trim(),
+//     ...(user.role === 'user' ? { userId: user.id } : { technicianId: user.id }),
+//   };
+
+//   try {
+//     const response = await createCompanyReview(reviewData);
+
+//     if (response?.status === 201 || response?.status === 200) {
+//       console.log('Review submitted successfully!');
+//       alert('Thank you for your review!');
+//       // Step 5: Reset state
+//       setSelectedRating(0);
+//       setComment('');
+//       setShowReviewModal(false);
+//     } else {
+//       console.error('Review submission failed:', response);
+//       alert(response?.data?.errors?.[0] || 'Failed to submit review. Try again.');
+//     }
+//   } catch (err: any) {
+//     console.error('Error submitting review:', err);
+//     const errorMessage = err?.response?.data?.errors?.[0] || 'An unexpected error occurred.';
+//     alert(errorMessage);
+//   }
+// };
 
   if (!showReviewModal) return null;
 

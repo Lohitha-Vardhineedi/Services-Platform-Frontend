@@ -12,8 +12,8 @@ import { PieChart as PieChartIcon } from 'lucide-react';
 const AvgRatingChart: React.FC = () => {
   const jobStatusData = [
     { name: 'High', value: 40, color: '#10B981' },    // Green
-    { name: 'Low', value: 25, color: '#EF4444' },     // Red moved to yellow place
     { name: 'Medium', value: 35, color: '#FACC15' },  // Yellow moved to red place
+    { name: 'Low', value: 25, color: '#EF4444' },     // Red moved to yellow place
   ];
 
   const CustomTooltip = ({ active, payload }: any) => {
@@ -56,8 +56,7 @@ const AvgRatingChart: React.FC = () => {
             <PieChartIcon className="w-5 h-5 text-purple-600" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-800">Job Priority Distribution</h3>
-            <p className="text-sm text-gray-500">Current month overview</p>
+            <h3 className="text-lg font-semibold text-gray-800">Average Rating</h3>
           </div>
         </div>
       </div>
@@ -95,15 +94,15 @@ const AvgRatingChart: React.FC = () => {
           <p className="text-sm font-medium text-gray-600">High</p>
           <p className="text-xl font-bold text-green-600">40%</p>
         </div>
-        <div className="text-center p-3 bg-red-50 rounded-xl hover:bg-red-100 transition-colors cursor-pointer">
-          <div className="w-4 h-4 bg-red-500 rounded-full mx-auto mb-2"></div>
-          <p className="text-sm font-medium text-gray-600">Low</p>
-          <p className="text-xl font-bold text-red-600">25%</p>
-        </div>
         <div className="text-center p-3 bg-yellow-50 rounded-xl hover:bg-yellow-100 transition-colors cursor-pointer">
           <div className="w-4 h-4 bg-yellow-400 rounded-full mx-auto mb-2"></div>
           <p className="text-sm font-medium text-gray-600">Medium</p>
           <p className="text-xl font-bold text-yellow-600">35%</p>
+        </div>
+        <div className="text-center p-3 bg-red-50 rounded-xl hover:bg-red-100 transition-colors cursor-pointer">
+          <div className="w-4 h-4 bg-red-500 rounded-full mx-auto mb-2"></div>
+          <p className="text-sm font-medium text-gray-600">Low</p>
+          <p className="text-xl font-bold text-red-600">25%</p>
         </div>
       </div>
     </div>

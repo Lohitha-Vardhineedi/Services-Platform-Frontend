@@ -35,7 +35,7 @@ const MonthlyEarningsChart: React.FC = () => {
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
-          <span>2024</span>
+          <span>2025</span>
         </div>
       </div>
 
@@ -113,7 +113,6 @@ const MonthlyEarningsChart: React.FC = () => {
             <p className="text-sm text-gray-600">Total Earnings</p>
           </div>
           <p className="text-xl font-bold text-gray-800 group-hover/card:text-blue-600 transition-colors">1,530</p>
-          <p className="text-xs text-green-600 font-medium">↗ +24% from last period</p>
         </div>
         
         <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl hover:from-green-100 hover:to-emerald-100 transition-all duration-300 cursor-pointer group/card">
@@ -124,7 +123,6 @@ const MonthlyEarningsChart: React.FC = () => {
             <p className="text-sm text-gray-600">Avg per Month</p>
           </div>
           <p className="text-xl font-bold text-gray-800 group-hover/card:text-green-600 transition-colors">127.5</p>
-          <p className="text-xs text-blue-600 font-medium">Target: 150</p>
         </div>
       </div>
     </div>
