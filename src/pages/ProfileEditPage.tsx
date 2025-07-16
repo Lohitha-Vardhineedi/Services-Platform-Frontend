@@ -28,31 +28,24 @@ const ProfileEditPage: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const role = (user && (user as any).role) || localStorage.getItem('role') || 'user'; // adjust as needed
-    const token = localStorage.getItem('jwt_token') as string || ""; 
+    // const role = (user && (user as any).role) || localStorage.getItem('role') || 'user';
+    const token = localStorage.getItem('jwt_token') as string || "";
 
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
-                console.log("role",role)
                 const userId = localStorage.getItem('userId');
-                console.log("User ID : ",userId)
                 if (!userId) {
                     setError('User ID not found. Please login again.');
                     return;
                 }
 
-                let response;
-                console.log("ID : ",userId)
-                if (role === 'technician') {
-                    response = await technicianGetProfile(userId);
-                } else {
-                    response = await userGetProfile(userId);
-                }
-                console.log("response : -- ",response)
+                  let response = await userGetProfile(userId);
+                
+                console.log("response : -- ", response)
                 if (response) {
                     const userData = (response as any)?.result?.user || (response as any)?.result || response;
-                    console.log("Response : ",userData)
+                    console.log("Response : ", userData)
                     setFormData({
                         profileImage: '',
                         username: userData.username || '',
@@ -83,7 +76,7 @@ const ProfileEditPage: React.FC = () => {
                     setPincodeData(res.data);
                 }
             })
-            .catch(() => {});
+            .catch(() => { });
     }, []);
 
     useEffect(() => {
@@ -114,82 +107,73 @@ const ProfileEditPage: React.FC = () => {
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setSuccess(null);
+        e.preventDefault();
+        setError(null);
+        setSuccess(null);
 
-    if (formData.password !== formData.confirmPassword) {
-        setError('Passwords do not match');
-        return;
-    }
-
-    if (formData.password && (formData.password.length < 6 || formData.password.length > 10)) {
-        setError('Password must be between 6 and 10 characters long');
-        return;
-    }
-
-    try {
-        const userId = localStorage.getItem('userId');
-        if (!userId) {
-            setError('User ID not found. Please login again.');
+        if (formData.password !== formData.confirmPassword) {
+            setError('Passwords do not match');
             return;
         }
 
-        const updateData: any = {
-            id: userId,
-            username: formData.username,
-            password: formData.password,
-            buildingName: formData.houseName,
-            areaName: formData.areaName,
-            city: formData.city,
-            state: formData.state,
-            pincode: formData.pincode
-        };
-
-        let response;
-        if (role === 'technician') {
-            response = await technicianEditProfile(updateData);
-        } else {
-            response = await userEditProfile(updateData);
+        if (formData.password && (formData.password.length < 6 || formData.password.length > 10)) {
+            setError('Password must be between 6 and 10 characters long');
+            return;
         }
 
-        if (response && (response as any).success) {
-            setSuccess('Profile updated successfully!');
+        try {
+            const userId = localStorage.getItem('userId');
+            if (!userId) {
+                setError('User ID not found. Please login again.');
+                return;
+            }
 
-            
-
-            // Extract relevant fields from response
-            const userData = (response as any).result;
-            const updatedUser = {...userData,
+            const updateData: any = {
                 id: userId,
-                username: userData.username,
-                buildingName: userData.buildingName ,
-                phoneNumber: userData.phoneNumber,
-                areaName: userData.areaName,
-                pincode: userData.pincode,
-                state: userData.state,
-                role: userData.role,
-                token: token,
-                city: userData.city,
+                username: formData.username,
+                password: formData.password,
+                buildingName: formData.houseName,
+                areaName: formData.areaName,
+                city: formData.city,
+                state: formData.state,
+                pincode: formData.pincode
             };
-            
-            
-            // Update local storage with only username and address
-            localStorage.setItem('user', JSON.stringify(updatedUser));
 
-            // Optionally update the user context if needed
-            setUser(updatedUser);
+              let response = await userEditProfile(updateData);
 
-            setTimeout(() => {
-                navigate('/');
-            }, 4000);
-        } else {
-            setError((response as any)?.message || 'Failed to update profile.');
+            if (response && (response as any).success) {
+                setSuccess('Profile updated successfully!');
+
+                const userData = (response as any).result;
+                const updatedUser = {
+                    ...userData,
+                    id: userId,
+                    username: userData.username,
+                    buildingName: userData.buildingName,
+                    phoneNumber: userData.phoneNumber,
+                    areaName: userData.areaName,
+                    pincode: userData.pincode,
+                    state: userData.state,
+                    // role: userData.role,
+                    token: token,
+                    city: userData.city,
+                };
+
+
+                localStorage.setItem('user', JSON.stringify(updatedUser));
+
+                setUser(updatedUser);
+
+                setTimeout(() => {
+                    navigate('/');
+                }, 4000);
+            } else {
+                setError((response as any)?.message || 'Failed to update profile.');
+            }
+        } catch (err: any) {
+            setError(err?.message || 'Failed to update profile. Please try again.');
         }
-    } catch (err: any) {
-        setError(err?.message || 'Failed to update profile. Please try again.');
-    }
-};
+    };
 
     // const handleSubmit = async (e: React.FormEvent) => {
     //     e.preventDefault();
@@ -299,7 +283,7 @@ const ProfileEditPage: React.FC = () => {
                             name="username"
                             value={formData.username}
                             onChange={handleChange}
-                            className="mt-1 w-full border border-gray-300 rounded-md p-2 bg-gray-50 text-gray-500 "
+                            className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500 "
                         />
                     </div>
 
