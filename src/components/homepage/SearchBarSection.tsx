@@ -3,6 +3,7 @@ import { MapPin, RefreshCw, Search } from 'lucide-react';
 import { BiSolidCategory } from 'react-icons/bi';
 import { getAllCategories, getAllPincodes as fetchPincodes } from '../../api/apiMethods';
 import { FaSearch } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 function SearchBarSection() {
   const [categories, setCategories] = useState([]);
@@ -12,6 +13,7 @@ function SearchBarSection() {
   const [selectedArea, setSelectedArea] = useState("");
   const [selectedCategories, setSelectedCategories] = useState('')
   const [error, setError] = useState(null);
+  const navigate = useNavigate()
 
   // Fetch categories
   const fetchCategoriesForSearch = async () => {
@@ -155,7 +157,9 @@ function SearchBarSection() {
           </div>
           {/* Search and Reset Buttons */}
           <div className="flex flex-row gap-2 mt-4 md:mt-0">
-            <button className="flex gap-2  justify-center items-center bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold shadow transition-colors">
+            <button className="flex gap-2  justify-center items-center bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold shadow transition-colors"
+            onClick={()=>navigate("/categoryname/cityname/areaname-pincode")}
+            >
               <Search size={20}/>
               Search
             </button>

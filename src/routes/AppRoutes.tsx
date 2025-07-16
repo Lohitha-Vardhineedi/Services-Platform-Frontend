@@ -28,11 +28,13 @@ import TechnicianTransactions from '../pages/technician/TechnicianTransactions';
 import { GuestBooking } from '../pages/GuestBooking';
 import TechnicianPanel from '../pages/technician/TechnicianPanel';
 import TechnicianDashboard from '../pages/technician/TechnicianDashboard';
+import SerarchFilterPage from '../pages/SerarchFilterPage';
 
 const AppRoutes = () => {
     return (
         <Routes>
             <Route path="/" element={<HomePage />}/>
+            <Route path="/categoryname/cityname/areaname-pincode" element={<SerarchFilterPage />}/>
             <Route element={<AuthLayout />}>
                 <Route path="/login/user" element={<UserLogin />} />
                 <Route path="/login/technician" element={<TechnicianLogin />}/>
