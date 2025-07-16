@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react';
 import { User, Star } from 'lucide-react';
 import { customerReviews } from '../../data/customerReviewsData';
-import { getAvgReviews, getCompanyReviews } from '../../api/apiMethods';
+import { getCompanyReviews } from '../../api/apiMethods';
 import { useState } from 'react';
 
 function CustomerReviewCarousel() {
   const [page, setPage] = React.useState(0);
   const reviewsPerPage = 3;
-  const pageCount = Math.ceil(customerReviews.length / reviewsPerPage);
-  const [avgReviews, setAvgReviews] = useState();
   const [reviews, setReviews] = useState([]);
 
   // const fetchAvgReviews = async (serviceId) => {
@@ -45,83 +43,137 @@ function CustomerReviewCarousel() {
     }
   }
 
-  useEffect(() => {
+useEffect(() => {
     fetchCompanyReviews();
-    const interval = setInterval(() => {
-      setPage((prev) => (prev + 1) % pageCount);
-    }, 3500);
-
-    return () => clearInterval(interval);
   }, []);
 
+  const pageCount = Math.ceil(reviews.length / reviewsPerPage);
+
+   useEffect(() => {
+    if (pageCount <= 1) return;
+
+    const interval = setInterval(() => {
+      setPage((prev) => (prev + 1) % pageCount);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [pageCount]);
+
   const start = page * reviewsPerPage;
-  let reviewsToShow = customerReviews.slice(start, start + reviewsPerPage);
-  if (reviewsToShow.length < reviewsPerPage) {
-    reviewsToShow = [
-      ...reviewsToShow,
-      ...customerReviews.slice(0, reviewsPerPage - reviewsToShow.length),
-    ];
-  }
+  const reviewsToShow = reviews.slice(start, start + reviewsPerPage);
+
   return (
-
-      <div className="relative w-full max-w-5xl mx-auto flex flex-wrap justify-center gap-6">
-      {reviews.map((item, index) => (
-        <div
-          className="bg-white p-4 rounded-lg shadow-md text-center w-72"
-          key={index}
-        >
-          <div className="flex justify-center mb-2">
-            <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-              <svg
-                className="w-6 h-6 text-blue-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5.121 17.804A9.003 9.003 0 0112 15a9.003 9.003 0 016.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
+     <div className="relative w-full max-w-5xl mx-auto">
+      <div className="flex flex-wrap justify-center gap-6">
+        {reviewsToShow.map((item, index) => (
+          <div
+            className="bg-white p-4 rounded-lg shadow-md text-center w-72"
+            key={index}
+          >
+            <div className="flex justify-center mb-2">
+              <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                <svg
+                  className="w-6 h-6 text-blue-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M5.121 17.804A9.003 9.003 0 0112 15a9.003 9.003 0 016.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+              </div>
             </div>
+            <h3 className="font-semibold text-lg">{item?.name || 'Lohitha'}</h3>
+            <p className="text-gray-500 text-sm mb-2 capitalize">({item?.role})</p>
+            <div className="flex justify-center mb-2">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  size={20}
+                  fill={i < item?.rating ? "#facc15" : "none"}
+                  stroke={i < item?.rating ? "#facc15" : "#d1d5db"}
+                />
+              ))}
+            </div>
+            <p className="text-gray-700 text-sm">{item.comment}</p>
           </div>
-          <h3 className="font-semibold text-lg">Rahul Verma</h3>
-          <p className="text-gray-500 text-sm mb-2 capitalize">
-            ({item?.role})
-          </p>
-          <div className="flex justify-center mb-2">
-            {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                size={20}
-                fill={i < item?.rating ? "#facc15" : "none"}
-                stroke={i < item?.rating ? "#facc15" : "#d1d5db"}
-              />
-            ))}
-          </div>
-          <p className="text-gray-700 text-sm">{item.comment}</p>
-        </div>
-      ))}
+        ))}
+      </div>
 
-      {/* Pagination dots */}
       <div className="flex justify-center mt-6 w-full space-x-2">
-        {[0].map((_, idx) => (
+        {Array.from({ length: pageCount }).map((_, idx) => (
           <button
             key={idx}
-            className={`w-3 h-3 rounded-full bg-blue-600`}
+            className={`w-3 h-3 rounded-full ${idx === page ? 'bg-blue-600' : 'bg-gray-300'}`}
             type="button"
             aria-label={`Go to review page ${idx + 1}`}
-            style={{ pointerEvents: "none" }}
+            style={{ pointerEvents: 'none' }}
           />
         ))}
       </div>
     </div>
-    // <>
 
-    // </>
+    //   <div className="relative w-full max-w-5xl mx-auto flex flex-wrap justify-center gap-6">
+    //   {reviews.map((item, index) => (
+    //     <div
+    //       className="bg-white p-4 rounded-lg shadow-md text-center w-72"
+    //       key={index}
+    //     >
+    //       <div className="flex justify-center mb-2">
+    //         <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+    //           <svg
+    //             className="w-6 h-6 text-blue-600"
+    //             fill="none"
+    //             stroke="currentColor"
+    //             viewBox="0 0 24 24"
+    //             xmlns="http://www.w3.org/2000/svg"
+    //           >
+    //             <path
+    //               strokeLinecap="round"
+    //               strokeLinejoin="round"
+    //               strokeWidth="2"
+    //               d="M5.121 17.804A9.003 9.003 0 0112 15a9.003 9.003 0 016.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+    //             />
+    //           </svg>
+    //         </div>
+    //       </div>
+    //       <h3 className="font-semibold text-lg">Rahul Verma</h3>
+    //       <p className="text-gray-500 text-sm mb-2 capitalize">
+    //         ({item?.role})
+    //       </p>
+    //       <div className="flex justify-center mb-2">
+    //         {[...Array(5)].map((_, i) => (
+    //           <Star
+    //             key={i}
+    //             size={20}
+    //             fill={i < item?.rating ? "#facc15" : "none"}
+    //             stroke={i < item?.rating ? "#facc15" : "#d1d5db"}
+    //           />
+    //         ))}
+    //       </div>
+    //       <p className="text-gray-700 text-sm">{item.comment}</p>
+    //     </div>
+    //   ))}
+
+    //   {/* Pagination dots */}
+    //   <div className="flex justify-center mt-6 w-full space-x-2">
+    //     {[0].map((_, idx) => (
+    //       <button
+    //         key={idx}
+    //         className={`w-3 h-3 rounded-full bg-blue-600`}
+    //         type="button"
+    //         aria-label={`Go to review page ${idx + 1}`}
+    //         style={{ pointerEvents: "none" }}
+    //       />
+    //     ))}
+    //   </div>
+    // </div>
+   
     // <div className="relative w-full max-w-5xl mx-auto">
 
     //   <div className="bg-white p-4 rounded-lg shadow-md text-center w-72">

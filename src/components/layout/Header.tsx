@@ -64,8 +64,7 @@ function Header() {
 
   const handleLogout = () => {
     setShowUserModal(false);
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    localStorage.clear()
     setUser(null);
     navigate('/');
   };
