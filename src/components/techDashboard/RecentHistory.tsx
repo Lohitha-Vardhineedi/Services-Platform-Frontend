@@ -120,6 +120,18 @@ const RecentHistory: React.FC = () => {
           </div>
         ))}
       </div>
+
+       <div className="mt-6 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl">
+         <div className="flex items-center justify-between">
+           <div>
+             <p className="text-sm text-gray-600">Today's Schedule</p>
+             <p className="font-semibold text-gray-800">3 Services</p>
+           </div>
+           <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors">
+             View Schedule
+           </button>
+         </div>
+       </div>
     </div>
   );
 };
