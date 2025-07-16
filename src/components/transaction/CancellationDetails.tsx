@@ -64,8 +64,8 @@ const CancelledCard: React.FC<CancelledCardProps> = ({ booking, role }) => {
   const { booking: bookingData, technician, service, user } = booking;
 
   // Format the addresses
-  const formattedTechnicianAddress = `${technician.buildingName}, ${technician.areaName}, ${technician.city}, ${technician.state} - ${technician.pincode}`;
-  const formattedUserAddress = `${user.buildingName}, ${user.areaName}, ${user.city}, ${user.state} - ${user.pincode}`;
+  const formattedTechnicianAddress = `${technician?.buildingName}, ${technician?.areaName}, ${technician?.city}, ${technician?.state} - ${technician?.pincode}`;
+  const formattedUserAddress = `${user?.buildingName}, ${user?.areaName}, ${user?.city}, ${user?.state} - ${user?.pincode}`;
 
   return (
     <div className="bg-white border border-red-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300">
@@ -82,21 +82,21 @@ const CancelledCard: React.FC<CancelledCardProps> = ({ booking, role }) => {
         <div className="flex items-center space-x-3">
           <User className="text-blue-500 w-5 h-5" />
           <span className="text-gray-700 font-medium">
-            {role === "user" ? technician.username : user.username}
+            {role === "user" ? technician?.username : user?.username}
           </span>
         </div>
         
         {/* Service */}
         <div className="flex items-center space-x-3">
           <Wrench className="text-orange-500 w-5 h-5" />
-          <span className="text-gray-700 font-medium">{service.serviceName}</span>
+          <span className="text-gray-700 font-medium">{service?.serviceName}</span>
         </div>
         
         {/* Contact */}
         <div className="flex items-center space-x-3">
           <Phone className="text-green-500 w-5 h-5" />
           <span className="text-gray-700 font-medium">
-            {role === "user" ? technician.phoneNumber : user.phoneNumber}
+            {role === "user" ? technician?.phoneNumber : user?.phoneNumber}
           </span>
         </div>
         

@@ -189,6 +189,13 @@ const endpoints: any = {
   getAllTechByAddress: {
     method: "get",
     url:'api/techDetails/getAllTechByAddress'
+  },
+
+  getTechByCategorie:{
+    method:"get",
+    url: (id: string) => {
+      return `http://localhost:5000/api/techDetails/getAllTechniciansByCateId/${id}`;
+    },
   }
 }
 

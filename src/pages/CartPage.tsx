@@ -10,7 +10,7 @@ import { removeFromCart, addToCart, getCartItems, createBookService } from "../a
 interface CartItem {
   _id: string;
   serviceId: {
-    _id: string;
+    _id: string ;
     technicianId: string;
     serviceName: string;
     serviceImg?: string;
@@ -72,18 +72,19 @@ const CartPage = () => {
       const response = await getCartItems(userId);
       
       if (response.success && response.result.cart) {
+        console.log(response)
         const formattedItems = response.result.cart.items.map((item: any) => ({
-          _id: item._id,
+          _id: item?._id,
           serviceId: {
-            _id: item.serviceId._id,
-            technicianId: item.serviceId.technicianId,
-            serviceName: item.serviceId.serviceName,
-            serviceImg: item.serviceId.serviceImg,
-            servicePrice: item.serviceId.servicePrice,
-            price: item.serviceId.price,
-            image: item.serviceId.image,
-            ratings: item.serviceId.ratings,
-            reviews: item.serviceId.reviews,
+            _id: item?.serviceId?._id,
+            technicianId: item.serviceId?.technicianId,
+            serviceName: item.serviceId?.serviceName,
+            serviceImg: item.serviceId?.serviceImg,
+            servicePrice: item.serviceId?.servicePrice,
+            price: item.serviceId?.price,
+            image: item.serviceId?.image,
+            ratings: item.serviceId?.ratings,
+            reviews: item.serviceId?.reviews,
           },
           quantity: item.quantity,
           bookingDate: item.bookingDate,

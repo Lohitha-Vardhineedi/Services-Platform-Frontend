@@ -29,8 +29,8 @@ const UpcomingDetails: React.FC<UpcomingDetailsProps> = ({
   const { booking, technician, service, user } = bookingData;
 console.log("booking", booking)
 console.log("user", user)
-  const formattedTechnicianAddress = `${technician.buildingName}, ${technician.areaName}, ${technician.city}, ${technician.state} - ${technician.pincode}`;
-  const formattedUserAddress = `${user?.buildingName}, ${user?.areaName}, ${user?.city}, ${user.state} - ${user.pincode}`;
+  const formattedTechnicianAddress = `${technician?.buildingName}, ${technician?.areaName}, ${technician?.city}, ${technician?.state} - ${technician?.pincode}`;
+  const formattedUserAddress = `${user?.buildingName}, ${user?.areaName}, ${user?.city}, ${user?.state} - ${user?.pincode}`;
 
   const handleCancel = async () => {
     setIsCancelling(true);
@@ -41,11 +41,11 @@ console.log("user", user)
 
     try {
       const response = await bookingCancleByUser(data);
-      if (response.success) {
+      if (response?.success) {
         setActiveTab("cancelled");
         setCurrentStep("bookings");
       } else {
-        console.error("Failed to cancel booking:", response.message);
+        console.error("Failed to cancel booking:", response?.message);
       }
     } catch (error) {
       console.error("Error cancelling booking:", error);
@@ -66,7 +66,7 @@ const handleStatusUpdate = async (status: string, otp?: string) => {
 
     const response = await updateBookingStatus(requestData);
     
-    if (response.success) {
+    if (response?.success) {
       if (status === "completed") {
         setActiveTab("completed");
         setCurrentStep("completed-details");
@@ -135,8 +135,8 @@ const handleOtpSubmit = async (otp: string) => {
         </div>
         <div className="w-full h-64 bg-gray-200 rounded-2xl mb-6 overflow-hidden">
           <img
-            src={service.serviceImg}
-            alt={`Image of ${service.serviceName} service`}
+            src={service?.serviceImg}
+            alt={`Image of ${service?.serviceName} service`}
             className="w-full h-full object-cover"
           />
         </div>
@@ -151,7 +151,7 @@ const handleOtpSubmit = async (otp: string) => {
                 {role === "user" ? "Technician Name:" : "Customer Name:"}
               </span>
               <span className="text-gray-900 font-medium ml-2">
-                {role === "user" ? technician.username : user.username}
+                {role === "user" ? technician?.username : user?.username}
               </span>
             </div>
           </div>
@@ -164,7 +164,7 @@ const handleOtpSubmit = async (otp: string) => {
             <div className="flex-1 min-w-0">
               <span className="text-gray-600">Service:</span>
               <span className="text-gray-900 font-medium ml-2">
-                {service.serviceName}
+                {service?.serviceName}
               </span>
             </div>
           </div>
@@ -177,7 +177,7 @@ const handleOtpSubmit = async (otp: string) => {
             <div className="flex-1 min-w-0">
               <span className="text-gray-600">Contact:</span>
               <span className="text-gray-900 font-medium ml-2">
-                {role === "user" ? technician.phoneNumber : user.phoneNumber}
+                {role === "user" ? technician?.phoneNumber : user?.phoneNumber}
               </span>
             </div>
           </div>
@@ -203,7 +203,7 @@ const handleOtpSubmit = async (otp: string) => {
             <div className="flex-1 min-w-0">
               <span className="text-gray-600">Total Price:</span>
               <span className="text-gray-900 font-medium ml-2">
-                ₹{booking.totalPrice}
+                ₹{booking?.totalPrice}
               </span>
             </div>
           </div>
@@ -217,7 +217,7 @@ const handleOtpSubmit = async (otp: string) => {
               <div className="flex-1 min-w-0">
                 <span className="text-gray-600">OTP:</span>
                 <span className="text-gray-900 font-medium ml-2">
-                  {booking.otp}
+                  {booking?.otp}
                 </span>
               </div>
             </div>
@@ -226,7 +226,7 @@ const handleOtpSubmit = async (otp: string) => {
           {/* Technician Actions */}
           {role === "technician" && (
             <div className="md:col-span-2">
-              {booking.status === "upcoming" && (
+              {booking?.status === "upcoming" && (
                 <div className="flex justify-end space-x-4">
                   <button
                     className={`py-2 px-4 bg-red-100 text-red-600 rounded-2xl font-semibold shadow-lg hover:bg-red-200 transition-colors flex items-center gap-2 ${isUpdatingStatus ? 'opacity-70 cursor-not-allowed' : ''}`}
@@ -247,7 +247,7 @@ const handleOtpSubmit = async (otp: string) => {
                 </div>
               )}
               
-              {booking.status === "accepted" && !otpSubmitted && (
+              {!otpSubmitted && (
                 <OTPInput
                   setCurrentStep={setCurrentStep}
                   setActiveTab={setActiveTab}
@@ -259,7 +259,7 @@ const handleOtpSubmit = async (otp: string) => {
                 />
               )}
               
-              {(booking.status === "started" || (booking.status === "accepted" && otpSubmitted)) && (
+              {(booking?.status === "started" || (booking?.status === "accepted" && otpSubmitted)) && (
                 <div className="flex justify-end space-x-4">
                   <button
                     className={`py-2 px-4 bg-green-500 text-white rounded-2xl font-semibold shadow-lg hover:bg-green-600 transition-colors ${isUpdatingStatus ? 'opacity-70 cursor-not-allowed' : ''}`}
@@ -273,7 +273,7 @@ const handleOtpSubmit = async (otp: string) => {
             </div>
           )}
           
-          {(role === "user" && booking.status === "upcomming") && (
+          {(role === "user" && booking?.status === "upcomming") && (
             <div className="flex justify-end space-x-4">
               <button
                 className={`py-2 px-4 bg-gray-50 text-red-600 rounded-2xl font-semibold shadow-lg hover:bg-gray-100 transition-colors ${isCancelling ? 'opacity-70 cursor-not-allowed' : ''}`}

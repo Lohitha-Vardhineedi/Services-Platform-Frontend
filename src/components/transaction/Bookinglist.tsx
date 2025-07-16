@@ -44,7 +44,7 @@ const filteredBookings = bookings.filter(booking => {
   }
   return false;
 });
-  if (filteredBookings.length === 0) {
+  if (filteredBookings?.length === 0) {
     return (
       <div className="bg-white rounded-lg shsadow-sm border border-gray-200 min-h-96">
         <div className="border-b border-gray-200 px-6 py-4 flex items-center space-x-3">
@@ -105,26 +105,26 @@ const filteredBookings = bookings.filter(booking => {
         </h2>
       </div>
       <div className="p-6 space-y-4">
-        {filteredBookings.map((bookingData) => (
+        {filteredBookings?.map((bookingData) => (
           <div
-            key={bookingData.booking._id}
+            key={bookingData?.booking._id}
             className="bg-gray-50 rounded-2xl p-4 cursor-pointer border border-gray-100 hover:bg-gray-100 transition-colors"
             onClick={() => onBookingSelect(bookingData)}
           >
             <div className="flex items-center space-x-4">
               <div className="w-16 h-16 bg-gray-200 rounded-xl overflow-hidden flex-shrink-0">
                 <img
-                  src={bookingData.service?.serviceImg || bookingData.technician.profileImage || 'https://via.placeholder.com/80'}
+                  src={bookingData.service?.serviceImg || bookingData?.technician?.profileImage || 'https://via.placeholder.com/80'}
                   alt={bookingData.service?.serviceName || 'Service'}
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="font-semibold text-gray-900 text-lg truncate">
-                  {bookingData.service?.serviceName || 'Service not specified'}
+                  {bookingData?.service?.serviceName || 'Service not specified'}
                 </h3>
                 <p className="text-gray-500 text-sm truncate">
-                  Technician: {bookingData.technician.username}
+                  Technician: {bookingData?.technician?.username}
                 </p>
                 <div className="flex items-center justify-between mt-2">
                   <span

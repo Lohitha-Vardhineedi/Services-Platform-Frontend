@@ -363,23 +363,23 @@ export default Services;
 //                   alt={item?.serv}
 //                   className="rounded-t-lg object-cover w-20 sm:w-28 md:w-36 lg:w-40 xl:w-45 h-30"
 //                 />
-//                 <div
-//                   className={`rounded-b-lg px-2 py-1 flex cursor-pointer items-center justify-center 
-//                     ${isInCart
-//                       ? "text-red-600 border border-red-600"
-//                       : " bg-red-600 border-b text-white hover:bg-red-700"
-//                     }
-//                     `}
-//                   onClick={() => handleCartToggle(item.id)}
-//                 >
-//                   {isInCart ? (
-//                     <BsCartDash size={16} className="flex" />
-//                   ) : (
-//                     <FaCartPlus size={18} className="flex" />
-//                   )}
-//                   <div className="text-sm sm:text-sm md:text-sm lg:text-lg xl:text-lg font-extralight ms-2 whitespace-nowrap">
-//                     {isInCart ? "Remove" : "Add to Cart"}
-//                   </div>
+                // <div
+                //   className={`rounded-b-lg px-2 py-1 flex cursor-pointer items-center justify-center 
+                //     ${isInCart
+                //       ? "text-red-600 border border-red-600"
+                //       : " bg-red-600 border-b text-white hover:bg-red-700"
+                //     }
+                //     `}
+                //   onClick={() => handleCartToggle(item.id)}
+                // >
+                //   {isInCart ? (
+                //     <BsCartDash size={16} className="flex" />
+                //   ) : (
+                //     <FaCartPlus size={18} className="flex" />
+                //   )}
+                //   <div className="text-sm sm:text-sm md:text-sm lg:text-lg xl:text-lg font-extralight ms-2 whitespace-nowrap">
+                //     {isInCart ? "Remove" : "Add to Cart"}
+                //   </div>
 //                 </div>
 //               </div>
 //             </div>
