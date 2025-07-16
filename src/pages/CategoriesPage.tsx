@@ -56,6 +56,8 @@ const [allCategories, setAllCategories] = useState<Category[]>([]);
     fetchCategories();
   }, []);
 
+  console.log("allCategories", allCategories)
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-4">
         <h2 className="text-xl font-bold text-gray-900 mb-4 text-left">

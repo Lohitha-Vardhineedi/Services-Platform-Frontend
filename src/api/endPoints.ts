@@ -150,6 +150,10 @@ const endpoints: any = {
     method: "put",
     url: () => `/api/bookingServices/BookingCancleByUser`
   },
+  updateBookingStatus: {
+    method: "put",
+    url: () => `/api/bookingServices/BookingStatusByTechnician`
+  },
   getTechnicianReviews: {
     method: "get",
     url: (id: string) => {

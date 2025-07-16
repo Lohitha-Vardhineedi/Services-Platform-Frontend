@@ -63,6 +63,7 @@ export const getOrdersByUserId = (id: string) => apiRequest("getOrdersByUserId",
 export const getOrdersByTechnicianId = (id: string) => apiRequest("getOrdersByTechnicianId", null, id);
 
 export const bookingCancleByUser = (data: any) => apiRequest("bookingCancleByUser", data);
+export const updateBookingStatus = (data: any) => apiRequest("updateBookingStatus", data);
 export const createGetInTouch = (formData: any) =>apiRequest('createGetInTouch', formData)
 
 export const createFranchaseEnquiry = (formData: any) => apiRequest('createFranchaseEnquiry',formData)

@@ -33,22 +33,20 @@ const BookingsList: React.FC<BookingsListProps> = ({
   onBookingSelect,
   role 
 }) => {
-  // Filter bookings based on activeTab
-  const filteredBookings = bookings.filter((bookingData) => {
-    const status = bookingData.booking.status.toLowerCase();
-    if (activeTab === 'upcoming') {
-      return status === 'upcomming'; // Note the API uses 'upcomming' (with two m's)
-    } else if (activeTab === 'completed') {
-      return status === 'completed';
-    } else if (activeTab === 'cancelled') {
-      return status === 'cancelled' || status === 'declined';
-    }
-    return false;
-  });
-
+    // In BookingsList component
+const filteredBookings = bookings.filter(booking => {
+  if (activeTab === 'upcoming') {
+    return ['upcomming', 'upcoming', 'accepted', 'started'].includes(booking.booking.status);
+  } else if (activeTab === 'completed') {
+    return booking.booking.status === 'completed';
+  } else if (activeTab === 'cancelled') {
+    return ['cancelled', 'declined'].includes(booking.booking.status);
+  }
+  return false;
+});
   if (filteredBookings.length === 0) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 min-h-96">
+      <div className="bg-white rounded-lg shsadow-sm border border-gray-200 min-h-96">
         <div className="border-b border-gray-200 px-6 py-4 flex items-center space-x-3">
           <div
             className={`w-8 h-8 rounded-lg ${

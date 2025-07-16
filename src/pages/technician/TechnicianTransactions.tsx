@@ -109,6 +109,7 @@ const TechnicianTransactions: React.FC = () => {
     }
   };
 
+  console.log("bookingsData", bookingsData)
   useEffect(() => {
     fetchBookings();
   }, [activeTab]);
