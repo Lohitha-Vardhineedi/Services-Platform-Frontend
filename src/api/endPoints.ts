@@ -187,8 +187,8 @@ const endpoints: any = {
   },
 
   getAllTechByAddress: {
-    method: "get",
-    url:'api/techDetails/getAllTechByAddress'
+    method: "post",
+    url:'/api/techDetails/getAllTechByAddress'
   },
 
   getTechByCategorie:{

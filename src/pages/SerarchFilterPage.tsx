@@ -37,20 +37,26 @@ interface TechnicianProfile {
 const SearchFilterPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { categories, pincode, areaName } = useParams<{
-    categories?: string;
-    pincode?: string;
-    areaName?: string;
-  }>();
   const [technicians, setTechnicians] = useState<TechnicianProfile[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+const searchAddress = localStorage.getItem("selectAddress");
+console.log("searchAddress", searchAddress);
 
-  const formData = { categories, areaName, pincode };
+
+const parsedSearchAddress = searchAddress ? JSON.parse(searchAddress) : null;
+
+const categoryId = parsedSearchAddress?.category;
+const areaName = parsedSearchAddress?.areaName;
+const city = parsedSearchAddress?.city;
+const pincode = parsedSearchAddress?.pincode;
+
+const formData = { categoryId, areaName, pincode, city };
+console.log(formData);
   console.log(formData);
 
   const fetchTechBySearch = async () => {
-    if (!categories || !areaName || !pincode) {
+    if (!categoryId || !areaName || !pincode || !city) {
       setError("Missing required search parameters");
       return;
     }
@@ -77,7 +83,7 @@ const SearchFilterPage: React.FC = () => {
 
   useEffect(() => {
     fetchTechBySearch();
-  }, [categories, areaName, pincode]);
+  }, [categoryId, areaName, pincode, city]);
 
   const handleTechnicianClick = (technicianId: string, city?: string, pincode?: string) => {
     const cityPincode = pincode && city ? `${pincode}-${city}` : pincode || city || "";
