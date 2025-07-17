@@ -17,6 +17,7 @@ const ServicePage = () => {
 
   useEffect(() => {
     if (!categoryId) return;
+    console.log(categoryId,"==>categoryId")
     axios
       .get(`http://localhost:5000/api/techDetails/getAllTechniciansByCateId/${categoryId}`)
       .then((res) => {

@@ -104,66 +104,123 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
     []
   );
 
-  const handleSubmit = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      setError(null);
-      setLoading(true);
+  // const handleSubmit = useCallback(
+  //   async (e: React.FormEvent<HTMLFormElement>) => {
+  //     e.preventDefault();
+  //     setError(null);
+  //     setLoading(true);
 
-      try {
-        // Validate pincode
-        if (!formData.pincode || formData.pincode.length !== 6) {
-          setError('Pincode must be exactly 6 digits');
+  //     try {
+  //       // Validate pincode
+  //       if (!formData.pincode || formData.pincode.length !== 6) {
+  //         setError('Pincode must be exactly 6 digits');
+  //         setLoading(false);
+  //         return;
+  //       }
+
+  //       let response;
+  //       if (defaultRole === 'user') {
+  //         const payload = {
+  //           username: formData.name,
+  //           phoneNumber: formData.mobile,
+  //           password: formData.password,
+  //           buildingName: formData.buildingName,
+  //           areaName: formData.areaName,
+  //           city: formData.city,
+  //           state: formData.state,
+  //           pincode: formData.pincode
+  //         };
+  //         response = await userRegister(payload) as any;
+  //       } else {
+  //         if (!formData.category) {
+  //           setError('Please select a category.');
+  //           setLoading(false);
+  //           return;
+  //         }
+  //         console.log("as", apiCategories[0]._id);   
+  //         const payload = {
+  //           username: formData.name,
+  //           phoneNumber: formData.mobile,
+  //           password: formData.password,
+  //           buildingName: formData.buildingName,
+  //           areaName: formData.areaName,
+  //           city: formData.city,
+  //           state: formData.state,
+  //           pincode: formData.pincode,
+  //           category: formData.category
+  //           // category: apiCategories[0]._id
+  //         };
+  //         console.log("----",payload)
+  //         response = await technicianRegister(payload) as any;
+  //       }
+  //       if (response.success) {
+  //         navigate(`/login/${defaultRole}`);
+  //       } 
+  //     } catch (err: any) {
+  //       setError(err.data.error[0] || 'Registration failed. Please try again.');
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   },
+  //   [formData, defaultRole, navigate]
+  // );
+
+  const handleSubmit = useCallback(
+  async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    try {
+      if (!formData.pincode || formData.pincode.length !== 6) {
+        setError('Pincode must be exactly 6 digits');
+        setLoading(false);
+        return;
+      }
+
+      let response;
+
+      const basePayload = {
+        username: formData.name,
+        phoneNumber: formData.mobile,
+        password: formData.password,
+        buildingName: formData.buildingName,
+        areaName: formData.areaName,
+        city: formData.city,
+        state: formData.state,
+        pincode: formData.pincode,
+      };
+
+      if (defaultRole === 'user') {
+        response = await userRegister(basePayload);
+      } else {
+        if (!formData.category) {
+          setError('Please select a valid category.');
           setLoading(false);
           return;
         }
 
-        let response;
-        if (defaultRole === 'user') {
-          const payload = {
-            username: formData.name,
-            phoneNumber: formData.mobile,
-            password: formData.password,
-            buildingName: formData.buildingName,
-            areaName: formData.areaName,
-            city: formData.city,
-            state: formData.state,
-            pincode: formData.pincode
-          };
-          response = await userRegister(payload) as any;
-        } else {
-          if (!formData.category) {
-            
-            setError('Please select a category.');
-            setLoading(false);
-            return;
-          }
-          console.log("as", apiCategories[0]._id);   
-          const payload = {
-            username: formData.name,
-            phoneNumber: formData.mobile,
-            password: formData.password,
-            buildingName: formData.buildingName,
-            areaName: formData.areaName,
-            city: formData.city,
-            state: formData.state,
-            pincode: formData.pincode,
-            category: apiCategories[0]._id
-          };
-          console.log("----",payload)
-          response = await technicianRegister(payload) as any;
-        }
-        if (response.success) {
-          navigate(`/login/${defaultRole}`);
-        } 
-      } catch (err: any) {
-        setError(err.data.error[0] || 'Registration failed. Please try again.');
-      } finally {
-        setLoading(false);
+        const technicianPayload = {
+          ...basePayload,
+          category: formData.category,
+        };
+
+        response = await technicianRegister(technicianPayload);
       }
-    },
-    [formData, defaultRole, navigate]
-  );
+
+      if (response.success) {
+        navigate(`/login/${defaultRole}`);
+      }
+
+    } catch (err: any) {
+      setError(err?.data?.error?.[0] || 'Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  },
+  [formData, defaultRole, navigate]
+);
+
 
   return (
     <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
