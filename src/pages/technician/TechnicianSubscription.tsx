@@ -8,8 +8,9 @@ import {
   Shield,
   BadgeIndianRupee,
   LucideIcon,
+  Cross,
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getPlans } from '../../api/apiMethods';
 
 const iconMap: { [key: string]: LucideIcon } = {
@@ -28,13 +29,13 @@ interface FullFeature {
   text: string;
 }
 
-interface Plan {
-  id: string;
+export interface Plan {
+  _id: string;
   name: string;
   price: number;
   originalPrice?: number;
   gst: number;
-  totalPrice: number;
+  finalPrice: number;
   validity: number;
   validityUnit: string;
   icon: string;
@@ -51,20 +52,19 @@ const TechnicianSubscription: React.FC = () => {
   const navigate = useNavigate();
 
   const [plans, setPlans] = useState<any[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchPlans = async () => {
     try {
       const response = await getPlans();
       if (response) {
-        setPlans(response);
-        console.log(response, "==>response");
-
+        setPlans(response?.data);
       }
-      // else {
-      // setError('Invalid response format');
-      // }
+      else {
+      setError('Invalid response format');
+      }
     } catch (err: any) {
-      // setError(err?.message || 'Failed to fetch categories');
+      setError(err?.message || 'Failed to fetch categories');
       console.log(err, "==>err");
     }
   };
@@ -74,13 +74,42 @@ const TechnicianSubscription: React.FC = () => {
 
 
   const handleFullDetails = (plan: Plan): void => {
-    navigate(`/subscription/${plan.id}`);
+    navigate(`/subscription/${plan._id}`, { state: { plan } });
   };
+
+  interface PlanConfig {
+  gradient: string;       
+  icon: LucideIcon;      
+  button: string;         
+}
+
+const PLAN_CONFIG: Record<string, PlanConfig> = {
+  "Economy Plan": {
+    gradient: "from-blue-500 to-blue-600",
+    icon: Zap,
+    button: "bg-blue-600 hover:bg-blue-700",
+  },
+  "Gold Plan": {
+    gradient: "from-yellow-400 to-yellow-600",
+    icon: Star,
+    button: "bg-yellow-500 hover:bg-yellow-600",
+  },
+  "Platinum Plan": {
+    gradient: "from-purple-500 to-purple-700",
+    icon: Crown,
+    button: "bg-purple-600 hover:bg-purple-700",
+  },
+  "Free Plan": {
+    gradient: "from-green-400 to-green-600",
+    icon: Shield,
+    button: "bg-green-500 hover:bg-green-700",
+  },
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-10">
       <div className="max-w-7xl mx-auto px-4">
-        {/* Header */}
         <div className="text-center mb-14">
           <h1 className="text-4xl font-extrabold text-gray-800">
             Technician Subscription Plans
@@ -90,16 +119,20 @@ const TechnicianSubscription: React.FC = () => {
           </p>
         </div>
 
-        {/* Plans Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {plans?.map((plan: Plan) => {
-            const IconComponent = iconMap[plan.icon] || Star;
+          {plans.map((plan: Plan) => {
+            const config = PLAN_CONFIG[plan.name] || {
+              gradient: "from-gray-400 to-gray-600",
+              icon: Star,
+              button: "bg-gray-500 hover:bg-gray-600",
+            };
+            const IconComponent = config?.icon;
 
             return (
               <div
-                key={plan.id}
-                className={`relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105 border 
-                  ${selectedPlan === plan.id ? 'ring-2 ring-blue-500' : ''} 
+                key={plan._id}
+                className={`relative flex flex-col h-full bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105 border 
+                  ${selectedPlan === plan._id ? 'ring-2 ring-blue-500' : ''} 
                   ${plan.isPopular ? 'border-yellow-400 ring-2 ring-yellow-400' : 'border-gray-200'}`}
               >
                 {plan.isPopular && (
@@ -110,31 +143,34 @@ const TechnicianSubscription: React.FC = () => {
                   </div>
                 )}
 
-                {plan.discount && (
+                {Number(plan.discount) > 0 && (
                   <div className="absolute -top-2 -right-2 z-10">
                     <div className="bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-md">
-                      {plan.discount}% OFF
+                      {plan?.discount}% OFF
                     </div>
                   </div>
                 )}
 
-                <div className="p-8 pb-6">
+                <div className="p-6 pb-6 flex flex-col h-full">
                   <div className="text-center mb-6">
-                    <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${plan.color} flex items-center justify-center mx-auto mb-4 shadow-md`}>
+                    <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${config?.gradient} flex items-center justify-center mx-auto mb-4 shadow-md`}>
                       <IconComponent className="text-white" size={28} />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-800">{plan.name}</h3>
+                    <h3 className="text-xl font-bold text-gray-800">{plan?.name}</h3>
 
                     <div className="mt-2">
-                      <div className="text-2xl font-extrabold text-gray-900">₹{plan.price}</div>
-                      {plan.originalPrice && (
+                      <div className="text-2xl font-extrabold text-gray-900">₹ {plan?.price}</div>
+                      {Number(plan.originalPrice) > 0 && (
                         <div className="text-sm text-gray-500 line-through">
-                          ₹{plan.originalPrice} + ₹{plan.gst} (GST 18%)
+                          ₹{plan.originalPrice} + (GST 18%)
                         </div>
                       )}
+                      {Number(plan.finalPrice) > 0 && (
                       <div className="text-sm text-gray-600">
-                        INCL 18% GST: ₹{plan.totalPrice}
+                        ₹{plan.finalPrice} +  ₹{plan.gst} (GST 18%)
+                        {/* INCL 18% GST: ₹ {plan.finalPrice} */}
                       </div>
+                      )}
                     </div>
 
                     <div className="mt-3 text-sm font-medium text-blue-700 bg-blue-100 px-3 py-1 rounded-full inline-block">
@@ -155,12 +191,13 @@ const TechnicianSubscription: React.FC = () => {
                     ))}
                   </ul>
 
-                  <div className="space-y-3">
+                  <div className="mt-auto space-y-3">
                     <button
-                      onClick={() => setSelectedPlan(plan.id)}
-                      className={`w-full py-3 px-4 rounded-xl font-semibold transition duration-300 ${plan.buttonColor} text-white shadow-md hover:shadow-lg hover:scale-[1.02]`}
+                      onClick={() => setSelectedPlan(plan?.name)}
+                      className={`w-full py-3 px-4 rounded-2xl font-semibold transition duration-300 text-white shadow-md hover:shadow-lg hover:scale-[1.02]
+                       ${config?.button}`}
                     >
-                      {selectedPlan === plan.id ? 'Selected' : 'Choose Plan'}
+                      {selectedPlan === plan?.name ? 'Selected' : 'Choose Plan'}
                     </button>
                     <button
                       onClick={() => handleFullDetails(plan)}
