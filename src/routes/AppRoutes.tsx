@@ -28,7 +28,7 @@ import TechnicianTransactions from '../pages/technician/TechnicianTransactions';
 import { GuestBooking } from '../pages/GuestBooking';
 import TechnicianPanel from '../pages/technician/TechnicianPanel';
 import TechnicianDashboard from '../pages/technician/TechnicianDashboard';
-import SerarchFilterPage from '../pages/SerarchFilterPage';
+import SerarchFilterPage from '../pages/SearchFilterPage';
 
 const AppRoutes = () => {
     return (

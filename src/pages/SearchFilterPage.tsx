@@ -8,11 +8,7 @@ import { getAllTechByAddress } from "../api/apiMethods";
 import AdvertisementBanner from "../components/services/AdvertisementBanner";
 import ContactForm from "../components/services/ContactForms";
 import SearchInfo from "../components/services/SearchInfo";
-// import AdvertisementBanner from "../components/categoriess/AdvertisementBanner";
-// import ContactForm from "../components/categoriess/ContactForms";
-// import SearchInfo from "../components/categoriess/SearchInfo";
-// import { getAllTechByAddress } from "../api/apiMethods";
-// import { categoriesFilters } from "../components/categoriess/categoriesFilters";
+import { ServiceFilters } from "../components/services/ServiceFilters";
 
 interface Technician {
   _id: string;
@@ -66,11 +62,10 @@ console.log(formData);
 
     try {
       const response = await getAllTechByAddress(formData);
-      if (response.success && Array.isArray(response.data)) {
-        setTechnicians(response.data);
+      if (response.success && Array.isArray(response.result)) {
+        setTechnicians(response.result);
       } else {
         setTechnicians([]);
-        setError("No technicians found");
       }
     } catch (error) {
       console.error("Error fetching technicians:", error);
@@ -94,7 +89,7 @@ console.log(formData);
     <div className="max-w-7xl mx-auto px-4 py-4">
       <AdvertisementBanner />
       <h2 className="text-xl font-semibold my-4">Technicians</h2>
-      <categoriesFillter />
+      <ServiceFilters/>
 
       <div className="flex flex-col md:flex-row p-2 gap-3">
         <div className="flex-1 space-y-3 overflow-y-auto scrollbar-hide max-h-[calc(100vh-200px)]">
@@ -128,7 +123,7 @@ console.log(formData);
 
                   <div className="flex gap-3 items-center">
                     <div className="flex items-center border border-amber-500 rounded-lg px-2 text-black font-bold">
-                      {profile.ratings?.rating ?? "N/A"}
+                      {profile.ratings?.rating ?? "4"}
                       <MdOutlineStar size={20} className="ml-1" color="#ffc71b" />
                     </div>
                     {profile.ratings?.rating && (
@@ -146,9 +141,9 @@ console.log(formData);
 
                   <div className="flex items-center">
                     <IoLocationOutline size={20} color="red" />
-                    <span className="text-sm ml-1">
+                    <span className="text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
                       {[
-                        profile.technician.areaName,
+                        profile.technician.areaName?.toLowerCase(),
                         profile.technician.city,
                         profile.technician.state,
                         profile.technician.pincode,
@@ -161,8 +156,8 @@ console.log(formData);
                   {profile.technician?.description && (
                     <div className="flex items-center">
                       <FaThumbsUp size={22} color="#00B800" />
-                      <span className="text-sm font-extralight ml-2">
-                        {profile.technician.description}
+                      <span className="sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
+                        {profile.technician.description} years in Services
                       </span>
                     </div>
                   )}

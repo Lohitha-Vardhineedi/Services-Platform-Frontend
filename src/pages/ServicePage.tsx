@@ -82,7 +82,7 @@ const ServicePage = () => {
 
                   <div className="flex items-center">
                     <IoLocationOutline size={20} color="red" />
-                    <span className="text-sm ms-1">
+                    <span className="text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
                       {profile.technician.areaName}, {profile.technician.city}, {profile.technician.state}, {profile.technician.pincode}
                     </span>
                   </div>
@@ -91,7 +91,7 @@ const ServicePage = () => {
                               <FaThumbsUp size={22} color="#00B800" className='flex' />
                               <span className="text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
                                 {" "}
-                                 {profile.technician?.description}
+                                 {profile.technician?.description} years in Services
                                 {/* Years in Services */}
                               </span>
                             </div>

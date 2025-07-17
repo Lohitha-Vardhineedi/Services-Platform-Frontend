@@ -111,15 +111,15 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
           .map((category, index) => (
             <div
               key={category.id}
-              className="relative rounded-xl shadow group p-4 flex flex-col items-center transition-all duration-300 hover:-translate-y-1 hover:bg-blue-50/60 hover:scale-105 animate-fade-in"
+              className="relative rounded-xl shadow group p-4 flex flex-col items-center transition-all duration-300 "
               style={{
                 animationDelay: `${index * 60}ms`,
                 animationFillMode: 'both',
               }}
-              onClick={() => {
-                console.log('Clicked category:', category);
-                navigate(`/technicians/${category?._id}`);
-              }}
+              // onClick={() => {
+              //   console.log('Clicked category:', category);
+              //   navigate(`/technicians/${category?._id}`);
+              // }}
             >
               <div className="w-12 h-12 rounded-full flex items-center justify-center mb-2 overflow-hidden">
                 <img
