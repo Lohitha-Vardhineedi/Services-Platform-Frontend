@@ -34,7 +34,7 @@ const AppRoutes = () => {
     return (
         <Routes>
             <Route path="/" element={<HomePage />}/>
-            <Route path="/categoryname/cityname/areaname-pincode" element={<SerarchFilterPage />}/>
+            <Route path="/:categoryname/:cityname/:areaname-pincode" element={<SerarchFilterPage />}/>
             <Route element={<AuthLayout />}>
                 <Route path="/login/user" element={<UserLogin />} />
                 <Route path="/login/technician" element={<TechnicianLogin />}/>

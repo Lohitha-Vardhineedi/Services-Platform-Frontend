@@ -68,8 +68,8 @@ const CompletedDetails: React.FC<CompletedDetailsProps> = ({
   const { booking: bookingData, technician, user, service } = booking;
 
   // Format the addresses
-  const formattedTechnicianAddress = `${technician.buildingName}, ${technician.areaName}, ${technician.city}, ${technician.state} - ${technician.pincode}`;
-  const formattedUserAddress = `${user.buildingName}, ${user.areaName}, ${user.city}, ${user.state} - ${user.pincode}`;
+  const formattedTechnicianAddress = `${technician?.buildingName}, ${technician?.areaName}, ${technician?.city}, ${technician?.state} - ${technician?.pincode}`;
+  const formattedUserAddress = `${user?.buildingName}, ${user?.areaName}, ${user?.city}, ${user?.state} - ${user?.pincode}`;
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 min-h-96">

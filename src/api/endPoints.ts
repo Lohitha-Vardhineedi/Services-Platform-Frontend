@@ -184,6 +184,18 @@ const endpoints: any = {
   createCompanyReview: {
     method: "post",
     url:"/api/companyReview/createReview"
+  },
+
+  getAllTechByAddress: {
+    method: "post",
+    url:'/api/techDetails/getAllTechByAddress'
+  },
+
+  getTechByCategorie:{
+    method:"get",
+    url: (id: string) => {
+      return `http://localhost:5000/api/techDetails/getAllTechniciansByCateId/${id}`;
+    },
   }
 }
 
