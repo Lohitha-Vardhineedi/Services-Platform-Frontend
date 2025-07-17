@@ -8,7 +8,9 @@ interface OTPModalProps {
   setOtpSubmitted: (value: boolean) => void;
   bookingOtp?: string;
   bookingId: string;
+  onOtpSubmit: (otp: string) => void;
 }
+
 
 const OTPInput: React.FC<OTPModalProps> = ({
   setCurrentStep,
@@ -17,6 +19,7 @@ const OTPInput: React.FC<OTPModalProps> = ({
   setOtpSubmitted,
   bookingOtp,
   bookingId,
+  onOtpSubmit,
 }) => {
   const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
   const [error, setError] = useState<string>('');
@@ -41,31 +44,43 @@ const OTPInput: React.FC<OTPModalProps> = ({
     }
   };
 
-  const handleOTPSubmit = () => {
+  // const handleOTPSubmit = () => {
+  //   const fullOtp = otp.join('');
+  //   if (fullOtp.length !== 6) {
+  //     setError('Please enter a 6-digit OTP');
+  //     return;
+  //   }
+
+  //   if (bookingOtp && fullOtp !== bookingOtp) {
+  //     setError('Invalid OTP. Please try again.');
+  //     return;
+  //   }
+
+  //   console.log('OTP submitted:', fullOtp);
+  //   localStorage.setItem(`otp_${bookingId}`, 'submitted');
+  //   setOtpSubmitted(true);
+  //   setShowSuccess(true);
+  //   setCurrentStep('success');
+  //   setOtp(['', '', '', '', '', '']);
+
+  //   setTimeout(() => {
+  //     setShowSuccess(false);
+  //     setActiveTab('upcoming');
+  //     setCurrentStep('upcoming-details');
+  //   }, 3000);
+  // };
+const handleOTPSubmit = () => {
     const fullOtp = otp.join('');
     if (fullOtp.length !== 6) {
       setError('Please enter a 6-digit OTP');
       return;
     }
 
-    if (bookingOtp && fullOtp !== bookingOtp) {
-      setError('Invalid OTP. Please try again.');
-      return;
-    }
-
-    console.log('OTP submitted:', fullOtp);
-    localStorage.setItem(`otp_${bookingId}`, 'submitted');
-    setOtpSubmitted(true);
-    setShowSuccess(true);
-    setCurrentStep('success');
-    setOtp(['', '', '', '', '', '']);
-
-    setTimeout(() => {
-      setShowSuccess(false);
-      setActiveTab('upcoming');
-      setCurrentStep('upcoming-details');
-    }, 3000);
+    // Call the parent's OTP submit handler
+    onOtpSubmit(fullOtp);
+    setOtp(['', '', '', '', '', '']); // Clear OTP fields
   };
+
 
   return (
     <div className="flex gap-2 flex-wrap items-center space-x-4 md:col-span-2 sm:col-span-1 mt-4">
