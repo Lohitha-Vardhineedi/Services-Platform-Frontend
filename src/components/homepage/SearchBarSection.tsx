@@ -45,7 +45,7 @@ const search = {
     try {
       const response = await fetchPincodes();
       if (Array.isArray(response?.data)) {
-        setPincodeData(response.data);
+        setPincodeData(response?.data);
       } else {
         setError("Invalid pincode data format");
       }
