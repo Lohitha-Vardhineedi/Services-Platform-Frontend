@@ -97,7 +97,7 @@ const handleOtpSubmit = async (otp: string) => {
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 min-h-96">
-      {showSuccess && (
+      {/* {showSuccess && (
         <SuccessModal
           onClose={() => {
             setShowSuccess(false);
@@ -105,7 +105,7 @@ const handleOtpSubmit = async (otp: string) => {
             setCurrentStep("upcoming-details");
           }}
         />
-      )}
+      )} */}
       <div className="border-b border-gray-200 px-6 py-4">
         <div className="flex items-center space-x-3">
           <button
@@ -273,10 +273,13 @@ const handleOtpSubmit = async (otp: string) => {
             </div>
           )}
           
-          {(role === "user" && booking?.status === "upcomming") && (
+       
+
+        </div>
+           {(role === "user" && booking?.status === "upcoming") && (
             <div className="flex justify-end space-x-4">
               <button
-                className={`py-2 px-4 bg-gray-50 text-red-600 rounded-2xl font-semibold shadow-lg hover:bg-gray-100 transition-colors ${isCancelling ? 'opacity-70 cursor-not-allowed' : ''}`}
+                className={`py-2 px-4 bg-gray-50 border-2 text-red-600 rounded-2xl font-semibold shadow-lg hover:bg-gray-100 transition-colors ${isCancelling ? 'opacity-70 cursor-not-allowed' : ''}`}
                 onClick={handleCancel}
                 disabled={isCancelling}
               >
@@ -284,7 +287,6 @@ const handleOtpSubmit = async (otp: string) => {
               </button>
             </div>
           )}
-        </div>
       </div>
     </div>
   );

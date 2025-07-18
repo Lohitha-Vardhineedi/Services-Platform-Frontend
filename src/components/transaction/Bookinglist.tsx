@@ -27,44 +27,42 @@ interface BookingsListProps {
   role: 'user' | 'technician' | null;
 }
 
-const BookingsList: React.FC<BookingsListProps> = ({ 
-  bookings, 
-  activeTab, 
+const BookingsList: React.FC<BookingsListProps> = ({
+  bookings,
+  activeTab,
   onBookingSelect,
-  role 
+  role
 }) => {
-    // In BookingsList component
-const filteredBookings = bookings.filter(booking => {
-  if (activeTab === 'upcoming') {
-    return ['upcomming', 'upcoming', 'accepted', 'started'].includes(booking.booking.status);
-  } else if (activeTab === 'completed') {
-    return booking.booking.status === 'completed';
-  } else if (activeTab === 'cancelled') {
-    return ['cancelled', 'declined'].includes(booking.booking.status);
-  }
-  return false;
-});
+  // In BookingsList component
+  const filteredBookings = bookings.filter(booking => {
+    if (activeTab === 'upcoming') {
+      return ['upcomming', 'upcoming', 'accepted', 'started'].includes(booking.booking.status);
+    } else if (activeTab === 'completed') {
+      return booking.booking.status === 'completed';
+    } else if (activeTab === 'cancelled') {
+      return ['cancelled', 'declined'].includes(booking.booking.status);
+    }
+    return false;
+  });
   if (filteredBookings?.length === 0) {
     return (
       <div className="bg-white rounded-lg shsadow-sm border border-gray-200 min-h-96">
         <div className="border-b border-gray-200 px-6 py-4 flex items-center space-x-3">
           <div
-            className={`w-8 h-8 rounded-lg ${
-              activeTab === 'upcoming'
+            className={`w-8 h-8 rounded-lg ${activeTab === 'upcoming'
                 ? 'bg-purple-100'
                 : activeTab === 'completed'
-                ? 'bg-green-100'
-                : 'bg-red-100'
-            } flex items-center justify-center`}
+                  ? 'bg-green-100'
+                  : 'bg-red-100'
+              } flex items-center justify-center`}
           >
             <ChevronRight
-              className={`w-4 h-4 ${
-                activeTab === 'upcoming'
+              className={`w-4 h-4 ${activeTab === 'upcoming'
                   ? 'text-purple-600'
                   : activeTab === 'completed'
-                  ? 'text-green-600'
-                  : 'text-red-600'
-              }`}
+                    ? 'text-green-600'
+                    : 'text-red-600'
+                }`}
             />
           </div>
           <h2 className="text-xl font-semibold text-gray-900">
@@ -82,22 +80,20 @@ const filteredBookings = bookings.filter(booking => {
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 min-h-96">
       <div className="border-b border-gray-200 px-6 py-4 flex items-center space-x-3">
         <div
-          className={`w-8 h-8 rounded-lg ${
-            activeTab === 'upcoming'
+          className={`w-8 h-8 rounded-lg ${activeTab === 'upcoming'
               ? 'bg-purple-100'
               : activeTab === 'completed'
-              ? 'bg-green-100'
-              : 'bg-red-100'
-          } flex items-center justify-center`}
+                ? 'bg-green-100'
+                : 'bg-red-100'
+            } flex items-center justify-center`}
         >
           <ChevronRight
-            className={`w-4 h-4 ${
-              activeTab === 'upcoming'
+            className={`w-4 h-4 ${activeTab === 'upcoming'
                 ? 'text-purple-600'
                 : activeTab === 'completed'
-                ? 'text-green-600'
-                : 'text-red-600'
-            }`}
+                  ? 'text-green-600'
+                  : 'text-red-600'
+              }`}
           />
         </div>
         <h2 className="text-xl font-semibold text-gray-900">
@@ -124,20 +120,27 @@ const filteredBookings = bookings.filter(booking => {
                   {bookingData?.service?.serviceName || 'Service not specified'}
                 </h3>
                 <p className="text-gray-500 text-sm truncate">
-                  Technician: <span className='text-grey'>{bookingData?.technician?.username}</span>
+
+
+                  {role === "user" ? "Technician Name : " : "User Name : "}
+
+                  <span className="text-gray-900">
+                    {role === "user" ? bookingData?.technician?.username : bookingData?.user?.username}
+                  </span>
+
+
                 </p>
                 <div className="flex items-center justify-between mt-2">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      activeTab === 'upcoming'
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${activeTab === 'upcoming'
                         ? 'bg-purple-100 text-purple-600'
                         : activeTab === 'completed'
-                        ? 'bg-green-100 text-green-600'
-                        : 'bg-red-100 text-red-600'
-                    }`}
+                          ? 'bg-green-100 text-green-600'
+                          : 'bg-red-100 text-red-600'
+                      }`}
                   >
-                    {bookingData.booking.status.charAt(0).toUpperCase() + 
-                     bookingData.booking.status.slice(1).toLowerCase()}
+                    {bookingData.booking.status.charAt(0).toUpperCase() +
+                      bookingData.booking.status.slice(1).toLowerCase()}
                   </span>
                   <span className="text-gray-400 text-xs">
                     {new Date(bookingData.booking.bookingDate).toLocaleDateString()}

@@ -15,7 +15,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ setCurrentStep, setActiveTa
         </div>
         <h2 className="text-2xl font-bold text-gray-900 mb-4">OTP received</h2>
         <p className="text-gray-600 mb-8">
-          Now you can do you work until user confirm the work is done. In case of any issues, you can
+          Now you can do your work until user confirm the work is done. In case of any issues, you can
           contact the user directly.
         </p>
         <button
@@ -25,7 +25,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ setCurrentStep, setActiveTa
             setActiveTab('upcoming');
           }}
         >
-          Back to New Order
+          Back to Order
         </button>
       </div>
     </div>

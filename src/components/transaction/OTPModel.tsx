@@ -76,9 +76,14 @@ const handleOTPSubmit = () => {
       return;
     }
 
-    // Call the parent's OTP submit handler
     onOtpSubmit(fullOtp);
-    setOtp(['', '', '', '', '', '']); // Clear OTP fields
+    setOtp(['', '', '', '', '', '']);
+
+    setTimeout(() => {
+            setShowSuccess(false);
+            setActiveTab('upcoming');
+            setCurrentStep('upcoming-details');
+        }, 3000);
   };
 
 
