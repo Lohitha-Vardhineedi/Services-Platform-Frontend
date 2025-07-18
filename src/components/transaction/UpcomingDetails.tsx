@@ -72,6 +72,9 @@ const handleStatusUpdate = async (status: string, otp?: string) => {
       } else if (status === "declined") {
         setActiveTab("cancelled");
         setCurrentStep("cancelled-details");
+      } else if (status === "accepted") {
+        setActiveTab('upcoming');
+      setCurrentStep('upcoming-details');
       } else if (status === "started") {
         setShowSuccess(true);
       }
@@ -95,7 +98,7 @@ const handleOtpSubmit = async (otp: string) => {
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 min-h-96">
-      {/* {showSuccess && (
+       {showSuccess ? (
         <SuccessModal
           onClose={() => {
             setShowSuccess(false);
@@ -103,7 +106,8 @@ const handleOtpSubmit = async (otp: string) => {
             setCurrentStep("upcoming-details");
           }}
         />
-      )} */}
+      ):(
+        <>
       <div className="border-b border-gray-200 px-6 py-4">
         <div className="flex items-center space-x-3">
           <button
@@ -256,7 +260,7 @@ const handleOtpSubmit = async (otp: string) => {
                 />
               )}
               
-              {(booking?.status === "started" || (booking?.status === "accepted" && otpSubmitted)) && (
+              {(booking?.status === "started") && (
                 <div className="flex justify-end space-x-4">
                   <button
                     className={`py-2 px-4 bg-green-500 text-white rounded-2xl font-semibold shadow-lg hover:bg-green-600 transition-colors ${isUpdatingStatus ? 'opacity-70 cursor-not-allowed' : ''}`}
@@ -285,6 +289,8 @@ const handleOtpSubmit = async (otp: string) => {
             </div>
           )}
       </div>
+      </>
+      )}
     </div>
   );
 };

@@ -305,6 +305,7 @@ const CartPage = () => {
 
       if (response.success) {
         await fetchCartData();
+        navigate("/transactions")
       } else {
         setError(response.message || "Booking failed");
       }
