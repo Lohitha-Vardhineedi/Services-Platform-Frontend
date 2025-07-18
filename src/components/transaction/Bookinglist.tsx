@@ -124,7 +124,7 @@ const filteredBookings = bookings.filter(booking => {
                   {bookingData?.service?.serviceName || 'Service not specified'}
                 </h3>
                 <p className="text-gray-500 text-sm truncate">
-                  Technician: {bookingData?.technician?.username}
+                  Technician: <span className='text-grey'>{bookingData?.technician?.username}</span>
                 </p>
                 <div className="flex items-center justify-between mt-2">
                   <span
@@ -144,7 +144,7 @@ const filteredBookings = bookings.filter(booking => {
                   </span>
                 </div>
                 <div className="mt-2 text-sm text-gray-700">
-                  ₹{bookingData.booking.totalPrice.toFixed(2)} • {bookingData.booking.quantity} {bookingData.booking.quantity > 1 ? 'services' : 'service'}
+                  ₹ <span className='text-blue-500'>{bookingData.booking.totalPrice.toFixed(2)}</span> • {bookingData.booking.quantity} {bookingData.booking.quantity > 1 ? 'services' : 'service'}
                 </div>
               </div>
               <ChevronRight className="w-5 h-5 text-gray-400 flex-shrink-0" />

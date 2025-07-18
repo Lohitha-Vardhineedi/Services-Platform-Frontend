@@ -8,12 +8,12 @@ import {
   KeyRound,
   Check,
   X,
+  Key,
 } from "lucide-react";
 import OTPInput from "./OTPModel";
 import SuccessModal from "./SuccessModel";
 import { bookingCancleByUser, updateBookingStatus } from "../../api/apiMethods";
-
-// ... (keep all your existing interfaces)
+import { BiRupee } from "react-icons/bi";
 
 const UpcomingDetails: React.FC<UpcomingDetailsProps> = ({
   booking: bookingData,
@@ -148,7 +148,7 @@ const handleOtpSubmit = async (otp: string) => {
             </div>
             <div className="flex-1 min-w-0">
               <span className="text-gray-600">
-                {role === "user" ? "Technician Name:" : "Customer Name:"}
+                {role === "user" ? "Technician Name :" : "User Name :"}
               </span>
               <span className="text-gray-900 font-medium ml-2">
                 {role === "user" ? technician?.username : user?.username}
@@ -162,7 +162,7 @@ const handleOtpSubmit = async (otp: string) => {
               <Wrench className="w-6 h-6 text-orange-600" />
             </div>
             <div className="flex-1 min-w-0">
-              <span className="text-gray-600">Service:</span>
+              <span className="text-gray-600">Service :</span>
               <span className="text-gray-900 font-medium ml-2">
                 {service?.serviceName}
               </span>
@@ -175,7 +175,7 @@ const handleOtpSubmit = async (otp: string) => {
               <Phone className="w-6 h-6 text-green-600" />
             </div>
             <div className="flex-1 min-w-0">
-              <span className="text-gray-600">Contact:</span>
+              <span className="text-gray-600">Contact :</span>
               <span className="text-gray-900 font-medium ml-2">
                 {role === "user" ? technician?.phoneNumber : user?.phoneNumber}
               </span>
@@ -188,7 +188,7 @@ const handleOtpSubmit = async (otp: string) => {
               <MapPin className="w-6 h-6 text-red-600" />
             </div>
             <div className="flex-1 min-w-0">
-              <span className="text-gray-600">Address:</span>
+              <span className="text-gray-600">Address :</span>
               <span className="text-gray-900 font-medium ml-2 text-sm">
                 {role === "user" ? formattedTechnicianAddress : formattedUserAddress}
               </span>
@@ -198,10 +198,10 @@ const handleOtpSubmit = async (otp: string) => {
           {/* Price */}
           <div className="flex items-center space-x-4">
             <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-              <KeyRound className="w-6 h-6 text-purple-600" />
+              <BiRupee className="w-6 h-6 text-purple-600" />
             </div>
             <div className="flex-1 min-w-0">
-              <span className="text-gray-600">Total Price:</span>
+              <span className="text-gray-600">Total Price :</span>
               <span className="text-gray-900 font-medium ml-2">
                 ₹{booking?.totalPrice}
               </span>
@@ -212,11 +212,11 @@ const handleOtpSubmit = async (otp: string) => {
           {role === "user" && (
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <KeyRound className="w-6 h-6 text-yellow-600" />
+                <Key className="w-6 h-6 text-yellow-600" />
               </div>
               <div className="flex-1 min-w-0">
-                <span className="text-gray-600">OTP:</span>
-                <span className="text-gray-900 font-medium ml-2">
+                <span className="text-gray-600">OTP :</span>
+                <span className="bg-purple-500 text-white rounded-2xl py-2 px-3 font-medium ml-2">
                   {booking?.otp}
                 </span>
               </div>

@@ -177,7 +177,7 @@ const TransactionPage: React.FC = () => {
           setCurrentStep={setCurrentStep}
           role={role}
           setActiveTab={setActiveTab}
-          onBookingCancelled={fetchBookings} // Add this prop
+          onBookingCancelled={fetchBookings}
         />
       ) : (
         <div className="text-center py-8">No booking selected</div>
@@ -255,8 +255,8 @@ const TransactionPage: React.FC = () => {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">My Transactions</h1>
           <div className="flex items-center space-x-2 text-sm text-gray-500">
-            <Link to="/technician/dashboard" className="hover:underline">
-              Dashboard
+            <Link to="/" className="hover:underline">
+              Home
             </Link>
             <ChevronRight className="w-4 h-4" />
             <span>My Transactions</span>

@@ -12,6 +12,7 @@ function SearchBarSection() {
   const [areaOptions, setAreaOptions] = useState([]);
   const [selectedArea, setSelectedArea] = useState("");
   const [selectedCity, setSelectedCity] = useState('');
+  const [selectedState, setSelectedState] = useState('');
   const cityOptions = ['Hyderabad'];
   const [selectedCategory, setSelectedCategory] = useState({
     name: '', 
@@ -35,12 +36,6 @@ function SearchBarSection() {
     }
   };
 
-const search = {
- category: selectedCategory.id,
- areaName:selectedArea,
- city: selectedCity,
- pincode:selectedPincode
-}
   const fetchPincodesData = async () => {
     try {
       const response = await fetchPincodes();
@@ -114,6 +109,14 @@ const search = {
     
     const formattedArea = selectedArea.toLowerCase().replace(/\s+/g, "-");
     const formattedPincode = selectedPincode;
+
+    const search = {
+ category: selectedCategory.id,
+ areaName:selectedArea,
+ city: selectedCity,
+ pincode:selectedPincode,
+ state : selectedState || "Telangana"
+}
 
     localStorage.setItem("selectAddress", JSON.stringify(search))
     navigate(`/${selectedCategory.slug}/${city}/${formattedArea}-${formattedPincode}`, {

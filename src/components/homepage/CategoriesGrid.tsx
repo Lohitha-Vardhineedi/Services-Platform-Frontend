@@ -135,7 +135,6 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
           ))}
       </div>
     )}
-
     </div>
 
     </>

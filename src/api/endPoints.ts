@@ -77,15 +77,15 @@ const endpoints: any = {
       return `/api/subscriptions/plans`;
     }
   },
-  getTechImagesByTechId: { //images
+  getTechImagesByTechId: { 
     method: "get",
     url: (id: string) => `/api/techImages/getTechImagesByTechId/${id}`
   },
-  getServicesByTechId: { // services - get
+  getServicesByTechId: {
     method: "get",
     url: (id: string) => `/api/services/getServicesByTechId/${id}`
   },
-  updateTechnicianControl: { // 
+  updateTechnicianControl: {  
     method: "put",
     url: () => `/api/techAuth/updateTechnicianControl`
   },
@@ -189,6 +189,11 @@ const endpoints: any = {
   getAllTechByAddress: {
     method: "post",
     url:'/api/techDetails/getAllTechByAddress'
+  },
+
+  getSearchContentByAddress: {
+    method: "post",
+    url:'/api/searchContentData/getSearchContentByLocation'
   },
 
   getTechByCategorie:{

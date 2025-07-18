@@ -72,6 +72,8 @@ export const createCompanyReview = (formData: any) => apiRequest('createCompanyR
 
 export const getAllTechByAddress = (formData :any) => apiRequest('getAllTechByAddress',formData)
 
+export const getSearchContentByAddress = (formData :any) => apiRequest('getSearchContentByAddress',formData)
+
 export const getTechByCategorie = (id: string) =>apiRequest('getTechByCategorie', null , id)
 
 // export const getAllTechnicianDetails = async (id: string) => {

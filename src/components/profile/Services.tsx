@@ -3,6 +3,8 @@ import { BsCartDash } from "react-icons/bs";
 import { FaCartPlus } from "react-icons/fa6";
 import { MdOutlineStar } from "react-icons/md";
 import { addToCart, removeFromCart, getCartItems } from '../../api/apiMethods';
+import { useNavigate } from "react-router-dom";
+import { Eye, EyeIcon } from "lucide-react";
 
 interface ServicesProps {
   services: TechnicianService[];
@@ -19,6 +21,7 @@ interface CartItem {
 const Services: React.FC<ServicesProps> = ({ services }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState<{ [key: string]: boolean }>({});
+  const navigate = useNavigate()
 
   const fetchCartItems = async () => {
     try {
@@ -54,10 +57,8 @@ const Services: React.FC<ServicesProps> = ({ services }) => {
       const isInCart = cartItems.some(item => item.id === serviceId);
       
       if (isInCart) {
-        // Call removeFromCart API
         const response = await removeFromCart({ userId, serviceId });
         if (response.success) {
-          // Update local state immediately for better UX
           setCartItems(prev => prev.filter(item => item.id !== serviceId));
           // Refresh cart items from server to ensure consistency
           await fetchCartItems();
@@ -71,7 +72,6 @@ const Services: React.FC<ServicesProps> = ({ services }) => {
 
         const response = await addToCart(payload);
         if (response.success) {
-          // Update local state immediately for better UX
           const service = services.find(s => s._id === serviceId);
           if (service) {
             setCartItems(prev => [
@@ -102,6 +102,12 @@ const Services: React.FC<ServicesProps> = ({ services }) => {
         <div className="text-xl sm:text-xl md:text-2xl lg:text-xl xl:text-2xl font-extralight">
           Services
         </div>
+        <button
+          className="flex text-sm items-center bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded me-1"
+          onClick={() => navigate("/cart")}
+        >
+          <Eye className="me-2" size={18} /> View Cart
+        </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

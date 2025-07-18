@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { FileMinus, Trash2, X } from "lucide-react";
+import { FileMinus, Minus, Trash2, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import { FiMinus } from "react-icons/fi";
@@ -68,9 +68,9 @@ const CartPage = () => {
         setError("User not logged in");
         return;
       }
-      
+
       const response = await getCartItems(userId);
-      
+
       if (response.success && response.result.cart) {
         console.log(response)
         const formattedItems = response.result.cart.items.map((item: any) => ({
@@ -98,7 +98,7 @@ const CartPage = () => {
             items: formattedItems,
           },
         };
-        
+
         setCartData(updatedCartData);
         setSelectedItems([]);
       } else {
@@ -128,15 +128,15 @@ const CartPage = () => {
         ...prev,
         cart: {
           ...prev.cart,
-          items: prev.cart.items.map(item => 
+          items: prev.cart.items.map(item =>
             item._id === itemId ? { ...item, bookingDate: selectedDate } : item
           )
         }
       };
     });
 
-    setSelectedItems(prev => 
-      prev.map(item => 
+    setSelectedItems(prev =>
+      prev.map(item =>
         item._id === itemId ? { ...item, bookingDate: selectedDate } : item
       )
     );
@@ -149,15 +149,15 @@ const CartPage = () => {
         ...prev,
         cart: {
           ...prev.cart,
-          items: prev.cart.items.map(item => 
+          items: prev.cart.items.map(item =>
             item._id === itemId ? { ...item, bookingDate: "" } : item
           )
         }
       };
     });
 
-    setSelectedItems(prev => 
-      prev.map(item => 
+    setSelectedItems(prev =>
+      prev.map(item =>
         item._id === itemId ? { ...item, bookingDate: "" } : item
       )
     );
@@ -166,7 +166,7 @@ const CartPage = () => {
   const handleQuantityChange = async (itemId: string, delta: number) => {
     try {
       setProcessingItems(prev => ({ ...prev, [itemId]: true }));
-      
+
       const userId = localStorage.getItem('userId');
       if (!userId) return;
 
@@ -174,26 +174,26 @@ const CartPage = () => {
       if (!item) return;
 
       const newQuantity = Math.max(1, item.quantity + delta);
-      
+
       setCartData(prev => {
         if (!prev) return null;
         return {
           ...prev,
           cart: {
             ...prev.cart,
-            items: prev.cart.items.map(cartItem => 
+            items: prev.cart.items.map(cartItem =>
               cartItem._id === itemId ? { ...cartItem, quantity: newQuantity } : cartItem
             )
           }
         };
       });
 
-      setSelectedItems(prev => 
-        prev.map(item => 
+      setSelectedItems(prev =>
+        prev.map(item =>
           item._id === itemId ? { ...item, quantity: newQuantity } : item
         )
       );
-      
+
       const payload = {
         userId,
         serviceId: item.serviceId._id,
@@ -213,7 +213,7 @@ const CartPage = () => {
   const handleRemove = async (itemId: string) => {
     try {
       setProcessingItems(prev => ({ ...prev, [itemId]: true }));
-      
+
       const userId = localStorage.getItem('userId');
       if (!userId) return;
 
@@ -243,78 +243,78 @@ const CartPage = () => {
     }
   };
 
-const handleCheckboxChange = (itemId: string) => {
-  setCartData(prev => {
-    if (!prev) return null;
+  const handleCheckboxChange = (itemId: string) => {
+    setCartData(prev => {
+      if (!prev) return null;
 
-    const updatedItems = prev.cart.items.map(item => {
-      if (item._id === itemId) {
-        const newSelectedState = !item.isSelected;
+      const updatedItems = prev.cart.items.map(item => {
+        if (item._id === itemId) {
+          const newSelectedState = !item.isSelected;
 
-        setSelectedItems(prev => {
-          const exists = prev.some(selected => selected._id === itemId);
-          if (newSelectedState && !exists) {
-            return [...prev, { ...item, isSelected: true }];
-          } else if (!newSelectedState) {
-            return prev.filter(selected => selected._id !== itemId);
-          }
-          return prev;
-        });
+          setSelectedItems(prev => {
+            const exists = prev.some(selected => selected._id === itemId);
+            if (newSelectedState && !exists) {
+              return [...prev, { ...item, isSelected: true }];
+            } else if (!newSelectedState) {
+              return prev.filter(selected => selected._id !== itemId);
+            }
+            return prev;
+          });
 
-        return { ...item, isSelected: newSelectedState };
-      }
-      return item;
+          return { ...item, isSelected: newSelectedState };
+        }
+        return item;
+      });
+
+      return {
+        ...prev,
+        cart: {
+          ...prev.cart,
+          items: updatedItems,
+        },
+      };
     });
-
-    return {
-      ...prev,
-      cart: {
-        ...prev.cart,
-        items: updatedItems,
-      },
-    };
-  });
-};
+  };
 
   const handleBookNow = async () => {
-  try {
-    setIsBooking(true);
-    const userId = localStorage.getItem('userId');
-    if (!userId) {
-      setError("User not logged in");
-      return;
+    try {
+      setIsBooking(true);
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        setError("User not logged in");
+        return;
+      }
+
+      if (selectedItems.length === 0) {
+        setError("No items selected for booking");
+        return;
+      }
+
+      const bookings = selectedItems.map(item => ({
+        userId,
+        serviceId: item.serviceId._id,
+        technicianId: item.serviceId.technicianId,
+        quantity: item.quantity.toString(),
+        bookingDate: item.bookingDate,
+        servicePrice: ((item.serviceId.servicePrice || item.serviceId.price || 0) * item.quantity).toString(),
+        gst: Math.round((item.serviceId.servicePrice || item.serviceId.price || 0) * item.quantity * 0.18).toString(),
+        totalPrice: Math.round((item.serviceId.servicePrice || item.serviceId.price || 0) * item.quantity * 1.18).toString()
+      }));
+
+      const response = await createBookService(bookings);
+
+      if (response.success) {
+        await fetchCartData();
+      } else {
+        setError(response.message || "Booking failed");
+      }
+    } catch (err: any) {
+      console.error("Error creating bookings:", err);
+      setError(err?.message || "Failed to create bookings");
+    } finally {
+      setIsBooking(false);
     }
-
-    if (selectedItems.length === 0) {
-      setError("No items selected for booking");
-      return;
-    }
-
-    const bookings = selectedItems.map(item => ({
-      userId,
-      serviceId: item.serviceId._id,
-      technicianId: item.serviceId.technicianId,
-      quantity: item.quantity.toString(),
-      bookingDate: item.bookingDate,
-      servicePrice: ((item.serviceId.servicePrice || item.serviceId.price || 0) * item.quantity).toString(),
-      gst: Math.round((item.serviceId.servicePrice || item.serviceId.price || 0) * item.quantity * 0.18).toString(),
-      totalPrice: Math.round((item.serviceId.servicePrice || item.serviceId.price || 0) * item.quantity * 1.18).toString()
-    }));
-
-    const response = await createBookService(bookings);
-
-    if (response.success) {
-      await fetchCartData();
-    } else {
-      setError(response.message || "Booking failed");
-    }
-  } catch (err: any) {
-    console.error("Error creating bookings:", err);
-    setError(err?.message || "Failed to create bookings");
-  } finally {
-    setIsBooking(false);
-  }
-};
+  };
 
   const getMaxDate = () => {
     const today = new Date();
@@ -353,18 +353,22 @@ const handleCheckboxChange = (itemId: string) => {
     return (
       <div className="max-w-4xl mx-auto p-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-6">Your Cart</h1>
-        <p className="text-gray-500">Your cart is empty.</p>
-        <button
-          onClick={() => navigate("/categories")}
-          className="mt-4 bg-fuchsia-500 text-white px-4 py-2 rounded-lg hover:bg-fuchsia-600"
-        >
-          Browse Services
-        </button>
+
+        <div className="items-center flex flex-col">
+          <p className="text-gray-500">Your cart is empty</p>
+          <button
+            onClick={() => navigate("/categories")}
+            className="mt-4 bg-fuchsia-500 text-white px-4 py-2 rounded-lg hover:bg-fuchsia-600"
+          >
+            Browse Services
+          </button>
+
+        </div>
       </div>
     );
   }
 
-  const isBookingDisabled = selectedItems.length === 0 || 
+  const isBookingDisabled = selectedItems.length === 0 ||
     selectedItems.some((item) => !item.bookingDate);
 
   return (
@@ -377,9 +381,8 @@ const handleCheckboxChange = (itemId: string) => {
           return (
             <div
               key={item._id}
-              className={`flex items-center justify-between border border-gray-300 p-4 rounded-xl bg-white shadow ${
-                isProcessing ? "opacity-70" : ""
-              }`}
+              className={`flex items-center justify-between border border-gray-300 p-4 rounded-xl bg-white shadow ${isProcessing ? "opacity-70" : ""
+                }`}
             >
               <div className="flex items-center">
                 <input
@@ -427,7 +430,7 @@ const handleCheckboxChange = (itemId: string) => {
                       disabled={isProcessing}
                       aria-label={`Decrease quantity of ${item.serviceId.serviceName}`}
                     >
-                      <FileMinus size={12} />
+                      <Minus size={12} />
                     </button>
                   )}
                   <span className="text-sm text-black w-8 text-center">
@@ -438,7 +441,7 @@ const handleCheckboxChange = (itemId: string) => {
                     className="p-1 rounded-full hover:bg-gray-200 clr-purple"
                     disabled={isProcessing}
                     aria-label={`Increase quantity of ${item.serviceId.serviceName}`}
-                    >
+                  >
                     <GoPlus size={16} />
                   </button>
                 </div>
@@ -466,24 +469,37 @@ const handleCheckboxChange = (itemId: string) => {
                       </button>
                     </div>
                   ) : (
-                    <FaRegCalendarAlt
-                      size={20}
-                      className="cursor-pointer clr-blue"
-                      onClick={() => handleCalendarClick(item._id)}
-                      aria-label={`Select date for ${item.serviceId.serviceName}`}
-                    />
+                    // <FaRegCalendarAlt
+                    //   size={20}
+                    //   className="cursor-pointer clr-blue"
+                    //   onClick={() => handleCalendarClick(item._id)}
+                    //   aria-label={`Select date for ${item.serviceId.serviceName}`}
+                    // />
+                    <label htmlFor={`date-picker-${item._id}`} className="cursor-pointer" onClick={() => handleCalendarClick(item._id)}>
+                      <FaRegCalendarAlt size={20} className="clr-blue" />
+                    </label>
                   )}
-
                   <input
                     id={`date-picker-${item._id}`}
                     ref={(el) => (dateInputRefs.current[item._id] = el)}
                     type="date"
                     onChange={(e) => handleDateChange(e, item._id)}
                     value={item.bookingDate}
-                    className="hidden"
+                    className="absolute opacity-0 w-0 h-0"
                     min={new Date().toISOString().split("T")[0]}
                     max={getMaxDate()}
                   />
+
+                  {/* <input
+                    id={`date-picker-${item._id}`}
+                    ref={(el) => (dateInputRefs.current[item._id] = el)}
+                    type="date"
+                    onChange={(e) => handleDateChange(e, item._id)}
+                    value={item.bookingDate}
+                    className="absolute hidden "
+                    min={new Date().toISOString().split("T")[0]}
+                    max={getMaxDate()} */}
+                  {/* /> */}
                 </div>
               </div>
             </div>
@@ -497,21 +513,21 @@ const handleCheckboxChange = (itemId: string) => {
           {selectedItems.map((item) => {
             const { subtotal, gst, total } = calculateItemTotal(item);
             return (
-              <div key={item._id} className="mb-4 p-3 border rounded-lg">
+              <div key={item._id} className="mb-4 px-4 py-3 border rounded-lg space-y-1">
                 <div className="flex justify-between">
-                  <span>{item.serviceId.serviceName} (x{item.quantity})</span>
+                  <span>{item.serviceId.serviceName} ({item.quantity})</span>
                   <span>₹{subtotal}</span>
                 </div>
                 <div className="flex justify-between text-sm text-gray-600">
-                  <span>Booking Date:</span>
+                  <span>Booking Date</span>
                   <span>{item.bookingDate ? new Date(item.bookingDate).toLocaleDateString() : "Not set"}</span>
                 </div>
                 <div className="flex justify-between text-sm text-gray-600">
-                  <span>GST (18%):</span>
+                  <span>GST (18%)</span>
                   <span>₹{gst}</span>
                 </div>
-                <div className="flex justify-between font-medium mt-1">
-                  <span>Total:</span>
+                <div className="flex justify-between font-semibold mt-1">
+                  <span>Total</span>
                   <span>₹{total}</span>
                 </div>
               </div>
@@ -532,15 +548,14 @@ const handleCheckboxChange = (itemId: string) => {
 
       <div className="mt-6 border-t pt-4">
         <button
-          className={`w-full mt-4 sm:mt-6 py-2 rounded-xl text-sm sm:text-lg font-semibold transition-all ${
-            isBookingDisabled
-              ? "bg-gray-400 text-gray-700 cursor-not-allowed"
-              : "bg-fuchsia-500 text-white hover:bg-fuchsia-600"
-          } ${isBooking ? "opacity-70" : ""}`}
+          className={`w-full mt-4 sm:mt-6 py-2 rounded-xl text-sm sm:text-lg font-semibold transition-all ${isBookingDisabled
+            ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+            : "bg-fuchsia-500 text-white hover:bg-fuchsia-600"
+            } ${isBooking ? "opacity-70" : ""}`}
           disabled={isBookingDisabled || isBooking}
           onClick={handleBookNow}
         >
-          {isBooking ? "Processing..." : 
+          {isBooking ? "Processing..." :
             isBookingDisabled
               ? selectedItems.length === 0
                 ? "Select at least one item"
@@ -553,6 +568,7 @@ const handleCheckboxChange = (itemId: string) => {
 };
 
 export default CartPage;
+
 // import React, { useEffect, useState, useRef } from "react";
 // import { FileMinus, Trash2, X } from "lucide-react";
 // import { useNavigate } from "react-router-dom";

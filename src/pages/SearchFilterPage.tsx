@@ -4,10 +4,9 @@ import { IoCall, IoLocationOutline } from "react-icons/io5";
 import { LuMessageSquareText } from "react-icons/lu";
 import { MdOutlineStar } from "react-icons/md";
 import { FaThumbsUp } from "react-icons/fa";
-import { getAllTechByAddress } from "../api/apiMethods";
+import { getAllTechByAddress, getSearchContentByAddress } from "../api/apiMethods";
 import AdvertisementBanner from "../components/services/AdvertisementBanner";
 import ContactForm from "../components/services/ContactForms";
-import SearchInfo from "../components/services/SearchInfo";
 import { ServiceFilters } from "../components/services/ServiceFilters";
 
 interface Technician {
@@ -29,13 +28,21 @@ interface TechnicianProfile {
     rating: number;
   };
 }
+interface SearchContent {
+  _id: string;
+  meta_title: string;
+  meta_description: string;
+}
 
 const SearchFilterPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [technicians, setTechnicians] = useState<TechnicianProfile[]>([]);
+  const [content, setContent] = useState<SearchContent[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [errorContent, setErrorContent] = useState<string | null>(null);
 const searchAddress = localStorage.getItem("selectAddress");
 console.log("searchAddress", searchAddress);
 
@@ -46,20 +53,18 @@ const categoryId = parsedSearchAddress?.category;
 const areaName = parsedSearchAddress?.areaName;
 const city = parsedSearchAddress?.city;
 const pincode = parsedSearchAddress?.pincode;
+const state = parsedSearchAddress?.state ;
 
-const formData = { categoryId, areaName, pincode, city };
+const formData = { categoryId, areaName, pincode, city, state};
 console.log(formData);
-  console.log(formData);
 
   const fetchTechBySearch = async () => {
     if (!categoryId || !areaName || !pincode || !city) {
       setError("Missing required search parameters");
       return;
     }
-
     setIsLoading(true);
     setError(null);
-
     try {
       const response = await getAllTechByAddress(formData);
       if (response.success && Array.isArray(response.result)) {
@@ -75,10 +80,37 @@ console.log(formData);
       setIsLoading(false);
     }
   };
-
   useEffect(() => {
     fetchTechBySearch();
   }, [categoryId, areaName, pincode, city]);
+
+
+  const fetchSearchContent = async () => {
+    if (!categoryId || !areaName || !pincode || !city || !state) {
+      setErrorContent("Missing required search parameters");
+      return;
+    }
+     setIsDataLoading(true);
+    setErrorContent(null);
+    try {
+      const response = await getSearchContentByAddress(formData);
+       console.log(response,"==>lohiresponse")
+      if (response?.success && Array.isArray(response?.result?.data)) {
+       
+        setContent(response?.result?.data);
+      } else {
+        setContent([]);
+      }
+    } catch (error) {
+      setContent([]);
+      // setErrorContent(error?.message);
+    } finally {
+      setIsDataLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchSearchContent();
+  }, [categoryId, areaName, pincode, city, state]);
 
   const handleTechnicianClick = (technicianId: string, city?: string, pincode?: string) => {
     const cityPincode = pincode && city ? `${pincode}-${city}` : pincode || city || "";
@@ -167,7 +199,6 @@ console.log(formData);
                       className="flex items-center bg-fuchsia-500 rounded text-white px-2 py-1 hover:bg-fuchsia-600 transition-colors duration-200"
                       onClick={(e) => {
                         e.stopPropagation();
-                        // Add phone call functionality
                       }}
                     >
                       <IoCall size={20} className="mr-2" />
@@ -179,7 +210,6 @@ console.log(formData);
                       className="flex items-center bg-green-600 rounded text-white px-2 py-1 hover:bg-green-500 transition-colors duration-200"
                       onClick={(e) => {
                         e.stopPropagation();
-                        // Add message functionality
                       }}
                     >
                       <LuMessageSquareText size={20} className="mr-2" />
@@ -196,9 +226,29 @@ console.log(formData);
         <ContactForm />
       </div>
 
-      <div className="my-3">
-        <SearchInfo />
+      <div className="mt-6 space-y-4">
+         {isDataLoading ? (
+            <div className="text-center">Loading Data...</div>
+          ) : errorContent ? (
+            <div className="text-red-500 text-center">{errorContent}</div>
+          ) : content.length > 0 ? (
+content.map((item) => (
+      <div key={item._id}>
+        <h1 className="text-2xl font-bold mb-2">{item?.meta_title}</h1>
+        <p className="text-base text-gray-700">{item?.meta_description}</p>
       </div>
+    
+    ))
+          ): (
+<> <h1 className="text-2xl font-bold">Services in {areaName}</h1>
+  <p className="text-base text-gray-700">We offer complete services in {areaName} to ensure a tidy, fresh, and healthy atmosphere for your office or home. Our expert team of cleaners has modern tools and the Best cleaning services to take on the most demanding chores.</p>
+  <h2 className="text-2xl font-semibold">How to Hire Technicians in {areaName}</h2>
+  <p className="text-base text-gray-700">We are PRNV Services, We offer an array of Technicians in {areaName} to meet commercial and residential needs. Finding professional Technicians in Hyderabad is an easy process using PRNV Services. Here's how to ensure that you're hiring the correct cleaning service: Evaluate Your Cleaning Needs: Before hiring, evaluate what areas require a thorough cleaning.</p>
+  <h2 className="text-2xl font-semibold">Cost of Services in {areaName}</h2>
+  <p className="text-base text-gray-700">The cost of services in {areaName} is contingent upon a variety of aspects, such as the dimensions of the building and the kind of cleaning needed, as well as the particular requirements of the customer. We offer affordable and transparent prices without sacrificing the quality of our services.</p>
+  </>
+          )}
+</div>
     </div>
   );
 };
