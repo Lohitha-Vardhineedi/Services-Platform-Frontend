@@ -22,7 +22,6 @@ const UpcomingDetails: React.FC<UpcomingDetailsProps> = ({
   setActiveTab,
 }) => {
   const [showSuccess, setShowSuccess] = useState<boolean>(false);
-  const [otpSubmitted, setOtpSubmitted] = useState<boolean>(false);
   const [isCancelling, setIsCancelling] = useState<boolean>(false);
   const [isUpdatingStatus, setIsUpdatingStatus] = useState<boolean>(false);
 
@@ -66,7 +65,7 @@ const handleStatusUpdate = async (status: string, otp?: string) => {
 
     const response = await updateBookingStatus(requestData);
     
-    if (response?.success) {
+    if (response?.success === true) {
       if (status === "completed") {
         setActiveTab("completed");
         setCurrentStep("completed-details");
@@ -75,7 +74,6 @@ const handleStatusUpdate = async (status: string, otp?: string) => {
         setCurrentStep("cancelled-details");
       } else if (status === "started") {
         setShowSuccess(true);
-        setOtpSubmitted(true);
       }
       return true;
     }
@@ -247,12 +245,11 @@ const handleOtpSubmit = async (otp: string) => {
                 </div>
               )}
               
-              {!otpSubmitted && (
+              {booking?.status === "accepted" && (
                 <OTPInput
                   setCurrentStep={setCurrentStep}
                   setActiveTab={setActiveTab}
                   setShowSuccess={setShowSuccess}
-                  setOtpSubmitted={setOtpSubmitted}
                   bookingOtp={booking.otp.toString()}
                   bookingId={booking._id}
                   onOtpSubmit={handleOtpSubmit}

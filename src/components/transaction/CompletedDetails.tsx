@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChevronLeft, User, Wrench, Phone, MapPin, Key } from 'lucide-react';
+import { BiRupee } from 'react-icons/bi';
 
 interface BookingData {
   _id: string;
@@ -154,20 +155,19 @@ const CompletedDetails: React.FC<CompletedDetailsProps> = ({
             </div>
           </div>
 
-          {/* Payment Amount (for technician) */}
-          {role === 'technician' && (
+          {/* {role === 'technician' && ( */}
             <div className="flex items-center space-x-4 md:col-span-2">
               <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <Key className="w-6 h-6 text-purple-600" />
+                <BiRupee className="w-6 h-6 text-purple-600" />
               </div>
               <div className="flex-1 min-w-0">
-                <span className="text-gray-600">Payment Amount:</span>
+                <span className="text-gray-600">Total Price :</span>
                 <span className="text-gray-900 font-medium ml-2">
                   ₹{bookingData.totalPrice}
                 </span>
               </div>
             </div>
-          )}
+          {/* )} */}
         </div>
 
         {/* Action Buttons */}

@@ -5,7 +5,6 @@ interface OTPModalProps {
   setCurrentStep: (step: string) => void;
   setActiveTab: (tab: string) => void;
   setShowSuccess: (value: boolean) => void;
-  setOtpSubmitted: (value: boolean) => void;
   bookingOtp?: string;
   bookingId: string;
   onOtpSubmit: (otp: string) => void;
@@ -16,7 +15,6 @@ const OTPInput: React.FC<OTPModalProps> = ({
   setCurrentStep,
   setActiveTab,
   setShowSuccess,
-  setOtpSubmitted,
   bookingOtp,
   bookingId,
   onOtpSubmit,
