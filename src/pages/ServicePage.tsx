@@ -8,24 +8,69 @@ import AdvertisementBanner from "../components/services/AdvertisementBanner";
 import { ServiceFilters } from "../components/services/ServiceFilters";
 import { ContactForm } from "../components/services/ContactForms";
 import { FaThumbsUp } from "react-icons/fa";
+import { getTechByCategorie } from "../api/apiMethods";
 
 const ServicePage = () => {
   const location = useLocation();
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
   const [technicians, setTechnicians] = useState([]);
+  const [error, setError] = useState("");
 
-  useEffect(() => {
-    if (!categoryId) return;
-    console.log(categoryId,"==>categoryId")
-    axios
-      .get(`http://localhost:5000/api/techDetails/getAllTechniciansByCateId/${categoryId}`)
-      .then((res) => {
-        const data = res.data?.result || [];
-        setTechnicians(Array.isArray(data) ? data : []);
-      })
-      .catch((err) => console.error("API Error:", err));
-  }, [categoryId]);
+  // useEffect(() => {
+  //   if (!categoryId) return;
+  //   console.log(categoryId, "==>categoryId")
+  //   const fetchTechByCategoryId = async () => {
+  //     const response = await getTechByCategorie(categoryId);
+
+  //     try {
+  //       console.log(response, "==>categoryId")
+  //       if (response) {
+
+  //         const data = response.data?.result || [];
+  //         setTechnicians(Array.isArray(data) ? data : []);
+  //       }
+  //     }
+  //     catch (error) {
+  //       setError(error?.message)
+  //     }
+  //   }
+  //   fetchTechByCategoryId()
+  // }, [categoryId]);
+
+
+  // useEffect(() => {
+  //   if (!categoryId) return;
+  //   console.log(categoryId,"==>categoryId")
+  //   axios
+  //     .get(`/api/techDetails/getAllTechniciansByCateId/${categoryId}`)
+  //     .then((res) => {
+  //       const data = res.data?.result || [];
+  //       setTechnicians(Array.isArray(data) ? data : []);
+  //     })
+  //     .catch((err) => console.error("API Error:", err));
+  // }, [categoryId]);
+
+useEffect(() => {
+  if (!categoryId) return;
+
+  const fetchTechByCategoryId = async () => {
+    try {
+      console.log(categoryId, "==> categoryId");
+
+      const response = await getTechByCategorie(categoryId);
+      console.log(response, "==> fetched response");
+
+      const data = response?.result || [];
+      setTechnicians(Array.isArray(data) ? data : []);
+    } catch (error: any) {
+      setError(error?.message || "Failed to fetch technicians");
+    }
+  };
+
+  fetchTechByCategoryId();
+}, [categoryId]);
+
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-4">
@@ -36,11 +81,12 @@ const ServicePage = () => {
       <div className="flex flex-col md:flex-row p-2 gap-3">
         <div className="flex-1 space-y-3 overflow-y-auto scrollbar-hide max-h-[calc(100vh-200px)]">
           {technicians.length > 0 ? (
+          
             technicians.map((profile, index) => (
               <div
                 key={index}
                 className="border border-gray-300 rounded-2xl shadow p-3 flex flex-col md:flex-row items-center gap-4 hover:bg-gray-100 cursor-pointer"
-                onClick={() => navigate(`/technicianById/${profile.technician._id}`)}
+                onClick={() => navigate(`/technicianById/${profile.technician?._id}`)}
               >
                 <img
                   src={profile.technician.profileImage || "https://via.placeholder.com/150"}
@@ -60,14 +106,14 @@ const ServicePage = () => {
                       <span className="text-gray-600 text-sm">{profile.ratings.rating} Ratings</span>
                     )}
                   </div>
-{profile.technician?.service && (
-                  <div className="flex flex-wrap gap-2">
+                  {profile.technician?.service && (
+                    <div className="flex flex-wrap gap-2">
                       <div
                         className="bg-fuchsia-200 px-3 py-1 rounded-xl text-black text-sm"
                       >
                         {profile.technician?.service}
                       </div>
-                  </div>
+                    </div>
                   )}
                   {/* <div className="flex flex-wrap gap-2">
                     {profile.services?.map((s, i) => (
@@ -86,16 +132,16 @@ const ServicePage = () => {
                       {profile.technician.areaName}, {profile.technician.city}, {profile.technician.state}, {profile.technician.pincode}
                     </span>
                   </div>
-{profile.technician?.description && (
-                  <div className="flex items-center">
-                              <FaThumbsUp size={22} color="#00B800" className='flex' />
-                              <span className="text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
-                                {" "}
-                                 {profile.technician?.description} years in Services
-                                {/* Years in Services */}
-                              </span>
-                            </div>
-                            )}
+                  {profile.technician?.description && (
+                    <div className="flex items-center">
+                      <FaThumbsUp size={22} color="#00B800" className='flex' />
+                      <span className="text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
+                        {" "}
+                        {profile.technician?.description} years in Services
+                        {/* Years in Services */}
+                      </span>
+                    </div>
+                  )}
 
                   <div className="flex gap-3">
                     <div className="flex items-center bg-fuchsia-500 rounded text-white px-2 py-1 hover:bg-fuchsia-600">

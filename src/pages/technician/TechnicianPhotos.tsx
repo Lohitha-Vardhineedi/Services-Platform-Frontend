@@ -72,7 +72,7 @@ const TechnicianPhotos = () => {
 
       console.log('Deleting image with payload:', payload);
 
-      const response = await axios.delete('http://localhost:5000/api/techImages/deleteSingletechImg', {
+      const response = await axios.delete('/api/techImages/deleteSingletechImg', {
         data: payload
       });
 

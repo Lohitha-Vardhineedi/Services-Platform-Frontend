@@ -198,8 +198,8 @@ const endpoints: any = {
 
   getTechByCategorie:{
     method:"get",
-    url: (id: string) => {
-      return `http://localhost:5000/api/techDetails/getAllTechniciansByCateId/${id}`;
+    url: (categoryId: string) => {
+      return `/api/techDetails/getAllTechniciansByCateId/${categoryId}`;
     },
   }
 }
