@@ -204,7 +204,7 @@ const endpoints: any = {
     },
   },
 
-  deletePhotoBySingle:{
+  deletePhotoBySingle :{
     method:"delete",
     url: () => {
       return `/api/techImages/deleteSingletechImg`;
