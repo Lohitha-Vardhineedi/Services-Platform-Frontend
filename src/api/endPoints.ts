@@ -63,6 +63,7 @@ const endpoints: any = {
     method: "put",
     url: () => `/api/userAuth/editProfile`
   },
+  
   technicianGetProfileDetails: {
     method: "get",
     url: (userId: string) => `/api/techAuth/getTechProfile/${userId}`
@@ -200,6 +201,13 @@ const endpoints: any = {
     method:"get",
     url: (categoryId: string) => {
       return `/api/techDetails/getAllTechniciansByCateId/${categoryId}`;
+    },
+  },
+
+  deletePhotoBySingle:{
+    method:"delete",
+    url: () => {
+      return `/api/techImages/deleteSingletechImg`;
     },
   }
 }

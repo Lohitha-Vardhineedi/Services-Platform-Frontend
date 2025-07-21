@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import axios from "axios";
+import { technicianGetProfile } from "../api/apiMethods";
 
 type Technician = {
   _id: string;
@@ -57,14 +58,25 @@ export const TechnicianProfileProvider = ({
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get(`/api/techAuth/getTechProfile/${technicianId}`);
+      const res = await technicianGetProfile(technicianId);
       console.log(res,"res")
       setData(res.data.result);
     } catch (err: any) {
       setError(err.message || "Error fetching data");
+      console.log('message', err)
     } finally {
       setLoading(false);
     }
+    // try {
+    //   const res = await axios.get(`/api/techAuth/getTechProfile/${technicianId}`);
+    //   console.log(res,"res")
+    //   setData(res.data.result);
+    // } catch (err: any) {
+    //   setError(err.message || "Error fetching data");
+    //   console.log('message', err)
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   useEffect(() => {

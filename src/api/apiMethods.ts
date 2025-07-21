@@ -21,8 +21,11 @@ export const technicianLogin = (data: any) => apiRequest("technicianLogin", data
 
 export const userGetProfile = (userId: string) => apiRequest("getUserProfile", null, userId);
 export const userEditProfile = (data: any) => apiRequest("userEditProfile", data);
+
 export const technicianGetProfile = (userId: string) => apiRequest("technicianGetProfileDetails", null, userId);
+
 export const technicianEditProfile = (data: any) => apiRequest("technicianEditProfile", data);
+
 export const getPlans = (data: any) => apiRequest("getPlans",data);
 
 export const getTechImagesByTechId = (id: string) => apiRequest("getTechImagesByTechId", null, id);
@@ -75,6 +78,8 @@ export const getAllTechByAddress = (formData :any) => apiRequest('getAllTechByAd
 export const getSearchContentByAddress = (formData :any) => apiRequest('getSearchContentByAddress',formData)
 
 export const getTechByCategorie = (id: string) =>apiRequest('getTechByCategorie', null , id)
+
+export const deletePhotoBySingle = (payload : any) =>apiRequest('deletePhotoBySingle', payload)
 
 // export const getAllTechnicianDetails = async (id: string) => {
 //   const res = await fetch(`/api/techDetails/getTechAllDetails/${id}`);

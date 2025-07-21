@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { IoMdCloudUpload } from "react-icons/io";
 import { FaChevronDown, FaChevronUp, FaTrash } from "react-icons/fa";
-import { getTechImagesByTechId, createTechImagesControl } from "../../api/apiMethods";
+import { getTechImagesByTechId, createTechImagesControl, deletePhotoBySingle } from "../../api/apiMethods";
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import axios from "axios";
@@ -63,7 +63,6 @@ const TechnicianPhotos = () => {
       console.error('Missing technicianId or imageUrlToDelete');
       return;
     }
-
     try {
       const payload = {
         technicianId: technicianId,
@@ -72,9 +71,11 @@ const TechnicianPhotos = () => {
 
       console.log('Deleting image with payload:', payload);
 
-      const response = await axios.delete('/api/techImages/deleteSingletechImg', {
-        data: payload
-      });
+      const response = await deletePhotoBySingle(payload);
+
+      // const response = await axios.delete('/api/techImages/deleteSingletechImg', {
+      //   data: payload
+      // });
 
       if (response.data.success) {
         setImages((prev) => prev.filter((_, i) => i !== index));
@@ -86,6 +87,7 @@ const TechnicianPhotos = () => {
       console.error('Error deleting image:', error);
     }
   };
+
 
   return (
     <div className="border border-gray-200 shadow-md rounded-xl p-4 max-w-7xl mx-auto">
