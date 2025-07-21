@@ -17,7 +17,7 @@ function Footer() {
             <div className="flex space-x-4">
               <button className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
                 <Phone className="w-4 h-4" />
-                <span>8341890369</span>
+                <span>9603558369</span>
               </button>
               {/* <button className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
               onClick={()=>navigate('/')}
