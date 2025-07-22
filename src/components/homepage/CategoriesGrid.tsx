@@ -9,6 +9,8 @@ interface Category {
   category_name: string;
   category_image: string;
   status: number;
+  meta_title: string;
+  meta_description: string;
 }
 
 interface CategoriesGridProps {
@@ -24,17 +26,17 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
   const navigate = useNavigate();
   const [allCategories, setAllCategories] = useState<Category[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const {categoryId} = useParams<{ categoryId: string }>();
+  const { categoryId } = useParams<{ categoryId: string }>();
   const location = useLocation();
 
   const fetchCategories = async () => {
     try {
       const response = await getAllCategories();
-      console.log("category Response : ",response)
+      console.log("category Response : ", response)
       if (response.success === true && Array.isArray(response.data)) {
         setAllCategories(response.data);
-        console.log(response,"==>response");
-        
+        console.log(response, "==>response");
+
       } else {
         setError('Invalid response format');
       }
@@ -48,101 +50,99 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
 
   return (
     <>
-    
-    <div className="bg-white rounded-2xl shadow p-6 mb-12">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4 text-left">
-        {lang === 'hi' ? 'श्रेणियाँ' : 'Most Popular Categories'}
-      </h2>
 
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-{!allCategories || allCategories.length === 0 ? (
-      <div className="flex justify-center items-center py-6">
-        <div className="flex space-x-2">
-          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
-          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.2s]"></div>
-          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.4s]"></div>
-        </div>
-      </div>
-    ) : (
-      <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
-        {allCategories
-          .filter(category => category.status === 1)
-          .map((category, index) => (
-            <div
-              key={category.id}
-              className="relative rounded-xl shadow group cursor-pointer p-4 flex flex-col items-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 hover:bg-blue-50/60 hover:scale-105 animate-fade-in"
-              style={{
-                animationDelay: `${index * 60}ms`,
-                animationFillMode: 'both',
-              }}
-              onClick={() => {
-                console.log('Clicked category:', category);
-                navigate(`/technicians/${category?._id}`);
-              }}
-            >
-              <div className={`w-20 h-20 ${bgColor} rounded-full flex items-center justify-center mb-4 overflow-hidden transition-transform duration-300 hover:scale-110`}>
-              {/* <div className="w-12 h-12 flex items-center justify-center mb-2 overflow-hidden"> */}
-                <img
-                  src={`${category.category_image}`}
-                  alt={category.category_name}
-                  className="w-16 h-16 object-contain"
-                />
-              </div>
-              <h3 className="text-md font-semibold text-gray-700 group-hover:text-blue-600 transition-colors text-center">
-                {category.category_name}
-              </h3>
-            </div>
-          ))}
-      </div>
-    )}
-    </div>
-          <div className="bg-white rounded-2xl shadow p-6 mb-12">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4 text-left">
-        {lang === 'hi' ? 'श्रेणियाँ' : 'Upcoming Categories'}
-      </h2>
+      <div className="bg-white rounded-2xl shadow p-6 mb-12">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4 text-left">
+          {lang === 'hi' ? 'श्रेणियाँ' : 'Most Popular Categories'}
+        </h2>
 
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-{!allCategories || allCategories.length === 0 ? (
-      <div className="flex justify-center items-center py-6">
-        <div className="flex space-x-2">
-          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
-          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.2s]"></div>
-          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.4s]"></div>
-        </div>
-      </div>
-    ) : (
-      <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
-        {allCategories
-          .filter(category => category.status === 0)
-          .map((category, index) => (
-            <div
-              key={category.id}
-              className="relative rounded-xl shadow group p-4 flex flex-col items-center transition-all duration-300 "
-              style={{
-                animationDelay: `${index * 60}ms`,
-                animationFillMode: 'both',
-              }}
-              // onClick={() => {
-              //   console.log('Clicked category:', category);
-              //   navigate(`/technicians/${category?._id}`);
-              // }}
-            >
-              <div className={`w-20 h-20 ${bgColor} rounded-full flex items-center justify-center mb-4 overflow-hidden transition-transform duration-300 hover:scale-110`}>
-              {/* <div className="w-12 h-12 flex items-center justify-center mb-2 overflow-hidden"> */}
-                <img
-                  src={`${category.category_image}`}
-                  alt={category.category_name}
-                  className="w-12 h-12 object-contain"
-                />
-              </div>
-              <h3 className="text-md font-semibold text-gray-700 group-hover:text-blue-600 transition-colors text-center">
-                {category.category_name}
-              </h3>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+        {!allCategories || allCategories.length === 0 ? (
+          <div className="flex justify-center items-center py-6">
+            <div className="flex space-x-2">
+              <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
+              <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.2s]"></div>
+              <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.4s]"></div>
             </div>
-          ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
+            {allCategories
+              .filter(category => category.status === 1)
+              .map((category, index) => (
+                <div
+                  key={category.id}
+                  className="relative rounded-xl shadow group cursor-pointer p-4 flex flex-col items-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 hover:bg-blue-50/60 hover:scale-105 animate-fade-in"
+                  style={{
+                    animationDelay: `${index * 60}ms`,
+                    animationFillMode: 'both',
+                  }}
+                  onClick={() => {
+                    navigate(`/technicians/${category._id}`, {
+                      state: { category },
+                    });
+                    console.log('Clicked category:', category);
+                  }}
+                >
+                  <div className={`w-20 h-20 ${bgColor} rounded-full flex items-center justify-center mb-4 overflow-hidden transition-transform duration-300 hover:scale-110`}>
+                    {/* <div className="w-12 h-12 flex items-center justify-center mb-2 overflow-hidden"> */}
+                    <img
+                      src={`${category.category_image}`}
+                      alt={category.category_name}
+                      className="w-16 h-16 object-contain"
+                    />
+                  </div>
+                  <h3 className="text-md font-semibold text-gray-700 group-hover:text-blue-600 transition-colors text-center">
+                    {category.category_name}
+                  </h3>
+                </div>
+              ))}
+          </div>
+        )}
       </div>
-    )}
-    </div>
+      <div className="bg-white rounded-2xl shadow p-6 mb-12">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4 text-left">
+          {lang === 'hi' ? 'श्रेणियाँ' : 'Upcoming Categories'}
+        </h2>
+
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+        {!allCategories || allCategories.length === 0 ? (
+          <div className="flex justify-center items-center py-6">
+            <div className="flex space-x-2">
+              <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
+              <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.2s]"></div>
+              <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.4s]"></div>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
+            {allCategories
+              .filter(category => category.status === 0)
+              .map((category, index) => (
+                <div
+                  key={category.id}
+                  className="relative rounded-xl shadow group p-4 flex flex-col items-center transition-all duration-300 "
+                  style={{
+                    animationDelay: `${index * 60}ms`,
+                    animationFillMode: 'both',
+                  }}
+                >
+                  <div className={`w-20 h-20 ${bgColor} rounded-full flex items-center justify-center mb-4 overflow-hidden transition-transform duration-300 hover:scale-110`}>
+                    {/* <div className="w-12 h-12 flex items-center justify-center mb-2 overflow-hidden"> */}
+                    <img
+                      src={`${category.category_image}`}
+                      alt={category.category_name}
+                      className="w-12 h-12 object-contain"
+                    />
+                  </div>
+                  <h3 className="text-md font-semibold text-gray-700 group-hover:text-blue-600 transition-colors text-center">
+                    {category.category_name}
+                  </h3>
+                </div>
+              ))}
+          </div>
+        )}
+      </div>
 
     </>
   );
