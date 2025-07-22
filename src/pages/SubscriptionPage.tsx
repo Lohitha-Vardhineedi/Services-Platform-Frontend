@@ -166,10 +166,10 @@ const PLAN_CONFIG: Record<string, PlanConfig> = {
                           ₹{plan.originalPrice} + (GST 18%)
                         </div>
                       )}
-                      {Number(plan.finalPrice) > 0 && (
+                      {Number(plan.price) > 0 && (
                       <div className="text-sm text-gray-600">
-                        ₹{plan.finalPrice} +  ₹{plan.gst} (GST 18%)
-                        {/* INCL 18% GST: ₹ {plan.finalPrice} */}
+                        ₹{plan.price} +  ₹{plan.gst} (GST 18%)
+                        {/* INCL 18% GST: ₹ {plan.price} */}
                       </div>
                       )}
                     </div>

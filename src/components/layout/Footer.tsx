@@ -1,7 +1,10 @@
 import React from 'react';
 import { Phone, MessageCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 function Footer() {
+  const navigate = useNavigate()
+
   return (
     <>
       <div className="bg-gray-100 py-8">
@@ -12,14 +15,16 @@ function Footer() {
               <p className="text-gray-600">Contact our customer support</p>
             </div>
             <div className="flex space-x-4">
-              <button className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+              <button className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg transition-colors">
                 <Phone className="w-4 h-4" />
-                <span>Call</span>
+                <span>9603558369</span>
               </button>
-              <button className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+              {/* <button className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+              onClick={()=>navigate('/')}
+              >
                 <MessageCircle className="w-4 h-4" />
-                <span>WhatsApp</span>
-              </button>
+                <span>Message</span>
+              </button> */}
             </div>
           </div>
         </div>

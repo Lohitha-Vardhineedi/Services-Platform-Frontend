@@ -15,6 +15,11 @@ interface CategoriesGridProps {
   lang: string;
 }
 
+const bgColor = [
+  'bg-red-100', 'bg-green-100', 'bg-blue-100', 'bg-yellow-100',
+  'bg-purple-100', 'bg-pink-100', 'bg-indigo-100', 'bg-emerald-100', 'bg-orange-100'
+];
+
 function CategoriesGrid({ lang }: CategoriesGridProps) {
   const navigate = useNavigate();
   const [allCategories, setAllCategories] = useState<Category[]>([]);
@@ -75,14 +80,15 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
                 navigate(`/technicians/${category?._id}`);
               }}
             >
-              <div className="w-12 h-12 rounded-full flex items-center justify-center mb-2 overflow-hidden">
+              <div className={`w-20 h-20 ${bgColor} rounded-full flex items-center justify-center mb-4 overflow-hidden transition-transform duration-300 hover:scale-110`}>
+              {/* <div className="w-12 h-12 flex items-center justify-center mb-2 overflow-hidden"> */}
                 <img
                   src={`${category.category_image}`}
                   alt={category.category_name}
-                  className="w-8 h-8 object-contain"
+                  className="w-16 h-16 object-contain"
                 />
               </div>
-              <h3 className="text-xs font-semibold text-gray-700 group-hover:text-blue-600 transition-colors text-center">
+              <h3 className="text-md font-semibold text-gray-700 group-hover:text-blue-600 transition-colors text-center">
                 {category.category_name}
               </h3>
             </div>
@@ -121,14 +127,15 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
               //   navigate(`/technicians/${category?._id}`);
               // }}
             >
-              <div className="w-12 h-12 rounded-full flex items-center justify-center mb-2 overflow-hidden">
+              <div className={`w-20 h-20 ${bgColor} rounded-full flex items-center justify-center mb-4 overflow-hidden transition-transform duration-300 hover:scale-110`}>
+              {/* <div className="w-12 h-12 flex items-center justify-center mb-2 overflow-hidden"> */}
                 <img
                   src={`${category.category_image}`}
                   alt={category.category_name}
-                  className="w-8 h-8 object-contain"
+                  className="w-12 h-12 object-contain"
                 />
               </div>
-              <h3 className="text-xs font-semibold text-gray-700 group-hover:text-blue-600 transition-colors text-center">
+              <h3 className="text-md font-semibold text-gray-700 group-hover:text-blue-600 transition-colors text-center">
                 {category.category_name}
               </h3>
             </div>
