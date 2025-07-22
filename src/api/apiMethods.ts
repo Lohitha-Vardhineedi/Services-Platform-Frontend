@@ -17,6 +17,7 @@ export const userRegister = (data: any) => apiRequest("userRegister", data);
 export const technicianRegister = (data: any) => apiRequest("technicianRegister", data);
 
 export const userLogin = (data: any) => apiRequest("userLogin", data);
+
 export const technicianLogin = (data: any) => apiRequest("technicianLogin", data);
 
 export const userGetProfile = (userId: string) => apiRequest("getUserProfile", null, userId);
@@ -27,6 +28,10 @@ export const technicianGetProfile = (userId: string) => apiRequest("technicianGe
 export const technicianEditProfile = (data: any) => apiRequest("technicianEditProfile", data);
 
 export const getPlans = (data: any) => apiRequest("getPlans",data);
+
+export const gettechnicianPlanById = (id: string) => apiRequest("gettechnicianPlanById", null, id);
+
+export const addTechSubscriptionPlan = (data: any) => apiRequest("addTechSubscriptionPlan", data);
 
 export const getTechImagesByTechId = (id: string) => apiRequest("getTechImagesByTechId", null, id);
 

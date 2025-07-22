@@ -24,6 +24,8 @@ import TechnicianServices from '../pages/technician/TechnicianService';
 import TechnicianReviews from '../pages/technician/TechnicianReviews';
 import TechnicianProfile from '../pages/technician/TechnicianProfile';
 import TechnicianSubscription from '../pages/technician/TechnicianSubscription';
+import TechnicianSubscriptionPlans from '../pages/technician/TechnicianSubscriptionPlans';
+import BuySubscription from '../pages/technician/BuySubscription';
 import TechnicianTransactions from '../pages/technician/TechnicianTransactions';
 import { GuestBooking } from '../pages/GuestBooking';
 import TechnicianPanel from '../pages/technician/TechnicianPanel';
@@ -66,6 +68,8 @@ const AppRoutes = () => {
             <Route path="/technician/reviews" element={<TechnicianReviews />} />
             <Route path="/technician/profile" element={<TechnicianProfile />} />
             <Route path="/technician/subscription" element={<TechnicianSubscription />} />
+            <Route path="/technician/plans" element={<TechnicianSubscriptionPlans />} />
+            <Route path="/buyPlan" element={<BuySubscription />} />
             <Route path="/technician/transactions" element={<TechnicianTransactions />} />
 
             
