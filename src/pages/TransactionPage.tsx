@@ -94,13 +94,12 @@ interface ApiResponse {
 const TransactionPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'upcoming' | 'completed' | 'cancelled'>('upcoming');
   const [currentStep, setCurrentStep] = useState<string>('bookings');
-  const [selectedRating, setSelectedRating] = useState<number>(5);
-  const [reviewText, setReviewText] = useState<string>('Great service, very professional!');
   const [role, setRole] = useState<'user' | 'technician' | null>(null);
   const [bookingsData, setBookingsData] = useState<BookingData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedBooking, setSelectedBooking] = useState<BookingData | null>(null);
+  const [stepData, setStepData] = useState<any>(null); // Added to store data passed with
 
   // Transaction status options
   const transactionTabs = [
@@ -187,8 +186,6 @@ const TransactionPage: React.FC = () => {
           <CompletedDetails
             booking={selectedBooking}
             setCurrentStep={setCurrentStep}
-            reviewText={reviewText}
-            selectedRating={selectedRating}
             role={role}
           />
         ) : (
@@ -199,8 +196,6 @@ const TransactionPage: React.FC = () => {
           <CancelledCard
             booking={selectedBooking}
             setCurrentStep={setCurrentStep}
-            reviewText={reviewText}
-            selectedRating={selectedRating}
             role={role}
           />
         ) : (
@@ -214,13 +209,15 @@ const TransactionPage: React.FC = () => {
           />
         );
       case 'savings':
-        return <Savings setCurrentStep={setCurrentStep} />;
+        return <Savings
+            setCurrentStep={setCurrentStep}
+            booking={selectedBooking}
+          />
       case 'final-rating':
         return (
           <FinalRating
-            selectedRating={selectedRating}
-            setSelectedRating={setSelectedRating}
             setCurrentStep={setCurrentStep}
+            booking={selectedBooking}
           />
         );
       case 'success':

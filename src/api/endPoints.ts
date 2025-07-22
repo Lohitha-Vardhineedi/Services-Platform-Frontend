@@ -209,7 +209,12 @@ const endpoints: any = {
     url: () => {
       return `/api/techImages/deleteSingletechImg`;
     },
-  }
+  },
+
+  addReviewByUser: {
+    method: "post",
+    url:'/api/techReview/addReviewByUser'
+  },
 }
 
 export default endpoints;

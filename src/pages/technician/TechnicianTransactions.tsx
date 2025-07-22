@@ -159,8 +159,6 @@ const TechnicianTransactions: React.FC = () => {
           <CompletedDetails
             booking={selectedBooking}
             setCurrentStep={setCurrentStep}
-            reviewText={reviewText}
-            selectedRating={selectedRating}
             role={role}
           />
         ) : (
@@ -186,7 +184,11 @@ const TechnicianTransactions: React.FC = () => {
           />
         );
       case 'savings':
-        return <Savings setCurrentStep={setCurrentStep} />;
+        return (
+        <Savings
+         setCurrentStep={setCurrentStep} 
+         booking={selectedBooking}
+        />);
       case 'final-rating':
         return (
           <FinalRating
