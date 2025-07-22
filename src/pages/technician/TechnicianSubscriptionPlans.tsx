@@ -160,7 +160,7 @@ const TechnicianSubscriptionPlans = () => {
   className={`w-full py-3 px-4 rounded-2xl font-semibold transition duration-300 text-white shadow-md hover:shadow-lg hover:scale-[1.02]
    ${config?.button}`}
 >
-  Buy Plan
+ {plan?.name === "Free Plan" ? "Free Plan" : "Buy Plan"} 
 </button>
                     <button
                       onClick={() => handleFullDetails(plan)}

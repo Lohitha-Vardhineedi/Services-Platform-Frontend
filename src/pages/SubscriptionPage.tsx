@@ -179,7 +179,7 @@ const PLAN_CONFIG: Record<string, PlanConfig> = {
                     </div>
                   </div>
 
-                  <ul className="space-y-2 mb-6">
+                  <ul className="space-y-2 mb-3">
                     {plan.features.map((feature, index) => (
                       <li key={index} className="flex items-center gap-3 text-sm text-gray-700">
                         {feature.included ? (
@@ -192,19 +192,19 @@ const PLAN_CONFIG: Record<string, PlanConfig> = {
                     ))}
                   </ul>
 
-                  <div className="mt-auto space-y-3">
-                    <button
+                  <div className="mt-auto">
+                    {/* <button
                       onClick={() => setSelectedPlan(plan?.name)}
                       className={`w-full py-3 px-4 rounded-2xl font-semibold transition duration-300 text-white shadow-md hover:shadow-lg hover:scale-[1.02]
                        ${config?.button}`}
                     >
                       {selectedPlan === plan?.name ? 'Selected' : 'Choose Plan'}
-                    </button>
+                    </button> */}
                     <button
                       onClick={() => handleFullDetails(plan)}
-                      className="w-full py-2 px-4 text-gray-600 hover:text-blue-600 font-medium transition duration-300"
+                      className="w-full py-2 px-4 text-gray-600 hover:text-blue-600 font-medium transition duration-300 text-green-600"
                     >
-                      Full Details →
+                      View Full Details →
                     </button>
                   </div>
                 </div>

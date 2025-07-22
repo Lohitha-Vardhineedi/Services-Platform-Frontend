@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Check, ChevronRight, CreditCard, Smartphone, DollarSign, Landmark, QrCode } from 'lucide-react';
 import { addTechSubscriptionPlan } from '../../api/apiMethods';
+import { BiLeftArrow, BiLeftArrowAlt } from 'react-icons/bi';
 
 const BuySubscription = () => {
   const { state } = useLocation();
@@ -26,7 +27,7 @@ console.log("plan", plan)
     {
       id: 'netbanking',
       name: 'Net Banking',
-      icon: Landmark,  // Changed from Bank to Landmark
+      icon: Landmark, 
       description: 'Direct bank transfer from 50+ Indian banks'
     },
     {
@@ -84,13 +85,14 @@ console.log("plan", plan)
               onClick={() => navigate(-1)} 
               className="mr-4 text-gray-500 hover:text-gray-700"
             >
-              &larr;
+              <BiLeftArrowAlt size={25}/>
+              {/* &larr; */}
             </button>
-            <h1 className="text-2xl font-bold text-gray-800">Complete Your Purchase</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Complete Your Purchase</h1>
           </div>
 
           <div className="mb-8 p-6 bg-blue-50 rounded-lg border border-blue-100">
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">{plan?.name} Plan</h2>
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">{plan?.name}</h2>
             <div className="flex justify-between items-center">
               <div>
                 <p className="text-gray-600">Total Amount</p>
