@@ -2,9 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { FileMinus, Minus, Trash2, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
-import { FiMinus } from "react-icons/fi";
 import { FaRegCalendarAlt } from "react-icons/fa";
-import axios from "axios";
 import { removeFromCart, addToCart, getCartItems, createBookService } from "../api/apiMethods";
 
 interface CartItem {
@@ -68,9 +66,7 @@ const CartPage = () => {
         setError("User not logged in");
         return;
       }
-
       const response = await getCartItems(userId);
-
       if (response.success && response.result.cart) {
         console.log(response)
         const formattedItems = response.result.cart.items.map((item: any) => ({
@@ -98,7 +94,6 @@ const CartPage = () => {
             items: formattedItems,
           },
         };
-
         setCartData(updatedCartData);
         setSelectedItems([]);
       } else {

@@ -269,6 +269,7 @@ const TransactionPage: React.FC = () => {
           />
           <div className="flex-1">{renderMainContent()}</div>
         </div>
+
       </div>
     </div>
   );
