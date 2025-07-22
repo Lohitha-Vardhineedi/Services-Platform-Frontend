@@ -28,7 +28,9 @@ const SubscriptionPage = () => {
             subscriptionId: subscriptionResponse.result.subscriptionId,
             name: subscriptionResponse.result.subscriptionName,
             startDate: subscriptionResponse.result.startDate,
-            endDate: subscriptionResponse.result.endDate
+            endDate: subscriptionResponse.result.endDate,
+            leads: subscriptionResponse.result.leads,
+            ordersCount: subscriptionResponse.result.ordersCount
           });
         }
       } catch (error) {
@@ -58,7 +60,7 @@ const SubscriptionPage = () => {
   };
 
   if (loading) return <div>Loading...</div>;
-
+console.log("currentSubscription", currentSubscription.leads)
  
 
   return (
@@ -74,7 +76,7 @@ const SubscriptionPage = () => {
         </button>
       </div>
 
-      {currentSubscription && (
+      {currentSubscription ? (
   <div className="bg-white p-6 rounded-lg shadow-md mb-8 border border-gray-200">
     <div className="flex justify-between items-start">
       <div className="flex items-start gap-5">
@@ -84,7 +86,7 @@ const SubscriptionPage = () => {
           })}
         </div>
         <div className="space-y-2">
-          <h3 className="text-xl font-bold">{currentSubscription.name}</h3>
+          <h3 className="text-2xl font-bold ">{currentSubscription.name}</h3>
           <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
             <div>
               <p className="text-gray-500">Start Date</p>
@@ -100,17 +102,18 @@ const SubscriptionPage = () => {
               </p>
             </div>
 )}
-            {currentSubscription?.ordersCount && (
+            {/* {currentSubscription?.ordersCount && (
             <div>
               <p className="text-gray-500">Orders Count</p>
               <p className="font-medium">{currentSubscription.ordersCount}</p>
             </div>
-            )}
+            )} */}
           </div>
         </div>
 
       </div>
       <div className="flex flex-col items-end">
+        {currentSubscription?.endDate !== null && (
         <span className={`px-3 py-1 rounded-full text-sm font-medium ${
           getDaysLeft(currentSubscription.endDate) <= 0 ? 'bg-red-100 text-red-800' :
           getDaysLeft(currentSubscription.endDate) <= 3 ? 'bg-red-100 text-red-800' :
@@ -120,20 +123,26 @@ const SubscriptionPage = () => {
           {getDaysLeft(currentSubscription.endDate) <= 0 ? 'Expired' : 
            `${getDaysLeft(currentSubscription.endDate)} days left`}
         </span>
-        {currentSubscription.leads !== null && (
-          <div className="mt-3 text-right">
-            <p className="text-gray-500 text-sm">Leads Available</p>
-            <p className="font-medium">{currentSubscription.leads}</p>
+        )}
+        {/* {currentSubscription?.leads !== null && (
+          <div className="mt-3 text-right bg-green-100 px-2 py-1 rounded-xl">
+            <p className="text-gray-600 text-sm">Valid Until <span className='text-lg font-bold'>{currentSubscription.leads} </span></p>
+          </div>
+        )} */}
+        {currentSubscription?.leads !== null && (
+          <div className="mt-3 text-right bg-yellow-100 px-2 py-1 rounded-xl">
+            <p className="text-gray-600 text-sm"><span className='text-lg font-bold'>{currentSubscription.leads - currentSubscription.ordersCount}</span> Leads Remaining</p>
+            {/* <p className="font-medium">{currentSubscription.leads - currentSubscription.ordersCount}</p> */}
           </div>
         )}
       </div>
     </div>
     
-        <hr/>
+        <hr className='my-6'/>
 
         {currentSubscription && plans.length > 0 && (
-  <div className="mt-6">
-    <h2 className="text-lg font-semibold mb-4">Current Plan Details</h2>
+  <div className="">
+    <h2 className="text-xl font-semibold mb-4">Plan Details</h2>
     {plans
       .filter((plan) => plan._id === currentSubscription.subscriptionId)
       .map((plan) => {
@@ -157,6 +166,14 @@ const SubscriptionPage = () => {
                 </div>
               ))}
             </div>
+             <div className="space-y-2 mt-3">
+              {plan.fullFeatures?.map((details, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  {/* {details.included ? <Check className="text-green-500" size={16} /> : <X className="text-red-500" size={16} />} */}
+                  <span className="text-sm"><span className='me-3'>•</span>{details?.text}</span>
+                </div>
+              ))}
+            </div>
           </div>
         );
       })}
@@ -164,7 +181,13 @@ const SubscriptionPage = () => {
 )}
 
   </div>
-)}
+):(
+  <div className='bg-white p-6 rounded-lg shadow-md mb-8 border border-gray-200 flex-wrap"'>
+    No Subscription Plan. Please choose Suitable plan to grow your technical service business.
+    </div>
+)
+
+}
      
     </div>
   );

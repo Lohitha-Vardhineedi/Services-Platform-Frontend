@@ -175,7 +175,8 @@ const PLAN_CONFIG: Record<string, PlanConfig> = {
                     </div>
 
                     <div className="mt-3 text-sm font-medium text-blue-700 bg-blue-100 px-3 py-1 rounded-full inline-block">
-                      Valid until {plan.validity} {plan.validityUnit}
+                      {/* Valid until {plan.validity} {plan.validityUnit} */}
+Valid until {plan?.validity === null ? (plan.leads) : (plan.validity)} {plan?.validity === null ? "leads" : "days"}
                     </div>
                   </div>
 
