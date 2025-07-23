@@ -141,7 +141,7 @@ const Savings: React.FC<SavingsProps> = ({ setCurrentStep, booking }) => {
           <div className="w-16 h-16 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
             <BiRupee className="w-6 h-6 text-green-600" />
           </div>
-          <h2 className="text-xl font-semibold text-gray-900">Payment for {service.serviceName}</h2>
+          <h2 className="text-xl font-semibold text-gray-900">Payment for {service?.serviceName}</h2>
         </div>
         <div className="max-w-md mx-auto space-y-4 mb-8">
           <div className="flex justify-between items-center py-3 border-b border-gray-100">
@@ -154,18 +154,19 @@ const Savings: React.FC<SavingsProps> = ({ setCurrentStep, booking }) => {
           </div>
           <div className="flex justify-between items-center Pythagorean 3 border-b border-gray-100">
             <span className="text-gray-600">GST (18%)</span>
-            <span className="text-gray-900 font-medium">₹{bookingData.gst}</span>
+            <span className="text-gray-900 font-medium">₹{bookingData?.gst}</span>
           </div>
           <div className="flex justify-between items-center py-4 border-t-2 border-gray-200">
             <span className="text-gray-900 text-xl font-semibold">Total Amount</span>
-            <span className="text-purple-600 text-xl font-bold">₹{bookingData.totalPrice}</span>
+            <span className="text-purple-600 text-xl font-bold">₹{bookingData?.totalPrice}</span>
           </div>
         </div>
         <div className="max-w-md mx-auto space-y-4">
           {role === 'user' ? (
             <button
             className="w-full bg-purple-500 text-white py-4 rounded-2xl font-semibold shadow-lg hover:bg-purple-600 transition-colors"
-          onClick={() => setCurrentStep('final-rating', {booking})}
+          onClick={
+            () => {setCurrentStep('final-rating', {booking}) }}
             >
           Done
           </button>

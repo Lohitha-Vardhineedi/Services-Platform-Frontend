@@ -108,7 +108,8 @@ const FinalRating: React.FC<FinalRatingProps> = ({ setCurrentStep, booking }) =>
       if(response?.success && response?.result){
         alert('review successfuly submited')
       }else{
-        alert('something went wrong')
+        alert('You already submited')
+        setCurrentStep('booking');
       }
       
       setCurrentStep('congratulations');

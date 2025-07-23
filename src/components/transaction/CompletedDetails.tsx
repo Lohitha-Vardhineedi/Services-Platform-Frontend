@@ -114,7 +114,7 @@ const CompletedDetails: React.FC<CompletedDetailsProps> = ({
                 {role === 'user' ? 'Technician Name:' : 'Customer Name:'}
               </span>
               <span className="text-gray-900 font-medium ml-2">
-                {role === 'user' ? technician.username : user.username}
+                {role === 'user' ? technician?.username : user?.username}
               </span>
             </div>
           </div>
@@ -126,7 +126,7 @@ const CompletedDetails: React.FC<CompletedDetailsProps> = ({
             </div>
             <div className="flex-1 min-w-0">
               <span className="text-gray-600">Service:</span>
-              <span className="text-gray-900 font-medium ml-2">{service.serviceName}</span>
+              <span className="text-gray-900 font-medium ml-2">{service?.serviceName}</span>
             </div>
           </div>
 
@@ -138,7 +138,7 @@ const CompletedDetails: React.FC<CompletedDetailsProps> = ({
             <div className="flex-1 min-w-0">
               <span className="text-gray-600">Contact:</span>
               <span className="text-gray-900 font-medium ml-2">
-                {role === 'user' ? technician.phoneNumber : user.phoneNumber}
+                {role === 'user' ? technician?.phoneNumber : user?.phoneNumber}
               </span>
             </div>
           </div>
@@ -163,7 +163,7 @@ const CompletedDetails: React.FC<CompletedDetailsProps> = ({
             <div className="flex-1 min-w-0">
               <span className="text-gray-600">Total Price:</span>
               <span className="text-gray-900 font-medium ml-2">
-                ₹{bookingData.totalPrice}
+                ₹{bookingData?.totalPrice}
               </span>
             </div>
           </div>
