@@ -102,20 +102,19 @@ const FinalRating: React.FC<FinalRatingProps> = ({ setCurrentStep, booking }) =>
   });
 
   const handleSubmit = async() => {
-    // Here you can handle the form submission, e.g., send formData to an API
     try{
       const response = await addReviewByUser(formData)
       if(response?.success && response?.result){
-        alert('review successfuly submited')
+        alert('Review successfuly submited')
       }else{
         alert('You already submited')
         setCurrentStep('booking');
       }
-      
       setCurrentStep('congratulations');
     }catch(err){
       console.log('user review err', err)
-        alert('something went wrong by user')
+        alert('You have already reviewed this service.')
+        setCurrentStep('booking');
     }
   };
 

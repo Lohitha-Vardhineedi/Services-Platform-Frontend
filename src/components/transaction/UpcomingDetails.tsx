@@ -25,16 +25,16 @@ const UpcomingDetails: React.FC<UpcomingDetailsProps> = ({
   const [isCancelling, setIsCancelling] = useState<boolean>(false);
   const [isUpdatingStatus, setIsUpdatingStatus] = useState<boolean>(false);
 
-  const { booking, technician, service, user } = bookingData;
-console.log("booking", booking)
-console.log("user", user)
+  // const { booking, technician, service, user } = bookingData;
+  const [bookingState, setBookingState] = useState(bookingData.booking);
+const { technician, service, user } = bookingData;
   const formattedTechnicianAddress = `${technician?.buildingName}, ${technician?.areaName}, ${technician?.city}, ${technician?.state} - ${technician?.pincode}`;
   const formattedUserAddress = `${user?.buildingName}, ${user?.areaName}, ${user?.city}, ${user?.state} - ${user?.pincode}`;
 
   const handleCancel = async () => {
     setIsCancelling(true);
     const data = {
-      orderId: booking._id,
+      orderId: bookingState._id,
       userId: localStorage.getItem("userId")
     };
 
@@ -53,19 +53,23 @@ console.log("user", user)
     }
   };
 
-const handleStatusUpdate = async (status: string, otp?: string) => {
+  const handleStatusUpdate = async (status: string, otp?: string) => {
   setIsUpdatingStatus(true);
   try {
     const requestData = {
-      orderId: booking._id,
+      orderId: bookingState._id,
       technicianId: localStorage.getItem("userId"),
       status,
       ...(otp && { otp: Number(otp) })
     };
 
     const response = await updateBookingStatus(requestData);
-    
+
     if (response?.success === true) {
+      // Update local state to re-render component
+      setBookingState((prev) => ({ ...prev, status }));
+
+      // Tab and step updates
       if (status === "completed") {
         setActiveTab("completed");
         setCurrentStep("completed-details");
@@ -74,14 +78,15 @@ const handleStatusUpdate = async (status: string, otp?: string) => {
         setCurrentStep("cancelled-details");
       } else if (status === "accepted") {
         setActiveTab('upcoming');
-      setCurrentStep('upcoming-details');
+        setCurrentStep('upcoming-details');
       } else if (status === "started") {
-        setShowSuccess(true);
+        setShowSuccess(true); // Show confirmation modal
       }
       return true;
     }
     return false;
   } catch (error) {
+    alert(error?.message)
     console.error("Error updating status:", error);
     return false;
   } finally {
@@ -89,16 +94,48 @@ const handleStatusUpdate = async (status: string, otp?: string) => {
   }
 };
 
-const handleOtpSubmit = async (otp: string) => {
-  const success = await handleStatusUpdate("started", otp);
-  if (!success) {
-    alert("OTP verification failed. Please try again.");
-  }
-};
+
+  // const handleStatusUpdate = async (status: string, otp?: string) => {
+  //   setIsUpdatingStatus(true);
+  //   try {
+  //     const requestData = {
+  //       orderId: booking._id,
+  //       technicianId: localStorage.getItem("userId"),
+  //       status,
+  //       ...(otp && { otp: Number(otp) })
+  //     };
+
+  //     const response = await updateBookingStatus(requestData);
+
+  //     if (response?.success === true) {
+  //       if (status === "completed") {
+  //         setActiveTab("completed");
+  //         setCurrentStep("completed-details");
+  //       } else if (status === "declined") {
+  //         setActiveTab("cancelled");
+  //         setCurrentStep("cancelled-details");
+  //       } else if (status === "accepted") {
+  //         setActiveTab('upcoming');
+  //         setCurrentStep('upcoming-details');
+  //       } else if (status === "started") {
+
+  //         setShowSuccess(true);
+  //       }
+  //       return true;
+  //     }
+  //     return false;
+  //   } catch (error) {
+  //     alert(error?.message)
+  //     console.error("Error updating status:", error);
+  //     return false;
+  //   } finally {
+  //     setIsUpdatingStatus(false);
+  //   }
+  // };
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 min-h-96">
-       {showSuccess ? (
+      {showSuccess ? (
         <SuccessModal
           onClose={() => {
             setShowSuccess(false);
@@ -106,190 +143,193 @@ const handleOtpSubmit = async (otp: string) => {
             setCurrentStep("upcoming-details");
           }}
         />
-      ):(
+      ) : (
         <>
-      <div className="border-b border-gray-200 px-6 py-4">
-        <div className="flex items-center space-x-3">
-          <button
-            onClick={() => setCurrentStep("bookings")}
-            className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 transition-colors"
-            aria-label="Go back to bookings"
-          >
-            <ChevronLeft className="w-5 h-5" />
-            <span>Back</span>
-          </button>
-          <h2 className="text-xl font-semibold text-gray-900 ml-4">
-            Booking Details
-          </h2>
-        </div>
-      </div>
-      <div className="p-6">
-        <div className="flex items-center justify-between mb-6">
-          <span className={`px-4 py-2 rounded-full text-sm font-medium ${
-            booking.status === "upcoming" ? "bg-purple-100 text-purple-600" :
-            booking.status === "accepted" ? "bg-blue-100 text-blue-600" :
-            booking.status === "started" ? "bg-yellow-100 text-yellow-600" :
-            "bg-green-100 text-green-600"
-          }`}>
-            {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
-          </span>
-          <span className="text-gray-400 text-sm">Date: {new Date(booking.bookingDate).toLocaleDateString()}</span>
-        </div>
-        <div className="w-full h-64 bg-gray-200 rounded-2xl mb-6 overflow-hidden">
-          <img
-            src={service?.serviceImg}
-            alt={`Image of ${service?.serviceName} service`}
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          {/* Name */}
-          <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-              <User className="w-6 h-6 text-blue-600" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <span className="text-gray-600">
-                {role === "user" ? "Technician Name :" : "User Name :"}
-              </span>
-              <span className="text-gray-900 font-medium ml-2">
-                {role === "user" ? technician?.username : user?.username}
-              </span>
-            </div>
-          </div>
-          
-          {/* Service */}
-          <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
-              <Wrench className="w-6 h-6 text-orange-600" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <span className="text-gray-600">Service :</span>
-              <span className="text-gray-900 font-medium ml-2">
-                {service?.serviceName}
-              </span>
-            </div>
-          </div>
-          
-          {/* Contact */}
-          <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-              <Phone className="w-6 h-6 text-green-600" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <span className="text-gray-600">Contact :</span>
-              <span className="text-gray-900 font-medium ml-2">
-                {role === "user" ? technician?.phoneNumber : user?.phoneNumber}
-              </span>
-            </div>
-          </div>
-          
-          {/* Address */}
-          <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-              <MapPin className="w-6 h-6 text-red-600" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <span className="text-gray-600">Address :</span>
-              <span className="text-gray-900 font-medium ml-2 text-sm">
-                {role === "user" ? formattedTechnicianAddress : formattedUserAddress}
-              </span>
-            </div>
-          </div>
-          
-          {/* Price */}
-          <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-              <BiRupee className="w-6 h-6 text-purple-600" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <span className="text-gray-600">Total Price :</span>
-              <span className="text-gray-900 font-medium ml-2">
-                ₹{booking?.totalPrice}
-              </span>
-            </div>
-          </div>
-          
-          {/* OTP Section */}
-          {role === "user" && (
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <Key className="w-6 h-6 text-yellow-600" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <span className="text-gray-600">OTP :</span>
-                <span className="bg-purple-500 text-white rounded-2xl py-2 px-3 font-medium ml-2">
-                  {booking?.otp}
-                </span>
-              </div>
-            </div>
-          )}
-          
-          {/* Technician Actions */}
-          {role === "technician" && (
-            <div className="md:col-span-2">
-              {booking?.status === "upcoming" && (
-                <div className="flex justify-end space-x-4">
-                  <button
-                    className={`py-2 px-4 bg-red-100 text-red-600 rounded-2xl font-semibold shadow-lg hover:bg-red-200 transition-colors flex items-center gap-2 ${isUpdatingStatus ? 'opacity-70 cursor-not-allowed' : ''}`}
-                    onClick={() => handleStatusUpdate("declined")}
-                    disabled={isUpdatingStatus}
-                  >
-                    <X className="w-5 h-5" />
-                    {isUpdatingStatus ? 'Processing...' : 'Decline'}
-                  </button>
-                  <button
-                    className={`py-2 px-4 bg-green-100 text-green-600 rounded-2xl font-semibold shadow-lg hover:bg-green-200 transition-colors flex items-center gap-2 ${isUpdatingStatus ? 'opacity-70 cursor-not-allowed' : ''}`}
-                    onClick={() => handleStatusUpdate("accepted")}
-                    disabled={isUpdatingStatus}
-                  >
-                    <Check className="w-5 h-5" />
-                    {isUpdatingStatus ? 'Processing...' : 'Accept'}
-                  </button>
-                </div>
-              )}
-              
-              {booking?.status === "accepted" && (
-                <OTPInput
-                  setCurrentStep={setCurrentStep}
-                  setActiveTab={setActiveTab}
-                  setShowSuccess={setShowSuccess}
-                  bookingOtp={booking.otp.toString()}
-                  bookingId={booking._id}
-                  onOtpSubmit={handleOtpSubmit}
-                />
-              )}
-              
-              {(booking?.status === "started") && (
-                <div className="flex justify-end space-x-4">
-                  <button
-                    className={`py-2 px-4 bg-green-500 text-white rounded-2xl font-semibold shadow-lg hover:bg-green-600 transition-colors ${isUpdatingStatus ? 'opacity-70 cursor-not-allowed' : ''}`}
-                    onClick={() => handleStatusUpdate("completed")}
-                    disabled={isUpdatingStatus}
-                  >
-                    {isUpdatingStatus ? 'Processing...' : 'Mark as Complete'}
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
-          
-       
-
-        </div>
-           {(role === "user" && booking?.status === "upcoming") && (
-            <div className="flex justify-end space-x-4">
+          <div className="border-b border-gray-200 px-6 py-4">
+            <div className="flex items-center space-x-3">
               <button
-                className={`py-2 px-4 bg-gray-50 border-2 text-red-600 rounded-2xl font-semibold shadow-lg hover:bg-gray-100 transition-colors ${isCancelling ? 'opacity-70 cursor-not-allowed' : ''}`}
-                onClick={handleCancel}
-                disabled={isCancelling}
+                onClick={() => setCurrentStep("bookings")}
+                className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 transition-colors"
+                aria-label="Go back to bookings"
               >
-                {isCancelling ? 'Cancelling...' : 'Cancel Service'}
+                <ChevronLeft className="w-5 h-5" />
+                <span>Back</span>
               </button>
+              <h2 className="text-xl font-semibold text-gray-900 ml-4">
+                Booking Details
+              </h2>
             </div>
-          )}
-      </div>
-      </>
+          </div>
+          <div className="p-6">
+            <div className="flex items-center justify-between mb-6">
+              <span className={`px-4 py-2 rounded-full text-sm font-medium ${bookingState.status === "upcoming" ? "bg-purple-100 text-purple-600" :
+                  bookingState.status === "accepted" ? "bg-blue-100 text-blue-600" :
+                    bookingState.status === "started" ? "bg-yellow-100 text-yellow-600" :
+                      "bg-green-100 text-green-600"
+                }`}>
+                {bookingState.status.charAt(0).toUpperCase() + bookingState.status.slice(1)}
+              </span>
+              <span className="text-gray-400 text-sm">Date: {new Date(bookingState.bookingDate).toLocaleDateString()}</span>
+            </div>
+            <div className="w-full h-64 bg-gray-200 rounded-2xl mb-6 overflow-hidden">
+              <img
+                src={service?.serviceImg}
+                alt={`Image of ${service?.serviceName} service`}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              {/* Name */}
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <User className="w-6 h-6 text-blue-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="text-gray-600">
+                    {role === "user" ? "Technician Name :" : "User Name :"}
+                  </span>
+                  <span className="text-gray-900 font-medium ml-2">
+                    {role === "user" ? technician?.username : user?.username}
+                  </span>
+                </div>
+              </div>
+
+              {/* Service */}
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Wrench className="w-6 h-6 text-orange-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="text-gray-600">Service :</span>
+                  <span className="text-gray-900 font-medium ml-2">
+                    {service?.serviceName}
+                  </span>
+                </div>
+              </div>
+
+              {/* Contact */}
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Phone className="w-6 h-6 text-green-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="text-gray-600">Contact :</span>
+                  <span className="text-gray-900 font-medium ml-2">
+                    {role === "user" ? technician?.phoneNumber : user?.phoneNumber}
+                  </span>
+                </div>
+              </div>
+
+              {/* Address */}
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <MapPin className="w-6 h-6 text-red-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="text-gray-600">Address :</span>
+                  <span className="text-gray-900 font-medium ml-2 text-sm">
+                    {role === "user" ? formattedTechnicianAddress : formattedUserAddress}
+                  </span>
+                </div>
+              </div>
+
+              {/* Price */}
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <BiRupee className="w-6 h-6 text-purple-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="text-gray-600">Total Price :</span>
+                  <span className="text-gray-900 font-medium ml-2">
+                    ₹{bookingState?.totalPrice}
+                  </span>
+                </div>
+              </div>
+
+              {/* OTP Section */}
+              {role === "user" && (
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Key className="w-6 h-6 text-yellow-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <span className="text-gray-600">OTP :</span>
+                    <span className="bg-purple-500 text-white rounded-2xl py-2 px-3 font-medium ml-2">
+                      {bookingState?.otp}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Technician Actions */}
+              {role === "technician" && (
+                <div className="md:col-span-2">
+                  {bookingState?.status === "upcoming" && (
+                    <div className="flex justify-end space-x-4">
+                      <button
+                        className={`py-2 px-4 bg-red-100 text-red-600 rounded-2xl font-semibold shadow-lg hover:bg-red-200 transition-colors flex items-center gap-2 ${isUpdatingStatus ? 'opacity-70 cursor-not-allowed' : ''}`}
+                        onClick={() => handleStatusUpdate("declined")}
+                        disabled={isUpdatingStatus}
+                      >
+                        <X className="w-5 h-5" />
+                        {isUpdatingStatus ? 'Processing...' : 'Decline'}
+                      </button>
+                      <button
+                        className={`py-2 px-4 bg-green-100 text-green-600 rounded-2xl font-semibold shadow-lg hover:bg-green-200 transition-colors flex items-center gap-2 ${isUpdatingStatus ? 'opacity-70 cursor-not-allowed' : ''}`}
+                        onClick={() => handleStatusUpdate("accepted")}
+                        disabled={isUpdatingStatus}
+                      >
+                        <Check className="w-5 h-5" />
+                        {isUpdatingStatus ? 'Processing...' : 'Accept'}
+                      </button>
+                    </div>
+                  )}
+
+                  {bookingState?.status === "accepted" && (
+                    // <OTPInput
+                    //   setCurrentStep={setCurrentStep}
+                    //   setActiveTab={setActiveTab}
+                    //   setShowSuccess={setShowSuccess}
+                    //   bookingOtp={booking.otp.toString()}
+                    //   bookingId={booking._id}
+                    //   onOtpSubmit={handleOtpSubmit}
+                    // />
+                    <OTPInput
+                      setCurrentStep={setCurrentStep}
+                      setActiveTab={setActiveTab}
+                      setShowSuccess={setShowSuccess}
+                      bookingId={bookingState._id}
+                      onOtpSubmit={(otp) => handleStatusUpdate("started", otp)}
+                    />
+                  )}
+
+                  {(bookingState?.status === "started") && (
+                    <div className="flex justify-end space-x-4">
+                      <button
+                        className={`py-2 px-4 bg-green-500 text-white rounded-2xl font-semibold shadow-lg hover:bg-green-600 transition-colors ${isUpdatingStatus ? 'opacity-70 cursor-not-allowed' : ''}`}
+                        onClick={() => handleStatusUpdate("completed")}
+                        disabled={isUpdatingStatus}
+                      >
+                        {isUpdatingStatus ? 'Processing...' : 'Mark as Complete'}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            {(role === "user" && bookingState?.status === "upcoming") && (
+              <div className="flex justify-end space-x-4">
+                <button
+                  className={`py-2 px-4 bg-gray-50 border-2 text-red-600 rounded-2xl font-semibold shadow-lg hover:bg-gray-100 transition-colors ${isCancelling ? 'opacity-70 cursor-not-allowed' : ''}`}
+                  onClick={handleCancel}
+                  disabled={isCancelling}
+                >
+                  {isCancelling ? 'Cancelling...' : 'Cancel Service'}
+                </button>
+              </div>
+            )}
+          </div>
+        </>
       )}
     </div>
   );

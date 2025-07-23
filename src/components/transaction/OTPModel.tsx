@@ -67,23 +67,24 @@ const OTPInput: React.FC<OTPModalProps> = ({
   //     setCurrentStep('upcoming-details');
   //   }, 3000);
   // };
+
 const handleOTPSubmit = () => {
-    const fullOtp = otp.join('');
-    if (fullOtp.length !== 6) {
-      setError('Please enter a 6-digit OTP');
-      return;
-    }
+  const fullOtp = otp.join('');
+  if (fullOtp.length !== 6) {
+    setError('Please enter a 6-digit OTP');
+    return;
+  }
 
-    onOtpSubmit(fullOtp);
-    setOtp(['', '', '', '', '', '']);
+  onOtpSubmit(fullOtp);
+  setOtp(['', '', '', '', '', '']);
 
-    setTimeout(() => {
-            setShowSuccess(false);
-            setActiveTab('upcoming');
-            setCurrentStep('upcoming-details');
-        }, 3000);
-  };
-
+  // Optional UX delay for success modal
+  setTimeout(() => {
+    setShowSuccess(false);
+    setActiveTab('upcoming');
+    setCurrentStep('upcoming-details');
+  }, 4000);
+};
 
   return (
     <div className="flex gap-2 flex-wrap items-center space-x-4 md:col-span-2 sm:col-span-1 mt-4">

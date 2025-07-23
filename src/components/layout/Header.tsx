@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Download, Menu, X, ShoppingCart, Star } from 'lucide-react';
 import { TbLogout } from "react-icons/tb";
 import CompanyReviewModel from '../homepage/CompanyReviewModel'
+import { useCart } from '../../context/CartContext';
 
 interface User {
   username: string;
@@ -10,7 +11,9 @@ interface User {
 }
 
 function Header() {
-  const [cartCount, setCartCount] = useState<number>(0);
+  // const [cartCount, setCartCount] = useState<number>(0);
+   const { cartCount } = useCart();
+  // const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
   const [showUserModal, setShowUserModal] = useState<boolean>(false);
   const [showReviewModal, setShowReviewModal] = useState<boolean>(false);
@@ -23,15 +26,13 @@ function Header() {
   useEffect(() => {
     const updateCartCount = () => {
       const storedItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
-      setCartCount(storedItems.length);
+      // setCartCount(storedItems.length);
     };
-
     const updateUser = () => {
       const storedUser = localStorage.getItem("user");
       const parsedUser: User | null = storedUser ? JSON.parse(storedUser) : null;
       setUser(parsedUser);
     };
-
     window.addEventListener("storage", updateCartCount);
     window.addEventListener("focus", updateCartCount);
     window.addEventListener("userChanged", updateUser);

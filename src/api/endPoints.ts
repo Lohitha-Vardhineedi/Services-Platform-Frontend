@@ -78,6 +78,14 @@ const endpoints: any = {
       return `/api/subscriptions/plans`;
     }
   },
+  gettechnicianPlanById: { 
+    method: "get",
+    url: (id: string) => `/api/technicianSubscription/getTechSubscriptionPlan/${id}`
+  },
+   addTechSubscriptionPlan: {
+    method: "post",
+    url: () => `/api/technicianSubscription/addTechSubscriptionPlan`
+  },
   getTechImagesByTechId: { 
     method: "get",
     url: (id: string) => `/api/techImages/getTechImagesByTechId/${id}`

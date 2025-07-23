@@ -10,12 +10,32 @@ import { ContactForm } from "../components/services/ContactForms";
 import { FaThumbsUp } from "react-icons/fa";
 import { getTechByCategorie } from "../api/apiMethods";
 
+// interface category {
+//   _id: string;
+//   category_name: string;
+//   category_image: string;
+//   meta_title: string;
+//   meta_description: string;
+//   status: number;
+// }
+
+// interface LocationState {
+//   categoryDatails: category;
+// }
+
 const ServicePage = () => {
   const location = useLocation();
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
   const [technicians, setTechnicians] = useState([]);
   const [error, setError] = useState("");
+  // const state = location.state as LocationState;
+  // const categoryDatails = state.categoryDatails;
+  const categoryDetails = location?.state?.category
+ console.log(categoryDetails, "==>categoryDetails")
+
+  const [isDataLoading, setIsDataLoading] = useState(false);
+  const [errorContent, setErrorContent] = useState<string | null>(null);
 
   // useEffect(() => {
   //   if (!categoryId) return;
@@ -51,25 +71,25 @@ const ServicePage = () => {
   //     .catch((err) => console.error("API Error:", err));
   // }, [categoryId]);
 
-useEffect(() => {
-  if (!categoryId) return;
+  useEffect(() => {
+    if (!categoryId) return;
 
-  const fetchTechByCategoryId = async () => {
-    try {
-      console.log(categoryId, "==> categoryId");
+    const fetchTechByCategoryId = async () => {
+      try {
+        console.log(categoryId, "==> categoryId");
 
-      const response = await getTechByCategorie(categoryId);
-      console.log(response, "==> fetched response");
+        const response = await getTechByCategorie(categoryId);
+        console.log(response, "==> fetched response");
 
-      const data = response?.result || [];
-      setTechnicians(Array.isArray(data) ? data : []);
-    } catch (error: any) {
-      setError(error?.message || "Failed to fetch technicians");
-    }
-  };
+        const data = response?.result || [];
+        setTechnicians(Array.isArray(data) ? data : []);
+      } catch (error: any) {
+        setError(error?.message || "Failed to fetch technicians");
+      }
+    };
 
-  fetchTechByCategoryId();
-}, [categoryId]);
+    fetchTechByCategoryId();
+  }, [categoryId]);
 
 
   return (
@@ -81,7 +101,7 @@ useEffect(() => {
       <div className="flex flex-col md:flex-row p-2 gap-3">
         <div className="flex-1 space-y-3 overflow-y-auto scrollbar-hide max-h-[calc(100vh-200px)]">
           {technicians.length > 0 ? (
-          
+
             technicians.map((profile, index) => (
               <div
                 key={index}
@@ -162,11 +182,35 @@ useEffect(() => {
         </div>
         <ContactForm />
       </div>
+
+      <div className="mt-6 space-y-4">
+        {isDataLoading ? (
+          <div className="text-center">Loading Data...</div>
+        ) : errorContent ? (
+          <div className="text-red-500 text-center">{errorContent}</div>
+        ) : categoryDetails?.meta_title ? (
+            <div key={categoryDetails._id}>
+              <h1 className="text-2xl font-bold mb-2">{categoryDetails?.meta_title}</h1>
+              <p className="text-base text-gray-700">{categoryDetails?.meta_description}</p>
+            </div>
+        ) : (
+          <> <h1 className="text-2xl font-bold">{categoryDetails?.category_name} Services</h1>
+            <p className="text-base text-gray-700">We offer complete services in {categoryDetails?.category_name} to ensure a tidy, fresh, and healthy atmosphere for your office or home. Our expert team of cleaners has modern tools and the Best cleaning services to take on the most demanding chores.</p>
+            <h2 className="text-2xl font-semibold">How to Hire Technicians in {categoryDetails?.category_name}</h2>
+            <p className="text-base text-gray-700">We are PRNV Services, We offer an array of Technicians in {categoryDetails?.category_name} to meet commercial and residential needs. Finding professional Technicians in Hyderabad is an easy process using PRNV Services. Here's how to ensure that you're hiring the correct cleaning service: Evaluate Your Cleaning Needs: Before hiring, evaluate what areas require a thorough cleaning.</p>
+            <h2 className="text-2xl font-semibold">Cost of Services in {categoryDetails?.category_name}</h2>
+            <p className="text-base text-gray-700">The cost of services in {categoryDetails?.category_name} is contingent upon a variety of aspects, such as the dimensions of the building and the kind of cleaning needed, as well as the particular requirements of the customer. We offer affordable and transparent prices without sacrificing the quality of our services.</p>
+          </>
+        )}
+      </div>
+
     </div>
   );
 };
 
 export default ServicePage;
+
+
 // import React, { useEffect, useState } from "react";
 // import { useLocation, useNavigate, useParams } from "react-router-dom";
 // import { IoCall, IoLocationOutline } from "react-icons/io5";

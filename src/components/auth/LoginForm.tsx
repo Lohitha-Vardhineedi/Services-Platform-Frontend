@@ -62,6 +62,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
         localStorage.setItem('userId', response.result.id);
         console.log("----",response.result.id)
         localStorage.setItem('role', response.result.role);
+        window.dispatchEvent(new Event("cartUpdated"));
         if (role === 'technician') {
           navigate('/technician/dashboard');
         } else {

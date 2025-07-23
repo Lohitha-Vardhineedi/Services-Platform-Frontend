@@ -7,106 +7,68 @@ import {
   Zap,
   Shield,
   BadgeIndianRupee,
-  LucideIcon,
   Cross,
 } from 'lucide-react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { getPlans } from '../api/apiMethods';
-import { MdClear } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
+import { getPlans } from '../../api/apiMethods';
 
-const iconMap: { [key: string]: LucideIcon } = {
+const iconMap = {
   Star,
   Crown,
   Zap,
   Shield,
 };
 
-interface PlanFeature {
-  name: string;
-  included: boolean;
-}
-
-interface FullFeature {
-  text: string;
-}
-
-export interface Plan {
-  _id: string;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  gst: number;
-  finalPrice: number;
-  validity: number;
-  validityUnit: string;
-  icon: string;
-  color: string;
-  features: PlanFeature[];
-  fullFeatures: FullFeature[];
-  discount?: number;
-  isPopular?: boolean;
-  buttonColor: string;
-}
-
-const SubscriptionPage: React.FC = () => {
-  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+const TechnicianSubscriptionPlans = () => {
+  const [selectedPlan, setSelectedPlan] = useState(null);
   const navigate = useNavigate();
-
-  const [plans, setPlans] = useState<any[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const [plans, setPlans] = useState([]);
+  const [error, setError] = useState(null);
 
   const fetchPlans = async () => {
     try {
       const response = await getPlans();
       if (response) {
-        setPlans(response?.data);
+        setPlans(response?.data || []);
+      } else {
+        setError('Invalid response format');
       }
-      else {
-      setError('Invalid response format');
-      }
-    } catch (err: any) {
+    } catch (err) {
       setError(err?.message || 'Failed to fetch categories');
       console.log(err, "==>err");
     }
   };
+
   useEffect(() => {
     fetchPlans();
   }, []);
 
-
-  const handleFullDetails = (plan: Plan): void => {
+  const handleFullDetails = (plan) => {
     navigate(`/subscription/${plan._id}`, { state: { plan } });
   };
 
-  interface PlanConfig {
-  gradient: string;       
-  icon: LucideIcon;      
-  button: string;         
-}
-
-const PLAN_CONFIG: Record<string, PlanConfig> = {
-  "Economy Plan": {
-    gradient: "from-blue-500 to-blue-600",
-    icon: Zap,
-    button: "bg-blue-600 hover:bg-blue-700",
-  },
-  "Gold Plan": {
-    gradient: "from-yellow-400 to-yellow-600",
-    icon: Star,
-    button: "bg-yellow-500 hover:bg-yellow-600",
-  },
-  "Platinum Plan": {
-    gradient: "from-purple-500 to-purple-700",
-    icon: Crown,
-    button: "bg-purple-600 hover:bg-purple-700",
-  },
-  "Free Plan": {
-    gradient: "from-green-400 to-green-600",
-    icon: Shield,
-    button: "bg-green-500 hover:bg-green-700",
-  },
-};
-
+  const PLAN_CONFIG = {
+    "Economy Plan": {
+      gradient: "from-blue-500 to-blue-600",
+      icon: Zap,
+      button: "bg-blue-600 hover:bg-blue-700",
+    },
+    "Gold Plan": {
+      gradient: "from-yellow-400 to-yellow-600",
+      icon: Star,
+      button: "bg-yellow-500 hover:bg-yellow-600",
+    },
+    "Platinum Plan": {
+      gradient: "from-purple-500 to-purple-700",
+      icon: Crown,
+      button: "bg-purple-600 hover:bg-purple-700",
+    },
+    "Free Plan": {
+      gradient: "from-green-400 to-green-600",
+      icon: Shield,
+      button: "bg-green-500 hover:bg-green-700",
+    },
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-10">
@@ -121,7 +83,7 @@ const PLAN_CONFIG: Record<string, PlanConfig> = {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {plans.map((plan: Plan) => {
+          {plans.map((plan) => {
             const config = PLAN_CONFIG[plan.name] || {
               gradient: "from-gray-400 to-gray-600",
               icon: Star,
@@ -167,20 +129,18 @@ const PLAN_CONFIG: Record<string, PlanConfig> = {
                         </div>
                       )}
                       {Number(plan.price) > 0 && (
-                      <div className="text-sm text-gray-600">
-                        ₹{plan.price} +  ₹{plan.gst} (GST 18%)
-                        {/* INCL 18% GST: ₹ {plan.price} */}
-                      </div>
+                        <div className="text-sm text-gray-600">
+                          ₹{plan.price} + ₹{plan.gst} (GST 18%)
+                        </div>
                       )}
                     </div>
 
                     <div className="mt-3 text-sm font-medium text-blue-700 bg-blue-100 px-3 py-1 rounded-full inline-block">
-                      {/* Valid until {plan.validity} {plan.validityUnit} */}
-Valid until {plan?.validity === null ? (plan.leads) : (plan.validity)} {plan?.validity === null ? "leads" : "days"}
+                      Valid until {plan?.validity === null ? (plan.leads) : (plan.validity)} {plan?.validity === null ? "leads" : "days"}
                     </div>
                   </div>
 
-                  <ul className="space-y-2 mb-3">
+                  <ul className="space-y-2 mb-6">
                     {plan.features.map((feature, index) => (
                       <li key={index} className="flex items-center gap-3 text-sm text-gray-700">
                         {feature.included ? (
@@ -193,19 +153,20 @@ Valid until {plan?.validity === null ? (plan.leads) : (plan.validity)} {plan?.va
                     ))}
                   </ul>
 
-                  <div className="mt-auto">
-                    {/* <button
-                      onClick={() => setSelectedPlan(plan?.name)}
-                      className={`w-full py-3 px-4 rounded-2xl font-semibold transition duration-300 text-white shadow-md hover:shadow-lg hover:scale-[1.02]
-                       ${config?.button}`}
-                    >
-                      {selectedPlan === plan?.name ? 'Selected' : 'Choose Plan'}
-                    </button> */}
+                  <div className="mt-auto space-y-3">
+                 
+                      <button
+  onClick={() => navigate('/buyPlan', { state: { plan } })}
+  className={`w-full py-3 px-4 rounded-2xl font-semibold transition duration-300 text-white shadow-md hover:shadow-lg hover:scale-[1.02]
+   ${config?.button}`}
+>
+ {plan?.name === "Free Plan" ? "Free Plan" : "Buy Plan"} 
+</button>
                     <button
                       onClick={() => handleFullDetails(plan)}
-                      className="w-full py-2 px-4 text-gray-600 hover:text-blue-600 font-medium transition duration-300 text-green-600"
+                      className="w-full py-2 px-4 text-gray-600 hover:text-blue-600 font-medium transition duration-300"
                     >
-                      View Full Details →
+                      Full Details →
                     </button>
                   </div>
                 </div>
@@ -218,4 +179,4 @@ Valid until {plan?.validity === null ? (plan.leads) : (plan.validity)} {plan?.va
   );
 };
 
-export default SubscriptionPage;
+export default TechnicianSubscriptionPlans;
