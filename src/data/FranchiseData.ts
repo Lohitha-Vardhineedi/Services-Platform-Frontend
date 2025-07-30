@@ -1,5 +1,5 @@
 export const franchiseTerms = [
-  { id: 1, text: "Franchise will earn Rs 10% commission on their enrollments and renewals of professionals (service providers/technicians) & advertisement plans as well." },
+  { id: 1, text: "Franchise will earn commission on their enrollments and renewals of professionals (service providers/technicians) & advertisement plans as well." },
   { id: 2, text: "The franchise has to pay a monthly subscription fee of Rs. 100 + GST (18%), Rs. 18 = Rs. 118 (valid for 30 days). (It is Not Refundable.) (Actual amount Rs. 1000 + 18% GST Rs. 180 Total Rs. 1,180)." },
   { id: 3, text: "The franchise has to renew with Rs. 118 after every 30 days." },
   { id: 4, text: "The franchise must have Marketing as well as organizing knowledge." },
