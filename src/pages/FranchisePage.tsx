@@ -98,7 +98,7 @@ const FranchisePage: React.FC = () => {
       }
     };
     fetchPlan();
-  }, []);
+  }, []); 
 
   const handleFullDetails = (plan: FranchisePlan) => {
     navigate(`/subscription/${plan._id}`, { state: { plan } });
@@ -119,7 +119,7 @@ const FranchisePage: React.FC = () => {
 
     try {
       const response = await createFranchaseEnquiry(formData);
-      if (response.success) {
+      if (response?.success) {
         alert("Thanks for contacting us! We'll get back to you soon.");
         setFormData({ name: "", phoneNumber: "", message: "" });
       } else {

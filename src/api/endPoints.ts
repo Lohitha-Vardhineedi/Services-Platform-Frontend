@@ -225,7 +225,7 @@ const endpoints: any = {
   },
   getFranchisePlans: {
     method: "get",
-    url: () => `/api/franchiseSubscription/franchisePlans`
+    url: () => `/api/franchiseSubscription/franchisePlans` 
   },
 }
 
