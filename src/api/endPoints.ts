@@ -223,6 +223,10 @@ const endpoints: any = {
     method: "post",
     url:'/api/techReview/addReviewByUser'
   },
+  getFranchisePlans: {
+    method: "get",
+    url: () => `/api/franchiseSubscription/franchisePlans`
+  },
 }
 
 export default endpoints;

@@ -88,6 +88,9 @@ export const deletePhotoBySingle = (payload : any) =>apiRequest('deletePhotoBySi
 
 export const addReviewByUser= (formData :any ) => apiRequest('addReviewByUser', formData)
 
+export const getFranchisePlans = (data: any) => apiRequest('getFranchisePlans', data);
+
+
 // export const getAllTechnicianDetails = async (id: string) => {
 //   const res = await fetch(`/api/techDetails/getTechAllDetails/${id}`);
 //   const data = await res.json();
