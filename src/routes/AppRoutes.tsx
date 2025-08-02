@@ -28,9 +28,9 @@ import TechnicianSubscriptionPlans from '../pages/technician/TechnicianSubscript
 import BuySubscription from '../pages/technician/BuySubscription';
 import TechnicianTransactions from '../pages/technician/TechnicianTransactions';
 import { GuestBooking } from '../pages/GuestBooking';
-import TechnicianPanel from '../pages/technician/TechnicianPanel';
-import TechnicianDashboard from '../pages/technician/TechnicianDashboard';
 import SerarchFilterPage from '../pages/SearchFilterPage';
+import TechnicianDashboard from '../pages/technician/TechnicianDashboard';
+import TechnicianPanel from '../pages/technician/TechnicianPanel';
 
 const AppRoutes = () => {
     return (
@@ -61,7 +61,7 @@ const AppRoutes = () => {
             <Route path="/transactions" element={<TransactionPage/>} />
 
 
-            <Route path="/technician/dashboard" element={<TechnicianPanel />} />
+            <Route path="/technician/dashboard" element={<TechnicianPanel/>} />
             <Route path='/technician/dashboardById' element= {<TechnicianDashboard/>} />
             <Route path="/technician/photos" element={<TechnicianPhotos />} />
             <Route path="/technician/services" element={<TechnicianServices/>} />

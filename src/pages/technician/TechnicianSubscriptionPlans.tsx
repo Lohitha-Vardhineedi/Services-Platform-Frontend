@@ -82,8 +82,11 @@ const TechnicianSubscriptionPlans = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {plans.map((plan) => {
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+          {plans
+          .filter(plan => plan.name === "Free Plan" || plan.name === "Economy Plan")
+          .map((plan) => {
             const config = PLAN_CONFIG[plan.name] || {
               gradient: "from-gray-400 to-gray-600",
               icon: Star,
@@ -154,14 +157,14 @@ const TechnicianSubscriptionPlans = () => {
                   </ul>
 
                   <div className="mt-auto space-y-3">
-                 
-                      <button
-  onClick={() => navigate('/buyPlan', { state: { plan } })}
-  className={`w-full py-3 px-4 rounded-2xl font-semibold transition duration-300 text-white shadow-md hover:shadow-lg hover:scale-[1.02]
+
+                    <button
+                      onClick={() => navigate('/buyPlan', { state: { plan } })}
+                      className={`w-full py-3 px-4 rounded-2xl font-semibold transition duration-300 text-white shadow-md hover:shadow-lg hover:scale-[1.02]
    ${config?.button}`}
->
- {plan?.name === "Free Plan" ? "Free Plan" : "Buy Plan"} 
-</button>
+                    >
+                      {plan?.name === "Free Plan" ? "Free Plan" : "Buy Plan"}
+                    </button>
                     <button
                       onClick={() => handleFullDetails(plan)}
                       className="w-full py-2 px-4 text-gray-600 hover:text-blue-600 font-medium transition duration-300"
@@ -174,6 +177,7 @@ const TechnicianSubscriptionPlans = () => {
             );
           })}
         </div>
+    
       </div>
     </div>
   );
