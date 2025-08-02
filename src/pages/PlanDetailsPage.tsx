@@ -59,7 +59,7 @@ const PlanDetailsPage: React.FC = () => {
           </div>
         )}
         <div className='text-center'>
-          <p className=" text-sm font-medium text-blue-700 bg-blue-100 px-3 py-1 rounded-full inline-block">Valid until {subscription.validity} {subscription.validityUnit}</p>
+          <p className=" text-sm font-medium text-blue-700 bg-blue-100 px-3 py-1 rounded-full inline-block">Valid until {subscription?.validity === null ? subscription.leads : subscription.validity} {subscription?.validity === null ? "leads" : "days"}</p>
         </div>
         {/* <div className="text-center mb-6">
           {subscription.originalPrice && (
