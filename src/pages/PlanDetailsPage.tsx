@@ -44,7 +44,7 @@ const PlanDetailsPage: React.FC = () => {
                       )}
                         {Number(subscription.finalPrice) > 0 && (
           <div className="text-sm text-gray-600 ">
-            ₹{subscription.finalPrice} +  ₹{subscription.gst} (GST 18%)
+            ₹{subscription.price} +  ₹{subscription.gst} (GST 18%)
             {/* INCL 18% GST: ₹ {subscription.finalPrice} */}
           </div>
                         )}
