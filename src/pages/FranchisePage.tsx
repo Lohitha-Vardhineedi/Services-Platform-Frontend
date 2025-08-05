@@ -421,7 +421,7 @@ const FranchisePage: React.FC = () => {
                       <Phone className="w-4 h-4 text-white" />
                     </div>
                     <span className="text-sm text-gray-700">
-                      +91 98765 43210
+                      +91 9603558369
                     </span>
                   </div>
                   <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors group">
@@ -429,7 +429,7 @@ const FranchisePage: React.FC = () => {
                       <Mail className="w-4 h-4 text-white" />
                     </div>
                     <span className="text-sm text-gray-700">
-                      franchise@prnvservices.com
+                      prnvservices@gmail.com
                     </span>
                   </div>
                   <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors group">
@@ -437,7 +437,7 @@ const FranchisePage: React.FC = () => {
                       <MapPin className="w-4 h-4 text-white" />
                     </div>
                     <span className="text-sm text-gray-700">
-                      GHMC Area, Hyderabad
+                      PRNV SERVICES, Hyd
                     </span>
                   </div>
                 </div>

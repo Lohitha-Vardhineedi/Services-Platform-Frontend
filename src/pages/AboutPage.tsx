@@ -212,17 +212,17 @@ const AboutUs: React.FC = () => {
               <div className="flex flex-col items-center gap-2">
                 <Phone className="text-blue-600" size={20} />
                 <span className="text-sm font-medium">Phone</span>
-                <span className="text-sm text-gray-600">+91 98765 43210</span>
+                <span className="text-sm text-gray-600">+91 9603558369</span>
               </div>
               <div className="flex flex-col items-center gap-2">
                 <Mail className="text-blue-600" size={20} />
                 <span className="text-sm font-medium">Email</span>
-                <span className="text-sm text-gray-600">info@prnvservices.com</span>
+                <span className="text-sm text-gray-600">prnvservices@gmail.com</span>
               </div>
               <div className="flex flex-col items-center gap-2">
                 <MapPin className="text-blue-600" size={20} />
                 <span className="text-sm font-medium">Service Area</span>
-                <span className="text-sm text-gray-600">GHMC Area, Hyderabad</span>
+                <span className="text-sm text-gray-600">PRNV SERVICES, Flat No. 301, Sai Manor Apartment, H.NO. 7-1-621/10, Near Umesh Chandra Statue, IAS Quarters Lane, SR Nagar, Hyderabad, Telangana, 500038</span>
               </div>
             </div>
           </div>

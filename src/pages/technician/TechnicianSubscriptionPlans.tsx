@@ -159,7 +159,8 @@ const TechnicianSubscriptionPlans = () => {
                   <div className="mt-auto space-y-3">
 
                     <button
-                      onClick={() => navigate('/buyPlan', { state: { plan } })}
+                      // onClick={() => navigate('/buyPlan', { state: { plan } })}
+                      onClick={() => alert("Please contact Prnv Admin (call: 9603558369).")}
                       className={`w-full py-3 px-4 rounded-2xl font-semibold transition duration-300 text-white shadow-md hover:shadow-lg hover:scale-[1.02]
    ${config?.button}`}
                     >
