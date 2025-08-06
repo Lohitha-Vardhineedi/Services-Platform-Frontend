@@ -124,8 +124,8 @@ export const GuestBooking = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-md mx-auto">
-        <div className="bg-white border border-gray-300 rounded-xl shadow-lg p-6">
-          <div className="rounded-xl shadow-xl p-4">
+        <div className="bg-white border border-gray-300 rounded-xl shadow-xl p-6">
+          <div className="rounded-xl p-4">
             <div className="text-lg md:text-xl text-center mb-6 font-semibold">
               Guest <span className="text-fuchsia-600 ms-1">Booking</span>
             </div>

@@ -4,7 +4,7 @@ import { IoCall, IoLocationOutline, IoShareSocial } from 'react-icons/io5';
 import { LuMessageSquareText } from 'react-icons/lu';
 import { technicianGetProfile, updateTechnicianControl } from '../../api/apiMethods';
 import { Link } from 'react-router-dom';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Pencil } from 'lucide-react';
 import { FaThumbsUp } from 'react-icons/fa';
 
 // Define interfaces for type safety
@@ -131,12 +131,13 @@ const TechnicianProfile: React.FC = () => {
             <span className="text-gray-600">My Profile</span>
           </div>
           <button
-            className="absolute top-0 right-0 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-md transition-transform duration-200 hover:scale-105 active:scale-95"
+            className="flex absolute top-0 right-0 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-md transition-transform duration-200 hover:scale-105 active:scale-95"
             onClick={() => {
               setEditProfile(profile);
               setEditModalOpen(true);
             }}
           >
+            <Pencil className='w-4 h-5 me-2'/>
             Edit Profile
           </button>
         </div>

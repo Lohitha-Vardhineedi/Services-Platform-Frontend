@@ -241,7 +241,7 @@ const ProfileEditPage: React.FC = () => {
 
     return (
         <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
+            <div className="bg-white p-6 rounded-lg shadow-md max-w-xl mx-auto">
                 <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Edit Profile</h2>
 
                 <form onSubmit={handleSubmit} className="space-y-4">

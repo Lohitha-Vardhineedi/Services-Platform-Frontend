@@ -86,7 +86,7 @@ const TechnicianDashboard: React.FC<Props> = ({ data }) => {
         <div className="flex items-center justify-between">
           <div className="relative z-10">
             <h1 className="text-3xl font-bold mb-2 group-hover:scale-105 transition-transform duration-300">Welcome back, Technician! 👋</h1>
-            <p className="text-blue-100 text-lg group-hover:text-white transition-colors duration-300">Here's your performance overview for today</p>
+            <p className="text-blue-100 text-lg group-hover:text-white transition-colors duration-300">Here's your performance overview</p>
           </div>
           <div className="text-right relative z-10">
             <p className="text-blue-100 group-hover:text-white transition-colors duration-300">Today's Date</p>

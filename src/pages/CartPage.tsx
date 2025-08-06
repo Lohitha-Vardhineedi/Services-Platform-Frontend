@@ -544,8 +544,8 @@ const CartPage = () => {
 
       <div className="mt-6 border-t pt-4">
         <button
-          className={`w-full mt-4 sm:mt-6 py-2 rounded-xl text-sm sm:text-lg font-semibold transition-all ${isBookingDisabled
-            ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+          className={`w-full mt-4 sm:mt-6 py-3 rounded-xl text-sm sm:text-lg font-semibold transition-all ${isBookingDisabled
+            ? "bg-gray-200 text-gray-500 cursor-not-allowed"
             : "bg-fuchsia-500 text-white hover:bg-fuchsia-600"
             } ${isBooking ? "opacity-70" : ""}`}
           disabled={isBookingDisabled || isBooking}

@@ -172,7 +172,7 @@ const FranchisePage: React.FC = () => {
         </div>
         {/* <Award className="text-white" size={32} /> bg-gradient-to-br from-yellow-50 via-pink-50 to-purple-100 */}
 
-        <div className="grid lg:grid-cols-4 ">
+        <div className="grid lg:grid-cols-4">
           <div className="lg:col-span-3">
             <div className="min-h-screen flex items-center justify-center">
               <div className="w-full max-w-xl mx-auto px-4">
