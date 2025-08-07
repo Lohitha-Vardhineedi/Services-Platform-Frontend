@@ -46,6 +46,7 @@ const ServicePage = () => {
   const [filteredTechnicians, setFilteredTechnicians] = useState<Technician[]>([]);
   const [error, setError] = useState("");
   const categoryDetails = location?.state?.category as Category;
+  console.log(categoryDetails,"categoryDetails")
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [errorContent, setErrorContent] = useState<string | null>(null);
 
@@ -60,7 +61,7 @@ const ServicePage = () => {
         console.log(response, "==> fetched response");
         const data = response?.result || [];
         setTechnicians(Array.isArray(data) ? data : []);
-        setFilteredTechnicians(Array.isArray(data) ? data : []); // Initialize filtered technicians
+        setFilteredTechnicians(Array.isArray(data) ? data : []);
       } catch (error: any) {
         setError(error?.message || "Failed to fetch technicians");
         setErrorContent(error?.message || "Failed to fetch technicians");
@@ -72,7 +73,6 @@ const ServicePage = () => {
     fetchTechByCategoryId();
   }, [categoryId]);
 
-  // Handle filter selection
   const handleFilterChange = (filter: string) => {
     let updatedTechnicians = [...technicians];
     if (filter === "topRated") {
@@ -166,24 +166,13 @@ const ServicePage = () => {
           <div className="text-red-500 text-center">{errorContent}</div>
         ) : categoryDetails?.meta_title ? (
           <div key={categoryDetails._id}>
-            <h1 className="text-2xl font-bold mb-2">{categoryDetails?.meta_title}</h1>
-            <p className="text-base text-gray-700">{categoryDetails?.meta_description}</p>
+            {categoryDetails?.meta_description
+}
+            {/* <h1 className="text-2xl font-bold mb-2">{categoryDetails?.meta_title}</h1>
+            <p className="text-base text-gray-700">{categoryDetails?.meta_description}</p> */}
           </div>
         ) : (
-          <>
-            <h1 className="text-2xl font-bold">{categoryDetails?.category_name} Services</h1>
-            <p className="text-base text-gray-700">
-              We offer complete services in {categoryDetails?.category_name} to ensure a tidy, fresh, and healthy atmosphere for your office or home. Our expert team of cleaners has modern tools and the Best cleaning services to take on the most demanding chores.
-            </p>
-            <h2 className="text-2xl font-semibold">How to Hire Technicians in {categoryDetails?.category_name}</h2>
-            <p className="text-base text-gray-700">
-              We are PRNV Services, We offer an array of Technicians in {categoryDetails?.category_name} to meet commercial and residential needs. Finding professional Technicians in Hyderabad is an easy process using PRNV Services. Here's how to ensure that you're hiring the correct cleaning service: Evaluate Your Cleaning Needs: Before hiring, evaluate what areas require a thorough cleaning.
-            </p>
-            <h2 className="text-2xl font-semibold">Cost of Services in {categoryDetails?.category_name}</h2>
-            <p className="text-base text-gray-700">
-              The cost of services in {categoryDetails?.category_name} is contingent upon a variety of aspects, such as the dimensions of the building and the kind of cleaning needed, as well as the particular requirements of the customer. We offer affordable and transparent prices without sacrificing the quality of our services.
-            </p>
-          </>
+          <div>No Content for this Category</div>
         )}
       </div>
     </div>
