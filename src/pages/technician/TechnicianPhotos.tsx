@@ -1,10 +1,13 @@
 import React, { useRef, useState, useEffect } from "react";
 import { IoMdCloudUpload } from "react-icons/io";
 import { FaChevronDown, FaChevronUp, FaTrash } from "react-icons/fa";
-import { getTechImagesByTechId, createTechImagesControl, deletePhotoBySingle } from "../../api/apiMethods";
+import {
+  getTechImagesByTechId,
+  createTechImagesControl,
+  deletePhotoBySingle,
+} from "../../api/apiMethods";
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
-import axios from "axios";
 
 const TechnicianPhotos = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -55,21 +58,21 @@ const TechnicianPhotos = () => {
     }
   };
 
-   const handleDelete = async (index: number) => {
+  const handleDelete = async (index: number) => {
     const imageUrlToDelete = images[index];
     const technicianId = localStorage.getItem("userId");
 
     if (!technicianId || !imageUrlToDelete) {
-      console.error('Missing technicianId or imageUrlToDelete');
+      console.error("Missing technicianId or imageUrlToDelete");
       return;
     }
     try {
       const payload = {
         technicianId: technicianId,
-        imageUrlToDelete: imageUrlToDelete
+        imageUrlToDelete: imageUrlToDelete,
       };
 
-      console.log('Deleting image with payload:', payload);
+      console.log("Deleting image with payload:", payload);
 
       const response = await deletePhotoBySingle(payload);
 
@@ -79,15 +82,14 @@ const TechnicianPhotos = () => {
 
       if (response.data.success) {
         setImages((prev) => prev.filter((_, i) => i !== index));
-        console.log('Image deleted successfully');
+        console.log("Image deleted successfully");
       } else {
-        console.error('Failed to delete image:', response.data.message);
+        console.error("Failed to delete image:", response.data.message);
       }
     } catch (error) {
-      console.error('Error deleting image:', error);
+      console.error("Error deleting image:", error);
     }
   };
-
 
   return (
     <div className="border border-gray-200 shadow-md rounded-xl p-4 max-w-7xl mx-auto">
@@ -105,7 +107,7 @@ const TechnicianPhotos = () => {
       {/* Upload Button (only for technician) */}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
-        {visibleImages.map((img: string, index: number) => (
+        {/* {visibleImages.map((img: string, index: number) => (
           <div key={index} className="relative group">
             <img
               src={img}
@@ -121,7 +123,30 @@ const TechnicianPhotos = () => {
               </button>
             )}
           </div>
-        ))}
+        ))} */}
+        {visibleImages && visibleImages.length > 0 ? (
+          visibleImages.map((img: string, index: number) => (
+            <div key={index} className="relative group">
+              <img
+                src={img}
+                alt={`Image ${index + 1}`}
+                className="w-full h-36 object-cover rounded-lg"
+              />
+              {isTechnician && (
+                <button
+                  onClick={() => handleDelete(index)}
+                  className="absolute top-2 right-2 bg-red-600 text-white p-1 rounded-full hover:bg-red-700"
+                >
+                  <FaTrash size={14} />
+                </button>
+              )}
+            </div>
+          ))
+        ) : (
+          <div className="text-gray-500 text-center py-4">
+            No images available
+          </div>
+        )}
       </div>
 
       {images.length > 6 && (
@@ -255,13 +280,13 @@ export default TechnicianPhotos;
 //       <h2 className="text-xl md:text-2xl font-light mb-4">Photos</h2>
 //       <div
 //         className="
-//           grid 
-//           grid-cols-1 
-//           xs:grid-cols-2 
-//           sm:grid-cols-2 
-//           md:grid-cols-3 
-//           lg:grid-cols-4 
-//           xl:grid-cols-6 
+//           grid
+//           grid-cols-1
+//           xs:grid-cols-2
+//           sm:grid-cols-2
+//           md:grid-cols-3
+//           lg:grid-cols-4
+//           xl:grid-cols-6
 //           gap-3
 //         "
 //       >
@@ -323,7 +348,6 @@ export default TechnicianPhotos;
 // };
 
 // export default Photos;
-
 
 // import React, { useRef, useState, useEffect } from "react";
 // import { IoMdCloudUpload } from "react-icons/io";
@@ -397,13 +421,13 @@ export default TechnicianPhotos;
 //         </div>
 //       <div
 //         className="
-//           grid 
-//           grid-cols-1 
-//           xs:grid-cols-2 
-//           sm:grid-cols-2 
-//           md:grid-cols-3 
-//           lg:grid-cols-4 
-//           xl:grid-cols-6 
+//           grid
+//           grid-cols-1
+//           xs:grid-cols-2
+//           sm:grid-cols-2
+//           md:grid-cols-3
+//           lg:grid-cols-4
+//           xl:grid-cols-6
 //           gap-3
 //         "
 //       >

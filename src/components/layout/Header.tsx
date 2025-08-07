@@ -65,6 +65,7 @@ function Header() {
 
   const handleLogout = () => {
     setShowUserModal(false);
+    alert('Are Want to Logout')
     localStorage.clear()
     setUser(null);
     navigate('/');
@@ -100,7 +101,7 @@ function Header() {
             </button>
           </div>
 
-          <nav className="hidden md:flex space-x-4 flex-shrink items-center">
+          <nav className="hidden md:flex xl:flex space-x-4 flex-shrink items-center">
             <div className="flex items-center w-16">
               <div id="google_translate_element" className="w-full" />
             </div>
