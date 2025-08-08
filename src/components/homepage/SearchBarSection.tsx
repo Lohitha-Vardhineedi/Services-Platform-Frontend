@@ -113,12 +113,13 @@ function SearchBarSection() {
   };
 
   const handleSearch = () => {
-    if (!selectedCategory.slug || !selectedArea || !selectedSubArea) {
-      setError("Please select a category, area, and subarea.");
+    if (!selectedCategory.slug || !selectedArea) {
+      setError("Please select required fields");
       return;
     }
 
     const citySlug = selectedCity.toLowerCase().replace(/\s+/g, "-");
+    const areaSlug = selectedArea.toLowerCase().replace(/\s+/g, "-");
     const subAreaSlug = selectedSubArea.toLowerCase().replace(/\s+/g, "-");
 
     const searchData = {
@@ -131,7 +132,7 @@ function SearchBarSection() {
 
     localStorage.setItem("selectAddress", JSON.stringify(searchData));
 
-    navigate(`/${selectedCategory.slug}/${citySlug}/${subAreaSlug}-${selectedPincode}`, {
+    navigate(`/${selectedCategory.slug}/${citySlug}/${areaSlug}-${selectedPincode}`, {
       state: {
         categoryId: selectedCategory.id,
         pincode: selectedPincode
