@@ -30,7 +30,7 @@ function SearchBarSection() {
       try {
         const res = await getAllCategories();
         if (res.success && Array.isArray(res.data)) {
-          setCategories(res.data.filter(cat => cat?.status === 1));
+          setCategories(res?.data?.sort((a, b) => a.category_name.toLowerCase().localeCompare(b.category_name.toLowerCase())));
         } else {
           setError("Failed to fetch categories");
         }
