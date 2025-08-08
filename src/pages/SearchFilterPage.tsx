@@ -95,9 +95,9 @@ console.log(formData);
     try {
       const response = await getSearchContentByAddress(formData);
        console.log(response,"==>lohiresponse")
-      if (response?.success && Array.isArray(response?.result?.data)) {
+      if (response?.success === true) {
        
-        setContent(response?.result?.data);
+        setContent(response?.result);
       } else {
         setContent([]);
       }
@@ -108,6 +108,7 @@ console.log(formData);
       setIsDataLoading(false);
     }
   };
+  console.log("setContent", content)
   useEffect(() => {
     fetchSearchContent();
   }, [categoryId, areaName, pincode, city, state]);
@@ -231,22 +232,12 @@ console.log(formData);
             <div className="text-center">Loading Data...</div>
           ) : errorContent ? (
             <div className="text-red-500 text-center">{errorContent}</div>
-          ) : content.length > 0 ? (
-content.map((item) => (
-      <div key={item._id}>
-        {item?.seo_content}
-        {/* <h1 className="text-2xl font-bold mb-2">{item?.meta_title}</h1>
-        <p className="text-base text-gray-700">{item?.meta_description}</p> */}
-      </div>
-    
-    ))
-// content.map((item) => (
-//       <div key={item._id}>
-//         <h1 className="text-2xl font-bold mb-2">{item?.meta_title}</h1>
-//         <p className="text-base text-gray-700">{item?.meta_description}</p>
-//       </div>
-    
-//     ))
+          ) : content?.seo_content?.length > 0 ? (
+          <div
+  className="prose prose-lg max-w-none"
+  dangerouslySetInnerHTML={{ __html: content.seo_content }}
+/>
+
           )
           : (
             <div> No content for this Address</div>
