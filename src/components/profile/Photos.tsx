@@ -8,7 +8,6 @@ interface PhotosProps {
 
 const Photos: React.FC<PhotosProps> = ({ images }) => {
   const [showAll, setShowAll] = useState(false);
-
   const visibleImages = showAll ? images : images?.slice(0, 6);
 
   return (
@@ -26,15 +25,21 @@ const Photos: React.FC<PhotosProps> = ({ images }) => {
           gap-3
         "
       >
-        {visibleImages?.map((img: string, index: number) => (
-          <div key={index} className="relative group">
-            <img
-              src={img}
-              alt={`Image ${index + 1}`}
-              className="w-full h-36 object-cover rounded-lg"
-            />
+        {visibleImages && visibleImages.length > 0 ? (
+          visibleImages.map((img: string, index: number) => (
+            <div key={index} className="relative group">
+              <img
+                src={img}
+                alt={`Image ${index + 1}`}
+                className="w-full h-36 object-cover rounded-lg"
+              />
+            </div>
+          ))
+        ) : (
+          <div className="text-gray-500">
+            No images available
           </div>
-        ))}
+        )}
       </div>
       {images?.length > 6 && (
         <div
@@ -52,7 +57,6 @@ const Photos: React.FC<PhotosProps> = ({ images }) => {
           )}
         </div>
       )}
-   
     </div>
   );
 };
@@ -149,13 +153,13 @@ export default Photos;
 //       <h2 className="text-xl md:text-2xl font-light mb-4">Photos</h2>
 //       <div
 //         className="
-//           grid 
-//           grid-cols-1 
-//           xs:grid-cols-2 
-//           sm:grid-cols-2 
-//           md:grid-cols-3 
-//           lg:grid-cols-4 
-//           xl:grid-cols-6 
+//           grid
+//           grid-cols-1
+//           xs:grid-cols-2
+//           sm:grid-cols-2
+//           md:grid-cols-3
+//           lg:grid-cols-4
+//           xl:grid-cols-6
 //           gap-3
 //         "
 //       >

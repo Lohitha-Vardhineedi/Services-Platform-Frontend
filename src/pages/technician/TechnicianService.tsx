@@ -2,7 +2,12 @@ import { ChevronRight, Pencil, PencilIcon, Plus, Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa6";
 import { MdOutlineStar } from "react-icons/md";
-import { getServicesByTechId, updateServiceControl, createServiceControl, deleteServiceById } from '../../api/apiMethods';
+import {
+  getServicesByTechId,
+  updateServiceControl,
+  createServiceControl,
+  deleteServiceById,
+} from "../../api/apiMethods";
 import { Link } from "react-router-dom";
 
 const TechnicianServices = () => {
@@ -11,7 +16,11 @@ const TechnicianServices = () => {
   const [editService, setEditService] = useState<any>(null);
   const [services, setServices] = useState<any[]>([]);
   const [addModalOpen, setAddModalOpen] = useState(false);
-  const [newService, setNewService] = useState<{ serv: string; price: string; image: string | File }>({
+  const [newService, setNewService] = useState<{
+    serv: string;
+    price: string;
+    image: string | File;
+  }>({
     serv: "",
     price: "",
     image: "",
@@ -27,18 +36,20 @@ const TechnicianServices = () => {
       getServicesByTechId(id)
         .then((data: any) => {
           if (data?.result && Array.isArray(data.result)) {
-            setServices(data.result.map((service: any) => ({
-              id: service._id,
-              serv: service.serviceName,
-              price: service.servicePrice,
-              image: service.serviceImg,
-              // ratings: "0.0",
-              // reviews: "0"
-            })));
+            setServices(
+              data.result.map((service: any) => ({
+                id: service._id,
+                serv: service.serviceName,
+                price: service.servicePrice,
+                image: service.serviceImg,
+                // ratings: "0.0",
+                // reviews: "0"
+              }))
+            );
           }
         })
         .catch((err: any) => {
-          console.error('Failed to fetch technician services:', err);
+          console.error("Failed to fetch technician services:", err);
         });
     }
   }, []);
@@ -81,14 +92,19 @@ const TechnicianServices = () => {
     formData.append("serviceName", editService.serv);
     formData.append("serviceId", editService.id);
     formData.append("servicePrice", editService.price);
-    if (editService.image && typeof editService.image !== 'string') {
+    if (editService.image && typeof editService.image !== "string") {
       formData.append("serviceImage", editService.image);
     }
     await updateServiceControl(formData);
     setServices((prev: any[]) =>
       prev.map((s: any) =>
         s.id === editService.id
-          ? { ...s, serv: editService.serv, price: editService.price, image: editService.image }
+          ? {
+              ...s,
+              serv: editService.serv,
+              price: editService.price,
+              image: editService.image,
+            }
           : s
       )
     );
@@ -102,7 +118,9 @@ const TechnicianServices = () => {
     }));
   };
 
-  const handleAddServiceImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAddServiceImageChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = e.target.files?.[0];
     if (file) {
       setNewService((prev) => ({
@@ -151,45 +169,62 @@ const TechnicianServices = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {services.map((item) => (
-          <div key={item.id} className="flex items-center justify-between border border-gray-300 rounded-xl p-4">
-            <div>
-               <h3 className="text-md md:text-lg">{item.serv}</h3>
-              <p className="text-sm text-gray-700">
-                  ₹ <span className="text-blue-600">{item.price}</span> per Unit
+        {/* <div className="flex items-center text-sm mt-1">
+          <MdOutlineStar size={18} color="#ffc71b" />
+          <span className="ms-1 text-gray-700">
+            4.5 <span className="text-gray-400">(25 Reviews)</span>
+          </span>
+        </div> */}
+        {services.length > 0 ? (
+          services.map((item) => (
+            <div
+              key={item.id}
+              className="flex items-center justify-between border border-gray-300 rounded-xl p-4"
+            >
+              <div>
+                <h3 className="text-md md:text-lg">{item.serv}</h3>
+                <p className="text-sm text-gray-700">
+                  ₹ <span className="text-blue-600">{item.price || "N/A"}</span>{" "}
+                  per Unit
                 </p>
-              {/* <div className="flex items-center text-sm">
-                <MdOutlineStar size={18} color="#ffc71b" />
-                <span className="ml-1">{item.ratings} ({item.reviews} Reviews)</span>
-              </div> */}
-
-              <div className="flex items-center text-sm mt-1">
-                                <MdOutlineStar size={18} color="#ffc71b" />
-                                <span className="ms-1 text-gray-700">
-                                  4.5 <span className="text-gray-400">(25 Reviews)</span>
-                                </span>
-                              </div>
-            </div>
-            <div className="flex flex-col items-center gap-2">
-              <img src={item.image} alt={item.serv} className="w-24 h-20 object-cover rounded border" />
-              <div className="flex gap-2">
-                <button
-                  className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
-                  onClick={() => handleEdit(item.id)}
-                >
-                  <PencilIcon size={16} />
-                </button>
-                <button
-                  className="text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
-                  onClick={() => handleDelete(item.id)}
-                >
-                 
-                  <Trash2 size={18}/>
-                </button>
+                <div className="flex items-center text-sm mt-1">
+                  <MdOutlineStar size={18} color="#ffc71b" />
+                  <span className="ms-1 text-gray-700">
+                    {item.rating || 3}{" "}
+                    <span className="text-gray-400">
+                      ({item.reviews || 5} Reviews)
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <img
+                  src={item.image || "fallback-image.jpg"}
+                  alt={item.serv || "Service image"}
+                  className="w-24 h-20 object-cover rounded border"
+                />
+                <div className="flex gap-2">
+                  <button
+                    className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+                    onClick={() => handleEdit(item.id)}
+                    aria-label={`Edit ${item.serv}`}
+                  >
+                    <PencilIcon size={16} />
+                  </button>
+                  <button
+                    className="text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
+                    onClick={() => handleDelete(item.id)}
+                    aria-label={`Delete ${item.serv}`}
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p className="text-gray-700 text-center">No services uploaded yet.</p>
+        )}
       </div>
 
       {/* Modals */}
@@ -226,11 +261,25 @@ const TechnicianServices = () => {
               className="border rounded w-full px-2 py-1 mb-2"
             />
             {editService.image && (
-              <img src={editService.image} alt="Preview" className="w-32 h-24 object-cover rounded mb-2" />
+              <img
+                src={editService.image}
+                alt="Preview"
+                className="w-32 h-24 object-cover rounded mb-2"
+              />
             )}
             <div className="flex justify-end gap-2">
-              <button onClick={handleEditSave} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Save</button>
-              <button onClick={() => setEditModalOpen(false)} className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">Cancel</button>
+              <button
+                onClick={handleEditSave}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+              >
+                Save
+              </button>
+              <button
+                onClick={() => setEditModalOpen(false)}
+                className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </div>
@@ -268,12 +317,26 @@ const TechnicianServices = () => {
               onChange={handleAddServiceImageChange}
               className="border rounded w-full px-2 py-1 mb-2"
             />
-            {typeof newService.image === 'string' && newService.image && (
-              <img src={newService.image} alt="Preview" className="w-32 h-24 object-cover rounded mb-2" />
+            {typeof newService.image === "string" && newService.image && (
+              <img
+                src={newService.image}
+                alt="Preview"
+                className="w-32 h-24 object-cover rounded mb-2"
+              />
             )}
             <div className="flex justify-end gap-2">
-              <button onClick={handleAddService} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">Add Service</button>
-              <button onClick={() => setAddModalOpen(false)} className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">Cancel</button>
+              <button
+                onClick={handleAddService}
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+              >
+                Add Service
+              </button>
+              <button
+                onClick={() => setAddModalOpen(false)}
+                className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </div>
@@ -489,7 +552,7 @@ export default TechnicianServices;
 //                   className="rounded-t-lg object-cover w-20 sm:w-28 md:w-36 lg:w-40 xl:w-45 h-30"
 //                 />
 //                 <div
-//                   className={`rounded-b-lg px-2 py-1 flex cursor-pointer items-center justify-center 
+//                   className={`rounded-b-lg px-2 py-1 flex cursor-pointer items-center justify-center
 //                     ${isInCart
 //                       ? "text-red-600 border border-red-600"
 //                       : " bg-red-600 border-b text-white hover:bg-red-700"

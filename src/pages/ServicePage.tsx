@@ -140,10 +140,10 @@ const ServicePage = () => {
                     </div>
                   )}
                   <div className="flex gap-3">
-                    <div className="flex items-center bg-fuchsia-500 rounded text-white px-2 py-1 hover:bg-fuchsia-600">
+                    {/* <div className="flex items-center bg-fuchsia-500 rounded text-white px-2 py-1 hover:bg-fuchsia-600">
                       <IoCall size={20} className="me-2" />
                       <span className="text-sm">{profile.technician.phoneNumber}</span>
-                    </div>
+                    </div> */}
                     <div className="flex items-center bg-green-600 rounded text-white px-2 py-1 hover:bg-green-500">
                       <LuMessageSquareText size={20} className="me-2" />
                       <span className="text-sm">Message</span>

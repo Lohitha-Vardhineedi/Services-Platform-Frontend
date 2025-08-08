@@ -217,7 +217,7 @@ const AboutUs: React.FC = () => {
               <div className="flex flex-col items-center gap-2">
                 <Mail className="text-blue-600" size={20} />
                 <span className="text-sm font-medium">Email</span>
-                <span className="text-sm text-gray-600">prnvservices@gmail.com</span>
+                <span className="text-sm text-gray-600">info@prnvservices.com</span>
               </div>
               <div className="flex flex-col items-center gap-2">
                 <MapPin className="text-blue-600" size={20} />

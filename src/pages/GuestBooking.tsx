@@ -182,7 +182,8 @@ export const GuestBooking = () => {
                       Select a category
                     </option>
                     {categories
-                      .filter((category) => category?.status === 1)
+                      // .filter((category) => category?.status === 1)
+                      .sort((a, b) => a.category_name.toLowerCase().localeCompare(b.category_name.toLowerCase()))
                       .map((item) => (
                         <option key={item._id} value={item._id}>
                           {item.category_name}
