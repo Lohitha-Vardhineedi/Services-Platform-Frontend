@@ -164,10 +164,9 @@ const ServicePage = () => {
           <div className="text-center">Loading Data...</div>
         ) : errorContent ? (
           <div className="text-red-500 text-center">{errorContent}</div>
-        ) : categoryDetails?.meta_title ? (
-          <div key={categoryDetails._id}>
-            {categoryDetails?.meta_description
-}
+        ) : categoryDetails?.meta_description.length > 0 ? (
+          <div >
+            {categoryDetails?.meta_description}
             {/* <h1 className="text-2xl font-bold mb-2">{categoryDetails?.meta_title}</h1>
             <p className="text-base text-gray-700">{categoryDetails?.meta_description}</p> */}
           </div>
