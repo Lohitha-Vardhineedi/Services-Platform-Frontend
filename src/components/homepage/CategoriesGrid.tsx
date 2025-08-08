@@ -126,6 +126,12 @@ function CategoriesGrid({ lang }: CategoriesGridProps) {
                     animationDelay: `${index * 60}ms`,
                     animationFillMode: 'both',
                   }}
+                  onClick={() => {
+                    navigate(`/technicians/${category._id}`, {
+                      state: { category },
+                    });
+                    console.log('Clicked category:', category);
+                  }}
                 >
                   <div className={`w-20 h-20 ${bgColor} rounded-full flex items-center justify-center mb-4 overflow-hidden transition-transform duration-300 hover:scale-110`}>
                     {/* <div className="w-12 h-12 flex items-center justify-center mb-2 overflow-hidden"> */}
