@@ -334,7 +334,9 @@ const ProfileEditPage: React.FC = () => {
                                         className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200"
                                     >
                                         <option value="">Select Pincode</option>
-                                        {pincodeData.map((p) => (
+                                        {pincodeData
+                                        .sort((a, b) => Number(a.code) - Number(b.code))
+                                        .map((p) => (
                                             <option key={p._id} value={p.code}>{p.code}</option>
                                         ))}
                                     </select>

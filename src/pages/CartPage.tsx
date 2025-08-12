@@ -312,12 +312,22 @@ const CartPage = () => {
     }
   };
 
-  const getMaxDate = () => {
+  const getMaxDate = (unit = 'week') => {
     const today = new Date();
-    const nextMonth = new Date();
-    nextMonth.setMonth(today.getMonth() + 1);
-    return nextMonth.toISOString().split("T")[0];
-  };
+    const maxDate = new Date();
+    // maxDate.setDate(today.getDate() + 7); // 1 week from today
+        maxDate.setDate(today.getDate() + 10); // 10 days from today
+    // if (unit === 'week') {
+    // } else if (unit === 'days') {
+    // }
+    return maxDate.toISOString().split("T")[0];
+};
+  // const getMaxDate = () => {
+  //   const today = new Date();
+  //   const nextMonth = new Date();
+  //   nextMonth.setMonth(today.getMonth() + 1);
+  //   return nextMonth.toISOString().split("T")[0];
+  // };
 
   const calculateItemTotal = (item: CartItem) => {
     const price = item.serviceId.servicePrice || item.serviceId.price || 0;
