@@ -1,18 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { Wrench, CheckCircle, DollarSign, Star, Clock, TrendingUp, Users, MapPin } from 'lucide-react';
-import MonthlyEarningsChart from '../../components/techDashboard/MonthlyEarningChart';
-import RecentHistory from '../../components/techDashboard/RecentHistory';
-import StatsCard from '../../components/techDashboard/StatusCards';
-import { getServicesByTechId } from '../../api/apiMethods';
-import AvgRatingChart from '../../components/techDashboard/AvgRating';
+import React, { useEffect, useState } from "react";
+import {
+  Wrench,
+  CheckCircle,
+  DollarSign,
+  Star,
+  Clock,
+  TrendingUp,
+  Users,
+  MapPin,
+} from "lucide-react";
+import MonthlyEarningsChart from "../../components/techDashboard/MonthlyEarningChart";
+import RecentHistory from "../../components/techDashboard/RecentHistory";
+import StatsCard from "../../components/techDashboard/StatusCards";
+import { getServicesByTechId } from "../../api/apiMethods";
+import AvgRatingChart from "../../components/techDashboard/AvgRating";
 
 type Props = {
   data: TechnicianProfileData | null;
 };
 
 const TechnicianDashboard: React.FC<Props> = ({ data }) => {
-    const [role, setRole] = useState<string | null>(null);
-  const totalServicePrice = data?.technicianProfile?.services?.reduce((sum, s) => sum + (s.servicePrice || 0), 0) ?? 300;
+  const [role, setRole] = useState<string | null>(null);
+  const totalServicePrice =
+    data?.technicianProfile?.services?.reduce(
+      (sum, s) => sum + (s.servicePrice || 0),
+      0
+    ) ?? 300;
   const [services, setServices] = useState<any[]>([]); // Adjust type as needed
   const [serviceCount, setServiceCount] = useState<number>(0); // State for count
 
@@ -37,59 +50,65 @@ const TechnicianDashboard: React.FC<Props> = ({ data }) => {
           }
         })
         .catch((err: any) => {
-          console.error('Failed to fetch technician services:', err);
+          console.error("Failed to fetch technician services:", err);
         });
     }
   }, []);
 
-  const currentDate = new Date().toLocaleDateString('en-IN', { 
-    weekday: 'long', 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
+  const currentDate = new Date().toLocaleDateString("en-IN", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 
   const stats = [
-    { 
-      icon: <Wrench className="w-6 h-6" />, 
-      label: 'Total Services', 
+    {
+      icon: <Wrench className="w-6 h-6" />,
+      label: "Total Services",
       value: serviceCount,
-      color: 'bg-blue-100'
+      color: "bg-blue-100",
     },
-    { 
-      icon: <CheckCircle className="w-6 h-6" />, 
-      label: 'Completed services', 
+    {
+      icon: <CheckCircle className="w-6 h-6" />,
+      label: "Completed services",
       value: 2,
-      color: 'bg-green-100'
+      color: "bg-green-100",
     },
-    { 
-      icon: <DollarSign className="w-6 h-6 " />, 
-      label: 'Monthly Earnings', 
-      value: `₹${totalServicePrice.toLocaleString()}`,
-      color: 'bg-yellow-100'
+    {
+      icon: <DollarSign className="w-6 h-6 " />,
+      label: "Plan Earnings",
+      value: `₹ 300`,
+      color: "bg-yellow-100",
     },
-    { 
-      icon: <Star className="w-6 h-6 text-yellow-400 fill-current" />, 
-      label: 'Average Rating', 
-      value: '4.8 ',
-      color: 'bg-purple-100'
-    }
+    {
+      icon: <Star className="w-6 h-6 text-yellow-400 fill-current" />,
+      label: "Average Rating",
+      value: "4.8 ",
+      color: "bg-purple-100",
+    },
   ];
-// ⭐
+  // ⭐
   return (
     <div className="space-y-8 px-6  bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen max-w-7xl mx-auto ">
       <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-2xl p-8 text-white shadow-xl hover:shadow-2xl transition-all duration-500 relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 transform rotate-45 group-hover:rotate-90 transition-transform duration-1000"></div>
         <div className="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-5 animate-pulse group-hover:animate-bounce"></div>
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-10 transform -skew-x-12 translate-x-full group-hover:translate-x-0 transition-all duration-1000"></div>
-        
+
         <div className="flex items-center justify-between">
           <div className="relative z-10">
-            <h1 className="text-3xl font-bold mb-2 group-hover:scale-105 transition-transform duration-300">Welcome back, Technician! 👋</h1>
-            <p className="text-blue-100 text-lg group-hover:text-white transition-colors duration-300">Here's your performance overview</p>
+            <h1 className="text-3xl font-bold mb-2 group-hover:scale-105 transition-transform duration-300">
+              Welcome back, Technician! 👋
+            </h1>
+            <p className="text-blue-100 text-lg group-hover:text-white transition-colors duration-300">
+              Here's your performance overview
+            </p>
           </div>
           <div className="text-right relative z-10">
-            <p className="text-blue-100 group-hover:text-white transition-colors duration-300">Today's Date</p>
+            <p className="text-blue-100 group-hover:text-white transition-colors duration-300">
+              Today's Date
+            </p>
             <div className="text-xl font-semibold bg-white bg-opacity-20 px-4 py-2 backdrop-blur-sm border border-white border-opacity-30 group-hover:bg-opacity-30 transition-all duration-300">
               {currentDate}
             </div>
@@ -104,21 +123,19 @@ const TechnicianDashboard: React.FC<Props> = ({ data }) => {
             icon={item.icon}
             label={item.label}
             value={item.value}
-            trend={item.trend}
+            // trend={item.trend}
             color={item.color}
           />
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            
-        <RecentHistory/>
-        <AvgRatingChart/>
+        <RecentHistory />
+        <AvgRatingChart />
       </div>
-       <div className="mb-8">
-          <MonthlyEarningsChart/>
-        </div>
-     
+      <div className="mb-8">
+        <MonthlyEarningsChart />
+      </div>
     </div>
   );
 };
@@ -227,4 +244,3 @@ export default TechnicianDashboard;
 // };
 
 // export default TechnicianDashboard;
-
