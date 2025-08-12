@@ -132,7 +132,7 @@ const ProfileEdit: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-gray-700">Area/Street Name</label>
+            <label className="block text-gray-700">Area Name</label>
             <input
               type="text"
               name="area"

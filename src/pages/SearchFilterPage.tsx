@@ -8,6 +8,8 @@ import { getAllTechByAddress, getSearchContentByAddress } from "../api/apiMethod
 import AdvertisementBanner from "../components/services/AdvertisementBanner";
 import ContactForm from "../components/services/ContactForms";
 import { ServiceFilters } from "../components/services/ServiceFilters";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 interface Technician {
   _id: string;
@@ -233,10 +235,17 @@ console.log(formData);
           ) : errorContent ? (
             <div className="text-red-500 text-center">{errorContent}</div>
           ) : content?.seo_content?.length > 0 ? (
-          <div
-  className="prose prose-lg max-w-none"
-  dangerouslySetInnerHTML={{ __html: content.seo_content }}
-/>
+//           <div
+//   className="prose prose-lg max-w-none"
+//   dangerouslySetInnerHTML={{ __html: content.seo_content }}
+// />
+
+
+// Then in your JSX:
+<div className="ql-snow">
+  <div className="ql-editor" dangerouslySetInnerHTML={{ __html: content.seo_content }} />
+</div>
+
 
           )
           : (

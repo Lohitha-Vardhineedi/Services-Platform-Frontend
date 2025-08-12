@@ -299,7 +299,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
             { id: "password", label: "Password", type: "password" },
             { id: "buildingName", label: "House/Building Name", type: "text" },
             { id: "pincode", label: "Pincode", type: "text" },
-            { id: "areaName", label: "Area/Street Name", type: "text" },
+            { id: "areaName", label: "Area Name", type: "text" },
             {
               id: "subArea",
               label: "Sub Area",
