@@ -19,13 +19,17 @@ const HomePage = () => {
                 {/* <WeddingBeautyRow />
                 <RepairDailyRow />
                 <BillsTravelRow /> */}
+                <div className="relative z-[1]">
                 <TrendingSection />
                 <PopularSearchesSection />
+                </div>
                 {/* <MoviesSection /> */}
                 {/* <CitiesSection /> */}
                 {/* <RainyDaySection /> */}
                 <CustomerReviews />
+                <div className="relative z-[1]">
                 <ServiceCardsRow />
+                </div>
             </main>
         </>
     )

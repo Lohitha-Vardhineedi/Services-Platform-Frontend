@@ -315,8 +315,8 @@ const CartPage = () => {
   const getMaxDate = (unit = 'week') => {
     const today = new Date();
     const maxDate = new Date();
-    // maxDate.setDate(today.getDate() + 7); // 1 week from today
-        maxDate.setDate(today.getDate() + 10); // 10 days from today
+    maxDate.setDate(today.getDate() + 7); // 1 week from today
+        // maxDate.setDate(today.getDate() + 10); // 10 days from today
     // if (unit === 'week') {
     // } else if (unit === 'days') {
     // }

@@ -34,7 +34,7 @@ interface FormData {
   password: string;
   buildingName: string;
   areaName: string;
-  subArea: string;
+  subAreaName: string;
   city: string;
   state: string;
   pincode: string;
@@ -63,7 +63,7 @@ const initialFormState: FormData = {
   password: "",
   buildingName: "",
   areaName: "",
-  subArea: "",
+  subAreaName: "",
   city: "",
   state: "",
   pincode: "",
@@ -125,7 +125,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
         setAreaOptions([]);
       }
       setSubAreaOptions([]);
-      setFormData((prev) => ({ ...prev, areaName: "", subArea: "" }));
+      setFormData((prev) => ({ ...prev, areaName: "", subAreaName: "" }));
     }
   }, [selectedPincode, pincodeData]);
 
@@ -139,7 +139,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
       } else {
         setSubAreaOptions([]);
       }
-      setFormData((prev) => ({ ...prev, subArea: "" }));
+      setFormData((prev) => ({ ...prev, subAreaName: "" }));
     }
   }, [formData.areaName, areaOptions]);
 
@@ -195,7 +195,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
           password: formData.password,
           buildingName: formData.buildingName,
           areaName: formData.areaName,
-          subArea: formData.subArea || "-",
+          subAreaName: formData.subAreaName || "-",
           city: formData.city,
           state: formData.state,
           pincode: formData.pincode,
@@ -301,7 +301,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
             { id: "pincode", label: "Pincode", type: "text" },
             { id: "areaName", label: "Area Name", type: "text" },
             {
-              id: "subArea",
+              id: "subAreaName",
               label: "Sub Area",
               type: "text",
               required: false,
@@ -433,16 +433,16 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
                     </option>
                   ))}
                 </select>
-              ) : id === "subArea" ? (
+              ) : id === "subAreaName" ? (
                 <select
                   id={id}
                   name={id}
-                  value={formData.subArea}
+                  value={formData.subAreaName}
                   onChange={handleChange}
                   required={required}
                   className="mt-1 w-full border border-gray-300 rounded-md p-2"
                 >
-                  <option value="">Select Sub Area (Optional)</option>
+                  <option value="">Select Sub Area</option>
                   {subAreaOptions
                     .sort((a, b) =>
                       a.name.toLowerCase().localeCompare(b.name.toLowerCase())
