@@ -71,7 +71,7 @@ const CustomerReviewCarousel: React.FC = () => {
   const reviewsToShow: Review[] = reviews.slice(start, start + reviewsPerPage);
 
   return (
-    <div className="relative w-full max-w-7xl mx-auto px-4 py-12">
+    <div className="relative w-full max-w-7xl mx-auto px-4 py-8">
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
           <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
@@ -129,7 +129,7 @@ const CustomerReviewCarousel: React.FC = () => {
                     />
                   ))}
                 </div>
-                <p className="text-gray-600 text-sm text-center italic line-clamp-3 relative z-10">
+                <p className="text-gray-600 text-md text-center  line-clamp-3 relative z-10">
                   <span className="text-gray-300 select-none">“</span> {item.comment}{' '}
                   <span className="text-gray-300 select-none">”</span>
                 </p>
@@ -140,7 +140,7 @@ const CustomerReviewCarousel: React.FC = () => {
             {Array.from({ length: pageCount }).map((_, idx) => (
               <button
                 key={idx}
-                className={`w-4 h-4 rounded-full transition-all duration-300 ${
+                className={`w-3 h-3 rounded-full transition-all duration-300 ${
                   idx === page ? 'bg-blue-600 scale-125' : 'bg-gray-300 hover:bg-blue-400'
                 }`}
                 onClick={() => setPage(idx)}
@@ -158,8 +158,8 @@ const CustomerReviews: React.FC = () => {
   return (
     <section className="py-16 bg-gradient-to-b from-gray-50 to-gray-100">
       <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-12">
-          Voices of Our Customers
+        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-6">
+        What Our Customers Say
         </h2>
         <CustomerReviewCarousel />
       </div>
