@@ -361,7 +361,7 @@ const FranchisePage: React.FC = () => {
                 </h4>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors group">
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center group-hover:animate-spin">
+                    <div className="w-8 h-8 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center group-hover:animate-spin">
                       <Phone className="w-4 h-4 text-white" />
                     </div>
                     <span className="text-sm text-gray-700">
@@ -369,7 +369,7 @@ const FranchisePage: React.FC = () => {
                     </span>
                   </div>
                   <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors group">
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center group-hover:animate-pulse">
+                    <div className="w-8 h-8 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center group-hover:animate-pulse">
                       <Mail className="w-4 h-4 text-white" />
                     </div>
                     <span className="text-sm text-gray-700">
@@ -377,7 +377,7 @@ const FranchisePage: React.FC = () => {
                     </span>
                   </div>
                   <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors group">
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center group-hover:animate-bounce">
+                    <div className="w-8 h-8 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center group-hover:animate-bounce">
                       <MapPin className="w-4 h-4 text-white" />
                     </div>
                     <span className="text-sm text-gray-700">
