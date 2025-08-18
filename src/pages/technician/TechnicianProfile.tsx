@@ -17,7 +17,7 @@ interface Profile {
   category: string;
   buildingName: string;
   areaName: string;
-  subArea: string;
+  subAreaName: string;
   city: string;
   state: string;
   pincode: string;
@@ -49,7 +49,7 @@ const TechnicianProfile: React.FC = () => {
     category: "",
     buildingName: "",
     areaName: "",
-    subArea: "",
+    subAreaName: "",
     city: "",
     state: "",
     pincode: "",
@@ -81,7 +81,7 @@ const TechnicianProfile: React.FC = () => {
               category: data.result.category || "",
               buildingName: data.result.buildingName || "",
               areaName: data.result.areaName || "",
-              subArea: data.result.subArea || "",
+              subAreaName: data.result.subAreaName || "",
               city: data.result.city || "",
               state: data.result.state || "",
               pincode: data.result.pincode || "",
@@ -128,7 +128,7 @@ const TechnicianProfile: React.FC = () => {
           city: found.city || "",
           state: found.state || "",
           areaName: "",
-          subArea: "",
+          subAreaName: "",
         }));
         setSubAreaOptions([]);
       } else {
@@ -148,14 +148,14 @@ const TechnicianProfile: React.FC = () => {
       );
       if (selectedArea && selectedArea.subAreas) {
         setSubAreaOptions(selectedArea.subAreas);
-        setEditProfile((prev) => ({ ...prev, subArea: "" }));
+        setEditProfile((prev) => ({ ...prev, subAreaName: "" }));
       } else {
         setSubAreaOptions([]);
-        setEditProfile((prev) => ({ ...prev, subArea: "" }));
+        setEditProfile((prev) => ({ ...prev, subAreaName: "" }));
       }
     } else {
       setSubAreaOptions([]);
-      setEditProfile((prev) => ({ ...prev, subArea: "" }));
+      setEditProfile((prev) => ({ ...prev, subAreaName: "" }));
     }
   }, [editProfile.areaName, areaOptions]);
 
@@ -174,7 +174,7 @@ const TechnicianProfile: React.FC = () => {
           city: found.city || "",
           state: found.state || "",
           areaName: "",
-          subArea: "",
+          subAreaName: "",
         }));
         setAreaOptions(found.areas || []);
         setSubAreaOptions([]);
@@ -182,7 +182,7 @@ const TechnicianProfile: React.FC = () => {
     } else if (name === "areaName") {
       const selectedArea = areaOptions.find((a) => a.name === value);
       setSubAreaOptions(selectedArea?.subAreas || []);
-      setEditProfile((prev) => ({ ...prev, subArea: "" }));
+      setEditProfile((prev) => ({ ...prev, subAreaName: "" }));
     }
   };
 
@@ -206,7 +206,7 @@ const TechnicianProfile: React.FC = () => {
       formData.append("category", editProfile.category);
       formData.append("buildingName", editProfile.buildingName);
       formData.append("areaName", editProfile.areaName);
-      formData.append("subArea", editProfile.subArea);
+      formData.append("subAreaName", editProfile.subAreaName);
       formData.append("city", editProfile.city);
       formData.append("state", editProfile.state);
       formData.append("pincode", editProfile.pincode);
@@ -228,7 +228,7 @@ const TechnicianProfile: React.FC = () => {
 
   const location = [
     profile.buildingName,
-    profile.subArea,
+    profile.subAreaName,
     profile.areaName,
     profile.city,
     profile.state,
@@ -427,7 +427,7 @@ const TechnicianProfile: React.FC = () => {
 
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Service
+                          Category
                         </label>
                         <input
                           type="text"
@@ -513,7 +513,7 @@ const TechnicianProfile: React.FC = () => {
                         </label>
                         <select
                           name="subArea"
-                          value={editProfile.subArea}
+                          value={editProfile.subAreaArea}
                           onChange={handleEditChange}
                           className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200"
                         >
