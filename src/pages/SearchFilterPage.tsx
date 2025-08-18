@@ -240,8 +240,6 @@ console.log(formData);
 //   dangerouslySetInnerHTML={{ __html: content.seo_content }}
 // />
 
-
-// Then in your JSX:
 <div className="ql-snow">
   <div className="ql-editor" dangerouslySetInnerHTML={{ __html: content.seo_content }} />
 </div>

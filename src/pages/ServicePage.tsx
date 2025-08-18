@@ -46,7 +46,7 @@ const ServicePage = () => {
   const [filteredTechnicians, setFilteredTechnicians] = useState<Technician[]>([]);
   const [error, setError] = useState("");
   const categoryDetails = location?.state?.category as Category;
-  console.log(categoryDetails,"categoryDetails")
+  console.log(categoryDetails, "categoryDetails")
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [errorContent, setErrorContent] = useState<string | null>(null);
 
@@ -164,14 +164,13 @@ const ServicePage = () => {
           <div className="text-center">Loading Data...</div>
         ) : errorContent ? (
           <div className="text-red-500 text-center">{errorContent}</div>
-        ) : categoryDetails?.meta_description.length > 0 ? (
-          <div >
-            {categoryDetails?.meta_description}
-            {/* <h1 className="text-2xl font-bold mb-2">{categoryDetails?.meta_title}</h1>
-            <p className="text-base text-gray-700">{categoryDetails?.meta_description}</p> */}
+        ) : categoryDetails?.seo_content.length > 0 ? (
+          <div className="ql-snow">
+            <div className="ql-editor" dangerouslySetInnerHTML={{ __html: categoryDetails?.seo_content }} />
           </div>
+
         ) : (
-          <div>No Content for this Category</div>
+        <div>No Content for this Category</div>
         )}
       </div>
     </div>
