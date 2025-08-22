@@ -141,6 +141,9 @@ const TechnicianSubscriptionPlans = () => {
                     <div className="mt-3 text-sm font-medium text-blue-700 bg-blue-100 px-3 py-1 rounded-full inline-block">
                       Valid until {plan?.validity === null ? (plan.leads) : (plan.validity)} {plan?.validity === null ? "leads" : "days"}
                     </div>
+                    <div className=" ms-2 mt-3 text-sm font-medium text-green-700 bg-green-100 px-3 py-1 rounded-full inline-block">
+                      {plan?.endUpPrice && <div> Earn upto ₹ {plan?.endUpPrice}</div>}
+                    </div>
                   </div>
 
                   <ul className="space-y-2 mb-6">
