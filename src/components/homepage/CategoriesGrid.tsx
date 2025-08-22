@@ -138,9 +138,7 @@ const CategoriesGrid: React.FC<CategoriesGridProps> = ({ lang }) => {
                   }}
                 >
                   <div
-                    className={`w-20 h-20 ${
-                      bgColor[index % bgColor.length]
-                    } rounded-full flex items-center justify-center mb-4 overflow-hidden transition-transform duration-300 hover:scale-110`}
+                    className={`w-20 h-20 ${bgColor[index % bgColor.length]} rounded-full  flex items-center justify-center mb-4 overflow-hidden transition-transform duration-300 hover:scale-110`}
                   >
                     <img
                       src={category.category_image}
