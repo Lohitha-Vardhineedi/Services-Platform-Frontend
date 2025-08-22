@@ -5,18 +5,21 @@ import { TbLogout } from "react-icons/tb";
 import CompanyReviewModel from '../homepage/CompanyReviewModel'
 import { useCart } from '../../context/CartContext';
 
-interface User {
-  username: string;
+interface AuthenticatedUser {
+  id: string;
   role: 'user' | 'technician';
+  name?: string;
 }
+
+type User = AuthenticatedUser;
 
 function Header() {
   // const [cartCount, setCartCount] = useState<number>(0);
-   const { cartCount } = useCart();
+  const { cartCount } = useCart();
   // const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
-  const [showUserModal, setShowUserModal] = useState<boolean>(false);
   const [showReviewModal, setShowReviewModal] = useState<boolean>(false);
+  const [showUserModal, setShowUserModal] = useState<boolean>(false);
   const [selectedRating, setSelectedRating] = useState<number>(0);
   const [user, setUser] = useState<User | null>(null);
   const userModalRef = useRef<HTMLDivElement>(null);
@@ -27,12 +30,17 @@ function Header() {
     const updateCartCount = () => {
       const storedItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
       // setCartCount(storedItems.length);
+      const storedUser = localStorage.getItem("user");
+      const parsedUser: User | null = storedUser ? JSON.parse(storedUser) : null;
+      setUser(parsedUser);
     };
+
     const updateUser = () => {
       const storedUser = localStorage.getItem("user");
       const parsedUser: User | null = storedUser ? JSON.parse(storedUser) : null;
       setUser(parsedUser);
     };
+
     window.addEventListener("storage", updateCartCount);
     window.addEventListener("focus", updateCartCount);
     window.addEventListener("userChanged", updateUser);
@@ -105,12 +113,22 @@ function Header() {
             <div className="flex items-center w-16">
               <div id="google_translate_element" className="w-full" />
             </div>
+            {/* {([
+              ['categories', 'Categories'],
+              ['about', 'About Us'],
+              ['subscription', 'Subscriptions'],
+              ['features', 'Key Features'],
+              ['franchise', 'Franchise'],
+              ['referral', 'Referral']
+            ] as [string, string][]).map(([path, label]) => ( */}
+
             {([
               ['categories', 'Categories'],
               ['about', 'About Us'],
               ['subscription', 'Subscriptions'],
               ['features', 'Key Features'],
               ['franchise', 'Franchise'],
+              ['referral', 'Referral']
             ] as [string, string][]).map(([path, label]) => (
               <Link
                 key={path}
@@ -148,12 +166,12 @@ function Header() {
                   <button
                     onClick={() => setShowUserModal(!showUserModal)}
                     className={`text-sm ${user?.role === 'user'
-                        ? 'text-gray-700 hover:text-blue-600 cursor-pointer'
-                        : 'text-gray-500 cursor-default'
+                      ? 'text-gray-700 hover:text-blue-600 cursor-pointer'
+                      : 'text-gray-500 cursor-default'
                       } focus:outline-none`}
                     disabled={user?.role !== 'user'}
                   >
-                    Hi, {user?.username || 'User'}
+                    Hi, {user?.name || 'Tagoor'}
                   </button>
 
                   {showUserModal && (user.role === 'user') && (
@@ -193,11 +211,11 @@ function Header() {
                 </button>
                 {user?.role === 'technician' && (
                   <button
-                  onClick={handleLogout}
-                  className="text-gray-700 hover:text-red-800 fill-current"
-                >
-                  <TbLogout className='w-5 h-5 text-red-500' />
-                </button>
+                    onClick={handleLogout}
+                    className="text-gray-700 hover:text-red-800 fill-current"
+                  >
+                    <TbLogout className='w-5 h-5 text-red-500' />
+                  </button>
                 )}
               </>
             ) : (
@@ -226,9 +244,13 @@ function Header() {
 
       {showReviewModal && (
         <CompanyReviewModel
-        showReviewModal={showReviewModal}
-        setShowReviewModal={setShowReviewModal}
-      />
+          setShowReviewModal={setShowReviewModal}
+          user={user}
+          selectedRating={selectedRating}
+          setSelectedRating={setSelectedRating}
+          comment={""}
+          setComment={() => { }}
+        />
       )}
 
       {mobileOpen && (
@@ -251,6 +273,7 @@ function Header() {
               ['subscription', 'Subscriptions'],
               ['features', 'Key Features'],
               ['franchise', 'Franchise'],
+              ['referral', 'Referral'],
             ] as [string, string][]).map(([path, label]) => (
               <Link
                 key={path}
