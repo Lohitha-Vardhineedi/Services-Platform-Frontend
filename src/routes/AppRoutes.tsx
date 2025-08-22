@@ -31,7 +31,9 @@ import SearchFilterPage from '../pages/SearchFilterPage';
 import TechnicianDashboard from '../pages/technician/TechnicianDashboard';
 import TechnicianPanel from '../pages/technician/TechnicianPanel';
 import { AuthContext } from '../context/AuthContext';
-
+import ReferralPanel from '../components/referral/ReferralPanel';
+import ReferralCodeInput from '../components/referral/ReferralCodeInput';
+import ReferralModal from '../components/referral/ReferralModal';
 // Define types
 type UserRole = 'user' | 'technician';
 
@@ -73,6 +75,9 @@ const AppRoutes: React.FC = () => {
       <Route path="/about" element={<AboutPage />} />
       <Route path="/features" element={<KeyFeaturesPage />} />
       <Route path="/franchise" element={<FranchisePage />} />
+      <Route path="/referral" element={<ReferralPanel isOpen={true} onClose={() => {}} />} />
+      <Route path="/referral/code" element={<ReferralCodeInput />} />
+      <Route path="/referral/modal" element={<ReferralModal isOpen={true} onClose={() => {}} />} />
       <Route path="/contact" element={<GuestBooking />} />
       <Route path="/technicians/:categoryId" element={<ServicePage />} />
       <Route path="/subscription" element={<SubscriptionPage />} />
@@ -131,7 +136,8 @@ const AppRoutes: React.FC = () => {
         path="/technician/dashboardById"
         element={
           <PrivateRoute allowedRoles={['technician']}>
-            <TechnicianDashboard />
+            {/* Pass a valid data prop here. Replace 'null' with actual data as needed */}
+            <TechnicianDashboard data={null} />
           </PrivateRoute>
         }
       />
@@ -196,6 +202,15 @@ const AppRoutes: React.FC = () => {
         element={
           <PrivateRoute allowedRoles={['technician']}>
             <TechnicianTransactions />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/referral"
+        element={
+          <PrivateRoute allowedRoles={['user']}>
+            <ReferralPanel isOpen={true} onClose={() => {}} />
           </PrivateRoute>
         }
       />
