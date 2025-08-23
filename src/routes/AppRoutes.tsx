@@ -36,6 +36,7 @@ import ReferralCodeInput from '../components/referral/ReferralCodeInput';
 import ReferralModal from '../components/referral/ReferralModal';
 import ReferralMain from '../components/referral/ReferralMain';
 import ReferralForm from '../components/referral/ReferralForm';
+
 // Define types
 type UserRole = 'user' | 'technician';
 
