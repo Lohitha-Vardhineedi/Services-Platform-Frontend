@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import BlogList from './BlogList';
-import BlogDetail from './BlogDetail';
+// import BlogDetail from './BlogDetail';
 import { BlogPost } from './types';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
