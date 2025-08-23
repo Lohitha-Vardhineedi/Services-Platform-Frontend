@@ -10,6 +10,7 @@ import ContactForm from "../components/services/ContactForms";
 import { ServiceFilters } from "../components/services/ServiceFilters";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { Helmet } from "react-helmet-async";
 
 interface Technician {
   _id: string;
@@ -31,16 +32,22 @@ interface TechnicianProfile {
   };
 }
 interface SearchContent {
-  _id: string;
+  id: string;
+  categoryId: string;
+  areaName: string;
+  city: string;
+  state: string;
+  pincode: string;
   meta_title: string;
   meta_description: string;
+  seo_content: any;
 }
 
 const SearchFilterPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [technicians, setTechnicians] = useState<TechnicianProfile[]>([]);
-  const [content, setContent] = useState<SearchContent[]>([]);
+  const [content, setContent] = useState<SearchContent | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -122,6 +129,11 @@ console.log(formData);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-4">
+      <Helmet>
+        <title>{content?.meta_title || "Search for technicians in your area"}</title>
+        <meta name="description" content={content?.meta_description || "Search for technicians in your area"} />
+      </Helmet>
+
       <AdvertisementBanner />
       <h2 className="text-xl font-semibold my-4">Technicians</h2>
       <ServiceFilters/>

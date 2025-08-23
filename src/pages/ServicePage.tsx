@@ -9,6 +9,7 @@ import AdvertisementBanner from "../components/services/AdvertisementBanner";
 import { ServiceFilters } from "../components/services/ServiceFilters";
 import { ContactForm } from "../components/services/ContactForms";
 import { getTechByCategorie } from "../api/apiMethods";
+import { Helmet } from "react-helmet-async";
 
 interface Technician {
   technician: {
@@ -89,6 +90,11 @@ const ServicePage = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-4">
+      <Helmet>
+        <title>{categoryDetails?.meta_title || "Service Page"}</title>
+        <meta name="description" content={categoryDetails?.meta_description || "Explore our services and find the best technicians."} />
+      </Helmet>
+
       <AdvertisementBanner />
       <h2 className="text-xl font-semibold my-4">Technicians</h2>
       <ServiceFilters onFilterChange={handleFilterChange} />

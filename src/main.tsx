@@ -1,17 +1,19 @@
-  import React from 'react';
-  import ReactDOM from 'react-dom/client';
-  import { BrowserRouter } from 'react-router-dom';
-  import { UserProvider } from './context/UserContext';
-  import App from './App';
-  import './index.css';
-import { CartProvider } from './context/CartContext';
-import { CategoryProvider } from './context/CategoryContext';
-import { AuthContext, AuthProvider } from './context/AuthContext';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import { UserProvider } from "./context/UserContext";
+import App from "./App";
+import "./index.css";
+import { CartProvider } from "./context/CartContext";
+import { CategoryProvider } from "./context/CategoryContext";
+import { AuthContext, AuthProvider } from "./context/AuthContext";
+import { HelmetProvider } from "react-helmet-async";
 
-  ReactDOM.createRoot(document.getElementById('root')!).render(
-    <React.StrictMode>
-      <BrowserRouter>
-        <AuthProvider>
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <AuthProvider>
+        <HelmetProvider>
           <UserProvider>
             <CartProvider>
               <CategoryProvider>
@@ -19,7 +21,8 @@ import { AuthContext, AuthProvider } from './context/AuthContext';
               </CategoryProvider>
             </CartProvider>
           </UserProvider>
-        </AuthProvider>
-      </BrowserRouter>
+        </HelmetProvider>
+      </AuthProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );

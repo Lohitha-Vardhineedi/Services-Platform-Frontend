@@ -12,7 +12,7 @@ interface EarningCardProps {
 
 function EarningCard({ type, amount, description, icon, gradient, border, iconBg }: EarningCardProps) {
   return (
-    <div className={`p-8 rounded-2xl border-2 transform hover:scale-105 transition-transform ${gradient} ${border}`}>
+    <div className={`p-8 rounded-2xl border-2 transform hover:scale-105 transition-transform bg-gradient-to-r ${gradient} ${border}`}>
       <div className="flex items-center gap-4 mb-6">
         <div className={`w-16 h-16 rounded-2xl flex items-center justify-center ${iconBg}`}>{icon}</div>
         <div>
