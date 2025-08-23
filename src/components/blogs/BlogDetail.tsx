@@ -1,123 +1,107 @@
-import React from 'react';
-import { Calendar, User, Tag, Share2, Bookmark } from 'lucide-react';
-import { Blog } from '../../types/blog';
+// import React from 'react';
+// import { useParams } from 'react-router-dom';
+// import { blogPosts } from '../components/blogData';
+// import { Calendar, Tag } from 'lucide-react';
 
-interface BlogDetailProps {
-  blog: Blog;
-  onBack: () => void;
-}
+// const BlogDetail: React.FC = () => {
+//   const { id } = useParams<{ id: string }>();
+//   const post = blogPosts.find(p => p.id === id);
 
-const BlogDetail: React.FC<BlogDetailProps> = ({ blog, onBack }) => {
-  return (
-    <div className="max-w-4xl mx-auto px-6 py-8">
-      {/* Back Button */}
-      <button
-        onClick={onBack}
-        className="mb-6 text-blue-600 hover:text-blue-800 transition-colors"
-      >
-        ← Back to Blogs
-      </button>
+//   if (!post) {
+//     return (
+//       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+//         <div className="text-center">
+//           <h1 className="text-2xl font-bold text-gray-900 mb-4">Blog Post Not Found</h1>
+//           <p className="text-gray-600">The blog post you're looking for doesn't exist.</p>
+//         </div>
+//       </div>
+//     );
+//   }
 
-      {/* Hero Image */}
-      <div className="relative mb-8 rounded-lg overflow-hidden">
-        <img 
-          src={blog.image} 
-          alt={blog.title}
-          className="w-full h-96 object-cover"
-        />
-        <div className="absolute inset-0 bg-black bg-opacity-20"></div>
-      </div>
+//   return (
+//     <div className="min-h-screen bg-gray-50">
+//       {/* Hero Image Section */}
+//       <div className="relative w-full h-96 mb-8">
+//         <img 
+//           src={post.heroImage} 
+//           alt={post.title}
+//           className="w-full h-full object-cover"
+//         />
+//         <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+//           <div className="text-center text-white px-4">
+//             <h1 className="text-4xl md:text-5xl font-bold mb-4 max-w-4xl">
+//               {post.title}
+//             </h1>
+//             <p className="text-lg opacity-90 max-w-2xl">
+//               {post.excerpt}
+//             </p>
+//           </div>
+//         </div>
+//       </div>
 
-      {/* Blog Header */}
-      <div className="mb-8">
-        <div className="flex items-center space-x-3 mb-4">
-          <span className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium">
-            {blog.category.split('-').map(word => 
-              word.charAt(0).toUpperCase() + word.slice(1)
-            ).join(' ')}
-          </span>
-          <div className="flex items-center space-x-4 text-sm text-gray-500">
-            <div className="flex items-center space-x-1">
-              <Calendar size={14} />
-              <span>{blog.date}</span>
-            </div>
-            <div className="flex items-center space-x-1">
-              <User size={14} />
-              <span>{blog.author}</span>
-            </div>
-          </div>
-        </div>
+//       {/* Content Section */}
+//       <div className="max-w-4xl mx-auto px-4 pb-12">
+//         <div className="bg-white rounded-xl shadow-lg p-8 md:p-12">
+//           {/* Meta Information */}
+//           <div className="flex flex-wrap items-center gap-6 mb-8 pb-6 border-b border-gray-200">
+//             <div className="flex items-center text-gray-600">
+//               <Calendar size={18} className="mr-2" />
+//               <span className="font-medium">{post.date}</span>
+//             </div>
+//             <div className="flex items-center">
+//               <Tag size={18} className="mr-2 text-gray-600" />
+//               <div className="flex flex-wrap gap-2">
+//                 {post.tags.map((tag, index) => (
+//                   <span 
+//                     key={index}
+//                     className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
+//                   >
+//                     {tag}
+//                   </span>
+//                 ))}
+//               </div>
+//             </div>
+//             <span className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
+//               {post.category}
+//             </span>
+//           </div>
 
-        <h1 className="text-4xl font-bold text-gray-800 mb-4 leading-tight">
-          {blog.title}
-        </h1>
+//           {/* Article Content */}
+//           <article className="prose prose-lg max-w-none">
+//             {post.content.map((paragraph, index) => (
+//               <div key={index} className="mb-6">
+//                 {paragraph.includes(':') && paragraph.length < 100 && !paragraph.includes('https://') ? (
+//                   <h3 className="text-xl font-bold text-gray-900 mb-3 mt-8 border-l-4 border-blue-500 pl-4">
+//                     {paragraph}
+//                   </h3>
+//                 ) : (
+//                   <p className="text-gray-700 leading-relaxed text-lg">
+//                     {paragraph}
+//                   </p>
+//                 )}
+//               </div>
+//             ))}
+//           </article>
 
-        <p className="text-lg text-gray-600 leading-relaxed mb-6">
-          {blog.excerpt}
-        </p>
+//           {/* Call to Action */}
+//           <div className="mt-12 pt-8 border-t border-gray-200">
+//             <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-8 rounded-xl">
+//               <h4 className="text-2xl font-bold text-gray-900 mb-4">
+//                 Need Professional Help?
+//               </h4>
+//               <p className="text-gray-700 text-lg mb-6">
+//                 PRNV Services provides expert solutions for all your home maintenance needs. 
+//                 Contact our professional team for reliable and affordable services.
+//               </p>
+//               <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105">
+//                 Contact PRNV Services
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
 
-        {/* Action Buttons */}
-        <div className="flex items-center space-x-4 mb-8">
-          <button className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
-            <Share2 size={16} />
-            <span>Share</span>
-          </button>
-          <button className="flex items-center space-x-2 bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition-colors">
-            <Bookmark size={16} />
-            <span>Save</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Blog Content */}
-      <div className="prose prose-lg max-w-none">
-        <div className="space-y-6">
-          {blog.content.map((section, index) => (
-            <div key={index}>
-              {section.type === 'heading' && (
-                <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-4">
-                  {section.text}
-                </h2>
-              )}
-              {section.type === 'paragraph' && (
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  {section.text}
-                </p>
-              )}
-              {section.type === 'list' && (
-                <ul className="space-y-2 mb-4">
-                  {section.items?.map((item, itemIndex) => (
-                    <li key={itemIndex} className="text-gray-700 flex items-start">
-                      <span className="text-blue-600 mr-2">•</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Tags */}
-      <div className="mt-12 pt-8 border-t border-gray-200">
-        <div className="flex items-center space-x-2 mb-4">
-          <Tag size={18} className="text-gray-500" />
-          <span className="text-gray-700 font-medium">Tags:</span>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {blog.tags.map(tag => (
-            <span 
-              key={tag} 
-              className="bg-gray-100 text-gray-600 px-3 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors cursor-pointer"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default BlogDetail;
+// export default BlogDetail;

@@ -37,6 +37,7 @@ import ReferralModal from '../components/referral/ReferralModal';
 import ReferralMain from '../components/referral/ReferralMain';
 import ReferralForm from '../components/referral/ReferralForm';
 
+
 // Define types
 type UserRole = 'user' | 'technician';
 
@@ -81,7 +82,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/referral/code" element={<ReferralCodeInput />} />
       <Route path="/referral" element={<ReferralMain />} />
       <Route path='/referrals/form' element={<ReferralForm />} />
-      {/* <Route path="/referral/modal" element={<ReferralModal isOpen={true} onClose={false} />} /> */}
+            {/* <Route path="/referral/modal" element={<ReferralModal isOpen={true} onClose={false} />} /> */}
       <Route path="/contact" element={<GuestBooking />} />
       <Route path="/technicians/:categoryId" element={<ServicePage />} />
       <Route path="/subscription" element={<SubscriptionPage />} />
@@ -95,7 +96,6 @@ const AppRoutes: React.FC = () => {
         <Route path="/signup/user" element={<UserSignup />} />
         <Route path="/signup/technician" element={<TechnicianSignup />} />
       </Route>
-
       {/* Common Private Routes - Accessible to both authenticated users and technicians */}
       <Route path="/technicianById/:technicianId" 
       element={<PrivateRoute allowedRoles={['user']}><ProfilePage /></PrivateRoute>}

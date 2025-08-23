@@ -1,312 +1,360 @@
-import { Blog } from '../types/blog';
+import { BlogPost } from './types';
 
-export const blogs: Blog[] = [
+export const blogPosts: BlogPost[] = [
   {
-    id: 1,
-    title: "SEO SIMPLIFIED: HOW TO GET YOUR WEBSITE RANKING ON GOOGLE",
-    excerpt: "Learn the essential SEO strategies to improve your website's visibility and ranking on Google search results.",
+    id: '1',
+    title: 'Need To Find Hidden Water Leaks In Your Home? 5 Solutions',
+    excerpt: 'Discovering hidden water leaks can save you from unnecessary expenses and water damage.',
     content: [
-      {
-        type: 'heading',
-        text: 'Understanding SEO Fundamentals'
-      },
-      {
-        type: 'paragraph',
-        text: 'Search Engine Optimization (SEO) is crucial for online visibility. This guide covers the essential strategies to improve your website\'s ranking on Google.'
-      },
-      {
-        type: 'heading',
-        text: 'Key SEO Strategies'
-      },
-      {
-        type: 'list',
-        items: [
-          'Keyword research and optimization',
-          'Quality content creation',
-          'Technical SEO improvements',
-          'Link building strategies',
-          'Local SEO optimization'
-        ]
-      }
+      'Discovering hidden water leaks in your home can save you from unnecessary expenses and water damage. But how do you locate those sneaky leaks? We\'ve compiled five foolproof solutions that can help you spot hidden water leaks before they wreak havoc on your home.',
+      'Hidden water leaks might seem minor at first, but they can lead to significant issues if left unchecked. Here\'s why you should take action:',
+      'Pay close attention to your water bill',
+      'If your water bill suddenly skyrockets without any changes in usage, a hidden leak could be the culprit.',
+      'Review your past bills. Consistent increases over time often indicate a leak',
+      'Check your water meter',
+      'Your water meter is a reliable tool for detecting leaks.',
+      'A slow but steady increase in the meter reading suggests a hidden issue.',
+      'Look over your water usage',
+      'For an average family of four, usage above 12,000 gallons per month during cooler months may signal a leak. Spotting spikes in your water usage report can guide you to potential problems.',
+      'Try the toilet dye test',
+      'As per the data, a leaky toilet can waste up to 200 gallons of water daily. Here\'s how to check for leaks:',
+      'Dump a few drops of food coloring into your toilet tank.',
+      'Wait for 10 minutes without flushing.',
+      'If the water in the bowl changes its color then there is a water leak.',
+      'Check if your outdoor faucet is leaking',
+      'Leaks aren\'t confined to the indoors. Outdoor faucets are another potential source. Wet patches near the faucet and rust or corrosion on the spout indicate water leakage. A hose bib gauge can help measure the flow and pinpoint leaks.',
+      'Contacting PRNV Services will help you in providing professional water leak repair services for your home. Our trained plumber professionals are experts in finding these hidden water leaks and will fix them immediately. With PRNV Services\' affordable plumbing services, one can stop the water leaks in the home today.'
     ],
-    image: 'https://images.pexels.com/photos/270637/pexels-photo-270637.jpeg?auto=compress&cs=tinysrgb&w=800',
-    category: 'digital-marketing',
-    author: 'Digital Marketing Services',
-    date: 'Jan 15, 2024',
-    tags: ['SEO', 'Digital Marketing', 'Google Ranking', 'Website Optimization']
+    category: 'PLUMBING SERVICES',
+    date: 'Dec 30,2024',
+    image: 'https://images.pexels.com/photos/8090081/pexels-photo-8090081.jpeg?auto=compress&cs=tinysrgb&w=400',
+    heroImage: 'https://images.pexels.com/photos/5691659/pexels-photo-5691659.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['WATER LEAKS', 'PLUMBING SERVICES IN HYDERABAD', 'HOME MAINTENANCE']
   },
   {
-    id: 2,
-    title: "UNRAVELING THE MYSTERY: WHY IS MY AIR CONDITIONER MAKING A NOISE?",
-    excerpt: "Discover the common causes of AC noise and learn how to diagnose and fix these issues for optimal performance.",
+    id: '2',
+    title: '12 Essential Washing Machine Maintenance Tips',
+    excerpt: 'Keep your washing machine running efficiently with these professional maintenance tips.',
     content: [
-      {
-        type: 'heading',
-        text: 'Common AC Noise Issues'
-      },
-      {
-        type: 'paragraph',
-        text: 'Air conditioner noises can indicate various problems. Understanding these sounds helps in early diagnosis and prevention of major repairs.'
-      },
-      {
-        type: 'list',
-        items: [
-          'Rattling sounds from loose components',
-          'Squealing from belt issues',
-          'Clicking from electrical problems',
-          'Buzzing from refrigerant leaks',
-          'Grinding from motor problems'
-        ]
-      }
+      'Your washing machine is one of the most essential appliances in your home, working tirelessly to keep your clothes clean and fresh. However, like any hardworking machine, it requires regular maintenance to function at its best.',
+      'Regular maintenance not only extends the life of your washing machine but also ensures it operates efficiently, saving you money on energy bills and costly repairs.',
+      'Clean the drum regularly',
+      'Run an empty hot water cycle with white vinegar or baking soda monthly to remove buildup and odors.',
+      'Check and clean the filter',
+      'Most modern washing machines have a filter that catches lint, coins, and small items. Clean it every few months.',
+      'Inspect the door seal',
+      'Wipe down the rubber door seal after each use to prevent mold and mildew buildup.',
+      'Use the right amount of detergent',
+      'Too much detergent can cause excessive suds and leave residue on clothes and in the machine.',
+      'Balance your loads',
+      'Overloading can strain the motor and cause excessive vibration, while underloading wastes water and energy.',
+      'Leave the door open after use',
+      'This allows air circulation and helps prevent moisture buildup that can lead to odors.',
+      'Check hoses regularly',
+      'Inspect supply hoses for cracks, bulges, or leaks every six months and replace them every five years.',
+      'Level your machine',
+      'An unlevel washing machine can cause excessive vibration and premature wear.',
+      'Clean the detergent dispenser',
+      'Remove and wash the detergent drawer monthly to prevent buildup.',
+      'Use appropriate water temperature',
+      'Hot water isn\'t always necessary and can damage certain fabrics while wasting energy.',
+      'Regular professional servicing',
+      'Schedule annual maintenance with PRNV Services to ensure optimal performance.',
+      'Keep the area clean',
+      'Maintain a clean laundry area to prevent dust and debris from affecting your machine\'s operation.'
     ],
-    image: 'https://images.pexels.com/photos/8142888/pexels-photo-8142888.jpeg?auto=compress&cs=tinysrgb&w=800',
-    category: 'ac-repair',
-    author: 'AC Repair Services',
-    date: 'Jan 12, 2024',
-    tags: ['AC Repair', 'Air Conditioning', 'HVAC', 'Maintenance']
+    category: 'APPLIANCE MAINTENANCE',
+    date: 'Dec 28,2024',
+    image: 'https://images.pexels.com/photos/4239091/pexels-photo-4239091.jpeg?auto=compress&cs=tinysrgb&w=400',
+    heroImage: 'https://images.pexels.com/photos/4239091/pexels-photo-4239091.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['WASHING MACHINE', 'APPLIANCE CARE', 'HOME MAINTENANCE']
   },
   {
-    id: 3,
-    title: "HOW TO FIX BLURRY CCTV FOOTAGE: TIPS AND TRICKS",
-    excerpt: "CCTV cameras are crucial for security, but blurry footage defeats the purpose. Learn professional techniques to diagnose and fix camera clarity issues.",
+    id: '3',
+    title: '10 Electrical Tips for Brand-New House Owners',
+    excerpt: 'Essential electrical safety and maintenance tips every new homeowner should know.',
     content: [
-      {
-        type: 'heading',
-        text: 'Understanding Blurry CCTV Footage'
-      },
-      {
-        type: 'paragraph',
-        text: 'CCTV cameras are essential for security systems. When footage becomes blurry, it compromises the entire security setup. This guide provides solutions to restore clear video quality.'
-      },
-      {
-        type: 'heading',
-        text: 'Common Causes and Solutions'
-      },
-      {
-        type: 'list',
-        items: [
-          'Clean camera lenses regularly',
-          'Adjust focus settings properly',
-          'Check lighting conditions',
-          'Verify camera positioning',
-          'Update firmware and settings'
-        ]
-      }
+      'Congratulations on your new home! As a new homeowner, understanding your home\'s electrical system is crucial for safety and efficiency. Here are ten essential electrical tips to help you get started.',
+      'Electrical safety should be every homeowner\'s top priority. These tips will help you maintain a safe and efficient electrical system.',
+      'Locate your main electrical panel',
+      'Know where your circuit breaker panel is located and ensure it\'s easily accessible. Label each breaker clearly.',
+      'Test GFCI outlets monthly',
+      'Ground Fault Circuit Interrupter outlets in bathrooms, kitchens, and outdoor areas should be tested regularly.',
+      'Don\'t overload circuits',
+      'Avoid plugging too many devices into a single outlet or circuit to prevent overheating.',
+      'Replace old outlets and switches',
+      'Upgrade old two-prong outlets to three-prong GFCI outlets for better safety.',
+      'Install surge protectors',
+      'Protect your valuable electronics with quality surge protectors throughout your home.',
+      'Check for aluminum wiring',
+      'If your home was built between 1965-1973, it may have aluminum wiring that requires special attention.',
+      'Ensure proper grounding',
+      'All electrical systems should be properly grounded for safety.',
+      'Schedule an electrical inspection',
+      'Have a professional electrician inspect your home\'s electrical system annually.',
+      'Know the warning signs',
+      'Flickering lights, burning smells, or warm outlets are signs that require immediate attention.',
+      'Plan for future needs',
+      'Consider your electrical needs for home offices, electric vehicles, and smart home devices.',
+      'At PRNV Services, our certified electricians provide comprehensive electrical inspections and repairs to ensure your home is safe and up to code. Contact us for professional electrical services.'
     ],
-    image: 'https://images.pexels.com/photos/430208/pexels-photo-430208.jpeg?auto=compress&cs=tinysrgb&w=800',
-    category: 'cctv-services',
-    author: 'CCTV Installation Services',
-    date: 'Jan 10, 2024',
-    tags: ['CCTV', 'Security Cameras', 'Surveillance', 'Camera Repair']
+    category: 'ELECTRICAL SERVICES',
+    date: 'Dec 26,2024',
+    image: 'https://images.pexels.com/photos/257736/pexels-photo-257736.jpeg?auto=compress&cs=tinysrgb&w=400',
+    heroImage: 'https://images.pexels.com/photos/257736/pexels-photo-257736.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['ELECTRICAL SAFETY', 'NEW HOMEOWNERS', 'HOME INSPECTION']
   },
   {
-    id: 4,
-    title: "TOP 4 TIPS FOR FINDING PAINTING SERVICES ONLINE IN HYDERABAD",
-    excerpt: "Find reliable painting services in Hyderabad with these expert tips for choosing the right professionals for your home or office.",
+    id: '4',
+    title: 'How to Maintain Wooden Furniture - 8 Awesome Tips',
+    excerpt: 'Preserve the beauty and longevity of your wooden furniture with these expert maintenance tips.',
     content: [
-      {
-        type: 'heading',
-        text: 'Finding Quality Painting Services'
-      },
-      {
-        type: 'paragraph',
-        text: 'Choosing the right painting service is crucial for achieving professional results. Here are the top tips for finding reliable painters in Hyderabad.'
-      },
-      {
-        type: 'list',
-        items: [
-          'Check online reviews and ratings',
-          'Verify licenses and insurance',
-          'Compare multiple quotes',
-          'Review previous work portfolios',
-          'Ensure quality materials usage'
-        ]
-      }
+      'Wooden furniture adds warmth, character, and timeless beauty to any home. However, maintaining its luster and structural integrity requires proper care and attention.',
+      'With the right maintenance routine, your wooden furniture can last for generations while maintaining its natural beauty and functionality.',
+      'Dust regularly with proper tools',
+      'Use a soft, lint-free cloth or microfiber duster to remove dust weekly. Always dust in the direction of the wood grain.',
+      'Avoid harsh chemicals',
+      'Never use ammonia, bleach, or abrasive cleaners on wood. Stick to products specifically designed for wood care.',
+      'Control humidity levels',
+      'Maintain indoor humidity between 30-50% to prevent wood from cracking or warping.',
+      'Use coasters and placemats',
+      'Protect surfaces from water rings, heat damage, and scratches by using protective barriers.',
+      'Polish periodically',
+      'Apply a high-quality wood polish every 2-3 months to nourish the wood and maintain its shine.',
+      'Address spills immediately',
+      'Clean up spills quickly to prevent staining and water damage. Blot, don\'t rub.',
+      'Rotate and rearrange',
+      'Move decorative items and lamps periodically to prevent uneven fading and wear patterns.',
+      'Professional refinishing',
+      'Consider professional refinishing every 7-10 years to restore severely worn furniture.',
+      'Proper positioning is key to preserving your wooden furniture. Keep pieces away from direct sunlight, heating vents, and air conditioning units.',
+      'For antique or valuable pieces, consult with furniture restoration specialists at PRNV Services for professional care and maintenance advice.',
+      'Regular maintenance is much more cost-effective than major repairs or replacement. Invest in quality care products and take preventive measures.',
+      'Remember that different wood types may require specific care approaches. Consult manufacturer guidelines when available.'
     ],
-    image: 'https://images.pexels.com/photos/1669799/pexels-photo-1669799.jpeg?auto=compress&cs=tinysrgb&w=800',
-    category: 'painting-services',
-    author: 'Painting Services',
-    date: 'Jan 8, 2024',
-    tags: ['Painting Services', 'Home Improvement', 'Hyderabad', 'Interior Design']
+    category: 'FURNITURE CARE',
+    date: 'Dec 24,2024',
+    image: 'https://images.pexels.com/photos/1350789/pexels-photo-1350789.jpeg?auto=compress&cs=tinysrgb&w=400',
+    heroImage: 'https://images.pexels.com/photos/1350789/pexels-photo-1350789.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['WOODEN FURNITURE', 'FURNITURE MAINTENANCE', 'HOME CARE']
   },
   {
-    id: 5,
-    title: "COMMON ELEVATOR PROBLEMS AND PROFESSIONAL FIXES",
-    excerpt: "Elevators are essential for modern buildings, but they can experience various issues. Learn about common problems and professional solutions.",
+    id: '5',
+    title: '5 Dos and Don\'ts of an Effective Pest Control Treatment',
+    excerpt: 'Learn the essential guidelines for successful pest control in your home.',
     content: [
-      {
-        type: 'heading',
-        text: 'Understanding Elevator Issues'
-      },
-      {
-        type: 'paragraph',
-        text: 'Elevators are complex systems requiring regular maintenance. Understanding common problems helps in quick identification and professional repair.'
-      },
-      {
-        type: 'list',
-        items: [
-          'Door alignment and operation issues',
-          'Unusual noises during operation',
-          'Slow or jerky movements',
-          'Button and control malfunctions',
-          'Emergency system failures'
-        ]
-      }
+      'Effective pest control requires a strategic approach that combines prevention, treatment, and ongoing maintenance. Understanding what to do and what to avoid can make the difference between success and failure.',
+      'Pest control is not just about eliminating current infestations but also preventing future problems through proper practices and maintenance.',
+      'DO: Identify the pest correctly',
+      'Proper identification is crucial for choosing the right treatment method. Different pests require different approaches.',
+      'DO: Eliminate food and water sources',
+      'Remove crumbs, fix leaks, and store food in sealed containers to make your home less attractive to pests.',
+      'DO: Seal entry points',
+      'Close gaps around pipes, doors, windows, and other potential entry points with appropriate materials.',
+      'DO: Follow treatment instructions carefully',
+      'Always read and follow label directions for any pest control products you use.',
+      'DO: Be patient with the process',
+      'Most pest control treatments take time to be fully effective. Allow the process to work.',
+      'DON\'T: Use excessive amounts of pesticide',
+      'More is not better. Overuse can be dangerous and may cause pests to develop resistance.',
+      'DON\'T: Ignore the problem',
+      'Early intervention is always more effective and less expensive than waiting.',
+      'DON\'T: Mix different products',
+      'Combining pest control products can be dangerous and reduce effectiveness.',
+      'DON\'T: Forget about prevention',
+      'Treatment without prevention measures often leads to recurring problems.',
+      'DON\'T: Skip professional help when needed',
+      'Some infestations require professional expertise and equipment for effective control.',
+      'PRNV Services offers comprehensive pest control solutions with eco-friendly options that are safe for your family and pets. Our trained technicians can assess your situation and recommend the most effective treatment plan.',
+      'Regular monitoring and maintenance are key to long-term pest control success. Schedule routine inspections to catch problems early.'
     ],
-    image: 'https://images.pexels.com/photos/2219024/pexels-photo-2219024.jpeg?auto=compress&cs=tinysrgb&w=800',
-    category: 'elevator-services',
-    author: 'Elevator Services',
-    date: 'Jan 6, 2024',
-    tags: ['Elevator Repair', 'Building Maintenance', 'Safety', 'Professional Services']
+    category: 'PEST CONTROL',
+    date: 'Dec 22,2024',
+    image: 'https://images.pexels.com/photos/8090088/pexels-photo-8090088.jpeg?auto=compress&cs=tinysrgb&w=400',
+    heroImage: 'https://images.pexels.com/photos/8090088/pexels-photo-8090088.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['PEST CONTROL', 'HOME SAFETY', 'PREVENTION']
   },
   {
-    id: 6,
-    title: "SMART TV MAINTENANCE: KEEP YOUR TELEVISION RUNNING SMOOTHLY",
-    excerpt: "Smart TVs require proper maintenance to function optimally. Learn essential care tips to extend your TV's lifespan and performance.",
+    id: '6',
+    title: 'Common Elevator Problems and Fixes',
+    excerpt: 'Understanding common elevator issues and their solutions for building maintenance.',
     content: [
-      {
-        type: 'heading',
-        text: 'Smart TV Care Essentials'
-      },
-      {
-        type: 'paragraph',
-        text: 'Smart TVs combine entertainment with technology, requiring specific maintenance approaches to ensure longevity and optimal performance.'
-      },
-      {
-        type: 'list',
-        items: [
-          'Regular software updates',
-          'Proper cleaning techniques',
-          'Ventilation maintenance',
-          'Cable management',
-          'Power surge protection'
-        ]
-      }
+      'Elevators are complex mechanical systems that require regular maintenance and prompt attention to problems. Understanding common issues can help prevent major breakdowns and ensure passenger safety.',
+      'Regular maintenance and quick response to problems are essential for elevator safety and efficiency.',
+      'Door problems are the most common issue',
+      'Misaligned or dirty door tracks can cause doors to stick or not close properly. Regular cleaning and adjustment prevent most door issues.',
+      'Unusual noises during operation',
+      'Grinding, squealing, or banging sounds often indicate worn components that need immediate attention.',
+      'Slow or erratic movement',
+      'This can be caused by worn cables, motor problems, or control system issues requiring professional diagnosis.',
+      'Leveling problems at floors',
+      'When the elevator doesn\'t stop level with the floor, it creates safety hazards and indicates adjustment needs.',
+      'Control system malfunctions',
+      'Modern elevators rely on sophisticated computer systems that may require software updates or component replacement.',
+      'Power supply issues',
+      'Voltage fluctuations or power interruptions can cause elevator malfunctions and require electrical system checks.',
+      'Cable and pulley wear',
+      'Regular inspection of cables for fraying or stretching is crucial for safety.',
+      'Emergency system failures',
+      'Backup power systems and emergency communications must be tested regularly.',
+      'Temperature control problems',
+      'Overheating can cause shutdowns and component damage.',
+      'Regular professional inspections are required by law in most areas and help identify problems before they become serious.',
+      'PRNV Services provides comprehensive elevator maintenance and repair services. Our certified technicians ensure your elevators operate safely and efficiently.',
+      'Don\'t attempt elevator repairs yourself. Always contact qualified professionals for any elevator issues.'
     ],
-    image: 'https://images.pexels.com/photos/6316986/pexels-photo-6316986.jpeg?auto=compress&cs=tinysrgb&w=800',
-    category: 'tv-repair',
-    author: 'TV Repair Services',
-    date: 'Jan 4, 2024',
-    tags: ['TV Repair', 'Smart TV', 'Electronics', 'Maintenance']
+    category: 'ELEVATOR MAINTENANCE',
+    date: 'Dec 20,2024',
+    image: 'https://images.pexels.com/photos/6966635/pexels-photo-6966635.jpeg?auto=compress&cs=tinysrgb&w=400',
+    heroImage: 'https://images.pexels.com/photos/6966635/pexels-photo-6966635.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['ELEVATOR PROBLEMS', 'BUILDING MAINTENANCE', 'SAFETY']
   },
   {
-    id: 7,
-    title: "LAPTOP BATTERY REPAIR: COMPLETE DIAGNOSTIC GUIDE",
-    excerpt: "Laptop battery issues can significantly impact productivity. Learn comprehensive diagnostic and repair solutions for optimal performance.",
+    id: '7',
+    title: 'How to Maintain Your Smart TV & Keep It in Great Condition',
+    excerpt: 'Essential maintenance tips to keep your smart TV performing optimally for years.',
     content: [
-      {
-        type: 'heading',
-        text: 'Laptop Battery Diagnostics'
-      },
-      {
-        type: 'paragraph',
-        text: 'Battery problems are common in laptops. This guide covers diagnostic techniques and repair solutions to restore your laptop\'s portability.'
-      },
-      {
-        type: 'list',
-        items: [
-          'Battery health assessment',
-          'Calibration procedures',
-          'Replacement considerations',
-          'Power management optimization',
-          'Charging system repairs'
-        ]
-      }
+      'Smart TVs are significant investments that require proper care to maintain picture quality, performance, and longevity. Regular maintenance can prevent common problems and extend your TV\'s lifespan.',
+      'Proper care of your smart TV involves both physical maintenance and software management to ensure optimal performance.',
+      'Clean the screen properly',
+      'Use a microfiber cloth and appropriate screen cleaner. Never spray directly on the screen and avoid paper towels.',
+      'Manage ventilation and heat',
+      'Ensure adequate airflow around your TV. Overheating is one of the most common causes of TV problems.',
+      'Update software regularly',
+      'Keep your TV\'s operating system and apps updated for security and performance improvements.',
+      'Manage power properly',
+      'Use surge protectors and consider the standby power consumption of your smart TV.',
+      'Optimize picture settings',
+      'Adjust brightness, contrast, and other settings based on your viewing environment to prevent screen burn-in.',
+      'Handle remote controls with care',
+      'Keep spare batteries and clean the remote regularly to maintain proper function.',
+      'Monitor internet connection',
+      'Ensure stable internet for streaming services and smart features to work properly.',
+      'Dust regularly',
+      'Clean the exterior and vents to prevent dust buildup that can affect performance.',
+      'Organize cables properly',
+      'Good cable management prevents damage and improves the setup\'s appearance.',
+      'Use appropriate wall mounts',
+      'If wall-mounted, ensure the mount is properly rated for your TV\'s weight and size.',
+      'Regular software maintenance includes clearing cache, managing storage, and uninstalling unused apps.',
+      'PRNV Services offers TV installation, calibration, and maintenance services to keep your entertainment system running perfectly.',
+      'Consider professional calibration for the best picture quality, especially for high-end displays.'
     ],
-    image: 'https://images.pexels.com/photos/5483077/pexels-photo-5483077.jpeg?auto=compress&cs=tinysrgb&w=800',
-    category: 'laptop-repair',
-    author: 'Laptop Repair Services',
-    date: 'Jan 2, 2024',
-    tags: ['Laptop Repair', 'Battery Replacement', 'Computer Services', 'Tech Support']
+    category: 'TV MAINTENANCE',
+    date: 'Dec 18,2024',
+    image: 'https://images.pexels.com/photos/6976124/pexels-photo-6976124.jpeg?auto=compress&cs=tinysrgb&w=400',
+    heroImage: 'https://images.pexels.com/photos/6976124/pexels-photo-6976124.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['SMART TV', 'ELECTRONICS', 'HOME ENTERTAINMENT']
   },
   {
-    id: 8,
-    title: "WATER LEAK DETECTION: ADVANCED PROFESSIONAL METHODS",
-    excerpt: "Hidden water leaks can cause significant damage. Discover professional detection methods to locate and address leaks quickly.",
+    id: '8',
+    title: 'Air Conditioning Maintenance: Complete Guide',
+    excerpt: 'Keep your AC running efficiently with these comprehensive maintenance tips.',
     content: [
-      {
-        type: 'heading',
-        text: 'Professional Leak Detection'
-      },
-      {
-        type: 'paragraph',
-        text: 'Water leaks can remain hidden for months, causing structural damage. Professional detection methods help identify leaks without destructive investigation.'
-      },
-      {
-        type: 'list',
-        items: [
-          'Electronic leak detection equipment',
-          'Thermal imaging technology',
-          'Acoustic detection methods',
-          'Pressure testing systems',
-          'Moisture mapping techniques'
-        ]
-      }
+      'Regular air conditioning maintenance is essential for efficient operation, lower energy bills, and extended system life. A well-maintained AC system can last 15-20 years with proper care.',
+      'Preventive maintenance is always more cost-effective than emergency repairs and helps ensure comfortable indoor temperatures year-round.',
+      'Replace air filters regularly',
+      'Change filters every 1-3 months depending on usage and filter type. Dirty filters reduce efficiency and air quality.',
+      'Clean the outdoor unit',
+      'Remove debris, leaves, and dirt from around the condenser unit. Maintain at least 2 feet of clearance.',
+      'Check and clean coils',
+      'Both evaporator and condenser coils need regular cleaning to maintain heat transfer efficiency.',
+      'Inspect ductwork for leaks',
+      'Sealed ducts improve efficiency and air quality. Look for loose connections and gaps.',
+      'Check refrigerant levels',
+      'Low refrigerant indicates a leak that requires professional attention.',
+      'Lubricate moving parts',
+      'Proper lubrication reduces friction and wear on motors and fans.',
+      'Test thermostat accuracy',
+      'Ensure your thermostat is calibrated correctly and consider upgrading to a programmable model.',
+      'Clean drain lines',
+      'Clogged condensate drains can cause water damage and humidity problems.',
+      'Inspect electrical connections',
+      'Loose connections can cause system failure and safety hazards.',
+      'Schedule professional tune-ups',
+      'Annual professional maintenance catches problems early and maintains warranty coverage.',
+      'Monitor performance indicators like unusual noises, odors, or reduced cooling capacity.',
+      'PRNV Services provides comprehensive AC maintenance packages to keep your system running efficiently year-round.',
+      'Don\'t ignore warning signs. Early intervention prevents costly repairs and system failures.'
     ],
-    image: 'https://images.pexels.com/photos/4506198/pexels-photo-4506198.jpeg?auto=compress&cs=tinysrgb&w=800',
-    category: 'water-leak-detection',
-    author: 'Water Leak Detection Services',
-    date: 'Dec 30, 2023',
-    tags: ['Water Leaks', 'Plumbing', 'Leak Detection', 'Water Damage']
+    category: 'HVAC SERVICES',
+    date: 'Dec 16,2024',
+    image: 'https://images.pexels.com/photos/8488741/pexels-photo-8488741.jpeg?auto=compress&cs=tinysrgb&w=400',
+    heroImage: 'https://images.pexels.com/photos/8488741/pexels-photo-8488741.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['AIR CONDITIONING', 'HVAC', 'ENERGY EFFICIENCY']
   },
   {
-    id: 9,
-    title: "COMPUTER REPAIR: HARDWARE AND SOFTWARE SOLUTIONS",
-    excerpt: "Comprehensive computer repair services covering both hardware failures and software issues with professional diagnostic approaches.",
+    id: '9',
+    title: 'Home Security System Maintenance Guide',
+    excerpt: 'Essential tips to keep your home security system functioning properly and protecting your family.',
     content: [
-      {
-        type: 'heading',
-        text: 'Complete Computer Diagnostics'
-      },
-      {
-        type: 'paragraph',
-        text: 'Computer problems can disrupt productivity. Our comprehensive approach addresses both hardware and software issues with professional expertise.'
-      },
-      {
-        type: 'list',
-        items: [
-          'Hardware component testing',
-          'Software troubleshooting',
-          'Virus removal and security',
-          'Data recovery services',
-          'Performance optimization'
-        ]
-      }
+      'Your home security system is your first line of defense against intruders. Regular maintenance ensures it functions properly when you need it most.',
+      'A well-maintained security system provides peace of mind and may even qualify you for insurance discounts.',
+      'Test all sensors monthly',
+      'Walk through your home and test door sensors, window sensors, and motion detectors to ensure they\'re working.',
+      'Replace backup batteries',
+      'Most security devices have backup batteries that need replacement every 2-3 years.',
+      'Clean camera lenses regularly',
+      'Dirty lenses reduce image quality. Clean with appropriate materials to maintain clear footage.',
+      'Update system software',
+      'Keep your security system\'s firmware updated for the latest features and security patches.',
+      'Test alarm sounds',
+      'Ensure all sirens and alarms are loud enough to alert you and deter intruders.',
+      'Check cellular or internet connections',
+      'Modern systems rely on communication networks. Test connectivity regularly.',
+      'Trim vegetation around sensors',
+      'Overgrown plants can trigger false alarms or block sensor coverage.',
+      'Review user codes',
+      'Change access codes regularly and remove codes for former residents or employees.',
+      'Inspect control panels',
+      'Check for damage, loose connections, or error messages on your main control panel.',
+      'Professional system inspections',
+      'Annual professional inspections ensure all components work together properly.',
+      'Document system changes and keep user manuals accessible for reference.',
+      'PRNV Services offers security system installation, maintenance, and monitoring services to protect your home and family.',
+      'Consider upgrading older systems to take advantage of new technology and improved reliability.'
     ],
-    image: 'https://images.pexels.com/photos/2882507/pexels-photo-2882507.jpeg?auto=compress&cs=tinysrgb&w=800',
-    category: 'computer-repair',
-    author: 'Computer Repair Services',
-    date: 'Dec 28, 2023',
-    tags: ['Computer Repair', 'Hardware', 'Software', 'Tech Support']
+    category: 'SECURITY SYSTEMS',
+    date: 'Dec 14,2024',
+    image: 'https://images.pexels.com/photos/5380664/pexels-photo-5380664.jpeg?auto=compress&cs=tinysrgb&w=400',
+    heroImage: 'https://images.pexels.com/photos/5380664/pexels-photo-5380664.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['HOME SECURITY', 'SAFETY', 'SURVEILLANCE']
   },
   {
-    id: 10,
-    title: "ELECTRICAL SERVICES: SAFE AND RELIABLE SOLUTIONS",
-    excerpt: "Professional electrical services ensuring safety and compliance with all installations, repairs, and maintenance work.",
+    id: '10',
+    title: 'Kitchen Appliance Maintenance: Keep Everything Running Smoothly',
+    excerpt: 'Comprehensive guide to maintaining all your kitchen appliances for optimal performance.',
     content: [
-      {
-        type: 'heading',
-        text: 'Professional Electrical Work'
-      },
-      {
-        type: 'paragraph',
-        text: 'Electrical work requires expertise and safety compliance. Our licensed electricians provide reliable solutions for all electrical needs.'
-      },
-      {
-        type: 'list',
-        items: [
-          'Electrical installations',
-          'Circuit repairs and upgrades',
-          'Safety inspections',
-          'Emergency electrical services',
-          'Code compliance work'
-        ]
-      }
+      'Kitchen appliances work harder than most home equipment. Proper maintenance keeps them running efficiently and extends their lifespan significantly.',
+      'Regular appliance maintenance prevents expensive repairs and ensures food safety in your kitchen.',
+      'Refrigerator maintenance essentials',
+      'Clean coils every 6 months, check door seals, and maintain proper temperature settings between 35-38°F.',
+      'Dishwasher care tips',
+      'Clean the filter monthly, run cleaning cycles, and check spray arms for clogs.',
+      'Oven and range maintenance',
+      'Clean regularly, calibrate temperature, and check gas connections for safety.',
+      'Microwave upkeep',
+      'Clean the interior weekly, replace charcoal filters, and check door seals.',
+      'Garbage disposal care',
+      'Run cold water during use, avoid hard materials, and clean with ice and citrus peels.',
+      'Coffee maker maintenance',
+      'Descale monthly, replace filters, and clean all removable parts regularly.',
+      'Blender and food processor care',
+      'Clean immediately after use, check blade sharpness, and inspect seals.',
+      'Ice maker maintenance',
+      'Clean and sanitize every 6 months, replace filters, and check water lines.',
+      'Range hood cleaning',
+      'Clean or replace filters monthly and wipe down surfaces to prevent grease buildup.',
+      'Small appliance storage',
+      'Store properly to prevent damage and keep countertops clean and organized.',
+      'Energy efficiency tips can reduce utility bills while maintaining appliance performance.',
+      'PRNV Services provides appliance repair and maintenance for all major kitchen equipment brands.',
+      'Keep appliance manuals and warranty information in an easily accessible location for reference.'
     ],
-    image: 'https://images.pexels.com/photos/298660/pexels-photo-298660.jpeg?auto=compress&cs=tinysrgb&w=800',
-    category: 'electrical-services',
-    author: 'Electrical Services',
-    date: 'Dec 26, 2023',
-    tags: ['Electrical', 'Safety', 'Installation', 'Professional Services']
+    category: 'APPLIANCE MAINTENANCE',
+    date: 'Dec 12,2024',
+    image: 'https://images.pexels.com/photos/2062426/pexels-photo-2062426.jpeg?auto=compress&cs=tinysrgb&w=400',
+    heroImage: 'https://images.pexels.com/photos/2062426/pexels-photo-2062426.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['KITCHEN APPLIANCES', 'HOME MAINTENANCE', 'APPLIANCE CARE']
   }
 ];
