@@ -9,48 +9,28 @@ import PopularSearchesSection from "../components/homepage/PopularSearchesSectio
 import CitiesSection from "../components/homepage/CitiesSection";
 import RainyDaySection from "../components/homepage/RainyDaySection";
 import CustomerReviews from "../components/homepage/CustomerReviews";
-import BlogGrid from "../components/blogs/BlogGrid";
-import BlogDetail from "../components/blogs/BlogDetail";
-import { Blog } from '../types/blog';
-
-
+import BlogApp from "../components/blogs/BlogApp";
 const HomePage = () => {
-    // Dummy handler for "Read More" action
-    const onReadMore = (blog: Blog) => {
-        // Implement navigation or modal logic here
-        console.log("Read more clicked for blog:", blog);
-    };
-
-    // Dummy blogs array for demonstration (replace with actual data source)
-    const blogs: Blog[] = [];
-
-    return (
-        <>
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <SearchBarSection />
-                <CategoriesGrid lang="en" />
-                {/* <WeddingBeautyRow />
-                <RepairDailyRow />
-                <BillsTravelRow /> */}
-                <div className="relative z-[1]">
-                <TrendingSection />
-                <PopularSearchesSection />
-
-                  <BlogGrid
-                        blogs={blogs.slice(0, 8)} // Show first 8 blogs on homepage
-                        onReadMore={onReadMore}
-                    />
-                </div>
-                {/* <MoviesSection /> */}
-                {/* <CitiesSection /> */}
-                {/* <RainyDaySection /> */}
-                <CustomerReviews />
-                <div className="relative z-[1]">
-                <ServiceCardsRow />
-                </div>
-            </main>
-        </>
-    )
-}
+  return (
+    <>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <SearchBarSection />
+        <CategoriesGrid lang="en" />
+        {/* <WeddingBeautyRow />
+        <RepairDailyRow />
+        <BillsTravelRow /> */}
+        <div className="relative z-[1]">
+          <TrendingSection />
+          <PopularSearchesSection />
+          <BlogApp />
+          <CustomerReviews />
+        </div>
+        <div className="relative z-[1]">
+          <ServiceCardsRow />
+        </div>
+      </main>
+    </>
+  );
+};
 
 export default HomePage;

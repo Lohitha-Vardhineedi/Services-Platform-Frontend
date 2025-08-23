@@ -3,6 +3,7 @@ import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import AppRoutes from './routes/AppRoutes';
 
+
 const App = () => {
   const location = useLocation();
   
@@ -22,6 +23,7 @@ const App = () => {
       {!shouldHideHeader && <Header />}
       <main className={`px-4 sm:px-6 py-8 ${shouldHideHeader ? 'pt-0' : ''}`}>
         <AppRoutes />
+         
       </main>
       {!shouldHideHeader && <Footer />}
     </div>

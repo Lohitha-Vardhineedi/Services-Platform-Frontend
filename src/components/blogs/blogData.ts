@@ -1,345 +1,360 @@
-import { Blog } from '../types/blog';
+import { BlogPost } from './types';
 
-export const blogsData: Blog[] = [
+export const blogPosts: BlogPost[] = [
   {
-    id: 1,
-    title: "How to Maintain Wooden Furniture - 8 Awesome Tips",
-    content: `Wooden furniture adds warmth, elegance, and timeless appeal to any home. However, to keep it looking its best and ensure its longevity, proper maintenance is essential. Here are eight awesome tips to help you maintain your wooden furniture and preserve its natural beauty for years to come.
-
-1. Regular Dusting and Cleaning
-Dust your wooden furniture regularly using a soft, lint-free cloth or microfiber duster. Avoid using harsh chemicals or abrasive cleaners that can damage the wood's finish. For deeper cleaning, use a slightly damp cloth followed by a dry one to prevent moisture damage.
-
-2. Use Proper Wood Polish
-Apply a high-quality wood polish or conditioner every few months to nourish the wood and maintain its luster. Choose products specifically designed for your type of wood finish, whether it's lacquered, oiled, or waxed.
-
-3. Protect from Direct Sunlight
-Position your wooden furniture away from direct sunlight or use window treatments to filter UV rays. Prolonged exposure to sunlight can cause fading, cracking, and warping of the wood.
-
-4. Maintain Consistent Humidity
-Wood expands and contracts with changes in humidity. Maintain indoor humidity levels between 30-50% to prevent cracking, warping, and splitting. Use a humidifier in dry conditions and ensure proper ventilation in humid environments.
-
-5. Use Coasters and Placemats
-Protect wooden surfaces from water rings, heat damage, and scratches by using coasters, placemats, and tablecloths. This simple step can prevent costly repairs and maintain the furniture's appearance.
-
-6. Handle with Care
-When moving wooden furniture, lift rather than drag to prevent scratches and structural damage. Use furniture pads or blankets to protect surfaces during transport or storage.
-
-7. Address Issues Promptly
-Deal with spills, scratches, and other damage immediately. Clean up liquid spills right away to prevent staining and water damage. For minor scratches, use appropriate wood repair products or consult a professional for significant damage.
-
-8. Professional Maintenance
-Consider professional cleaning and refinishing every few years, depending on usage and wear. Professional services can restore the original beauty of your wooden furniture and extend its lifespan significantly.`,
-    excerpt: "Discover eight essential tips for maintaining wooden furniture, from proper cleaning techniques to protecting against environmental damage. Learn how to preserve the natural beauty and longevity of your wooden pieces.",
-    image: "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800",
-    date: "17-Dec-2024",
-    author: "Home Care Expert",
-    category: "Home Maintenance",
-    tags: ["furniture", "wood care", "home tips", "maintenance"],
-    readTime: 5
+    id: '1',
+    title: 'Need To Find Hidden Water Leaks In Your Home? 5 Solutions',
+    excerpt: 'Discovering hidden water leaks can save you from unnecessary expenses and water damage.',
+    content: [
+      'Discovering hidden water leaks in your home can save you from unnecessary expenses and water damage. But how do you locate those sneaky leaks? We\'ve compiled five foolproof solutions that can help you spot hidden water leaks before they wreak havoc on your home.',
+      'Hidden water leaks might seem minor at first, but they can lead to significant issues if left unchecked. Here\'s why you should take action:',
+      'Pay close attention to your water bill',
+      'If your water bill suddenly skyrockets without any changes in usage, a hidden leak could be the culprit.',
+      'Review your past bills. Consistent increases over time often indicate a leak',
+      'Check your water meter',
+      'Your water meter is a reliable tool for detecting leaks.',
+      'A slow but steady increase in the meter reading suggests a hidden issue.',
+      'Look over your water usage',
+      'For an average family of four, usage above 12,000 gallons per month during cooler months may signal a leak. Spotting spikes in your water usage report can guide you to potential problems.',
+      'Try the toilet dye test',
+      'As per the data, a leaky toilet can waste up to 200 gallons of water daily. Here\'s how to check for leaks:',
+      'Dump a few drops of food coloring into your toilet tank.',
+      'Wait for 10 minutes without flushing.',
+      'If the water in the bowl changes its color then there is a water leak.',
+      'Check if your outdoor faucet is leaking',
+      'Leaks aren\'t confined to the indoors. Outdoor faucets are another potential source. Wet patches near the faucet and rust or corrosion on the spout indicate water leakage. A hose bib gauge can help measure the flow and pinpoint leaks.',
+      'Contacting PRNV Services will help you in providing professional water leak repair services for your home. Our trained plumber professionals are experts in finding these hidden water leaks and will fix them immediately. With PRNV Services\' affordable plumbing services, one can stop the water leaks in the home today.'
+    ],
+    category: 'PLUMBING SERVICES',
+    date: 'Dec 30,2024',
+    image: 'https://images.pexels.com/photos/8090081/pexels-photo-8090081.jpeg?auto=compress&cs=tinysrgb&w=400',
+    heroImage: 'https://images.pexels.com/photos/5691659/pexels-photo-5691659.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['WATER LEAKS', 'PLUMBING SERVICES IN HYDERABAD', 'HOME MAINTENANCE']
   },
   {
-    id: 2,
-    title: "5 Dos and Don'ts of an Effective Pest Control Treatment",
-    content: `Effective pest control requires a strategic approach that combines prevention, treatment, and ongoing maintenance. Whether you're dealing with ants, cockroaches, rodents, or other unwanted guests, following these essential dos and don'ts will help you achieve better results and maintain a pest-free environment.
-
-DO: Identify the Pest Problem Accurately
-Before starting any treatment, properly identify the type of pest you're dealing with. Different pests require different approaches, and misidentification can lead to ineffective treatments. Take photos, note behavior patterns, and consider consulting with a professional for accurate identification.
-
-DON'T: Use Random Products Without Research
-Avoid grabbing the first pest control product you see on the shelf. Research the specific pest you're targeting and choose products designed for that particular problem. Generic solutions often fail to address the root cause and may even make the situation worse.
-
-DO: Focus on Prevention and Elimination of Entry Points
-Seal cracks, gaps, and holes where pests might enter your home. Check around windows, doors, pipes, and foundation areas. Prevention is always more effective and cost-efficient than treatment after an infestation has occurred.
-
-DON'T: Ignore Safety Precautions
-Always read and follow label instructions when using pest control products. Wear protective equipment, ensure proper ventilation, and keep children and pets away from treated areas. Many pest control chemicals can be harmful if not used properly.
-
-DO: Maintain Cleanliness and Remove Attractants
-Keep your home clean, store food in sealed containers, and eliminate water sources that attract pests. Regular cleaning removes food crumbs, spills, and other attractants that draw pests into your living space.
-
-Professional pest control services can provide comprehensive solutions tailored to your specific situation, ensuring effective treatment while maintaining safety standards.`,
-    excerpt: "Learn the essential dos and don'ts for effective pest control treatment. From proper identification to safety precautions, discover how to tackle pest problems successfully and safely.",
-    image: "https://images.pexels.com/photos/8100784/pexels-photo-8100784.jpeg?auto=compress&cs=tinysrgb&w=800",
-    date: "17-Dec-2024",
-    author: "Pest Control Specialist",
-    category: "Pest Control",
-    tags: ["pest control", "home safety", "prevention", "treatment"],
-    readTime: 4
+    id: '2',
+    title: '12 Essential Washing Machine Maintenance Tips',
+    excerpt: 'Keep your washing machine running efficiently with these professional maintenance tips.',
+    content: [
+      'Your washing machine is one of the most essential appliances in your home, working tirelessly to keep your clothes clean and fresh. However, like any hardworking machine, it requires regular maintenance to function at its best.',
+      'Regular maintenance not only extends the life of your washing machine but also ensures it operates efficiently, saving you money on energy bills and costly repairs.',
+      'Clean the drum regularly',
+      'Run an empty hot water cycle with white vinegar or baking soda monthly to remove buildup and odors.',
+      'Check and clean the filter',
+      'Most modern washing machines have a filter that catches lint, coins, and small items. Clean it every few months.',
+      'Inspect the door seal',
+      'Wipe down the rubber door seal after each use to prevent mold and mildew buildup.',
+      'Use the right amount of detergent',
+      'Too much detergent can cause excessive suds and leave residue on clothes and in the machine.',
+      'Balance your loads',
+      'Overloading can strain the motor and cause excessive vibration, while underloading wastes water and energy.',
+      'Leave the door open after use',
+      'This allows air circulation and helps prevent moisture buildup that can lead to odors.',
+      'Check hoses regularly',
+      'Inspect supply hoses for cracks, bulges, or leaks every six months and replace them every five years.',
+      'Level your machine',
+      'An unlevel washing machine can cause excessive vibration and premature wear.',
+      'Clean the detergent dispenser',
+      'Remove and wash the detergent drawer monthly to prevent buildup.',
+      'Use appropriate water temperature',
+      'Hot water isn\'t always necessary and can damage certain fabrics while wasting energy.',
+      'Regular professional servicing',
+      'Schedule annual maintenance with PRNV Services to ensure optimal performance.',
+      'Keep the area clean',
+      'Maintain a clean laundry area to prevent dust and debris from affecting your machine\'s operation.'
+    ],
+    category: 'APPLIANCE MAINTENANCE',
+    date: 'Dec 28,2024',
+    image: 'https://images.pexels.com/photos/4239091/pexels-photo-4239091.jpeg?auto=compress&cs=tinysrgb&w=400',
+    heroImage: 'https://images.pexels.com/photos/4239091/pexels-photo-4239091.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['WASHING MACHINE', 'APPLIANCE CARE', 'HOME MAINTENANCE']
   },
   {
-    id: 3,
-    title: "Common Elevator Problems and Fixes",
-    content: `Elevators are complex mechanical systems that require regular maintenance and prompt attention when issues arise. Understanding common elevator problems can help building owners and managers address issues quickly and ensure safe, reliable operation for users.
-
-Door Issues
-One of the most frequent elevator problems involves door malfunctions. Doors may not open or close properly, close too quickly, or make unusual noises. These issues often stem from misaligned door tracks, worn door operators, or faulty sensors. Regular cleaning of door tracks and sensor calibration can prevent many door-related problems.
-
-Leveling Problems
-When an elevator doesn't stop level with the floor, it creates safety hazards and accessibility issues. This problem typically results from worn cables, hydraulic system issues, or calibration problems with the elevator's positioning system. Professional adjustment and maintenance are required to correct leveling issues.
-
-Strange Noises
-Unusual sounds like grinding, squealing, or banging often indicate mechanical problems. These noises can result from worn bearings, loose components, or inadequate lubrication. Immediate attention is necessary to prevent more serious damage and ensure passenger safety.
-
-Slow Operation
-Elevators that move unusually slowly may have issues with their motor, drive system, or control programming. Slow operation can also indicate overloading or mechanical wear that requires professional assessment and repair.
-
-Control System Malfunctions
-Modern elevators rely on sophisticated control systems that can experience software glitches, sensor failures, or communication issues. These problems may cause erratic behavior, incorrect floor selection, or complete system shutdowns.
-
-Regular preventive maintenance by qualified technicians is the best way to prevent these common problems and ensure safe, reliable elevator operation.`,
-    excerpt: "Explore common elevator problems including door issues, leveling problems, and control system malfunctions. Learn about the causes and solutions for maintaining safe elevator operation.",
-    image: "https://images.pexels.com/photos/5605651/pexels-photo-5605651.jpeg?auto=compress&cs=tinysrgb&w=800",
-    date: "30-Dec-2024",
-    author: "Building Maintenance Expert",
-    category: "Building Systems",
-    tags: ["elevator", "maintenance", "building systems", "safety"],
-    readTime: 4
+    id: '3',
+    title: '10 Electrical Tips for Brand-New House Owners',
+    excerpt: 'Essential electrical safety and maintenance tips every new homeowner should know.',
+    content: [
+      'Congratulations on your new home! As a new homeowner, understanding your home\'s electrical system is crucial for safety and efficiency. Here are ten essential electrical tips to help you get started.',
+      'Electrical safety should be every homeowner\'s top priority. These tips will help you maintain a safe and efficient electrical system.',
+      'Locate your main electrical panel',
+      'Know where your circuit breaker panel is located and ensure it\'s easily accessible. Label each breaker clearly.',
+      'Test GFCI outlets monthly',
+      'Ground Fault Circuit Interrupter outlets in bathrooms, kitchens, and outdoor areas should be tested regularly.',
+      'Don\'t overload circuits',
+      'Avoid plugging too many devices into a single outlet or circuit to prevent overheating.',
+      'Replace old outlets and switches',
+      'Upgrade old two-prong outlets to three-prong GFCI outlets for better safety.',
+      'Install surge protectors',
+      'Protect your valuable electronics with quality surge protectors throughout your home.',
+      'Check for aluminum wiring',
+      'If your home was built between 1965-1973, it may have aluminum wiring that requires special attention.',
+      'Ensure proper grounding',
+      'All electrical systems should be properly grounded for safety.',
+      'Schedule an electrical inspection',
+      'Have a professional electrician inspect your home\'s electrical system annually.',
+      'Know the warning signs',
+      'Flickering lights, burning smells, or warm outlets are signs that require immediate attention.',
+      'Plan for future needs',
+      'Consider your electrical needs for home offices, electric vehicles, and smart home devices.',
+      'At PRNV Services, our certified electricians provide comprehensive electrical inspections and repairs to ensure your home is safe and up to code. Contact us for professional electrical services.'
+    ],
+    category: 'ELECTRICAL SERVICES',
+    date: 'Dec 26,2024',
+    image: 'https://images.pexels.com/photos/257736/pexels-photo-257736.jpeg?auto=compress&cs=tinysrgb&w=400',
+    heroImage: 'https://images.pexels.com/photos/257736/pexels-photo-257736.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['ELECTRICAL SAFETY', 'NEW HOMEOWNERS', 'HOME INSPECTION']
   },
   {
-    id: 4,
-    title: "How to Maintain Your Smart TV & Keep It in Great Condition",
-    content: `Smart TVs represent a significant investment in your home entertainment system. Proper maintenance ensures optimal performance, extends lifespan, and maintains picture and sound quality. Follow these essential tips to keep your smart TV in excellent condition.
-
-Regular Software Updates
-Keep your smart TV's software up to date by enabling automatic updates or manually checking for updates monthly. Software updates often include security patches, bug fixes, and new features that improve performance and user experience.
-
-Proper Cleaning Techniques
-Clean your TV screen regularly using a microfiber cloth and appropriate cleaning solution. Avoid harsh chemicals, paper towels, or abrasive materials that can damage the screen coating. Turn off and unplug the TV before cleaning to prevent electrical issues and see smudges more clearly.
-
-Manage Heat and Ventilation
-Ensure adequate ventilation around your TV to prevent overheating. Maintain at least 6 inches of clearance on all sides and avoid placing the TV in enclosed cabinets without proper airflow. Overheating can damage internal components and reduce lifespan.
-
-Optimize Network Connection
-Maintain a stable internet connection for smooth streaming and app performance. Use wired ethernet connections when possible for the most reliable connection, or ensure your Wi-Fi signal is strong in the TV's location.
-
-Protect from Power Surges
-Use a high-quality surge protector to safeguard your smart TV from power fluctuations and electrical surges. Lightning strikes and power grid issues can cause expensive damage to sensitive electronic components.
-
-Regular App Management
-Periodically review and uninstall unused apps to free up storage space and improve performance. Clear app caches and data for applications that seem to run slowly or exhibit problems.
-
-Professional calibration annually can optimize picture and sound settings for the best viewing experience while preventing long-term component wear.`,
-    excerpt: "Learn essential maintenance tips for smart TVs including software updates, proper cleaning, heat management, and network optimization to ensure peak performance and longevity.",
-    image: "https://images.pexels.com/photos/6976094/pexels-photo-6976094.jpeg?auto=compress&cs=tinysrgb&w=800",
-    date: "30-Dec-2024",
-    author: "Tech Support Specialist",
-    category: "Electronics",
-    tags: ["smart tv", "electronics", "maintenance", "technology"],
-    readTime: 5
+    id: '4',
+    title: 'How to Maintain Wooden Furniture - 8 Awesome Tips',
+    excerpt: 'Preserve the beauty and longevity of your wooden furniture with these expert maintenance tips.',
+    content: [
+      'Wooden furniture adds warmth, character, and timeless beauty to any home. However, maintaining its luster and structural integrity requires proper care and attention.',
+      'With the right maintenance routine, your wooden furniture can last for generations while maintaining its natural beauty and functionality.',
+      'Dust regularly with proper tools',
+      'Use a soft, lint-free cloth or microfiber duster to remove dust weekly. Always dust in the direction of the wood grain.',
+      'Avoid harsh chemicals',
+      'Never use ammonia, bleach, or abrasive cleaners on wood. Stick to products specifically designed for wood care.',
+      'Control humidity levels',
+      'Maintain indoor humidity between 30-50% to prevent wood from cracking or warping.',
+      'Use coasters and placemats',
+      'Protect surfaces from water rings, heat damage, and scratches by using protective barriers.',
+      'Polish periodically',
+      'Apply a high-quality wood polish every 2-3 months to nourish the wood and maintain its shine.',
+      'Address spills immediately',
+      'Clean up spills quickly to prevent staining and water damage. Blot, don\'t rub.',
+      'Rotate and rearrange',
+      'Move decorative items and lamps periodically to prevent uneven fading and wear patterns.',
+      'Professional refinishing',
+      'Consider professional refinishing every 7-10 years to restore severely worn furniture.',
+      'Proper positioning is key to preserving your wooden furniture. Keep pieces away from direct sunlight, heating vents, and air conditioning units.',
+      'For antique or valuable pieces, consult with furniture restoration specialists at PRNV Services for professional care and maintenance advice.',
+      'Regular maintenance is much more cost-effective than major repairs or replacement. Invest in quality care products and take preventive measures.',
+      'Remember that different wood types may require specific care approaches. Consult manufacturer guidelines when available.'
+    ],
+    category: 'FURNITURE CARE',
+    date: 'Dec 24,2024',
+    image: 'https://images.pexels.com/photos/1350789/pexels-photo-1350789.jpeg?auto=compress&cs=tinysrgb&w=400',
+    heroImage: 'https://images.pexels.com/photos/1350789/pexels-photo-1350789.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['WOODEN FURNITURE', 'FURNITURE MAINTENANCE', 'HOME CARE']
   },
   {
-    id: 5,
-    title: "Top 4 Tips for Finding Reliable Home Service Professionals",
-    content: `Finding trustworthy and skilled service professionals for your home can be challenging. Whether you need a plumber, electrician, contractor, or cleaning service, these four essential tips will help you identify reliable professionals who deliver quality work at fair prices.
-
-Research and Verify Credentials
-Always verify that service professionals have proper licensing, insurance, and bonding for their trade. Check with local licensing boards and ask to see certificates and insurance documentation. Legitimate professionals will readily provide this information and understand its importance for your protection.
-
-Read Reviews and Ask for References
-Research online reviews on multiple platforms including Google, Yelp, and Better Business Bureau. Look for patterns in feedback rather than focusing on individual reviews. Ask potential service providers for recent customer references and actually contact these references to inquire about their experience.
-
-Get Multiple Detailed Estimates
-Obtain written estimates from at least three different professionals for comparison. Detailed estimates should include materials, labor, timeline, and total costs. Be wary of estimates that are significantly higher or lower than others, as they may indicate quality or reliability issues.
-
-Trust Your Instincts and Communication Style
-Pay attention to how professionals communicate during initial contact. Reliable service providers are punctual, professional, clear in their communication, and willing to answer questions. They should provide detailed explanations of work needed and respect your time and property.
-
-Additionally, avoid door-to-door solicitors, require contracts for significant work, and never pay large amounts upfront. Quality professionals understand these concerns and work within industry-standard practices to build trust with their customers.`,
-    excerpt: "Discover four crucial tips for finding reliable home service professionals, from verifying credentials to reading reviews and getting detailed estimates for quality work.",
-    image: "https://images.pexels.com/photos/8838743/pexels-photo-8838743.jpeg?auto=compress&cs=tinysrgb&w=800",
-    date: "07-Feb-2023",
-    author: "Home Services Guide",
-    category: "Home Services",
-    tags: ["home services", "contractors", "tips", "reliability"],
-    readTime: 4
+    id: '5',
+    title: '5 Dos and Don\'ts of an Effective Pest Control Treatment',
+    excerpt: 'Learn the essential guidelines for successful pest control in your home.',
+    content: [
+      'Effective pest control requires a strategic approach that combines prevention, treatment, and ongoing maintenance. Understanding what to do and what to avoid can make the difference between success and failure.',
+      'Pest control is not just about eliminating current infestations but also preventing future problems through proper practices and maintenance.',
+      'DO: Identify the pest correctly',
+      'Proper identification is crucial for choosing the right treatment method. Different pests require different approaches.',
+      'DO: Eliminate food and water sources',
+      'Remove crumbs, fix leaks, and store food in sealed containers to make your home less attractive to pests.',
+      'DO: Seal entry points',
+      'Close gaps around pipes, doors, windows, and other potential entry points with appropriate materials.',
+      'DO: Follow treatment instructions carefully',
+      'Always read and follow label directions for any pest control products you use.',
+      'DO: Be patient with the process',
+      'Most pest control treatments take time to be fully effective. Allow the process to work.',
+      'DON\'T: Use excessive amounts of pesticide',
+      'More is not better. Overuse can be dangerous and may cause pests to develop resistance.',
+      'DON\'T: Ignore the problem',
+      'Early intervention is always more effective and less expensive than waiting.',
+      'DON\'T: Mix different products',
+      'Combining pest control products can be dangerous and reduce effectiveness.',
+      'DON\'T: Forget about prevention',
+      'Treatment without prevention measures often leads to recurring problems.',
+      'DON\'T: Skip professional help when needed',
+      'Some infestations require professional expertise and equipment for effective control.',
+      'PRNV Services offers comprehensive pest control solutions with eco-friendly options that are safe for your family and pets. Our trained technicians can assess your situation and recommend the most effective treatment plan.',
+      'Regular monitoring and maintenance are key to long-term pest control success. Schedule routine inspections to catch problems early.'
+    ],
+    category: 'PEST CONTROL',
+    date: 'Dec 22,2024',
+    image: 'https://images.pexels.com/photos/8090088/pexels-photo-8090088.jpeg?auto=compress&cs=tinysrgb&w=400',
+    heroImage: 'https://images.pexels.com/photos/8090088/pexels-photo-8090088.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['PEST CONTROL', 'HOME SAFETY', 'PREVENTION']
   },
   {
-    id: 6,
-    title: "The Ultimate Guide to Professional Cleaning Services",
-    content: `Professional cleaning services offer convenience, expertise, and time savings for busy homeowners and businesses. Understanding what to expect and how to choose the right service can help you make informed decisions about your cleaning needs.
-
-Types of Cleaning Services Available
-Professional cleaning companies typically offer various service levels including basic cleaning, deep cleaning, move-in/move-out cleaning, and specialized services like carpet or window cleaning. Basic cleaning covers routine tasks like vacuuming, dusting, and bathroom sanitization, while deep cleaning includes detailed work on appliances, baseboards, and hard-to-reach areas.
-
-Benefits of Professional Cleaning
-Professional cleaners bring commercial-grade equipment, specialized products, and trained expertise that achieve better results than typical household cleaning. They can complete tasks more efficiently, use proper techniques for different surfaces, and maintain consistent quality standards.
-
-Choosing the Right Cleaning Service
-Research potential cleaning companies thoroughly by checking reviews, verifying insurance and bonding, and confirming their service areas. Request detailed information about their cleaning process, products used, and pricing structure. Many reputable companies offer free estimates and consultations.
-
-Preparing for Cleaning Services
-Before the cleaning team arrives, secure valuables, clear clutter from surfaces, and communicate any specific needs or concerns. Discuss access arrangements, pet considerations, and any areas that require special attention or should be avoided.
-
-Cost Considerations and Value
-Cleaning service costs vary based on home size, service frequency, and specific tasks requested. While professional cleaning represents an investment, consider the value of saved time, reduced stress, and superior results when evaluating costs.
-
-Building a long-term relationship with a trusted cleaning service can provide consistency, reliability, and increasingly personalized service tailored to your specific preferences and needs.`,
-    excerpt: "Explore the comprehensive guide to professional cleaning services, including types of services, benefits, selection criteria, and tips for maximizing value and satisfaction.",
-    image: "https://images.pexels.com/photos/6195951/pexels-photo-6195951.jpeg?auto=compress&cs=tinysrgb&w=800",
-    date: "07-Feb-2023",
-    author: "Cleaning Industry Expert",
-    category: "Cleaning Services",
-    tags: ["cleaning", "professional services", "home care", "guide"],
-    readTime: 6
+    id: '6',
+    title: 'Common Elevator Problems and Fixes',
+    excerpt: 'Understanding common elevator issues and their solutions for building maintenance.',
+    content: [
+      'Elevators are complex mechanical systems that require regular maintenance and prompt attention to problems. Understanding common issues can help prevent major breakdowns and ensure passenger safety.',
+      'Regular maintenance and quick response to problems are essential for elevator safety and efficiency.',
+      'Door problems are the most common issue',
+      'Misaligned or dirty door tracks can cause doors to stick or not close properly. Regular cleaning and adjustment prevent most door issues.',
+      'Unusual noises during operation',
+      'Grinding, squealing, or banging sounds often indicate worn components that need immediate attention.',
+      'Slow or erratic movement',
+      'This can be caused by worn cables, motor problems, or control system issues requiring professional diagnosis.',
+      'Leveling problems at floors',
+      'When the elevator doesn\'t stop level with the floor, it creates safety hazards and indicates adjustment needs.',
+      'Control system malfunctions',
+      'Modern elevators rely on sophisticated computer systems that may require software updates or component replacement.',
+      'Power supply issues',
+      'Voltage fluctuations or power interruptions can cause elevator malfunctions and require electrical system checks.',
+      'Cable and pulley wear',
+      'Regular inspection of cables for fraying or stretching is crucial for safety.',
+      'Emergency system failures',
+      'Backup power systems and emergency communications must be tested regularly.',
+      'Temperature control problems',
+      'Overheating can cause shutdowns and component damage.',
+      'Regular professional inspections are required by law in most areas and help identify problems before they become serious.',
+      'PRNV Services provides comprehensive elevator maintenance and repair services. Our certified technicians ensure your elevators operate safely and efficiently.',
+      'Don\'t attempt elevator repairs yourself. Always contact qualified professionals for any elevator issues.'
+    ],
+    category: 'ELEVATOR MAINTENANCE',
+    date: 'Dec 20,2024',
+    image: 'https://images.pexels.com/photos/6966635/pexels-photo-6966635.jpeg?auto=compress&cs=tinysrgb&w=400',
+    heroImage: 'https://images.pexels.com/photos/6966635/pexels-photo-6966635.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['ELEVATOR PROBLEMS', 'BUILDING MAINTENANCE', 'SAFETY']
   },
   {
-    id: 7,
-    title: "12 Essential Washing Machine Maintenance Tips",
-    content: `Your washing machine is one of the hardest-working appliances in your home, handling countless loads of laundry throughout its lifespan. Proper maintenance can extend its life, improve cleaning performance, and prevent costly repairs. Here are twelve essential maintenance tips every homeowner should know.
-
-Clean the Lint Filter Regularly
-Remove and clean the lint filter after every few loads to maintain proper water drainage and prevent clogs. A blocked filter can cause water to back up and potentially damage your machine or flood your laundry area.
-
-Use the Right Amount of Detergent
-Using too much detergent can create excessive suds that strain your machine's motor and leave residue on clothes. Follow manufacturer recommendations and adjust for load size and soil level to optimize cleaning performance.
-
-Clean the Drum Monthly
-Run an empty cycle with hot water and white vinegar or a specialized washing machine cleaner monthly to remove soap residue, mineral deposits, and odors. This maintains optimal cleaning performance and prevents bacterial growth.
-
-Check and Clean Door Seals
-Inspect rubber door seals on front-loading machines regularly for mold, mildew, or trapped debris. Wipe seals dry after each use and clean with mild bleach solution when necessary to prevent odors and damage.
-
-Level Your Machine Properly
-Ensure your washing machine sits level and stable to prevent excessive vibration during operation. Use a level tool and adjust the feet as needed to prevent premature wear on internal components.
-
-Don't Overload the Machine
-Overloading prevents proper water circulation and cleaning action while straining the motor and suspension system. Follow capacity guidelines and distribute clothes evenly for best results and machine longevity.
-
-Professional inspection and maintenance annually can identify potential issues before they become expensive repairs, ensuring reliable operation for years to come.`,
-    excerpt: "Master washing machine maintenance with twelve essential tips covering lint filter care, proper detergent use, drum cleaning, and professional maintenance for optimal performance.",
-    image: "https://images.pexels.com/photos/5591663/pexels-photo-5591663.jpeg?auto=compress&cs=tinysrgb&w=800",
-    date: "10-Dec-2024",
-    author: "Appliance Maintenance Pro",
-    category: "Appliances",
-    tags: ["washing machine", "appliance care", "maintenance", "laundry"],
-    readTime: 5
+    id: '7',
+    title: 'How to Maintain Your Smart TV & Keep It in Great Condition',
+    excerpt: 'Essential maintenance tips to keep your smart TV performing optimally for years.',
+    content: [
+      'Smart TVs are significant investments that require proper care to maintain picture quality, performance, and longevity. Regular maintenance can prevent common problems and extend your TV\'s lifespan.',
+      'Proper care of your smart TV involves both physical maintenance and software management to ensure optimal performance.',
+      'Clean the screen properly',
+      'Use a microfiber cloth and appropriate screen cleaner. Never spray directly on the screen and avoid paper towels.',
+      'Manage ventilation and heat',
+      'Ensure adequate airflow around your TV. Overheating is one of the most common causes of TV problems.',
+      'Update software regularly',
+      'Keep your TV\'s operating system and apps updated for security and performance improvements.',
+      'Manage power properly',
+      'Use surge protectors and consider the standby power consumption of your smart TV.',
+      'Optimize picture settings',
+      'Adjust brightness, contrast, and other settings based on your viewing environment to prevent screen burn-in.',
+      'Handle remote controls with care',
+      'Keep spare batteries and clean the remote regularly to maintain proper function.',
+      'Monitor internet connection',
+      'Ensure stable internet for streaming services and smart features to work properly.',
+      'Dust regularly',
+      'Clean the exterior and vents to prevent dust buildup that can affect performance.',
+      'Organize cables properly',
+      'Good cable management prevents damage and improves the setup\'s appearance.',
+      'Use appropriate wall mounts',
+      'If wall-mounted, ensure the mount is properly rated for your TV\'s weight and size.',
+      'Regular software maintenance includes clearing cache, managing storage, and uninstalling unused apps.',
+      'PRNV Services offers TV installation, calibration, and maintenance services to keep your entertainment system running perfectly.',
+      'Consider professional calibration for the best picture quality, especially for high-end displays.'
+    ],
+    category: 'TV MAINTENANCE',
+    date: 'Dec 18,2024',
+    image: 'https://images.pexels.com/photos/6976124/pexels-photo-6976124.jpeg?auto=compress&cs=tinysrgb&w=400',
+    heroImage: 'https://images.pexels.com/photos/6976124/pexels-photo-6976124.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['SMART TV', 'ELECTRONICS', 'HOME ENTERTAINMENT']
   },
   {
-    id: 8,
-    title: "10 Electrical Tips for Brand New House Owners",
-    content: `Moving into a new home is exciting, but ensuring your electrical system is safe and efficient should be a top priority. These ten essential electrical tips will help new homeowners understand their electrical system and maintain a safe living environment.
-
-Locate and Label Your Circuit Breaker Panel
-Identify the main electrical panel and understand which breakers control different areas of your home. Properly label each breaker for easy identification during maintenance or emergencies. Test GFCI outlets monthly to ensure they're functioning properly.
-
-Schedule a Professional Electrical Inspection
-Have a qualified electrician perform a comprehensive inspection of your home's electrical system, especially in older homes. This inspection can identify potential safety hazards, code violations, or outdated components that need attention.
-
-Understand Your Home's Electrical Capacity
-Know your home's electrical service capacity and understand the difference between 15-amp and 20-amp circuits. This knowledge helps you avoid overloading circuits and makes future electrical planning more informed.
-
-Install Surge Protection
-Protect valuable electronics and appliances with whole-house surge protection and individual surge protectors. Power surges from lightning or grid issues can cause thousands of dollars in damage to sensitive equipment.
-
-Learn Basic Electrical Safety
-Understand when to turn off power at the breaker, how to safely reset tripped breakers, and when to call a professional. Never attempt electrical repairs beyond your skill level, as improper work can create fire hazards or electrocution risks.
-
-Plan for Future Electrical Needs
-Consider your long-term electrical needs when planning renovations or upgrades. Adding circuits for home offices, electric vehicle charging, or smart home systems is easier during initial planning than retrofitting later.
-
-Energy-efficient lighting upgrades and smart electrical devices can reduce energy costs while improving convenience and home value.`,
-    excerpt: "Essential electrical tips for new homeowners covering safety inspections, circuit breaker management, surge protection, and planning for future electrical needs.",
-    image: "https://images.pexels.com/photos/257736/pexels-photo-257736.jpeg?auto=compress&cs=tinysrgb&w=800",
-    date: "17-Dec-2024",
-    author: "Licensed Electrician",
-    category: "Electrical",
-    tags: ["electrical", "home safety", "new homeowners", "maintenance"],
-    readTime: 6
+    id: '8',
+    title: 'Air Conditioning Maintenance: Complete Guide',
+    excerpt: 'Keep your AC running efficiently with these comprehensive maintenance tips.',
+    content: [
+      'Regular air conditioning maintenance is essential for efficient operation, lower energy bills, and extended system life. A well-maintained AC system can last 15-20 years with proper care.',
+      'Preventive maintenance is always more cost-effective than emergency repairs and helps ensure comfortable indoor temperatures year-round.',
+      'Replace air filters regularly',
+      'Change filters every 1-3 months depending on usage and filter type. Dirty filters reduce efficiency and air quality.',
+      'Clean the outdoor unit',
+      'Remove debris, leaves, and dirt from around the condenser unit. Maintain at least 2 feet of clearance.',
+      'Check and clean coils',
+      'Both evaporator and condenser coils need regular cleaning to maintain heat transfer efficiency.',
+      'Inspect ductwork for leaks',
+      'Sealed ducts improve efficiency and air quality. Look for loose connections and gaps.',
+      'Check refrigerant levels',
+      'Low refrigerant indicates a leak that requires professional attention.',
+      'Lubricate moving parts',
+      'Proper lubrication reduces friction and wear on motors and fans.',
+      'Test thermostat accuracy',
+      'Ensure your thermostat is calibrated correctly and consider upgrading to a programmable model.',
+      'Clean drain lines',
+      'Clogged condensate drains can cause water damage and humidity problems.',
+      'Inspect electrical connections',
+      'Loose connections can cause system failure and safety hazards.',
+      'Schedule professional tune-ups',
+      'Annual professional maintenance catches problems early and maintains warranty coverage.',
+      'Monitor performance indicators like unusual noises, odors, or reduced cooling capacity.',
+      'PRNV Services provides comprehensive AC maintenance packages to keep your system running efficiently year-round.',
+      'Don\'t ignore warning signs. Early intervention prevents costly repairs and system failures.'
+    ],
+    category: 'HVAC SERVICES',
+    date: 'Dec 16,2024',
+    image: 'https://images.pexels.com/photos/8488741/pexels-photo-8488741.jpeg?auto=compress&cs=tinysrgb&w=400',
+    heroImage: 'https://images.pexels.com/photos/8488741/pexels-photo-8488741.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['AIR CONDITIONING', 'HVAC', 'ENERGY EFFICIENCY']
   },
   {
-    id: 9,
-    title: "Need to Find Hidden Water Leaks? Here's How",
-    content: `Hidden water leaks can cause extensive damage to your home while driving up utility bills. Early detection and repair can save thousands of dollars in water damage and prevent structural issues. Learn how to identify and locate hidden leaks throughout your home.
-
-Monitor Your Water Meter
-Turn off all water sources in your home and check your water meter. If the meter continues to run, you likely have a leak somewhere in your system. This simple test can quickly confirm the presence of hidden leaks.
-
-Check Your Water Bill for Unusual Increases
-Unexplained spikes in your water bill often indicate hidden leaks. Compare monthly usage over the past year to identify patterns or sudden increases that might signal leak problems.
-
-Inspect Walls and Ceilings for Water Damage
-Look for water stains, discoloration, peeling paint, or soft spots on walls and ceilings. These signs often indicate leaks within wall cavities or above ceiling areas that require immediate attention.
-
-Listen for Running Water
-In quiet moments, listen for the sound of running water when no fixtures are in use. Toilet leaks, pipe leaks, or dripping sounds can help you locate the source of hidden leaks.
-
-Use Food Coloring to Test Toilets
-Add food coloring to toilet tanks and wait 15 minutes. If colored water appears in the bowl without flushing, your toilet has an internal leak that wastes significant amounts of water.
-
-Check Under Sinks and Around Appliances
-Regularly inspect areas under sinks, around water heaters, washing machines, and dishwashers for signs of moisture, mold, or water damage. These locations are common sites for hidden leaks.
-
-Professional leak detection services use specialized equipment to locate hidden leaks without destructive searching, saving time and minimizing property damage during repairs.`,
-    excerpt: "Learn effective methods for finding hidden water leaks in your home, from water meter monitoring to visual inspections and professional detection services.",
-    image: "https://images.pexels.com/photos/8376298/pexels-photo-8376298.jpeg?auto=compress&cs=tinysrgb&w=800",
-    date: "30-Dec-2024",
-    author: "Plumbing Specialist",
-    category: "Plumbing",
-    tags: ["plumbing", "water leaks", "home maintenance", "detection"],
-    readTime: 4
+    id: '9',
+    title: 'Home Security System Maintenance Guide',
+    excerpt: 'Essential tips to keep your home security system functioning properly and protecting your family.',
+    content: [
+      'Your home security system is your first line of defense against intruders. Regular maintenance ensures it functions properly when you need it most.',
+      'A well-maintained security system provides peace of mind and may even qualify you for insurance discounts.',
+      'Test all sensors monthly',
+      'Walk through your home and test door sensors, window sensors, and motion detectors to ensure they\'re working.',
+      'Replace backup batteries',
+      'Most security devices have backup batteries that need replacement every 2-3 years.',
+      'Clean camera lenses regularly',
+      'Dirty lenses reduce image quality. Clean with appropriate materials to maintain clear footage.',
+      'Update system software',
+      'Keep your security system\'s firmware updated for the latest features and security patches.',
+      'Test alarm sounds',
+      'Ensure all sirens and alarms are loud enough to alert you and deter intruders.',
+      'Check cellular or internet connections',
+      'Modern systems rely on communication networks. Test connectivity regularly.',
+      'Trim vegetation around sensors',
+      'Overgrown plants can trigger false alarms or block sensor coverage.',
+      'Review user codes',
+      'Change access codes regularly and remove codes for former residents or employees.',
+      'Inspect control panels',
+      'Check for damage, loose connections, or error messages on your main control panel.',
+      'Professional system inspections',
+      'Annual professional inspections ensure all components work together properly.',
+      'Document system changes and keep user manuals accessible for reference.',
+      'PRNV Services offers security system installation, maintenance, and monitoring services to protect your home and family.',
+      'Consider upgrading older systems to take advantage of new technology and improved reliability.'
+    ],
+    category: 'SECURITY SYSTEMS',
+    date: 'Dec 14,2024',
+    image: 'https://images.pexels.com/photos/5380664/pexels-photo-5380664.jpeg?auto=compress&cs=tinysrgb&w=400',
+    heroImage: 'https://images.pexels.com/photos/5380664/pexels-photo-5380664.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['HOME SECURITY', 'SAFETY', 'SURVEILLANCE']
   },
   {
-    id: 10,
-    title: "How to Repair Laptop Screen Issues at Home",
-    content: `Laptop screen problems can range from minor display issues to complete screen failure. While some repairs require professional service, many common screen problems can be diagnosed and sometimes resolved at home with basic troubleshooting techniques.
-
-Identify the Type of Screen Problem
-Determine whether you're dealing with a software display issue, loose connection, or physical screen damage. Software issues often appear as distorted colors or resolution problems, while hardware issues manifest as cracks, dead pixels, or completely black screens.
-
-Try Basic Troubleshooting Steps
-Start with simple solutions like restarting your laptop, checking display brightness settings, and testing with an external monitor. If the external monitor works properly, the issue likely lies with your laptop's screen or display connection.
-
-Check Display Connections
-Loose display cables can cause flickering, color problems, or intermittent screen issues. While accessing internal connections requires technical skill, external connections to docking stations or monitors are easily checked and reconnected.
-
-Adjust Display Settings and Drivers
-Update graphics drivers through device manager or manufacturer websites. Incorrect display drivers can cause resolution problems, color issues, or screen flickering that appears to be hardware-related but is actually software-based.
-
-Assess Physical Damage
-Evaluate whether screen damage is superficial or affects functionality. Minor scratches may not require immediate repair, while cracks that spread or affect touch functionality need prompt attention to prevent further damage.
-
-Consider Repair Costs vs Replacement
-Compare professional repair costs with laptop replacement costs, especially for older machines. Screen replacement can be expensive, and it may be more economical to invest in a new laptop depending on your device's age and value.
-
-Professional diagnosis can accurately identify the problem and provide cost-effective repair solutions when home troubleshooting doesn't resolve the issue.`,
-    excerpt: "Troubleshoot common laptop screen issues at home with step-by-step guidance for identifying problems, basic repairs, and deciding when to seek professional help.",
-    image: "https://images.pexels.com/photos/5082579/pexels-photo-5082579.jpeg?auto=compress&cs=tinysrgb&w=800",
-    date: "30-Dec-2024",
-    author: "Tech Repair Specialist",
-    category: "Technology",
-    tags: ["laptop repair", "screen issues", "technology", "troubleshooting"],
-    readTime: 5
-  },
-  {
-    id: 11,
-    title: "5 Common Health Insurance Mistakes to Avoid",
-    content: `Health insurance is a critical financial safety net, but navigating its complexities can lead to costly mistakes. Understanding common pitfalls and how to avoid them can save money, ensure proper coverage, and prevent unexpected medical expenses.
-
-Not Understanding Your Plan's Network
-Many people assume their preferred doctors and hospitals are covered under their plan without verification. Out-of-network providers can result in significantly higher costs or complete lack of coverage. Always verify provider network status before scheduling appointments or procedures.
-
-Ignoring Preventive Care Benefits
-Most health insurance plans cover preventive care services at 100% with no deductible or copay requirements. Failing to utilize these benefits means missing opportunities for early disease detection and health maintenance while potentially facing higher costs later.
-
-Not Reviewing Plans During Open Enrollment
-Health insurance needs change over time due to life events, health conditions, or financial circumstances. Automatically renewing the same plan without reviewing alternatives may result in paying more for less suitable coverage.
-
-Failing to Understand Deductibles and Out-of-Pocket Maximums
-Many policyholders don't fully understand how deductibles, copays, and out-of-pocket maximums work together. This lack of understanding can lead to unexpected medical bills and poor financial planning for healthcare expenses.
-
-Not Keeping Detailed Records
-Maintaining organized records of medical expenses, insurance communications, and claim information is crucial for tracking benefits usage and resolving billing disputes. Poor record-keeping can result in paying incorrect charges or missing opportunities for reimbursement.
-
-Emergency Preparedness and Coverage
-Understanding how your plan handles emergency care, both in-network and out-of-network, helps you make informed decisions during medical emergencies when time is critical and options may be limited.
-
-Regular plan review and understanding of benefits ensures you maximize value while maintaining appropriate coverage for your health and financial situation.`,
-    excerpt: "Avoid costly health insurance mistakes by understanding network restrictions, preventive care benefits, plan reviews, deductibles, and the importance of detailed record-keeping.",
-    image: "https://images.pexels.com/photos/6823576/pexels-photo-6823576.jpeg?auto=compress&cs=tinysrgb&w=800",
-    date: "30-Dec-2024",
-    author: "Insurance Advisor",
-    category: "Insurance",
-    tags: ["health insurance", "financial planning", "healthcare", "insurance tips"],
-    readTime: 6
+    id: '10',
+    title: 'Kitchen Appliance Maintenance: Keep Everything Running Smoothly',
+    excerpt: 'Comprehensive guide to maintaining all your kitchen appliances for optimal performance.',
+    content: [
+      'Kitchen appliances work harder than most home equipment. Proper maintenance keeps them running efficiently and extends their lifespan significantly.',
+      'Regular appliance maintenance prevents expensive repairs and ensures food safety in your kitchen.',
+      'Refrigerator maintenance essentials',
+      'Clean coils every 6 months, check door seals, and maintain proper temperature settings between 35-38°F.',
+      'Dishwasher care tips',
+      'Clean the filter monthly, run cleaning cycles, and check spray arms for clogs.',
+      'Oven and range maintenance',
+      'Clean regularly, calibrate temperature, and check gas connections for safety.',
+      'Microwave upkeep',
+      'Clean the interior weekly, replace charcoal filters, and check door seals.',
+      'Garbage disposal care',
+      'Run cold water during use, avoid hard materials, and clean with ice and citrus peels.',
+      'Coffee maker maintenance',
+      'Descale monthly, replace filters, and clean all removable parts regularly.',
+      'Blender and food processor care',
+      'Clean immediately after use, check blade sharpness, and inspect seals.',
+      'Ice maker maintenance',
+      'Clean and sanitize every 6 months, replace filters, and check water lines.',
+      'Range hood cleaning',
+      'Clean or replace filters monthly and wipe down surfaces to prevent grease buildup.',
+      'Small appliance storage',
+      'Store properly to prevent damage and keep countertops clean and organized.',
+      'Energy efficiency tips can reduce utility bills while maintaining appliance performance.',
+      'PRNV Services provides appliance repair and maintenance for all major kitchen equipment brands.',
+      'Keep appliance manuals and warranty information in an easily accessible location for reference.'
+    ],
+    category: 'APPLIANCE MAINTENANCE',
+    date: 'Dec 12,2024',
+    image: 'https://images.pexels.com/photos/2062426/pexels-photo-2062426.jpeg?auto=compress&cs=tinysrgb&w=400',
+    heroImage: 'https://images.pexels.com/photos/2062426/pexels-photo-2062426.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['KITCHEN APPLIANCES', 'HOME MAINTENANCE', 'APPLIANCE CARE']
   }
 ];

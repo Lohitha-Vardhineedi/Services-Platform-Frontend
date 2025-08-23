@@ -39,6 +39,7 @@ import ReferralMain from '../components/referral/ReferralMain';
 import ReferralForm from '../components/referral/ReferralForm';
 import FAQ from '../components/homepage/FAQ';
 
+
 // Define types
 type UserRole = 'user' | 'technician';
 
@@ -204,6 +205,21 @@ const AppRoutes: React.FC = () => {
         <FAQ />
         </>
         } />
+      <Route path="/" element={<HomePage />} />
+      <Route path="/:categoryname/:cityname/:areaname-pincode" element={<SearchFilterPage />} />
+      <Route path="/categories" element={<CategoriesPage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/features" element={<KeyFeaturesPage />} />
+      <Route path="/franchise" element={<FranchisePage />} />
+      <Route path="/referral/code" element={<ReferralCodeInput />} />
+      <Route path="/referral" element={<ReferralMain />} />
+      <Route path='/referrals/form' element={<ReferralForm />} />
+            {/* <Route path="/referral/modal" element={<ReferralModal isOpen={true} onClose={false} />} /> */}
+      <Route path="/contact" element={<GuestBooking />} />
+      <Route path="/technicians/:categoryId" element={<ServicePage />} />
+      <Route path="/subscription" element={<SubscriptionPage />} />
+      <Route path="/subscription/:subscriptionId" element={<PlanDetailsPage />}/>
+      <Route path="*" element={<NotFoundPage />} />
 
       {/* Auth Routes - Login and Signup */}
       <Route element={<AuthLayout />}>
@@ -256,7 +272,6 @@ const AppRoutes: React.FC = () => {
           }
         />
       </Route>
-
       {/* Common Private Routes - Accessible to both authenticated users and technicians */}
       <Route
         path="/technicianById/:technicianId"
