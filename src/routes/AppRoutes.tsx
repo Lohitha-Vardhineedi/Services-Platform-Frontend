@@ -37,6 +37,7 @@ import ReferralCodeInput from '../components/referral/ReferralCodeInput';
 import ReferralModal from '../components/referral/ReferralModal';
 import ReferralMain from '../components/referral/ReferralMain';
 import ReferralForm from '../components/referral/ReferralForm';
+import FAQ from '../components/homepage/FAQ';
 
 // Define types
 type UserRole = 'user' | 'technician';
@@ -78,7 +79,7 @@ const AppRoutes: React.FC = () => {
         element={
           <>
             <Helmet>
-              <title>Home - Your Service Platform</title>
+              <title>PRNV Services - Book Professional Services to Your Doorstep</title>
               <meta name="description" content="Welcome to our service platform, connecting users with top technicians for all your needs." />
             </Helmet>
             <HomePage />
@@ -94,7 +95,7 @@ const AppRoutes: React.FC = () => {
         element={
           <>
             <Helmet>
-              <title>Categories - Explore Services</title>
+              <title>List of all Categories providing by PRNV Services</title>
               <meta name="description" content="Browse a wide range of service categories to find the perfect technician for your needs." />
             </Helmet>
             <CategoriesPage />
@@ -106,7 +107,7 @@ const AppRoutes: React.FC = () => {
         element={
           <>
             <Helmet>
-              <title>About Us - Your Service Platform</title>
+              <title>More information About PRNV Services</title>
               <meta name="description" content="Learn more about our mission to connect users with reliable technicians." />
             </Helmet>
             <AboutPage />
@@ -154,7 +155,7 @@ const AppRoutes: React.FC = () => {
         element={
           <>
             <Helmet>
-              <title>Contact Us - Guest Booking</title>
+              <title>For more details contact PRNV Services</title>
               <meta name="description" content="Get in touch with us or book a service as a guest." />
             </Helmet>
             <GuestBooking />
@@ -170,7 +171,7 @@ const AppRoutes: React.FC = () => {
         element={
           <>
             <Helmet>
-              <title>Subscriptions - Choose Your Plan</title>
+              <title>PRNV Services subscription plans</title>
               <meta name="description" content="Explore our subscription plans to find the best fit for your needs." />
             </Helmet>
             <SubscriptionPage />
@@ -193,6 +194,16 @@ const AppRoutes: React.FC = () => {
           </>
         }
       />
+
+      <Route path="/faq" element={
+        <>
+        <Helmet>
+          <title>Frequently asked questions</title>
+          <meta name="description" content="Find answers to common questions about PRNV Services." />
+        </Helmet>
+        <FAQ />
+        </>
+        } />
 
       {/* Auth Routes - Login and Signup */}
       <Route element={<AuthLayout />}>
@@ -261,6 +272,10 @@ const AppRoutes: React.FC = () => {
         path="/cart"
         element={
           <PrivateRoute allowedRoles={['user']}>
+            <Helmet>
+              <title>Cart - PRNV Services</title>
+              <meta name="description" content="View and manage your cart items." />
+            </Helmet>
             <CartPage />
           </PrivateRoute>
         }
@@ -269,6 +284,10 @@ const AppRoutes: React.FC = () => {
         path="/editProfile"
         element={
           <PrivateRoute allowedRoles={['user']}>
+            <Helmet>
+              <title>Edit Profile - PRNV Services</title>
+              <meta name="description" content="Edit your profile information and preferences." />
+            </Helmet>
             <ProfileEditPage />
           </PrivateRoute>
         }
@@ -277,6 +296,10 @@ const AppRoutes: React.FC = () => {
         path="/transactions"
         element={
           <PrivateRoute allowedRoles={['user']}>
+            <Helmet>
+              <title>User Transactions - PRNV Services</title>
+              <meta name="description" content="View your transaction history and details." />
+            </Helmet>
             <TransactionPage />
           </PrivateRoute>
         }
@@ -287,6 +310,10 @@ const AppRoutes: React.FC = () => {
         path="/technician/dashboard"
         element={
           <PrivateRoute allowedRoles={['technician']}>
+            <Helmet>
+              <title>Technician Panel - PRNV Services</title>
+              <meta name="description" content="Manage your services and bookings from the technician panel." />
+            </Helmet>
             <TechnicianPanel />
           </PrivateRoute>
         }
@@ -295,7 +322,11 @@ const AppRoutes: React.FC = () => {
         path="/technician/dashboardById"
         element={
           <PrivateRoute allowedRoles={['technician']}>
-            <TechnicianDashboard data={null} />
+            <Helmet>
+              <title>Technician Dashboard - PRNV Services</title>
+              <meta name="description" content="View your technician dashboard for an overview of your services and performance." />
+            </Helmet>
+            <TechnicianDashboard />
           </PrivateRoute>
         }
       />
@@ -303,6 +334,10 @@ const AppRoutes: React.FC = () => {
         path="/technician/photos"
         element={
           <PrivateRoute allowedRoles={['technician']}>
+            <Helmet>
+              <title>Technician Photos - PRNV Services</title>
+              <meta name="description" content="Manage your photos and media." />
+            </Helmet>
             <TechnicianPhotos />
           </PrivateRoute>
         }
@@ -311,6 +346,10 @@ const AppRoutes: React.FC = () => {
         path="/technician/services"
         element={
           <PrivateRoute allowedRoles={['technician']}>
+            <Helmet>
+              <title>Technician Services - PRNV Services</title>
+              <meta name="description" content="Manage your services and offerings." />
+            </Helmet>
             <TechnicianServices />
           </PrivateRoute>
         }
@@ -319,6 +358,10 @@ const AppRoutes: React.FC = () => {
         path="/technician/reviews"
         element={
           <PrivateRoute allowedRoles={['technician']}>
+            <Helmet>
+              <title>Technician Reviews - PRNV Services</title>
+              <meta name="description" content="View and manage your reviews and ratings." />
+            </Helmet>
             <TechnicianReviews />
           </PrivateRoute>
         }
@@ -327,6 +370,10 @@ const AppRoutes: React.FC = () => {
         path="/technician/profile"
         element={
           <PrivateRoute allowedRoles={['technician']}>
+            <Helmet>
+              <title>Technician Profile - PRNV Services</title>
+              <meta name="description" content="View and edit your profile information." />
+            </Helmet>
             <TechnicianProfile />
           </PrivateRoute>
         }
@@ -335,6 +382,10 @@ const AppRoutes: React.FC = () => {
         path="/technician/subscription"
         element={
           <PrivateRoute allowedRoles={['technician']}>
+            <Helmet>
+              <title>Technician Subscription - PRNV Services</title>
+              <meta name="description" content="Manage your subscription and billing information." />
+            </Helmet>
             <TechnicianSubscription />
           </PrivateRoute>
         }
@@ -343,6 +394,10 @@ const AppRoutes: React.FC = () => {
         path="/technician/plans"
         element={
           <PrivateRoute allowedRoles={['technician']}>
+            <Helmet>
+              <title>Technician Subscription Plans - PRNV Services</title>
+              <meta name="description" content="Explore our subscription plans designed for technicians." />
+            </Helmet>
             <TechnicianSubscriptionPlans />
           </PrivateRoute>
         }
@@ -351,6 +406,10 @@ const AppRoutes: React.FC = () => {
         path="/buyPlan"
         element={
           <PrivateRoute allowedRoles={['technician']}>
+            <Helmet>
+              <title>Buy Subscription - PRNV Services</title>
+              <meta name="description" content="Purchase a subscription plan that suits your needs." />
+            </Helmet>
             <BuySubscription />
           </PrivateRoute>
         }
@@ -359,6 +418,10 @@ const AppRoutes: React.FC = () => {
         path="/technician/transactions"
         element={
           <PrivateRoute allowedRoles={['technician']}>
+            <Helmet>
+              <title>Technician Transactions - PRNV Services</title>
+              <meta name="description" content="View your transaction history and details." />
+            </Helmet>
             <TechnicianTransactions />
           </PrivateRoute>
         }
@@ -368,6 +431,10 @@ const AppRoutes: React.FC = () => {
         path="/referral"
         element={
           <PrivateRoute allowedRoles={['user', 'technician']}>
+            <Helmet>
+              <title>Referral - PRNV Services</title>
+              <meta name="description" content="Refer a friend and earn rewards with PRNV Services." />
+            </Helmet>
             <ReferralMain />
           </PrivateRoute>
         }
@@ -376,6 +443,10 @@ const AppRoutes: React.FC = () => {
         path="/referral/form"
         element={
           <PrivateRoute allowedRoles={['user', 'technician']}>
+            <Helmet>
+              <title>Referral Form - PRNV Services</title>
+              <meta name="description" content="Refer a friend and earn rewards with PRNV Services." />
+            </Helmet>
             <ReferralForm />
           </PrivateRoute>
         }

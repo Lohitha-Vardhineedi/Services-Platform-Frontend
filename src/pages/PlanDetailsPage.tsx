@@ -1,5 +1,6 @@
 import { useLocation, useParams } from 'react-router-dom';
 import { Plan } from './SubscriptionPage';
+import { Helmet } from 'react-helmet-async';
 
 
 const PlanDetailsPage: React.FC = () => {
@@ -20,6 +21,10 @@ const PlanDetailsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-pink-50 py-12 px-4">
+      <Helmet>
+        <title>{subscription.name} - PRNV Services</title>
+        <meta name="description" content={subscription.description || "Explore our subscription plans and find the best fit for your needs."} />
+      </Helmet>
       <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl p-8 md:p-12">
         <div className="text-center mb-3">
            {/* <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${subscription?.color} flex items-center justify-center mx-auto mb-4 shadow-md`}>

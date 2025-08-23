@@ -3,6 +3,7 @@ import ProfileCard from '../components/profile/ProfileCard'
 import AllFilters from '../components/profile/AllFilters'
 import { getAllTechnicianDetails } from '../api/apiMethods'
 import { useParams } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 
 // types/technician.ts
 export interface Technician {
@@ -74,6 +75,10 @@ console.log("id", technicianId)
 
   return (
     <div className='max-w-7xl mx-auto p-4'>
+      <Helmet>
+        <title>{technicianDetails.technician.username}'s Profile - PRNV Services</title>
+        <meta name="description" content={`View the profile of ${technicianDetails.technician.username}, a top technician on PRNV Services.`} />
+      </Helmet>
       <ProfileCard technician={technicianDetails.technician}/>
       <AllFilters  services={technicianDetails.services}
         technicianImages={technicianDetails?.technicianImages?.imageUrl}

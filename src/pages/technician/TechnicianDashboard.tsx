@@ -15,17 +15,9 @@ import StatsCard from "../../components/techDashboard/StatusCards";
 import { getServicesByTechId } from "../../api/apiMethods";
 import AvgRatingChart from "../../components/techDashboard/AvgRating";
 
-type Props = {
-  data: TechnicianProfileData | null;
-};
-
-const TechnicianDashboard: React.FC<Props> = ({ data }) => {
+const TechnicianDashboard: React.FC = () => {
   const [role, setRole] = useState<string | null>(null);
-  const totalServicePrice =
-    data?.technicianProfile?.services?.reduce(
-      (sum, s) => sum + (s.servicePrice || 0),
-      0
-    ) ?? 300;
+  const totalServicePrice = 300;
   const [services, setServices] = useState<any[]>([]); // Adjust type as needed
   const [serviceCount, setServiceCount] = useState<number>(0); // State for count
 
