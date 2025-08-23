@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Copy, Check, Users, Gift, CreditCard, Phone, MapPin, Building2, IndianRupee } from 'lucide-react';
+import { X, Copy, Check, Users, Gift, CreditCard, Phone, MapPin, Building2, IndianRupee, Star } from 'lucide-react';
 
 interface User {
   username: string;
@@ -65,11 +65,13 @@ function ReferralPanel({ isOpen, onClose }: ReferralPanelProps) {
     setUser(parsedUser);
 
     // Check if user already has referral data
-    const storedReferralData = localStorage.getItem(`referral_${parsedUser?.username}`);
-    if (storedReferralData) {
-      const referralInfo: ReferralData = JSON.parse(storedReferralData);
-      setReferralData(referralInfo);
-      setCurrentStep('dashboard');
+    if (parsedUser) {
+      const storedReferralData = localStorage.getItem(`referral_${parsedUser.username}`);
+      if (storedReferralData) {
+        const referralInfo: ReferralData = JSON.parse(storedReferralData);
+        setReferralData(referralInfo);
+        setCurrentStep('dashboard');
+      }
     }
   }, []);
 
@@ -79,7 +81,7 @@ function ReferralPanel({ isOpen, onClose }: ReferralPanelProps) {
   };
 
   const generateReferralCode = (username: string) => {
-    const prefix = 'REF';
+    const prefix = 'PRNV';
     const timestamp = Date.now().toString().slice(-6);
     const userCode = username.slice(0, 3).toUpperCase();
     return `${prefix}${userCode}${timestamp}`;
@@ -124,16 +126,16 @@ function ReferralPanel({ isOpen, onClose }: ReferralPanelProps) {
 
   return (
     <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between rounded-t-xl">
-          <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <Gift className="w-6 h-6 text-blue-600" />
-            Referral Program
+        <div className="sticky top-0 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-4 flex items-center justify-between rounded-t-2xl">
+          <h2 className="text-2xl font-bold flex items-center gap-3">
+            <Gift className="w-8 h-8" />
+            PRNV Referral Program
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
+            className="text-white hover:text-gray-200 transition-colors p-1"
           >
             <X className="w-6 h-6" />
           </button>
@@ -142,29 +144,31 @@ function ReferralPanel({ isOpen, onClose }: ReferralPanelProps) {
         <div className="p-6">
           {!user ? (
             <div className="text-center py-12">
-              <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Login Required</h3>
-              <p className="text-gray-600 mb-6">Please login to access the referral program</p>
+              <Users className="w-20 h-20 text-gray-400 mx-auto mb-6" />
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Login Required</h3>
+              <p className="text-gray-600 mb-8 text-lg">Please login to access the referral program and start earning!</p>
               <button
                 onClick={onClose}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium text-lg transition-colors"
               >
                 Close
               </button>
             </div>
           ) : !isEligibleForReferral() ? (
             <div className="text-center py-12">
-              <X className="w-16 h-16 text-red-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Not Eligible</h3>
-              <p className="text-gray-600 mb-2">
-                {user.role === 'technician' && "Technicians are not eligible for the referral program."}
-                {user.role === 'franchise' && "Franchise partners are not eligible for the referral program."}
-                {user.role === 'staff' && "PRNV staff members are not eligible for the referral program."}
-              </p>
-              <p className="text-sm text-gray-500 mb-6">Only regular users can participate as referral partners.</p>
+              <X className="w-20 h-20 text-red-400 mx-auto mb-6" />
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Not Eligible</h3>
+              <div className="bg-red-50 border border-red-200 rounded-xl p-6 mb-6">
+                <p className="text-red-700 text-lg mb-2">
+                  {user.role === 'technician' && "Technicians cannot participate in the referral program."}
+                  {user.role === 'franchise' && "Franchise partners cannot participate in the referral program."}
+                  {user.role === 'staff' && "PRNV staff members cannot participate in the referral program."}
+                </p>
+                <p className="text-red-600 font-medium">Only regular users can become referral partners.</p>
+              </div>
               <button
                 onClick={onClose}
-                className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg font-medium"
+                className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 rounded-lg font-medium text-lg transition-colors"
               >
                 Close
               </button>
@@ -173,69 +177,89 @@ function ReferralPanel({ isOpen, onClose }: ReferralPanelProps) {
             <>
               {/* Welcome Step */}
               {currentStep === 'welcome' && (
-                <div className="max-w-3xl mx-auto">
-                  <div className="text-center mb-8">
-                    <div className="bg-gradient-to-r from-blue-600 to-purple-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Gift className="w-10 h-10 text-white" />
+                <div className="max-w-4xl mx-auto">
+                  <div className="text-center mb-10">
+                    <div className="bg-gradient-to-r from-blue-600 to-purple-600 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <Gift className="w-12 h-12 text-white" />
                     </div>
-                    <h3 className="text-3xl font-bold text-gray-900 mb-4">Join Our Referral Program</h3>
-                    <p className="text-lg text-gray-600 mb-8">
-                      Earn money by referring technicians and franchise partners to our platform
+                    <h3 className="text-4xl font-bold text-gray-900 mb-4">Start Earning with Referrals!</h3>
+                    <p className="text-xl text-gray-600 mb-8">
+                      Join thousands of users earning money by referring technicians and franchise partners
                     </p>
                   </div>
 
-                  {/* Earning Structure */}
-                  <div className="grid md:grid-cols-2 gap-6 mb-8">
-                    <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl border border-green-200">
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="bg-green-600 w-10 h-10 rounded-lg flex items-center justify-center">
-                          <Users className="w-5 h-5 text-white" />
+                  {/* Earning Cards */}
+                  <div className="grid md:grid-cols-2 gap-8 mb-10">
+                    <div className="bg-gradient-to-br from-green-50 to-emerald-100 p-8 rounded-2xl border-2 border-green-200 transform hover:scale-105 transition-transform">
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="bg-green-600 w-16 h-16 rounded-2xl flex items-center justify-center">
+                          <Users className="w-8 h-8 text-white" />
                         </div>
-                        <h4 className="text-lg font-semibold text-green-800">Technician Referral</h4>
+                        <div>
+                          <h4 className="text-2xl font-bold text-green-800">Technician Referral</h4>
+                          <p className="text-green-600">One-time earning</p>
+                        </div>
                       </div>
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <IndianRupee className="w-4 h-4 text-green-600" />
-                          <span className="text-sm text-green-700">₹250 per referral</span>
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-3">
+                          <IndianRupee className="w-6 h-6 text-green-600" />
+                          <span className="text-2xl font-bold text-green-700">₹250</span>
                         </div>
-                        <p className="text-sm text-green-600">Earn when they complete their first subscription payment</p>
+                        <p className="text-green-600 text-lg">Earn when they complete their first subscription payment</p>
                       </div>
                     </div>
 
-                    <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-xl border border-purple-200">
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="bg-purple-600 w-10 h-10 rounded-lg flex items-center justify-center">
-                          <Building2 className="w-5 h-5 text-white" />
+                    <div className="bg-gradient-to-br from-purple-50 to-violet-100 p-8 rounded-2xl border-2 border-purple-200 transform hover:scale-105 transition-transform">
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="bg-purple-600 w-16 h-16 rounded-2xl flex items-center justify-center">
+                          <Building2 className="w-8 h-8 text-white" />
                         </div>
-                        <h4 className="text-lg font-semibold text-purple-800">Franchise Referral</h4>
+                        <div>
+                          <h4 className="text-2xl font-bold text-purple-800">Franchise Referral</h4>
+                          <p className="text-purple-600">Recurring earning</p>
+                        </div>
                       </div>
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <IndianRupee className="w-4 h-4 text-purple-600" />
-                          <span className="text-sm text-purple-700">₹300 per payment</span>
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-3">
+                          <IndianRupee className="w-6 h-6 text-purple-600" />
+                          <span className="text-2xl font-bold text-purple-700">₹300</span>
                         </div>
-                        <p className="text-sm text-purple-600">Earn on every subscription payment they make</p>
+                        <p className="text-purple-600 text-lg">Earn on every subscription payment they make</p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-blue-50 p-6 rounded-xl border border-blue-200 mb-8">
-                    <h4 className="font-semibold text-blue-900 mb-2">How it works:</h4>
-                    <ol className="list-decimal list-inside space-y-2 text-blue-800">
-                      <li>Fill out the referral partner form</li>
-                      <li>Get your unique referral code</li>
-                      <li>Share your code with potential technicians and franchises</li>
-                      <li>Earn money when they register and make payments</li>
-                      <li>Receive payments directly to your bank account</li>
-                    </ol>
+                  {/* How it Works */}
+                  <div className="bg-gradient-to-r from-blue-50 to-indigo-100 p-8 rounded-2xl border border-blue-200 mb-10">
+                    <h4 className="text-2xl font-bold text-blue-900 mb-6 flex items-center gap-3">
+                      <Star className="w-6 h-6 text-yellow-500" />
+                      How it works - Simple as 1-2-3!
+                    </h4>
+                    <div className="grid md:grid-cols-3 gap-6">
+                      <div className="text-center">
+                        <div className="bg-blue-600 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">1</div>
+                        <h5 className="font-semibold text-blue-900 mb-2">Fill Registration Form</h5>
+                        <p className="text-blue-700">Complete your profile with contact and bank details</p>
+                      </div>
+                      <div className="text-center">
+                        <div className="bg-blue-600 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">2</div>
+                        <h5 className="font-semibold text-blue-900 mb-2">Get Your Code</h5>
+                        <p className="text-blue-700">Receive your unique referral code instantly</p>
+                      </div>
+                      <div className="text-center">
+                        <div className="bg-blue-600 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">3</div>
+                        <h5 className="font-semibold text-blue-900 mb-2">Start Earning</h5>
+                        <p className="text-blue-700">Share your code and earn money on every successful referral</p>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="text-center">
                     <button
                       onClick={() => setCurrentStep('form')}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors"
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-12 py-4 rounded-xl text-xl font-bold transition-all transform hover:scale-105 shadow-lg"
                     >
-                      Become a Referral Partner
+                      Become a Referral Partner Now!
                     </button>
                   </div>
                 </div>
@@ -243,44 +267,44 @@ function ReferralPanel({ isOpen, onClose }: ReferralPanelProps) {
 
               {/* Form Step */}
               {currentStep === 'form' && (
-                <div className="max-w-2xl mx-auto">
-                  <div className="mb-6">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Referral Partner Application</h3>
-                    <p className="text-gray-600">Please fill out all required information to become a referral partner</p>
+                <div className="max-w-3xl mx-auto">
+                  <div className="mb-8">
+                    <h3 className="text-3xl font-bold text-gray-900 mb-3">Referral Partner Registration</h3>
+                    <p className="text-gray-600 text-lg">Fill out the form below to start your referral journey</p>
                   </div>
 
-                  <form onSubmit={handleFormSubmit} className="space-y-6">
+                  <form onSubmit={handleFormSubmit} className="space-y-8">
                     {/* Personal Information */}
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                        <Users className="w-5 h-5 text-blue-600" />
+                    <div className="bg-gradient-to-r from-gray-50 to-blue-50 p-6 rounded-xl border border-gray-200">
+                      <h4 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                        <Users className="w-6 h-6 text-blue-600" />
                         Personal Information
                       </h4>
                       
-                      <div className="grid md:grid-cols-2 gap-4">
+                      <div className="grid md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
                             Username
                           </label>
                           <input
                             type="text"
                             value={user.username}
                             disabled
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-500"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100 text-gray-500 font-medium"
                           />
                         </div>
                         
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
                             Phone Number *
                           </label>
                           <div className="relative">
-                            <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                            <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                             <input
                               type="tel"
                               value={formData.phoneNumber}
                               onChange={(e) => setFormData({...formData, phoneNumber: e.target.value})}
-                              className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                               placeholder="Enter your phone number"
                               required
                             />
@@ -290,15 +314,15 @@ function ReferralPanel({ isOpen, onClose }: ReferralPanelProps) {
                     </div>
 
                     {/* Address Information */}
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                        <MapPin className="w-5 h-5 text-blue-600" />
+                    <div className="bg-gradient-to-r from-gray-50 to-green-50 p-6 rounded-xl border border-gray-200">
+                      <h4 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                        <MapPin className="w-6 h-6 text-green-600" />
                         Address Information
                       </h4>
                       
-                      <div className="space-y-4">
+                      <div className="space-y-6">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
                             Street Address *
                           </label>
                           <input
@@ -308,15 +332,15 @@ function ReferralPanel({ isOpen, onClose }: ReferralPanelProps) {
                               ...formData, 
                               address: {...formData.address, street: e.target.value}
                             })}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Enter your street address"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                            placeholder="Enter your complete street address"
                             required
                           />
                         </div>
                         
-                        <div className="grid md:grid-cols-3 gap-4">
+                        <div className="grid md:grid-cols-3 gap-6">
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">
                               City *
                             </label>
                             <input
@@ -326,14 +350,14 @@ function ReferralPanel({ isOpen, onClose }: ReferralPanelProps) {
                                 ...formData, 
                                 address: {...formData.address, city: e.target.value}
                               })}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                               placeholder="City"
                               required
                             />
                           </div>
                           
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">
                               State *
                             </label>
                             <input
@@ -343,14 +367,14 @@ function ReferralPanel({ isOpen, onClose }: ReferralPanelProps) {
                                 ...formData, 
                                 address: {...formData.address, state: e.target.value}
                               })}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                               placeholder="State"
                               required
                             />
                           </div>
                           
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">
                               PIN Code *
                             </label>
                             <input
@@ -360,7 +384,7 @@ function ReferralPanel({ isOpen, onClose }: ReferralPanelProps) {
                                 ...formData, 
                                 address: {...formData.address, pincode: e.target.value}
                               })}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                               placeholder="PIN Code"
                               required
                             />
@@ -370,15 +394,15 @@ function ReferralPanel({ isOpen, onClose }: ReferralPanelProps) {
                     </div>
 
                     {/* Bank Details */}
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                        <CreditCard className="w-5 h-5 text-blue-600" />
-                        Bank Details
+                    <div className="bg-gradient-to-r from-gray-50 to-purple-50 p-6 rounded-xl border border-gray-200">
+                      <h4 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                        <CreditCard className="w-6 h-6 text-purple-600" />
+                        Bank Details for Payments
                       </h4>
                       
-                      <div className="grid md:grid-cols-2 gap-4">
+                      <div className="grid md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
                             Account Holder Name *
                           </label>
                           <input
@@ -388,14 +412,14 @@ function ReferralPanel({ isOpen, onClose }: ReferralPanelProps) {
                               ...formData, 
                               bankDetails: {...formData.bankDetails, accountHolderName: e.target.value}
                             })}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                             placeholder="Account holder name"
                             required
                           />
                         </div>
                         
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
                             Bank Name *
                           </label>
                           <input
@@ -405,14 +429,14 @@ function ReferralPanel({ isOpen, onClose }: ReferralPanelProps) {
                               ...formData, 
                               bankDetails: {...formData.bankDetails, bankName: e.target.value}
                             })}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                             placeholder="Bank name"
                             required
                           />
                         </div>
                         
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
                             Account Number *
                           </label>
                           <input
@@ -422,14 +446,14 @@ function ReferralPanel({ isOpen, onClose }: ReferralPanelProps) {
                               ...formData, 
                               bankDetails: {...formData.bankDetails, accountNumber: e.target.value}
                             })}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                             placeholder="Account number"
                             required
                           />
                         </div>
                         
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
                             IFSC Code *
                           </label>
                           <input
@@ -439,7 +463,7 @@ function ReferralPanel({ isOpen, onClose }: ReferralPanelProps) {
                               ...formData, 
                               bankDetails: {...formData.bankDetails, ifscCode: e.target.value.toUpperCase()}
                             })}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                             placeholder="IFSC code"
                             required
                           />
@@ -447,17 +471,17 @@ function ReferralPanel({ isOpen, onClose }: ReferralPanelProps) {
                       </div>
                     </div>
 
-                    <div className="flex gap-4 pt-4">
+                    <div className="flex gap-6 pt-6">
                       <button
                         type="button"
                         onClick={() => setCurrentStep('welcome')}
-                        className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                        className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
                       >
                         Back
                       </button>
                       <button
                         type="submit"
-                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                        className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-bold transition-all transform hover:scale-105"
                       >
                         Create Referral Account
                       </button>
@@ -468,86 +492,104 @@ function ReferralPanel({ isOpen, onClose }: ReferralPanelProps) {
 
               {/* Dashboard Step */}
               {currentStep === 'dashboard' && referralData && (
-                <div className="max-w-4xl mx-auto">
+                <div className="max-w-5xl mx-auto">
                   <div className="mb-8">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Your Referral Dashboard</h3>
-                    <p className="text-gray-600">Welcome back, {referralData.username}! Here's your referral overview.</p>
+                    <h3 className="text-3xl font-bold text-gray-900 mb-3">Your Referral Dashboard</h3>
+                    <p className="text-gray-600 text-lg">Welcome back, {referralData.username}! Track your earnings and referrals.</p>
                   </div>
 
                   {/* Referral Code Section */}
-                  <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-xl text-white mb-8">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h4 className="text-lg font-semibold mb-2">Your Referral Code</h4>
-                        <div className="flex items-center gap-4">
-                          <code className="bg-white/20 px-4 py-2 rounded-lg text-xl font-mono tracking-wider">
+                  <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-8 rounded-2xl text-white mb-8 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
+                    <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-12 -mb-12"></div>
+                    <div className="relative z-10">
+                      <h4 className="text-2xl font-bold mb-4 flex items-center gap-3">
+                        <Gift className="w-8 h-8" />
+                        Your Referral Code
+                      </h4>
+                      <div className="flex items-center gap-6 flex-wrap">
+                        <div className="bg-white/20 backdrop-blur-sm px-6 py-4 rounded-xl">
+                          <code className="text-3xl font-mono font-bold tracking-wider">
                             {referralData.referralCode}
                           </code>
-                          <button
-                            onClick={copyReferralCode}
-                            className="bg-white/20 hover:bg-white/30 px-3 py-2 rounded-lg transition-colors flex items-center gap-2"
-                          >
-                            {copiedCode ? (
-                              <>
-                                <Check className="w-4 h-4" />
-                                Copied!
-                              </>
-                            ) : (
-                              <>
-                                <Copy className="w-4 h-4" />
-                                Copy
-                              </>
-                            )}
-                          </button>
                         </div>
+                        <button
+                          onClick={copyReferralCode}
+                          className="bg-white/20 hover:bg-white/30 backdrop-blur-sm px-6 py-4 rounded-xl transition-all flex items-center gap-3 font-medium"
+                        >
+                          {copiedCode ? (
+                            <>
+                              <Check className="w-5 h-5" />
+                              Copied!
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-5 h-5" />
+                              Copy Code
+                            </>
+                          )}
+                        </button>
                       </div>
-                      <Gift className="w-16 h-16 opacity-20" />
                     </div>
                   </div>
 
                   {/* Stats Grid */}
                   <div className="grid md:grid-cols-3 gap-6 mb-8">
-                    <div className="bg-green-50 p-6 rounded-xl border border-green-200">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="bg-green-600 w-10 h-10 rounded-lg flex items-center justify-center">
-                          <IndianRupee className="w-5 h-5 text-white" />
+                    <div className="bg-gradient-to-br from-green-50 to-emerald-100 p-6 rounded-2xl border-2 border-green-200">
+                      <div className="flex items-center gap-4 mb-4">
+                        <div className="bg-green-600 w-12 h-12 rounded-xl flex items-center justify-center">
+                          <IndianRupee className="w-6 h-6 text-white" />
                         </div>
-                        <h4 className="font-semibold text-green-800">Total Earnings</h4>
+                        <h4 className="font-bold text-green-800 text-lg">Total Earnings</h4>
                       </div>
-                      <p className="text-2xl font-bold text-green-600">₹{referralData.totalEarnings}</p>
+                      <p className="text-3xl font-bold text-green-600">₹{referralData.totalEarnings}</p>
                     </div>
 
-                    <div className="bg-blue-50 p-6 rounded-xl border border-blue-200">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="bg-blue-600 w-10 h-10 rounded-lg flex items-center justify-center">
-                          <Users className="w-5 h-5 text-white" />
+                    <div className="bg-gradient-to-br from-blue-50 to-cyan-100 p-6 rounded-2xl border-2 border-blue-200">
+                      <div className="flex items-center gap-4 mb-4">
+                        <div className="bg-blue-600 w-12 h-12 rounded-xl flex items-center justify-center">
+                          <Users className="w-6 h-6 text-white" />
                         </div>
-                        <h4 className="font-semibold text-blue-800">Technicians Referred</h4>
+                        <h4 className="font-bold text-blue-800 text-lg">Technicians</h4>
                       </div>
-                      <p className="text-2xl font-bold text-blue-600">{referralData.referralCount.technicians}</p>
+                      <p className="text-3xl font-bold text-blue-600">{referralData.referralCount.technicians}</p>
                     </div>
 
-                    <div className="bg-purple-50 p-6 rounded-xl border border-purple-200">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="bg-purple-600 w-10 h-10 rounded-lg flex items-center justify-center">
-                          <Building2 className="w-5 h-5 text-white" />
+                    <div className="bg-gradient-to-br from-purple-50 to-violet-100 p-6 rounded-2xl border-2 border-purple-200">
+                      <div className="flex items-center gap-4 mb-4">
+                        <div className="bg-purple-600 w-12 h-12 rounded-xl flex items-center justify-center">
+                          <Building2 className="w-6 h-6 text-white" />
                         </div>
-                        <h4 className="font-semibold text-purple-800">Franchises Referred</h4>
+                        <h4 className="font-bold text-purple-800 text-lg">Franchises</h4>
                       </div>
-                      <p className="text-2xl font-bold text-purple-600">{referralData.referralCount.franchises}</p>
+                      <p className="text-3xl font-bold text-purple-600">{referralData.referralCount.franchises}</p>
                     </div>
                   </div>
 
                   {/* Instructions */}
-                  <div className="bg-yellow-50 p-6 rounded-xl border border-yellow-200">
-                    <h4 className="font-semibold text-yellow-800 mb-3">How to use your referral code:</h4>
-                    <ol className="list-decimal list-inside space-y-2 text-yellow-700">
-                      <li>Share your referral code <strong>{referralData.referralCode}</strong> with potential technicians and franchises</li>
-                      <li>Ask them to enter your code during their registration process</li>
-                      <li>You'll earn ₹250 for each technician's first subscription payment</li>
-                      <li>You'll earn ₹300 for each franchise subscription payment (recurring)</li>
-                      <li>Earnings will be transferred to your registered bank account</li>
-                    </ol>
+                  <div className="bg-gradient-to-r from-yellow-50 to-orange-100 p-8 rounded-2xl border border-yellow-200">
+                    <h4 className="text-2xl font-bold text-yellow-800 mb-6 flex items-center gap-3">
+                      <Star className="w-6 h-6 text-yellow-600" />
+                      How to Share Your Referral Code
+                    </h4>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <h5 className="font-bold text-yellow-800 mb-3">For Technicians (₹250 each):</h5>
+                        <ul className="space-y-2 text-yellow-700">
+                          <li>• Share your code: <strong>{referralData.referralCode}</strong></li>
+                          <li>• Ask them to enter it during registration</li>
+                          <li>• You earn ₹250 on their first subscription payment</li>
+                        </ul>
+                      </div>
+                      <div>
+                        <h5 className="font-bold text-yellow-800 mb-3">For Franchises (₹300 recurring):</h5>
+                        <ul className="space-y-2 text-yellow-700">
+                          <li>• Share your code: <strong>{referralData.referralCode}</strong></li>
+                          <li>• Ask them to enter it during registration</li>
+                          <li>• You earn ₹300 on every subscription payment</li>
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
