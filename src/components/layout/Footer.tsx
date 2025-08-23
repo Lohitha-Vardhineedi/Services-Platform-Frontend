@@ -9,6 +9,7 @@ import {
   Linkedin,
   Instagram,
 } from "lucide-react";
+import { FaPinterest } from "react-icons/fa"; // Pinterest icon
 import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
@@ -75,19 +76,20 @@ const Footer: React.FC = () => {
               <div className="flex items-start">
                 <MapPin className="w-5 h-5 text-blue-700 mr-3 mt-1 flex-shrink-0" />
                 <p className="text-gray-600 text-sm">
-                  301, Sai Manor Apartments, Near Umesh Chandra Statue, Beside
-                  Metro Station S.R. Nagar, Hyderabad - 500038
+                  PRNV SERVICES, Flat No. 301, Sai Manor Apartment, H.NO. 7-1-621/10, Near Umesh Chandra Statue, IAS Quarters Lane, SR Nagar, Hyderabad, Telangana, 500038
+
                 </p>
               </div>
 
               <div className="flex items-center">
                 <Phone className="w-5 h-5 text-blue-700 mr-3" />
-                <p className="text-gray-600">9059789177, 9603558369</p>
+                <p className="text-gray-600">9603558369</p>
               </div>
 
               <div className="flex items-center">
                 <Mail className="w-5 h-5 text-blue-700 mr-3" />
-                <p className="text-gray-600">prnvservices@gmail.com</p>
+                <p className="text-gray-600">info@prnvservices.com
+</p>
               </div>
             </div>
           </div>
@@ -99,34 +101,52 @@ const Footer: React.FC = () => {
             </h4>
             <div className="flex space-x-4">
               <a
-                href="#"
+                href="https://www.facebook.com/prnvservices/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors"
               >
                 <Facebook className="w-5 h-5" />
               </a>
               <a
-                href="#"
+                href="https://x.com/prnvserviceshyd"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center hover:bg-blue-400 hover:text-white transition-colors"
               >
                 <Twitter className="w-5 h-5" />
               </a>
               <a
-                href="#"
-                className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors"
+                href="https://www.youtube.com/channel/UCGNrnML4lA3ix6WYUtcUw3A"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center hover:bg-red-600 hover:text-white transition-colors"
               >
                 <Youtube className="w-5 h-5" />
               </a>
               <a
-                href="#"
+                href="https://www.linkedin.com/company/prnvservices/posts/?feedView=all"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center hover:bg-blue-700 hover:text-white transition-colors"
               >
                 <Linkedin className="w-5 h-5" />
               </a>
               <a
-                href="#"
-                className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors"
+                href="https://www.instagram.com/prnv.services/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center hover:bg-pink-500 hover:text-white transition-colors"
               >
                 <Instagram className="w-5 h-5" />
+              </a>
+              <a
+                href="https://in.pinterest.com/prnv_services/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors"
+              >
+                <FaPinterest className="w-5 h-5" />
               </a>
             </div>
           </div>

@@ -1,51 +1,141 @@
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
-import BlogCard from './BlogCard';
-import { BlogGridProps } from '../../types/blog';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Blog } from '../../types/blog';
+
+interface BlogGridProps {
+  blogs: Blog[];
+  onReadMore: (blog: Blog) => void;
+}
 
 const BlogGrid: React.FC<BlogGridProps> = ({ blogs, onReadMore }) => {
-  return (
-    <section className="py-16 bg-gradient-to-br from-gray-50 to-blue-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-12">
-          <div className="relative">
-            <h2 className="text-4xl font-bold text-gray-800 mb-2">
-              BLOGS
-            </h2>
-            <div className="absolute -left-1 top-0 w-1 h-12 bg-gradient-to-b from-blue-500 to-pink-500 rounded-full"></div>
-          </div>
-          
-          <button className="flex items-center text-blue-600 font-semibold hover:text-blue-700 transition-colors duration-200 group">
-            View All
-            <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
-          </button>
-        </div>
+  const scrollContainer = React.useRef<HTMLDivElement>(null);
 
-        {/* Blog Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {blogs.map((blog, index) => (
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollContainer.current) {
+      const scrollAmount = 320; // Width of one card plus gap
+      scrollContainer.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const categories = [
+    'All Categories',
+    'Plumbing',
+    'Elevator',
+    'TV Repair',
+    'Laptop',
+    'Water',
+    'CCTV',
+    'Computer',
+    'Electrical',
+    'AC Repair'
+  ];
+
+  return (
+    <div className="py-8">
+      {/* Header Section */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center">
+          <div className="w-1 h-12 bg-red-600 mr-4"></div>
+          <h2 className="text-3xl font-bold text-gray-800">BLOGS</h2>
+        </div>
+        <button className="text-blue-600 font-semibold text-lg hover:text-blue-800 transition-colors">
+          View All
+        </button>
+      </div>
+
+      {/* Categories Scroll */}
+      <div className="mb-6">
+        <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-2">
+          {categories.map((category, index) => (
+            <button
+              key={index}
+              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                index === 0 
+                  ? 'bg-blue-600 text-white' 
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Blog Cards Horizontal Scroll */}
+      <div className="relative">
+        <button
+          onClick={() => scroll('left')}
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 transition-colors"
+        >
+          <ChevronLeft size={20} className="text-gray-600" />
+        </button>
+        
+        <button
+          onClick={() => scroll('right')}
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 transition-colors"
+        >
+          <ChevronRight size={20} className="text-gray-600" />
+        </button>
+
+        <div
+          ref={scrollContainer}
+          className="flex gap-4 overflow-x-auto scrollbar-hide px-8"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {blogs.map((blog) => (
             <div
               key={blog.id}
-              className={`
-                ${index === 0 ? 'md:col-span-2 md:row-span-2' : ''}
-                ${index === 3 ? 'lg:col-span-2' : ''}
-                ${index === 6 ? 'md:col-span-2' : ''}
-              `}
+              className="flex-shrink-0 w-80 bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer"
+              onClick={() => onReadMore(blog)}
             >
-              <BlogCard blog={blog} onReadMore={onReadMore} />
+              <div className="relative">
+                <img 
+                  src={blog.image} 
+                  alt={blog.title}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="absolute top-3 left-3">
+                  <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-medium">
+                    {blog.category.split('-').map(word => 
+                      word.charAt(0).toUpperCase() + word.slice(1)
+                    ).join(' ')}
+                  </span>
+                </div>
+              </div>
+              
+              <div className="p-4">
+                <h3 className="font-bold text-lg mb-2 text-gray-800 line-clamp-2 leading-tight">
+                  {blog.title}
+                </h3>
+                
+                <p className="text-gray-600 text-sm mb-3 line-clamp-2 leading-relaxed">
+                  {blog.excerpt}
+                </p>
+                
+                <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
+                  <span>{blog.date}</span>
+                  <span>{blog.author}</span>
+                </div>
+
+                <div className="flex flex-wrap gap-1">
+                  {blog.tags.slice(0, 2).map(tag => (
+                    <span 
+                      key={tag} 
+                      className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs font-medium"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           ))}
         </div>
-
-        {/* Load More Button */}
-        <div className="text-center mt-12">
-          <button className="bg-gradient-to-r from-blue-600 to-pink-600 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transform hover:-translate-y-1 transition-all duration-200">
-            Load More Articles
-          </button>
-        </div>
       </div>
-    </section>
+    </div>
   );
 };
 

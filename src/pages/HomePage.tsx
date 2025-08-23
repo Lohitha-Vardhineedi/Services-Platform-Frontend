@@ -11,7 +11,7 @@ import RainyDaySection from "../components/homepage/RainyDaySection";
 import CustomerReviews from "../components/homepage/CustomerReviews";
 import BlogGrid from "../components/blogs/BlogGrid";
 import BlogDetail from "../components/blogs/BlogDetail";
-import { Blog } from '../types/blog';
+import { useState } from "react";
 
 
 const HomePage = () => {
@@ -23,6 +23,12 @@ const HomePage = () => {
 
     // Dummy blogs array for demonstration (replace with actual data source)
     const blogs: Blog[] = [];
+
+    const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
+
+    function handleBackToBlog(): void {
+        setSelectedBlog(null);
+    }
 
     return (
         <>
@@ -36,10 +42,11 @@ const HomePage = () => {
                 <TrendingSection />
                 <PopularSearchesSection />
 
-                  <BlogGrid
-                        blogs={blogs.slice(0, 8)} // Show first 8 blogs on homepage
-                        onReadMore={onReadMore}
-                    />
+  <BlogGrid
+        blogs={blogs.slice(0, 8)} // Show first 8 blogs on homepage
+        onReadMore={onReadMore}
+    />
+
                 </div>
                 {/* <MoviesSection /> */}
                 {/* <CitiesSection /> */}
