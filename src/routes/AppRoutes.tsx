@@ -40,10 +40,10 @@ import ReferralForm from "../components/referral/ReferralForm";
 import FAQ from "../components/footerComponents/FAQ";
 import AllBlogs from "../components/blogs/AllBlogs";
 import ViewBlog from "../components/blogs/ViewBlog";
-import ProfessionalAgreement from '../pages/ProfessionalAgreement';
-import RefundPolicy from '../pages/RefundPolicy';
-import PrivacyPolicy from '../pages/PrivacyPolicy';
-import TermsConditions from '../pages/TermsConditions';
+import RefundPolicy from '../components/footerComponents/RefundPolicy';
+import PrivacyPolicy from '../components/footerComponents/PrivacyPolicy';
+import TermsConditions from '../components/footerComponents/TermsConditions';
+import ProfessionalAgreement from "../components/footerComponents/ProfessionalAgreement";
 
 
 // Define types
