@@ -1,11 +1,9 @@
 import React from 'react';
-import Breadcrumb from '../components/Breadcrumb';
-import Footer from '../components/layout/Footer';
 
 const RefundPolicy: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
-      <Breadcrumb currentPage="PRNV Services Refund Policy" />
+      {/* <Breadcrumb currentPage="PRNV Services Refund Policy" /> */}
       
       <div className="container max-w-6xl mx-auto px-4 py-8">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-8">
@@ -29,8 +27,6 @@ const RefundPolicy: React.FC = () => {
           </div>
         </div>
       </div>
-      
-      <Footer />
     </div>
   );
 };

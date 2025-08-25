@@ -1,11 +1,11 @@
 import React from 'react';
-import Breadcrumb from '../components/Breadcrumb';
-import Footer from '../components/Footer';
+// import Breadcrumb from '../components/Breadcrumb';
+import Footer from '../components/layout/Footer';
 
 const TermsConditions: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
-      <Breadcrumb currentPage="Terms & Conditions" />
+      {/* <Breadcrumb currentPage="Terms & Conditions" /> */}
       
       <div className="container max-w-6xl mx-auto px-4 py-8">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-8">
@@ -61,8 +61,6 @@ const TermsConditions: React.FC = () => {
           </div>
         </div>
       </div>
-      
-      <Footer />
     </div>
   );
 };

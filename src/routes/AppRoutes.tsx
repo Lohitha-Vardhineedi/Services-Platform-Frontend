@@ -38,6 +38,10 @@ import ReferralModal from '../components/referral/ReferralModal';
 import ReferralMain from '../components/referral/ReferralMain';
 import ReferralForm from '../components/referral/ReferralForm';
 import FAQ from '../components/homepage/FAQ';
+import ProfessionalAgreement from '../pages/ProfessionalAgreement';
+import RefundPolicy from '../pages/RefundPolicy';
+import PrivacyPolicy from '../pages/PrivacyPolicy';
+import TermsConditions from '../pages/TermsConditions';
 
 
 // Define types
@@ -196,7 +200,16 @@ const AppRoutes: React.FC = () => {
         }
       />
 
-      <Route path="/faq" element={
+      <Route path="/professional-agreement" element={
+        <>
+        <Helmet>
+          <title>Professional Agreement</title>
+          <meta name="description" content="Learn more about the professional agreement at PRNV Services." />
+        </Helmet>
+        <ProfessionalAgreement/>
+        </>
+        } />
+      <Route path="/faqs" element={
         <>
         <Helmet>
           <title>Frequently asked questions</title>
@@ -205,6 +218,38 @@ const AppRoutes: React.FC = () => {
         <FAQ />
         </>
         } />
+      <Route path="/refund-policy" element={
+        <>
+        <Helmet>
+          <title>Refund Policy</title>
+          <meta name="description" content="Learn more about the refund policy at PRNV Services." />
+        </Helmet>
+        <RefundPolicy />
+        </>
+        } />
+
+
+        <Route path="/privacy-policy" element={
+        <>
+        <Helmet>
+          <title>Privacy Policy</title>
+          <meta name="description" content="Learn more about the privacy policy at PRNV Services." />
+        </Helmet>
+        <PrivacyPolicy />
+        </>
+        } />
+
+
+        <Route path="/terms-conditions" element={
+        <>
+        <Helmet>
+          <title>Terms & Conditions</title>
+          <meta name="description" content="Learn more about the terms and conditions at PRNV Services." />
+        </Helmet>
+        <TermsConditions />
+        </>
+        } />
+
       <Route path="/" element={<HomePage />} />
       <Route path="/:categoryname/:cityname/:areaname-pincode" element={<SearchFilterPage />} />
       <Route path="/categories" element={<CategoriesPage />} />
