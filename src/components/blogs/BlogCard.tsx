@@ -26,18 +26,18 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, onClick }) => {
           {post.title}
         </h3>
         
-        <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
+        {/* <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
           {post.excerpt}
-        </p>
-        
+        </p> */}
+
         <div className="flex items-center justify-between text-xs text-gray-500">
           <div className="flex items-center">
             <Calendar size={14} className="mr-2" />
-            <span className="font-medium">{post.date}</span>
+            <span className="font-medium text-gray-500">{post.date}</span>
           </div>
           <div className="flex items-center">
             <Tag size={14} className="mr-2" />
-            <span className="font-medium">{post.tags[0]}</span>
+            <span className="font-medium text-blue-600">{post.tags[0]}</span>
           </div>
         </div>
       </div>

@@ -245,12 +245,8 @@ function Header() {
 
       {showReviewModal && (
         <CompanyReviewModel
+          showReviewModal={showReviewModal}
           setShowReviewModal={setShowReviewModal}
-          user={user}
-          selectedRating={selectedRating}
-          setSelectedRating={setSelectedRating}
-          comment={""}
-          setComment={() => { }}
         />
       )}
 

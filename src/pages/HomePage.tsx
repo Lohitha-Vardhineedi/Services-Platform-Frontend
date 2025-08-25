@@ -33,7 +33,7 @@ const HomePage = () => {
           <PopularSearchesSection />
 
           {/* 📰 Blogs horizontally scrollable */}
-          <section className="mt-8">
+          <section className="relative z-[1]">
             {/* <h2 className="text-2xl font-bold mb-4">Latest Blogs</h2> */}
             <BlogListPage />
           </section>

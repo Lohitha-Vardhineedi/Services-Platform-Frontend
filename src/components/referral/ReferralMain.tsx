@@ -31,24 +31,24 @@ function ReferralMain() {
           pincode: '123456',
           token: 'abc123',
         });
-        setReferralData({
-          id: 'referral-1',
-          username: 'john_doe',
-          bankDetails: {
-            accountNumber: '1234567890',
-            ifscCode: 'IFSC1234',
-            bankName: 'Example Bank',
-            accountHolderName: 'John Doe',
-          },
-          referralCode: 'REF123456',
-          isActive: true,
-          totalEarnings: 1000,
-          referralCount: {
-            technicians: 5,
-            franchises: 2,
-          },
-          createdAt: '2023-01-01T00:00:00Z',
-        });
+        // setReferralData({
+        //   id: 'referral-1',
+        //   username: 'john_doe',
+        //   bankDetails: {
+        //     accountNumber: '1234567890',
+        //     ifscCode: 'IFSC1234',
+        //     bankName: 'Example Bank',
+        //     accountHolderName: 'John Doe',
+        //   },
+        //   referralCode: 'REF123456',
+        //   isActive: true,
+        //   totalEarnings: 1000,
+        //   referralCount: {
+        //     technicians: 5,
+        //     franchises: 2,
+        //   },
+        //   createdAt: '2023-01-01T00:00:00Z',
+        // });
         setIsLoading(false);
       }, 1000);
     } catch (err) {
