@@ -123,14 +123,14 @@ function ReferralMain() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 py-8">
+    <div className="min-h-screen bg-slate-100 py-12">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-16">
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 w-28 h-28 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
             <Gift className="w-14 h-14 text-white" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight">
             Start Earning with Referrals!
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
@@ -139,18 +139,18 @@ function ReferralMain() {
         </div>
 
         {/* Two Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Left Column - Referral Information */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-10">
             {/* Technician Referral */}
             <EarningCard
               type="Technician Referral"
               amount="₹250"
               description="Earn when they complete their first subscription payment"
               icon={<Users className="w-10 h-10 text-white" />}
-              gradient="from-green-200 to-emerald-300"
-              border="border-green-200"
-              iconBg="bg-green-600"
+              gradient="from-blue-200 to-blue-300"
+              border="border-blue-200"
+              iconBg="bg-blue-600"
               isVisible={visibleCards.technician}
             />
 
@@ -160,7 +160,7 @@ function ReferralMain() {
               amount="₹100"
               description="Earn when they complete their first subscription payment"
               icon={<Building2 className="w-10 h-10 text-white" />}
-              gradient="from-purple-200 to-violet-300"
+              gradient="from-purple-200 to-purple-300"
               border="border-purple-200"
               iconBg="bg-purple-600"
               isVisible={visibleCards.franchise}
@@ -172,9 +172,9 @@ function ReferralMain() {
               amount="₹20"
               description="Earn when they complete their first service booking"
               icon={<UserPlus className="w-10 h-10 text-white" />}
-              gradient="from-orange-200 to-red-300"
-              border="border-orange-200"
-              iconBg="bg-orange-600"
+              gradient="from-indigo-200 to-indigo-300"
+              border="border-indigo-200"
+              iconBg="bg-indigo-600"
               isVisible={visibleCards.user}
             />
 
@@ -186,22 +186,22 @@ function ReferralMain() {
                 'Receive your unique referral code instantly.',
                 'Share your code and earn on every successful referral.',
               ]}
-              icon={<Star className="w-7 h-7 text-yellow-500" />}
+              icon={<Star className="w-7 h-7 text-blue-500" />}
               isVisible={visibleCards.howItWorks}
             />
           </div>
 
           {/* Right Column - Contact Form */}
           <div className="lg:col-span-1">
-            <div className="sticky top-8 space-y-6">
-              {/* Get Started Now Form with Gold Color */}
-              <div className="bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300">
+            <div className="sticky top-10 space-y-6">
+              {/* Get Started Now Form with Blue Color */}
+              <div className="bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300">
                 <div className="bg-white rounded-2xl p-6 m-1">
                   <div className="text-center mb-6">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-600 flex items-center justify-center mx-auto mb-3 shadow-lg animate-bounce">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 flex items-center justify-center mx-auto mb-3 shadow-lg animate-bounce">
                       <Phone className="text-white" size={20} />
                     </div>
-                    <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-yellow-700 mb-2">
+                    <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800 mb-2">
                       Get Started Now
                     </h3>
                     <p className="text-sm text-gray-600">
@@ -224,7 +224,7 @@ function ReferralMain() {
                         value={formData.name}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Enter your full name"
                       />
                     </div>
@@ -242,7 +242,7 @@ function ReferralMain() {
                         value={formData.phoneNumber}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Enter your mobile number"
                       />
                     </div>
@@ -259,13 +259,13 @@ function ReferralMain() {
                         value={formData.message}
                         onChange={handleInputChange}
                         rows={3}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 resize-none"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
                         placeholder="Tell us about your interest..."
                       />
                     </div>
                     <button
                       type="submit"
-                      className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-white font-semibold py-3 px-4 rounded-xl hover:from-yellow-500 hover:to-yellow-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                      className="w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-3 px-4 rounded-xl hover:from-blue-600 hover:to-blue-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
                     >
                       CONTACT US
                     </button>
