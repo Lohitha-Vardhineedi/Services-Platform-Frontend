@@ -1,6 +1,5 @@
 import React from 'react';
 // import Breadcrumb from '../components/Breadcrumb';
-import Footer from '../components/layout/Footer';
 
 const PrivacyPolicy: React.FC = () => {
   return (
@@ -268,7 +267,6 @@ const PrivacyPolicy: React.FC = () => {
         </div>
       </div>
       
-      <Footer />
     </div>
   );
 };
