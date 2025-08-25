@@ -1,6 +1,6 @@
 import React from 'react';
 import Breadcrumb from '../components/Breadcrumb';
-import Footer from '../components/Footer';
+import Footer from '../components/layout/Footer';
 
 const RefundPolicy: React.FC = () => {
   return (

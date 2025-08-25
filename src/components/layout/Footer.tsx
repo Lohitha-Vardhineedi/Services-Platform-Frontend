@@ -158,7 +158,6 @@ const Footer: React.FC = () => {
                 to="/privacy-policy"
                 className="text-gray-600 hover:text-blue-700 transition-colors"
               >
-                PRIVACY POLICY
               </Link>
               <span className="text-gray-400">|</span>
               <Link
