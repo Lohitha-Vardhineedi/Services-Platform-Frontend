@@ -9,7 +9,7 @@ import {
   Linkedin,
   Instagram,
 } from "lucide-react";
-import { FaPinterest } from "react-icons/fa"; // Pinterest icon
+import { FaPinterest } from "react-icons/fa"; 
 import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
@@ -18,6 +18,7 @@ const Footer: React.FC = () => {
       <div className="container max-w-7xl mx-auto px-4">
         {/* Footer Links Section */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          
           {/* Quick Links */}
           <div>
             <h4 className="text-lg md:text-xl text-blue-700 font-semibold mb-8">
@@ -42,7 +43,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  to="/faq"
+                  to="/faqs"
                   className="text-gray-600 hover:text-blue-700 transition-colors"
                 >
                   FAQ's
@@ -50,7 +51,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  to="/agreement"
+                  to="/professional-agreement"
                   className="text-gray-600 hover:text-blue-700 transition-colors"
                 >
                   PROFESSIONAL AGREEMENT DETAILS
@@ -76,8 +77,9 @@ const Footer: React.FC = () => {
               <div className="flex items-start">
                 <MapPin className="w-5 h-5 text-blue-700 mr-3 mt-1 flex-shrink-0" />
                 <p className="text-gray-600 text-sm">
-                  PRNV SERVICES, Flat No. 301, Sai Manor Apartment, H.NO. 7-1-621/10, Near Umesh Chandra Statue, IAS Quarters Lane, SR Nagar, Hyderabad, Telangana, 500038
-
+                  PRNV SERVICES, Flat No. 301, Sai Manor Apartment, H.NO. 7-1-621/10, 
+                  Near Umesh Chandra Statue, IAS Quarters Lane, SR Nagar, 
+                  Hyderabad, Telangana, 500038
                 </p>
               </div>
 
@@ -88,8 +90,7 @@ const Footer: React.FC = () => {
 
               <div className="flex items-center">
                 <Mail className="w-5 h-5 text-blue-700 mr-3" />
-                <p className="text-gray-600">info@prnvservices.com
-</p>
+                <p className="text-gray-600">info@prnvservices.com</p>
               </div>
             </div>
           </div>
@@ -164,7 +165,7 @@ const Footer: React.FC = () => {
               </Link>
               <span className="text-gray-400">|</span>
               <Link
-                to="/terms"
+                to="/terms-conditions"
                 className="text-gray-600 hover:text-blue-700 transition-colors"
               >
                 TERMS & CONDITIONS

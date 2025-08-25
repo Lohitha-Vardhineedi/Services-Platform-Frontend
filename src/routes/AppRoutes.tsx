@@ -40,6 +40,11 @@ import ReferralForm from "../components/referral/ReferralForm";
 import FAQ from "../components/footerComponents/FAQ";
 import AllBlogs from "../components/blogs/AllBlogs";
 import ViewBlog from "../components/blogs/ViewBlog";
+import ProfessionalAgreement from '../pages/ProfessionalAgreement';
+import RefundPolicy from '../pages/RefundPolicy';
+import PrivacyPolicy from '../pages/PrivacyPolicy';
+import TermsConditions from '../pages/TermsConditions';
+
 
 // Define types
 type UserRole = "user" | "technician";
@@ -274,6 +279,56 @@ const AppRoutes: React.FC = () => {
           </>
         }
       />
+
+      <Route path="/professional-agreement" element={
+        <>
+        <Helmet>
+          <title>Professional Agreement</title>
+          <meta name="description" content="Learn more about the professional agreement at PRNV Services." />
+        </Helmet>
+        <ProfessionalAgreement/>
+        </>
+        } />
+      <Route path="/faqs" element={
+        <>
+        <Helmet>
+          <title>Frequently asked questions</title>
+          <meta name="description" content="Find answers to common questions about PRNV Services." />
+        </Helmet>
+        <FAQ />
+        </>
+        } />
+      <Route path="/refund-policy" element={
+        <>
+        <Helmet>
+          <title>Refund Policy</title>
+          <meta name="description" content="Learn more about the refund policy at PRNV Services." />
+        </Helmet>
+        <RefundPolicy />
+        </>
+        } />
+
+
+        <Route path="/privacy-policy" element={
+        <>
+        <Helmet>
+          <title>Privacy Policy</title>
+          <meta name="description" content="Learn more about the privacy policy at PRNV Services." />
+        </Helmet>
+        <PrivacyPolicy />
+        </>
+        } />
+
+
+        <Route path="/terms-conditions" element={
+        <>
+        <Helmet>
+          <title>Terms & Conditions</title>
+          <meta name="description" content="Learn more about the terms and conditions at PRNV Services." />
+        </Helmet>
+        <TermsConditions />
+        </>
+        } />
 
       {/* Auth Routes - Login and Signup */}
       <Route element={<AuthLayout />}>

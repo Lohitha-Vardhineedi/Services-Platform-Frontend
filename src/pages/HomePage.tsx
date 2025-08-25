@@ -1,16 +1,13 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import SearchBarSection from "../components/homepage/SearchBarSection";
 import ServiceCardsRow from "../components/homepage/ServiceCardsRow";
 import CategoriesGrid from "../components/homepage/CategoriesGrid";
-import WeddingBeautyRow from "../components/homepage/WeddingBeautyRow";
-import RepairDailyRow from "../components/homepage/RepairDailyRow";
-import BillsTravelRow from "../components/homepage/BillsTravelRow";
 import TrendingSection from "../components/homepage/TrendingSection";
 import PopularSearchesSection from "../components/homepage/PopularSearchesSection";
-import CitiesSection from "../components/homepage/CitiesSection";
-import RainyDaySection from "../components/homepage/RainyDaySection";
 import CustomerReviews from "../components/homepage/CustomerReviews";
 import BlogListPage from "../components/blogs/BlogListPage";
+
 
 const HomePage = () => {
   return (
@@ -21,11 +18,6 @@ const HomePage = () => {
 
         {/* 🏷️ Categories */}
         <CategoriesGrid lang="en" />
-
-        {/* Optional sections */}
-        {/* <WeddingBeautyRow />
-        <RepairDailyRow />
-        <BillsTravelRow /> */}
 
         <div className="relative z-[1]">
           {/* 🔥 Trending & Popular */}
