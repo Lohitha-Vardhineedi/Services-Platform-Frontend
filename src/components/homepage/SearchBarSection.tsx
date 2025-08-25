@@ -113,32 +113,67 @@ function SearchBarSection() {
   };
 
   const handleSearch = () => {
-    if (!selectedCategory.slug || !selectedArea) {
-      setError("Please select required fields");
-      return;
-    }
+  if (!selectedCategory.slug) {
+    setError("Please select category");
+    return;
+  }
 
-    const citySlug = selectedCity.toLowerCase().replace(/\s+/g, "-");
-    const areaSlug = selectedArea.toLowerCase().replace(/\s+/g, "-");
-    const subAreaSlug = selectedSubArea.toLowerCase().replace(/\s+/g, "-");
+  const citySlug = selectedCity.toLowerCase().replace(/\s+/g, "-");
+  const areaSlug = selectedArea.toLowerCase().replace(/\s+/g, "-");
+  const subAreaSlug = selectedSubArea.toLowerCase().replace(/\s+/g, "-");
 
-    const searchData = {
-      category: selectedCategory.id,
-      areaName: selectedArea,
-      pincode: selectedPincode,
-      city: selectedCity,
-      state: selectedState
-    };
+  const searchData = {
+    category: selectedCategory.id,
+    areaName: selectedArea,
+    pincode: selectedPincode,
+    city: selectedCity,
+    state: selectedState,
+  };
 
-    localStorage.setItem("selectAddress", JSON.stringify(searchData));
+  localStorage.setItem("selectAddress", JSON.stringify(searchData));
 
+  if (!selectedArea) {
+    navigate(`/technicians/${selectedCategory.id}`, {
+      state: { categoryId: selectedCategory.id },
+    });
+  } else {
     navigate(`/${selectedCategory.slug}/${citySlug}/${areaSlug}-${selectedPincode}`, {
       state: {
         categoryId: selectedCategory.id,
-        pincode: selectedPincode
-      }
+        pincode: selectedPincode,
+        subArea: selectedSubArea || null,
+      },
     });
-  };
+  }
+};
+
+  // const handleSearch = () => {
+  //   if (!selectedCategory.slug || !selectedArea) {
+  //     setError("Please select category & Area");
+  //     return;
+  //   }
+
+  //   const citySlug = selectedCity.toLowerCase().replace(/\s+/g, "-");
+  //   const areaSlug = selectedArea.toLowerCase().replace(/\s+/g, "-");
+  //   const subAreaSlug = selectedSubArea.toLowerCase().replace(/\s+/g, "-");
+
+  //   const searchData = {
+  //     category: selectedCategory.id,
+  //     areaName: selectedArea,
+  //     pincode: selectedPincode,
+  //     city: selectedCity,
+  //     state: selectedState
+  //   };
+
+  //   localStorage.setItem("selectAddress", JSON.stringify(searchData));
+
+  //   navigate(`/${selectedCategory.slug}/${citySlug}/${areaSlug}-${selectedPincode}`, {
+  //     state: {
+  //       categoryId: selectedCategory.id,
+  //       pincode: selectedPincode
+  //     }
+  //   });
+  // };
 
   const handleReset = () => {
     setSelectedCategory({ name: '', slug: '', id: '' });
@@ -205,7 +240,10 @@ function SearchBarSection() {
               onChange={handleAreaChange}
             >
               <option value="" disabled>Select Area</option>
-              {areaOptions.sort((a, b) => a.name.localeCompare(b.name)).map((area, idx) => (
+              {areaOptions
+               .sort((a, b) => Number(a.pincode) - Number(b.pincode))
+              .map((area, idx) => (
+              // {areaOptions.sort((a, b) => a.name.localeCompare(b.name)).map((area, idx) => (
                 <option key={idx} value={area.name}>
                   {area.name} - {area.pincode}
                 </option>

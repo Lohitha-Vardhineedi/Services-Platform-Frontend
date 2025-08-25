@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
               <li>
                 <Link
                   to="/about"
-                  className="text-gray-600 hover:text-blue-700 transition-colors"
+                  className="text-gray-600 hover:text-blue-700 hover:underline transition-colors text-sm"
                 >
                   ABOUT US
                 </Link>
@@ -36,23 +36,23 @@ const Footer: React.FC = () => {
               <li>
                 <Link
                   to="/contact"
-                  className="text-gray-600 hover:text-blue-700 transition-colors"
+                  className="text-gray-600 hover:text-blue-700 hover:underline transition-colors text-sm"
                 >
                   CONTACT US
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/faqs"
-                  className="text-gray-600 hover:text-blue-700 transition-colors"
+                  to="/faq"
+                  className="text-gray-600 hover:text-blue-700 hover:underline transition-colors text-sm"
                 >
                   FAQ's
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/professional-agreement"
-                  className="text-gray-600 hover:text-blue-700 transition-colors"
+                  to="/agreement"
+                  className="text-gray-600 hover:text-blue-700 hover:underline transition-colors text-sm"
                 >
                   PROFESSIONAL AGREEMENT DETAILS
                 </Link>
@@ -60,7 +60,7 @@ const Footer: React.FC = () => {
               <li>
                 <Link
                   to="/refund-policy"
-                  className="text-gray-600 hover:text-blue-700 transition-colors"
+                  className="text-gray-600 hover:text-blue-700 hover:underline transition-colors text-sm "
                 >
                   PRNV SERVICES REFUND POLICY
                 </Link>
