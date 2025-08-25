@@ -9,6 +9,7 @@ interface AuthenticatedUser {
   id: string;
   role: 'user' | 'technician';
   name?: string;
+  username?: string;
 }
 
 type User = AuthenticatedUser;
@@ -171,7 +172,7 @@ function Header() {
                       } focus:outline-none`}
                     disabled={user?.role !== 'user'}
                   >
-                    Hi, {user?.name || 'Tagoor'}
+                    Hi, {user?.username || 'user'}
                   </button>
 
                   {showUserModal && (user.role === 'user') && (
