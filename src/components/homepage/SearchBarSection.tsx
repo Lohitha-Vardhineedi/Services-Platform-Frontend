@@ -114,7 +114,7 @@ function SearchBarSection() {
 
   const handleSearch = () => {
     if (!selectedCategory.slug || !selectedArea) {
-      setError("Please select required fields");
+      setError("Please select category & Area");
       return;
     }
 
@@ -205,7 +205,10 @@ function SearchBarSection() {
               onChange={handleAreaChange}
             >
               <option value="" disabled>Select Area</option>
-              {areaOptions.sort((a, b) => a.name.localeCompare(b.name)).map((area, idx) => (
+              {areaOptions
+               .sort((a, b) => Number(a.pincode) - Number(b.pincode))
+              .map((area, idx) => (
+              // {areaOptions.sort((a, b) => a.name.localeCompare(b.name)).map((area, idx) => (
                 <option key={idx} value={area.name}>
                   {area.name} - {area.pincode}
                 </option>
