@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Users, Building2, Star, Gift, UserPlus, Phone } from 'lucide-react';
+import { Users, Building2, Star, Gift, UserPlus, Phone, UserCheck2, User2Icon, Users2, UsersRound, UsersIcon } from 'lucide-react';
 
 interface EarningCardProps {
   type: string;
@@ -123,18 +123,18 @@ function ReferralMain() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 py-12">
+    <div className="min-h-screen bg-slate-100 py-5">
       <div className="max-w-6xl mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-8">
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
             <Gift className="w-12 h-12 text-white" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight">
+          <h1 className="text-4xl md:text-4xl font-extrabold text-gray-800 mb-3 tracking-tight">
             Start Earning with Referrals!
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Join thousands of users earning rewards by referring technicians and franchises to our platform.
+          <p className="text-xl text-gray-600 mb-4 max-w-2xl mx-auto">
+            Earning rewards by referring technicians, franchises and users to our platform.
           </p>
         </div>
 
@@ -145,10 +145,10 @@ function ReferralMain() {
             {/* Technician Referral */}
             <EarningCard
               type="Technician Referral"
-              amount="₹250"
+              amount="₹200"
               description="Earn when they complete their first subscription payment"
               icon={<Users className="w-8 h-8 text-white" />}
-              gradient="from-blue-200 to-blue-300"
+              gradient="from-blue-100 to-blue-400"
               border="border-blue-200"
               iconBg="bg-blue-600"
               isVisible={visibleCards.technician}
@@ -157,10 +157,10 @@ function ReferralMain() {
             {/* Franchise Referral */}
             <EarningCard
               type="Franchise Referral"
-              amount="₹100"
+              amount="₹50"
               description="Earn when they complete their first subscription payment"
-              icon={<Building2 className="w-8 h-8 text-white" />}
-              gradient="from-purple-200 to-purple-300"
+              icon={<UsersIcon className="w-8 h-8 text-white" />}
+              gradient="from-purple-100 to-purple-400"
               border="border-purple-200"
               iconBg="bg-purple-600"
               isVisible={visibleCards.franchise}
@@ -169,12 +169,12 @@ function ReferralMain() {
             {/* User Referral */}
             <EarningCard
               type="User Referral"
-              amount="₹20"
+              amount="₹10"
               description="Earn when they complete their first service booking"
-              icon={<UserPlus className="w-8 h-8 text-white" />}
-              gradient="from-indigo-200 to-indigo-300"
-              border="border-indigo-200"
-              iconBg="bg-indigo-600"
+              icon={<UsersIcon className="w-8 h-8 text-white" />}
+              gradient="from-green-100 to-green-400"
+              border="border-green-200"
+              iconBg="bg-green-600"
               isVisible={visibleCards.user}
             />
 

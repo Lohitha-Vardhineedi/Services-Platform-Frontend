@@ -8,7 +8,7 @@ const TermsConditions: React.FC = () => {
       {/* <Breadcrumb currentPage="Terms & Conditions" /> */}
       
       <div className="container max-w-6xl mx-auto px-4 py-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-8">
+        <h1 className="text-3xl md:text-3xl font-bold text-gray-900 mb-8">
           Terms & Conditions
         </h1>
         
