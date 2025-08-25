@@ -51,7 +51,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  to="/agreement"
+                  to="/professional-agreement"
                   className="text-gray-600 hover:text-blue-700 hover:underline transition-colors text-sm"
                 >
                   PROFESSIONAL AGREEMENT DETAILS
