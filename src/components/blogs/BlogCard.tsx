@@ -5,7 +5,7 @@ import { Calendar, Tag } from 'lucide-react';
 const BlogCard: React.FC<BlogCardProps> = ({ post, onClick }) => {
   return (
     <div 
-      className="blog-card bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer min-w-[350px] max-w-[350px] flex-shrink-0 mx-3"
+      className="blog-card bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer w-[350px] flex-shrink-0"
       onClick={() => onClick(post)}
     >
       <div className="relative">
