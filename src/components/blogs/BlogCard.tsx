@@ -5,39 +5,39 @@ import { Calendar, Tag } from 'lucide-react';
 const BlogCard: React.FC<BlogCardProps> = ({ post, onClick }) => {
   return (
     <div 
-      className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transform transition-all duration-300 hover:shadow-xl hover:scale-105 min-w-[320px] max-w-[320px] flex-shrink-0"
+      className="blog-card bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer min-w-[350px] max-w-[350px] flex-shrink-0 mx-3"
       onClick={() => onClick(post)}
     >
       <div className="relative">
         <img 
           src={post.image} 
           alt={post.title}
-          className="w-full h-48 object-cover"
+          className="w-full h-52 object-cover"
         />
         <div className="absolute top-4 left-4">
-          <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+          <span className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
             {post.category}
           </span>
         </div>
       </div>
       
-      <div className="p-5">
-        <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 hover:text-blue-600 transition-colors">
+      <div className="p-6">
+        <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 hover:text-blue-600 transition-colors">
           {post.title}
         </h3>
         
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+        <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
           {post.excerpt}
         </p>
         
         <div className="flex items-center justify-between text-xs text-gray-500">
           <div className="flex items-center">
-            <Calendar size={14} className="mr-1" />
-            <span>{post.date}</span>
+            <Calendar size={14} className="mr-2" />
+            <span className="font-medium">{post.date}</span>
           </div>
           <div className="flex items-center">
-            <Tag size={14} className="mr-1" />
-            <span>{post.tags[0]}</span>
+            <Tag size={14} className="mr-2" />
+            <span className="font-medium">{post.tags[0]}</span>
           </div>
         </div>
       </div>
