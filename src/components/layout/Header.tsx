@@ -74,8 +74,7 @@ function Header() {
 
   const handleLogout = () => {
     setShowUserModal(false);
-    alert('Are you sure want to Logout')
-    localStorage.clear()
+    window.confirm('Are you sure you want to logout?') && localStorage.clear();
     setUser(null);
     navigate('/');
   };

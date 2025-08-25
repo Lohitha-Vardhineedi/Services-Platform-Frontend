@@ -37,17 +37,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ technician }) => {
           </div>
         )}
 
-        {/* <div className="flex flex-wrap gap-2">
-                    {profile.services?.map((s, i) => (
-                      <div
-                        key={i}
-                        className="bg-fuchsia-200 px-3 py-1 rounded-xl text-black text-sm"
-                      >
-                        {s.serviceName}
-                      </div>
-                    ))}
-                  </div> */}
-
         <div className="flex my-3 items-center">
           <IoLocationOutline size={27} color="red" />
           <span className="text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
@@ -67,10 +56,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ technician }) => {
         )}
 
         <div className="flex gap-4 mt-4 flex-wrap">
-          {/* <div className="flex bg-fuchsia-500 rounded-xl text-white px-4 py-1 font-bold items-center cursor-pointer hover:bg-fuchsia-600">
-            <IoCall size={22} className="me-2" />
-            <span> {technician?.phoneNumber}</span>
-          </div> */}
           <div className="flex items-center bg-green-600 hover:bg-green-500 rounded-xl text-white px-4 py-1 font-bold cursor-pointer">
             <LuMessageSquareText size={18} className="mr-2" />
             Message
@@ -85,6 +70,21 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ technician }) => {
   )
 }
 export default ProfileCard
+
+{/* <div className="flex bg-fuchsia-500 rounded-xl text-white px-4 py-1 font-bold items-center cursor-pointer hover:bg-fuchsia-600">
+  <IoCall size={22} className="me-2" />
+  <span> {technician?.phoneNumber}</span>
+</div> */}
+        {/* <div className="flex flex-wrap gap-2">
+                    {profile.services?.map((s, i) => (
+                      <div
+                        key={i}
+                        className="bg-fuchsia-200 px-3 py-1 rounded-xl text-black text-sm"
+                      >
+                        {s.serviceName}
+                      </div>
+                    ))}
+                  </div> */}
 
 
 // const ProfileCard = ({ technicianId }: ProfileCardProps) => {
