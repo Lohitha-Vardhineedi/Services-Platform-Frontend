@@ -1,54 +1,19 @@
 import React from 'react';
-import '../../index.css'
 import { useNavigate } from 'react-router-dom';
 
-const RecentHistory: React.FC = () => {
+interface RecentHistoryProps {
+  bookings: any[];
+}
+
+const RecentHistory: React.FC<RecentHistoryProps> = ({ bookings }) => {
   const navigate = useNavigate();
 
-  const recentActivities = [
-    {
-      id: 1,
-      title: 'AC Repair Completed',
-      client: 'John Smith',
-      time: '15-07-2025',
-      status: 'completed'
-    },
-    {
-      id: 2,
-      title: 'Plumbing Service',
-      client: 'Sarah Johnson',
-      time: '12-07-2025',
-      status: 'completed'
-    },
-    {
-      id: 3,
-      title: 'Electrical Installation',
-      client: 'Mike Wilson',
-      time: '17-07-2025',
-      status: 'upcomming'
-    },
-    {
-      id: 4,
-      title: 'HVAC Maintenance',
-      client: 'Corporate Plaza',
-      time: '10-07-2025',
-      status: 'completed'
-    },
-    {
-      id: 5,
-      title: 'Emergency Repair',
-      client: 'Lisa Brown',
-      time: '9-07-2025',
-      status: 'completed'
-    }
-  ];
-
   const getStatusColor = (status: string) => {
-    switch (status) {
+    switch (status.toLowerCase()) {
       case 'completed':
         return 'bg-green-100 text-green-700';
-      case 'up-comming':
-        return 'bg-blue-100 text-blue-700';
+      case 'cancelled':
+        return 'bg-red-100 text-red-700';
       case 'pending':
         return 'bg-yellow-100 text-yellow-700';
       default:
@@ -66,80 +31,213 @@ const RecentHistory: React.FC = () => {
             </svg>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-800">Recent Activities</h3>
+            <h3 className="text-lg font-semibold text-gray-800">Today's Bookings</h3>
           </div>
         </div>
-        <button className="text-blue-600 hover:text-blue-700 text-sm font-medium"
-          onClick={()=>{navigate('/technician/transactions')}}
-        >
+        <button className="text-blue-600 hover:text-blue-700 text-sm font-medium" onClick={() => navigate('/technician/transactions')}>
           View All
         </button>
       </div>
 
       <div className="space-y-4 max-h-80 overflow-y-auto scrollbar-hide">
-        {recentActivities.map((activity, index) => (
-          <div
-            key={activity.id}
-            className="flex items-start gap-4 p-4 rounded-xl border border-gray-100 hover:border-gray-200 hover:bg-gray-50 transition-all duration-200 cursor-pointer group/item"
-            style={{ animationDelay: `${index * 100}ms` }}>
-            <div className="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center group-hover/item:bg-blue-200 transition-colors">
-              <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-            </div>
-            
-            <div className="flex-1 min-w-0 scrollbar-hide">
-              <div className="flex items-start justify-between ">
-                <div className="flex-1">
-                  <h4 className="text-sm font-semibold text-gray-800 group-hover/item:text-blue-600 transition-colors">
-                    {activity.title}
-                  </h4>
-                  <p className="text-xs text-gray-600 mt-1">
-                    {activity.client} 
-                  </p>
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(activity.status)}`}
-                  >
-                    {activity.status.replace('-', ' ')}
-                  </span>
-                  
-                </div>
-                
-                <div className="flex flex-col items-end gap-2">
-                  <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
-                  {/* <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(activity.status)}`}
-                  >
-                    {activity.status.replace('-', ' ')}
-                  </span> */}
-                  {/* <span className="text-sm font-bold text-green-600">
-                    {activity.earnings}
-                  </span> */}
+        {bookings.length === 0 ? (
+          <div className="text-center text-gray-600 py-4">
+            No bookings found for today
+          </div>
+        ) : (
+          bookings.map((activity, index) => (
+            <div
+              key={activity._id}
+              className="flex items-start gap-4 p-4 rounded-xl border border-gray-100 hover:border-gray-200 hover:bg-gray-50 transition-all duration-200 cursor-pointer group/item"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <div className="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center group-hover/item:bg-blue-200 transition-colors">
+                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div className="flex-1 min-w-0 scrollbar-hide">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <h4 className="text-sm font-semibold text-gray-800 group-hover/item:text-blue-600 transition-colors">
+                      {activity.service?.serviceName || "Service"}
+                    </h4>
+                    <p className="text-xs text-gray-600 mt-1">
+                      {activity.user?.username || "Unknown Client"}
+                    </p>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(activity.status)}`}>
+                      {activity.status}
+                    </span>
+                  </div>
+                  <div className="flex flex-col items-end gap-2">
+                    <p className="text-xs text-gray-500 mt-1">
+                      {new Date(activity.bookingDate).toLocaleDateString("en-IN")}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
-
-       <div className="mt-6 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl">
-         <div className="flex items-center justify-between">
-           <div>
-             <p className="text-sm text-gray-600">Today's Schedule</p>
-             <p className="font-semibold text-gray-800">3 Services</p>
-           </div>
-           <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors" 
-           onClick={()=>{navigate('/technician/transactions')}}
-           >
-             View Schedule
-           </button>
-         </div>
-       </div>
+      <div className="mt-6 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm text-gray-600">Today's Schedule</p>
+            <p className="font-semibold text-gray-800">{bookings.length} Bookings</p>
+          </div>
+          <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors" onClick={() => navigate('/technician/transactions')}>
+            View Schedule
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
 
 export default RecentHistory;
+// import React from 'react';
+// import '../../index.css'
+// import { useNavigate } from 'react-router-dom';
+
+// const RecentHistory: React.FC = () => {
+//   const navigate = useNavigate();
+
+//   const recentActivities = [
+//     {
+//       id: 1,
+//       title: 'AC Repair Completed',
+//       client: 'John Smith',
+//       time: '15-07-2025',
+//       status: 'completed'
+//     },
+//     {
+//       id: 2,
+//       title: 'Plumbing Service',
+//       client: 'Sarah Johnson',
+//       time: '12-07-2025',
+//       status: 'completed'
+//     },
+//     {
+//       id: 3,
+//       title: 'Electrical Installation',
+//       client: 'Mike Wilson',
+//       time: '17-07-2025',
+//       status: 'upcomming'
+//     },
+//     {
+//       id: 4,
+//       title: 'HVAC Maintenance',
+//       client: 'Corporate Plaza',
+//       time: '10-07-2025',
+//       status: 'completed'
+//     },
+//     {
+//       id: 5,
+//       title: 'Emergency Repair',
+//       client: 'Lisa Brown',
+//       time: '9-07-2025',
+//       status: 'completed'
+//     }
+//   ];
+
+//   const getStatusColor = (status: string) => {
+//     switch (status) {
+//       case 'completed':
+//         return 'bg-green-100 text-green-700';
+//       case 'up-comming':
+//         return 'bg-blue-100 text-blue-700';
+//       case 'pending':
+//         return 'bg-yellow-100 text-yellow-700';
+//       default:
+//         return 'bg-gray-100 text-gray-700';
+//     }
+//   };
+
+//   return (
+//     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-xl transition-all duration-500 group">
+//       <div className="flex items-center justify-between mb-6">
+//         <div className="flex items-center gap-3">
+//           <div className="p-2 bg-gradient-to-r from-green-100 to-emerald-100 rounded-lg group-hover:from-green-200 group-hover:to-emerald-200 transition-all duration-300">
+//             <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+//             </svg>
+//           </div>
+//           <div>
+//             <h3 className="text-lg font-semibold text-gray-800">Recent Activities</h3>
+//           </div>
+//         </div>
+//         <button className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+//           onClick={()=>{navigate('/technician/transactions')}}
+//         >
+//           View All
+//         </button>
+//       </div>
+
+//       <div className="space-y-4 max-h-80 overflow-y-auto scrollbar-hide">
+//         {recentActivities.map((activity, index) => (
+//           <div
+//             key={activity.id}
+//             className="flex items-start gap-4 p-4 rounded-xl border border-gray-100 hover:border-gray-200 hover:bg-gray-50 transition-all duration-200 cursor-pointer group/item"
+//             style={{ animationDelay: `${index * 100}ms` }}>
+//             <div className="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center group-hover/item:bg-blue-200 transition-colors">
+//               <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+//               </svg>
+//             </div>
+            
+//             <div className="flex-1 min-w-0 scrollbar-hide">
+//               <div className="flex items-start justify-between ">
+//                 <div className="flex-1">
+//                   <h4 className="text-sm font-semibold text-gray-800 group-hover/item:text-blue-600 transition-colors">
+//                     {activity.title}
+//                   </h4>
+//                   <p className="text-xs text-gray-600 mt-1">
+//                     {activity.client} 
+//                   </p>
+//                   <span
+//                     className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(activity.status)}`}
+//                   >
+//                     {activity.status.replace('-', ' ')}
+//                   </span>
+                  
+//                 </div>
+                
+//                 <div className="flex flex-col items-end gap-2">
+//                   <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
+//                   {/* <span
+//                     className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(activity.status)}`}
+//                   >
+//                     {activity.status.replace('-', ' ')}
+//                   </span> */}
+//                   {/* <span className="text-sm font-bold text-green-600">
+//                     {activity.earnings}
+//                   </span> */}
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+
+//        <div className="mt-6 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl">
+//          <div className="flex items-center justify-between">
+//            <div>
+//              <p className="text-sm text-gray-600">Today's Schedule</p>
+//              <p className="font-semibold text-gray-800">3 Services</p>
+//            </div>
+//            <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors" 
+//            onClick={()=>{navigate('/technician/transactions')}}
+//            >
+//              View Schedule
+//            </button>
+//          </div>
+//        </div>
+//     </div>
+//   );
+// };
+
+// export default RecentHistory;
 
 // import React from 'react';
 // import { Clock, CheckCircle, AlertCircle, Calendar, XCircle } from 'lucide-react';

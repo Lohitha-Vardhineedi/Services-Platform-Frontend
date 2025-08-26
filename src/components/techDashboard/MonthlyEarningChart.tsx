@@ -1,22 +1,120 @@
 import React from 'react';
+import { Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
 
-const MonthlyEarningsChart: React.FC = () => {
-  const monthlyData = [
-    { month: 'Jan', earnings: 100, jobs: 18 },
-    { month: 'Feb', earnings: 200, jobs: 42 },
-    { month: 'Mar', earnings: 90, jobs: 55 },
-    { month: 'Apr', earnings: 80, jobs: 29 },
-    { month: 'May', earnings: 60, jobs: 68 },
-    { month: 'Jun', earnings: 40, jobs: 47 },
-    { month: 'Jul', earnings: 180, jobs: 78 },
-    { month: 'Aug', earnings: 190, jobs: 36 },
-    { month: 'Sep', earnings: 130, jobs: 62 },
-    { month: 'Oct', earnings: 80, jobs: 56 },
-    { month: 'Nov', earnings: 150, jobs: 72 },
-    { month: 'Dec', earnings: 140, jobs: 50 },
-  ];
+// Register Chart.js components
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-  const maxEarnings = Math.max(...monthlyData.map(d => d.earnings));
+interface MonthlyEarningsChartProps {
+  monthlyEarnings: any[];
+}
+
+const MonthlyEarningsChart: React.FC<MonthlyEarningsChartProps> = ({ monthlyEarnings }) => {
+  const monthlyData = monthlyEarnings.map((item) => ({
+    month: item.monthName.slice(0, 3),
+    earnings: item.totalEarnings,
+    jobs: item.bookingCount,
+  }));
+
+  const maxEarnings = Math.max(...monthlyData.map(d => d.earnings), 100);
+
+  const chartData = {
+    labels: monthlyData.map(data => data.month),
+    datasets: [
+      {
+        label: 'Earnings (₹)',
+        data: monthlyData.map(data => data.earnings),
+        backgroundColor: 'rgba(59, 130, 246, 0.6)',
+        borderColor: 'rgba(59, 130, 246, 1)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(59, 130, 246, 0.8)',
+        hoverBorderColor: 'rgba(59, 130, 246, 1)',
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: {
+      duration: 1000,
+      easing: 'easeOutQuad',
+      delay: (context: any) => context.dataIndex * 100,
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: Math.ceil(maxEarnings / 100) * 100,
+        ticks: {
+          stepSize: Math.ceil(maxEarnings / 1000) * 100,
+          callback: (value: number) => `₹${value}`,
+          color: '#4B5563',
+        },
+        grid: {
+          color: '#E5E7EB',
+        },
+        title: {
+          display: true,
+          text: 'Earnings',
+          color: '#4B5563',
+          font: {
+            size: 14,
+            weight: 'bold',
+          },
+        },
+      },
+      x: {
+        ticks: {
+          color: '#4B5563',
+        },
+        grid: {
+          display: false,
+        },
+        title: {
+          display: true,
+          text: 'Month',
+          color: '#4B5563',
+          font: {
+            size: 14,
+            weight: 'bold',
+          },
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        callbacks: {
+          label: (context: any) => {
+            const index = context.dataIndex;
+            const earnings = context.parsed.y;
+            const jobs = monthlyData[index].jobs;
+            const percentage = ((earnings / maxEarnings) * 100).toFixed(1);
+            return [
+              `Earnings: ₹${earnings}`,
+              `Jobs: ${jobs}`,
+              `Percentage: ${percentage}%`,
+            ];
+          },
+        },
+        backgroundColor: 'rgba(31, 41, 55, 0.9)',
+        titleColor: '#FFFFFF',
+        bodyColor: '#D1D5DB',
+        borderColor: 'rgba(59, 130, 246, 0.2)',
+        borderWidth: 1,
+      },
+    },
+  };
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-xl transition-all duration-500 group">
@@ -35,101 +133,301 @@ const MonthlyEarningsChart: React.FC = () => {
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
-          <span>2025</span>
+          <span>{new Date().getFullYear()}</span>
         </div>
       </div>
-
-      <div className="h-80 mb-6 bg-white border border-gray-200 rounded-lg p-4">
-        {/* Grid lines */}
-        <div className="relative h-full">
-          {/* Horizontal grid lines */}
-          <div className="absolute inset-0">
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => (
-              <div 
-                key={i} 
-                className="absolute w-full border-t border-gray-200" 
-                style={{ top: `${i * 10}%` }}
-              />
-            ))}
-          </div>
-          
-          {/* Y-axis labels */}
-          <div className="absolute -left-12 top-0 h-full flex flex-col justify-between text-xs text-gray-600">
-            <span>200</span>
-            <span>180</span>
-            <span>160</span>
-            <span>140</span>
-            <span>120</span>
-            <span>100</span>
-            <span>80</span>
-            <span>60</span>
-            <span>40</span>
-            <span>20</span>
-            <span>0</span>
-          </div>
-          
-          {/* Bars */}
-          <div className="flex items-end justify-between h-full px-4 pt-4">
-            {monthlyData.map((data, index) => {
-              const heightPercentage = (data.earnings / maxEarnings) * 100;
-              
-              return (
-                <div key={data.month} className="flex flex-col items-center flex-1 group/bar">
-                  <div className="relative w-full max-w-6 mb-2">
-                    <div
-                      className="bg-blue-500 transition-all duration-1000 ease-out cursor-pointer hover:bg-blue-600 relative"
-                      style={{ 
-                        height: `${heightPercentage}%`, 
-                        minHeight: '4px',
-                        transitionDelay: `${index * 100}ms`
-                      }}
-                    >
-                      <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs opacity-0 group-hover/bar:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap">
-                        <div className="text-center">
-                          <div className="font-semibold">{data.earnings}</div>
-                          <div className="text-gray-300">{data.jobs} jobs</div>
-                        </div>
-                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="text-xs font-medium text-gray-600 mt-1">
-                    {data.month}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+      {monthlyData.every(data => data.earnings === 0) ? (
+        <div className="text-center text-gray-600 py-4">
+          No earnings data available for this year
         </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl hover:from-blue-100 hover:to-indigo-100 transition-all duration-300 cursor-pointer group/card">
-          <div className="flex items-center gap-2 mb-2">
-            <svg className="w-4 h-4 text-blue-600 group-hover/card:animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-            </svg>
-            <p className="text-sm text-gray-600">Total Earnings</p>
+      ) : (
+        <>
+          <div className="h-80 mb-6">
+            <Bar data={chartData} options={chartOptions} />
           </div>
-          <p className="text-xl font-bold text-gray-800 group-hover/card:text-blue-600 transition-colors">1,530</p>
-        </div>
-        
-        <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl hover:from-green-100 hover:to-emerald-100 transition-all duration-300 cursor-pointer group/card">
-          <div className="flex items-center gap-2 mb-2">
-            <svg className="w-4 h-4 text-green-600 group-hover/card:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-            </svg>
-            <p className="text-sm text-gray-600">Avg per Month</p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl hover:from-blue-100 hover:to-indigo-100 transition-all duration-300 cursor-pointer group/card">
+              <div className="flex items-center gap-2 mb-2">
+                <svg className="w-4 h-4 text-blue-600 group-hover/card:animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                </svg>
+                <p className="text-sm text-gray-600">Total Earnings</p>
+              </div>
+              <p className="text-xl font-bold text-gray-800 group-hover/card:text-blue-600 transition-colors">
+                ₹{monthlyEarnings.reduce((acc, item) => acc + item.totalEarnings, 0)}
+              </p>
+            </div>
+            <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl hover:from-green-100 hover:to-emerald-100 transition-all duration-300 cursor-pointer group/card">
+              <div className="flex items-center gap-2 mb-2">
+                <svg className="w-4 h-4 text-green-600 group-hover/card:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+                <p className="text-sm text-gray-600">Avg per Month</p>
+              </div>
+              <p className="text-xl font-bold text-gray-800 group-hover/card:text-green-600 transition-colors">
+                ₹{(monthlyEarnings.reduce((acc, item) => acc + item.totalEarnings, 0) / 12).toFixed(2)}
+              </p>
+            </div>
           </div>
-          <p className="text-xl font-bold text-gray-800 group-hover/card:text-green-600 transition-colors">127.5</p>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };
 
 export default MonthlyEarningsChart;
+// import React from 'react';
+
+// interface MonthlyEarningsChartProps {
+//   monthlyEarnings: any[];
+// }
+
+// const MonthlyEarningsChart: React.FC<MonthlyEarningsChartProps> = ({ monthlyEarnings }) => {
+//   const monthlyData = monthlyEarnings.map((item) => ({
+//     month: item.monthName.slice(0, 3),
+//     earnings: item.totalEarnings,
+//     jobs: item.bookingCount,
+//   }));
+
+//   const maxEarnings = Math.max(...monthlyData.map(d => d.earnings), 100);
+
+//   return (
+//     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-xl transition-all duration-500 group">
+//       <div className="flex items-center justify-between mb-6">
+//         <div className="flex items-center gap-3">
+//           <div className="p-2 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-lg group-hover:from-blue-200 group-hover:to-indigo-200 transition-all duration-300">
+//             <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+//             </svg>
+//           </div>
+//           <div>
+//             <h3 className="text-lg font-semibold text-gray-800">Monthly Earnings</h3>
+//           </div>
+//         </div>
+//         <div className="flex items-center gap-2 text-sm text-gray-500">
+//           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+//           </svg>
+//           <span>{new Date().getFullYear()}</span>
+//         </div>
+//       </div>
+//       {monthlyData.every(data => data.earnings === 0) ? (
+//         <div className="text-center text-gray-600 py-4">
+//           No earnings data available for this year
+//         </div>
+//       ) : (
+//         <>
+//           <div className="h-80 mb-6 bg-white border border-gray-200 rounded-lg p-4">
+//             <div className="relative h-full">
+//               <div className="absolute inset-0">
+//                 {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => (
+//                   <div
+//                     key={i}
+//                     className="absolute w-full border-t border-gray-200"
+//                     style={{ top: `${i * 10}%` }}
+//                   />
+//                 ))}
+//               </div>
+//               <div className="absolute -left-12 top-0 h-full flex flex-col justify-between text-xs text-gray-600">
+//                 {Array.from({ length: 11 }, (_, i) => maxEarnings - (i * maxEarnings) / 10).map((value, i) => (
+//                   <span key={i}>{Math.round(value)}</span>
+//                 ))}
+//               </div>
+//               <div className="flex items-end justify-between h-full px-4 pt-4">
+//                 {monthlyData.map((data, index) => {
+//                   const heightPercentage = (data.earnings / maxEarnings) * 100;
+//                   return (
+//                     <div key={data.month} className="flex flex-col items-center flex-1 group/bar">
+//                       <div className="relative w-full max-w-6 mb-2">
+//                         <div
+//                           className="bg-blue-500 transition-all duration-1000 ease-out cursor-pointer hover:bg-blue-600 relative"
+//                           style={{
+//                             height: `${heightPercentage}%`,
+//                             minHeight: '4px',
+//                             transitionDelay: `${index * 100}ms`
+//                           }}
+//                         >
+//                           <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs opacity-0 group-hover/bar:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap">
+//                             <div className="text-center">
+//                               <div className="font-semibold">₹{data.earnings}</div>
+//                               <div className="text-gray-300">{data.jobs} jobs</div>
+//                             </div>
+//                             <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
+//                           </div>
+//                         </div>
+//                       </div>
+//                       <div className="text-xs font-medium text-gray-600 mt-1">
+//                         {data.month}
+//                       </div>
+//                     </div>
+//                   );
+//                 })}
+//               </div>
+//             </div>
+//           </div>
+//           <div className="grid grid-cols-2 gap-4">
+//             <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl hover:from-blue-100 hover:to-indigo-100 transition-all duration-300 cursor-pointer group/card">
+//               <div className="flex items-center gap-2 mb-2">
+//                 <svg className="w-4 h-4 text-blue-600 group-hover/card:animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+//                 </svg>
+//                 <p className="text-sm text-gray-600">Total Earnings</p>
+//               </div>
+//               <p className="text-xl font-bold text-gray-800 group-hover/card:text-blue-600 transition-colors">
+//                 ₹{monthlyEarnings.reduce((acc, item) => acc + item.totalEarnings, 0)}
+//               </p>
+//             </div>
+//             <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl hover:from-green-100 hover:to-emerald-100 transition-all duration-300 cursor-pointer group/card">
+//               <div className="flex items-center gap-2 mb-2">
+//                 <svg className="w-4 h-4 text-green-600 group-hover/card:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+//                 </svg>
+//                 <p className="text-sm text-gray-600">Avg per Month</p>
+//               </div>
+//               <p className="text-xl font-bold text-gray-800 group-hover/card:text-green-600 transition-colors">
+//                 ₹{(monthlyEarnings.reduce((acc, item) => acc + item.totalEarnings, 0) / 12).toFixed(2)}
+//               </p>
+//             </div>
+//           </div>
+//         </>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default MonthlyEarningsChart;
+// import React from 'react';
+
+// const MonthlyEarningsChart: React.FC = () => {
+//   const monthlyData = [
+//     { month: 'Jan', earnings: 100, jobs: 18 },
+//     { month: 'Feb', earnings: 200, jobs: 42 },
+//     { month: 'Mar', earnings: 90, jobs: 55 },
+//     { month: 'Apr', earnings: 80, jobs: 29 },
+//     { month: 'May', earnings: 60, jobs: 68 },
+//     { month: 'Jun', earnings: 40, jobs: 47 },
+//     { month: 'Jul', earnings: 180, jobs: 78 },
+//     { month: 'Aug', earnings: 190, jobs: 36 },
+//     { month: 'Sep', earnings: 130, jobs: 62 },
+//     { month: 'Oct', earnings: 80, jobs: 56 },
+//     { month: 'Nov', earnings: 150, jobs: 72 },
+//     { month: 'Dec', earnings: 140, jobs: 50 },
+//   ];
+
+//   const maxEarnings = Math.max(...monthlyData.map(d => d.earnings));
+
+//   return (
+//     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-xl transition-all duration-500 group">
+//       <div className="flex items-center justify-between mb-6">
+//         <div className="flex items-center gap-3">
+//           <div className="p-2 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-lg group-hover:from-blue-200 group-hover:to-indigo-200 transition-all duration-300">
+//             <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+//             </svg>
+//           </div>
+//           <div>
+//             <h3 className="text-lg font-semibold text-gray-800">Monthly Earnings</h3>
+//           </div>
+//         </div>
+//         <div className="flex items-center gap-2 text-sm text-gray-500">
+//           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+//           </svg>
+//           <span>2025</span>
+//         </div>
+//       </div>
+
+//       <div className="h-80 mb-6 bg-white border border-gray-200 rounded-lg p-4">
+//         {/* Grid lines */}
+//         <div className="relative h-full">
+//           {/* Horizontal grid lines */}
+//           <div className="absolute inset-0">
+//             {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => (
+//               <div 
+//                 key={i} 
+//                 className="absolute w-full border-t border-gray-200" 
+//                 style={{ top: `${i * 10}%` }}
+//               />
+//             ))}
+//           </div>
+          
+//           {/* Y-axis labels */}
+//           <div className="absolute -left-12 top-0 h-full flex flex-col justify-between text-xs text-gray-600">
+//             <span>200</span>
+//             <span>180</span>
+//             <span>160</span>
+//             <span>140</span>
+//             <span>120</span>
+//             <span>100</span>
+//             <span>80</span>
+//             <span>60</span>
+//             <span>40</span>
+//             <span>20</span>
+//             <span>0</span>
+//           </div>
+          
+//           {/* Bars */}
+//           <div className="flex items-end justify-between h-full px-4 pt-4">
+//             {monthlyData.map((data, index) => {
+//               const heightPercentage = (data.earnings / maxEarnings) * 100;
+              
+//               return (
+//                 <div key={data.month} className="flex flex-col items-center flex-1 group/bar">
+//                   <div className="relative w-full max-w-6 mb-2">
+//                     <div
+//                       className="bg-blue-500 transition-all duration-1000 ease-out cursor-pointer hover:bg-blue-600 relative"
+//                       style={{ 
+//                         height: `${heightPercentage}%`, 
+//                         minHeight: '4px',
+//                         transitionDelay: `${index * 100}ms`
+//                       }}
+//                     >
+//                       <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs opacity-0 group-hover/bar:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap">
+//                         <div className="text-center">
+//                           <div className="font-semibold">{data.earnings}</div>
+//                           <div className="text-gray-300">{data.jobs} jobs</div>
+//                         </div>
+//                         <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
+//                       </div>
+//                     </div>
+//                   </div>
+                  
+//                   <div className="text-xs font-medium text-gray-600 mt-1">
+//                     {data.month}
+//                   </div>
+//                 </div>
+//               );
+//             })}
+//           </div>
+//         </div>
+//       </div>
+
+//       <div className="grid grid-cols-2 gap-4">
+//         <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl hover:from-blue-100 hover:to-indigo-100 transition-all duration-300 cursor-pointer group/card">
+//           <div className="flex items-center gap-2 mb-2">
+//             <svg className="w-4 h-4 text-blue-600 group-hover/card:animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+//             </svg>
+//             <p className="text-sm text-gray-600">Total Earnings</p>
+//           </div>
+//           <p className="text-xl font-bold text-gray-800 group-hover/card:text-blue-600 transition-colors">1,530</p>
+//         </div>
+        
+//         <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl hover:from-green-100 hover:to-emerald-100 transition-all duration-300 cursor-pointer group/card">
+//           <div className="flex items-center gap-2 mb-2">
+//             <svg className="w-4 h-4 text-green-600 group-hover/card:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+//             </svg>
+//             <p className="text-sm text-gray-600">Avg per Month</p>
+//           </div>
+//           <p className="text-xl font-bold text-gray-800 group-hover/card:text-green-600 transition-colors">127.5</p>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default MonthlyEarningsChart;
 
 // import React, { useState, useEffect } from 'react';
 // import { TrendingUp, Calendar, DollarSign } from 'lucide-react';

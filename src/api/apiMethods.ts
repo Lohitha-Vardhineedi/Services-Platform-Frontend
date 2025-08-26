@@ -94,8 +94,11 @@ export const getAllServicesByCatId = (id: string) =>apiRequest('getAllServicesBy
 
 export const changeServiceStatusByTechId = (payload: any) =>apiRequest('changeServiceStatusByTechId', payload)
 
+export const getTodaybookingBytechId = (id: string) => apiRequest("getTodaybookingBytechId", null, id);
 
+export const getMonthlyBookingByTechId = (id: string) => apiRequest("getMonthlyBookingByTechId", null, id);
 
+export const getBookingDashboardByTechId = (id: string) => apiRequest("getBookingDashboardByTechId", null, id);
 
 // export const getAllTechnicianDetails = async (id: string) => {
 //   const res = await fetch(`/api/techDetails/getTechAllDetails/${id}`);

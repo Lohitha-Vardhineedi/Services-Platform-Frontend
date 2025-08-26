@@ -239,6 +239,27 @@ const endpoints: any = {
       return `/api/techAuth/changeServiceStatus`;
     },
   },
+
+  getTodaybookingBytechId: {
+    method: "get",
+    url: (id: string) => {
+      return `/api/bookingServices/getTodaysBookService/${id}`;
+    },
+  },
+
+  getMonthlyBookingByTechId: {
+    method: "get",
+    url: (id: string) => {
+      return `/api/bookingServices/getYearlyEarnings/${id}/2025`;
+    },
+  },
+
+  getBookingDashboardByTechId: {
+    method: "get",
+    url: (id: string) => {
+      return `/api/bookingServices/getBookServiceByTechnicianIdDashboard/${id}`;
+    },
+  }
 }
 
 export default endpoints;
