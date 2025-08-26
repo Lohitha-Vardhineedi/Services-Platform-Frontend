@@ -51,8 +51,8 @@ const TechnicianDashboard: React.FC = () => {
   useEffect(() => {
     const storedRole = localStorage.getItem("role");
     setRole(storedRole);
-    const storedUser = localStorage.getItem("user");
-    setUsername(storedUser.userName || "Technician");
+    const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+    setUsername(storedUser.username || "Technician");
     if (storedRole !== "technician") {
       setLoading(false);
       setError("Access restricted to technicians only.");
