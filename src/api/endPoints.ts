@@ -227,6 +227,34 @@ const endpoints: any = {
     method: "get",
     url: () => `/api/franchiseSubscription/franchisePlans` 
   },
+
+  getServicesByCateId: {
+    method: "get",
+    url: (categoryId: string) => {
+      return `/api/cateServices/getServicesByCateId/${categoryId}`
+    }
+  },
+
+  getTodaybookingBytechId: {
+    method: "get",
+    url: (id: string) => {
+      return `/api/bookingServices/getTodaysBookService/${id}`;
+    },
+  },
+
+  getMonthlyBookingByTechId: {
+    method: "get",
+    url: (id: string) => {
+      return `/api/bookingServices/getYearlyEarnings/${id}/2025`;
+    },
+  },
+
+  getBookingDashboardByTechId: {
+    method: "get",
+    url: (id: string) => {
+      return `/api/bookingServices/getBookServiceByTechnicianIdDashboard/${id}`;
+    },
+  }
 }
 
 export default endpoints;
