@@ -90,6 +90,9 @@ export const addReviewByUser= (formData :any ) => apiRequest('addReviewByUser', 
 
 export const getFranchisePlans = (data: any) => apiRequest('getFranchisePlans', data);
 
+export const getAllServicesByCatId = (id: string) =>apiRequest('getAllServicesByCatId', null , id)
+
+export const changeServiceStatusByTechId = (payload: any) =>apiRequest('changeServiceStatusByTechId', payload)
 
 
 

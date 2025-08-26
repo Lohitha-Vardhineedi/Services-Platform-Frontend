@@ -227,6 +227,18 @@ const endpoints: any = {
     method: "get",
     url: () => `/api/franchiseSubscription/franchisePlans` 
   },
+  getAllServicesByCatId: {
+    method: "get",
+    url: (categoryId: string) => { 
+      return `/api/cateServices/getServicesByCateId/${categoryId}`;
+    },
+  },
+  changeServiceStatusByTechId: {
+    method: "put",
+    url: () => { 
+      return `/api/techAuth/changeServiceStatus`;
+    },
+  },
 }
 
 export default endpoints;
