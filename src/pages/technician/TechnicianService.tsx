@@ -1,17 +1,15 @@
 import {
   ChevronRight,
-  PencilIcon,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { MdOutlineStar } from "react-icons/md";
 import {
   getServicesByTechId,
-  updateServiceControl,
   getAllServicesByCatId,
+  changeServiceStatusByTechId,
 } from "../../api/apiMethods";
 import { Link } from "react-router-dom";
 
-// ✅ Types for clarity
 interface Service {
   id: string;
   name: string;
@@ -19,28 +17,25 @@ interface Service {
   image: string;
   rating?: number;
   reviews?: number;
+  status: boolean; // 🔹 true = active, false = inactive
 }
 
 const TechnicianServices: React.FC = () => {
   const [role, setRole] = useState<string | null>(null);
-  const [services, setServices] = useState<Service[]>([]);
   const [categoryServices, setCategoryServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isActive, setIsActive] = useState(true);
 
-  // Editing state
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const [editService, setEditService] = useState<Service | null>(null);
-
-const storedData = localStorage.getItem("user");
+  const storedData = localStorage.getItem("user");
   const user = storedData ? JSON.parse(storedData) : null;
+  const technicianId = user?._id; // 🔹 technicianId from localStorage
   const categoryId = user?.category;
 
+  // 🔹 Fetch all category services (default enabled = true)
   useEffect(() => {
-    const fetchCategoryServices = async () => {
-      if (!categoryId) return;
+    if (!categoryId) return;
 
+    const fetchCategoryServices = async () => {
       setLoading(true);
       try {
         const response = await getAllServicesByCatId(categoryId);
@@ -51,6 +46,7 @@ const storedData = localStorage.getItem("user");
               name: item.serviceName,
               price: item.servicePrice,
               image: item.serviceImg,
+              status: true, // 🔹 Initially enabled
             }))
           );
         } else {
@@ -64,107 +60,40 @@ const storedData = localStorage.getItem("user");
     };
 
     fetchCategoryServices();
-  }, []);
+  }, [categoryId]);
 
-  const fetchChangeStatus = async()=>{
-    const payload =(
-      technicianId,
-      categoryServiceId
-    )
-    try{
-      const response = await changeServiceStatusByTechId(payload)
-      if (response){
-        console.log(response,"response==>")
-      }
-    }catch(err){
-      console.log(err,"error")
-    }
-  }
+  // 🔹 Toggle service status
+  const handleToggleService = async (categoryServiceId: string, currentStatus: boolean) => {
+    const newStatus = !currentStatus;
 
-  // 🔹 Fetch technician-specific services
-  useEffect(() => {
-    const storedRole = localStorage.getItem("role");
-    setRole(storedRole);
-
-    if (storedRole !== "technician") return;
-
-    const technician = JSON.parse(localStorage.getItem("user") || "{}");
-    const categoryId = technician?.category || "";
-    const id = localStorage.getItem("userId");
-    if (!id) return;
-
-    const fetchTechServices = async () => {
-      setLoading(true);
-      try {
-        const data = await getServicesByTechId(id);
-        if (data?.result && Array.isArray(data.result)) {
-          setServices(
-            data.result.map((s: any) => ({
-              id: s._id,
-              name: s.serviceName,
-              price: s.servicePrice,
-              image: s.serviceImg,
-            }))
-          );
-        }
-      } catch (err: any) {
-        setError(err.message || "Failed to fetch technician services");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTechServices();
-  }, []);
-
-  // 🔹 Edit Handlers
-  const handleEdit = (service: Service) => {
-    setEditService(service);
-    setEditModalOpen(true);
-  };
-
-  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!editService) return;
-    setEditService({ ...editService, [e.target.name]: e.target.value });
-  };
-
-  const handleEditImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !editService) return;
-
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      setEditService({
-        ...editService,
-        image: ev.target?.result as string,
-      });
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleEditSave = async () => {
-    if (!editService) return;
-
-    const formData = new FormData();
-    formData.append("serviceName", editService.name);
-    formData.append("serviceId", editService.id);
-    formData.append("servicePrice", String(editService.price));
-    if (editService.image && !editService.image.startsWith("http")){
-      formData.append("serviceImage", editService.image); 
-    } 
+    // Optimistic UI update
+    setCategoryServices(prev =>
+      prev.map(s => (s.id === categoryServiceId ? { ...s, status: newStatus } : s))
+    );
 
     try {
-      await updateServiceControl(formData);
-      setServices((prev) =>
-        prev.map((s) => (s.id === editService.id ? editService : s))
-      ); 
-      setEditModalOpen(false);
+      const payload = {
+        technicianId,
+        categoryServiceId,
+        status: newStatus,
+      };
+
+      const response = await changeServiceStatusByTechId(payload);
+
+      if (!response.success) {
+        // Revert if API fails
+        setCategoryServices(prev =>
+          prev.map(s => (s.id === categoryServiceId ? { ...s, status: currentStatus } : s))
+        );
+      }
     } catch (err) {
-      console.error("Failed to update service", err);
+      console.error("Error updating service status:", err);
+      // Revert on error
+      setCategoryServices(prev =>
+        prev.map(s => (s.id === categoryServiceId ? { ...s, status: currentStatus } : s))
+      );
     }
   };
-
-  if (role !== "technician") return null;
 
   return (
     <div className="border border-gray-200 shadow-md rounded-xl p-4 my-4 max-w-7xl mx-auto">
@@ -205,29 +134,25 @@ const storedData = localStorage.getItem("user");
                     </span>
                   </span>
                 </div>
-
-                <div className = {`mt-2 text-sm py-1 rounded-xl text-center ${isActive ? "text-green-700 bg-green-100 " : "text-red-600 bg-red-100 "}}`}>
-                  {isActive ? "Active" : "InActive"}
-                  </div>
               </div>
               <div className="flex flex-col items-center gap-2">
                 <img
                   src={item.image || "fallback-image.jpg"}
                   alt={item.name}
-                  className="w-24 h-20 object-cover rounded border" 
+                  className="w-24 h-20 object-cover rounded border"
                 />
-               <div
-      className={`w-12 h-7 flex items-center rounded-full p-1 cursor-pointer transition-colors duration-300 ${
-        isActive ? "bg-green-500" : "bg-red-500"
-      }`}
-      onClick={() => setIsActive(!isActive)}
-    >
-      <div
-        className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform duration-300 ${
-          isActive ? "translate-x-5" : "translate-x-0"
-        }`}
-      />
-    </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={item.status}
+                    onChange={() => handleToggleService(item.id, item.status)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                  <span className={`ml-2 text-sm ${item.status ? "text-green-600" : "text-red-600"}`}>
+                    {item.status ? "Active" : "Inactive"}
+                  </span>
+                </label>
               </div>
             </div>
           ))
@@ -235,65 +160,257 @@ const storedData = localStorage.getItem("user");
           <p className="text-gray-700">No services uploaded yet.</p>
         )}
       </div>
-
-      <h2 className="text-xl font-semibold mb-2">Available Category Services</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {categoryServices.length > 0 ? (
-          categoryServices.map((item) => (
-            <div
-              key={item.id}
-              className="flex items-center justify-between border border-gray-300 rounded-xl p-4"
-            >
-              <div>
-                <h3 className="text-md md:text-lg">{item.serv}</h3>
-                <p className="text-sm text-gray-700">
-                  ₹ <span className="text-blue-600">{item.price || "N/A"}</span>{" "}
-                  per Unit
-                </p>
-                <div className="flex items-center text-sm mt-1">
-                  <MdOutlineStar size={18} color="#ffc71b" />
-                  <span className="ms-1 text-gray-700">
-                    {item.rating || 3}{" "}
-                    <span className="text-gray-400">
-                      ({item.reviews || 5} Reviews)
-                    </span>
-                  </span>
-                </div>
-              </div>
-              <div className="flex flex-col items-center gap-2">
-                <img
-                  src={item.image || "fallback-image.jpg"}
-                  alt={item.serv || "Service image"}
-                  className="w-24 h-20 object-cover rounded border"
-                />
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={item.isEnabled}
-                    onChange={() => handleToggleService(item.id, item.isEnabled)}
-                    className="sr-only peer"
-                  />
-                  <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
-                  <span className="ml-2 text-sm text-gray-700">
-                    {item.isEnabled ? "Enabled" : "Disabled"}
-                  </span>
-                </label>
-              </div>
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-700">
-            No category services available.
-          </p>
-        )}
-      </div>
-
-    
     </div>
   );
 };
 
 export default TechnicianServices;
+
+
+// import {
+//   ChevronRight,
+//   PencilIcon,
+// } from "lucide-react";
+// import React, { useEffect, useState } from "react";
+// import { MdOutlineStar } from "react-icons/md";
+// import {
+//   getServicesByTechId,
+//   updateServiceControl,
+//   getAllServicesByCatId,
+//   changeServiceStatusByTechId,
+// } from "../../api/apiMethods";
+// import { Link } from "react-router-dom";
+
+// // ✅ Types for clarity
+// interface Service {
+//   id: string;
+//   name: string;
+//   price: number;
+//   image: string;
+//   rating?: number;
+//   reviews?: number;
+// }
+
+// const TechnicianServices: React.FC = () => {
+//   const [role, setRole] = useState<string | null>(null);
+//   const [services, setServices] = useState<Service[]>([]);
+//   const [categoryServices, setCategoryServices] = useState<Service[]>([]);
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState<string | null>(null);
+//   const [isEnabled, setIsEnabled] = useState(true);
+
+//   // Editing state
+//   const [editModalOpen, setEditModalOpen] = useState(false);
+//   const [editService, setEditService] = useState<Service | null>(null);
+
+//   const storedData = localStorage.getItem("user");
+//   const user = storedData ? JSON.parse(storedData) : null;
+//   const categoryId = user?.category;
+
+//   useEffect(() => {
+//     const fetchCategoryServices = async () => {
+//       if (!categoryId) return;
+
+//       setLoading(true);
+//       try {
+//         const response = await getAllServicesByCatId(categoryId);
+//         if (response.success && Array.isArray(response.result)) {
+//           setCategoryServices(
+//             response.result.map((item: any) => ({
+//               id: item._id,
+//               name: item.serviceName,
+//               price: item.servicePrice,
+//               image: item.serviceImg,
+//             }))
+//           );
+//         } else {
+//           throw new Error(response.message || "Failed to fetch category services");
+//         }
+//       } catch (err: any) {
+//         setError(err.message);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchCategoryServices();
+//   }, []);
+
+//   const fetchChangeStatus = async () => {
+//     const payload = (
+//       technicianId,
+//       categoryServiceId
+//     )
+//     try {
+//       const response = await changeServiceStatusByTechId(payload)
+//       if (response) {
+//         console.log(response, "response==>")
+//       }
+//     } catch (err) {
+//       console.log(err, "error")
+//     }
+//   }
+
+//   // 🔹 Fetch technician-specific services
+//   useEffect(() => {
+//     const storedRole = localStorage.getItem("role");
+//     setRole(storedRole);
+
+//     if (storedRole !== "technician") return;
+
+//     const technician = JSON.parse(localStorage.getItem("user") || "{}");
+//     const categoryId = technician?.category || "";
+//     const id = localStorage.getItem("userId");
+//     if (!id) return;
+
+//     const fetchTechServices = async () => {
+//       setLoading(true);
+//       try {
+//         const data = await getServicesByTechId(id);
+//         if (data?.result && Array.isArray(data.result)) {
+//           setServices(
+//             data.result.map((s: any) => ({
+//               id: s._id,
+//               name: s.serviceName,
+//               price: s.servicePrice,
+//               image: s.serviceImg,
+//             }))
+//           );
+//         }
+//       } catch (err: any) {
+//         setError(err.message || "Failed to fetch technician services");
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchTechServices();
+//   }, []);
+
+//   // 🔹 Edit Handlers
+//   const handleEdit = (service: Service) => {
+//     setEditService(service);
+//     setEditModalOpen(true);
+//   };
+
+//   const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     if (!editService) return;
+//     setEditService({ ...editService, [e.target.name]: e.target.value });
+//   };
+
+//   const handleEditImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const file = e.target.files?.[0];
+//     if (!file || !editService) return;
+
+//     const reader = new FileReader();
+//     reader.onload = (ev) => {
+//       setEditService({
+//         ...editService,
+//         image: ev.target?.result as string,
+//       });
+//     };
+//     reader.readAsDataURL(file);
+//   };
+
+//   const handleEditSave = async () => {
+//     if (!editService) return;
+
+//     const formData = new FormData();
+//     formData.append("serviceName", editService.name);
+//     formData.append("serviceId", editService.id);
+//     formData.append("servicePrice", String(editService.price));
+//     if (editService.image && !editService.image.startsWith("http")) {
+//       formData.append("serviceImage", editService.image);
+//     }
+
+//     try {
+//       await updateServiceControl(formData);
+//       setServices((prev) =>
+//         prev.map((s) => (s.id === editService.id ? editService : s))
+//       );
+//       setEditModalOpen(false);
+//     } catch (err) {
+//       console.error("Failed to update service", err);
+//     }
+//   };
+
+//   if (role !== "technician") return null;
+
+//   return (
+//     <div className="border border-gray-200 shadow-md rounded-xl p-4 my-4 max-w-7xl mx-auto">
+//       <header className="flex items-center justify-between mb-3">
+//         <div>
+//           <h1 className="text-3xl font-bold text-gray-900 mb-2">My Services</h1>
+//           <div className="flex items-center space-x-2 text-sm text-gray-500">
+//             <Link to="/technician/dashboard" className="hover:underline">
+//               Dashboard
+//             </Link>
+//             <ChevronRight className="w-4 h-4" />
+//             <span>My Services</span>
+//           </div>
+//         </div>
+//       </header>
+
+//       {loading && <p className="text-gray-500">Loading services...</p>}
+//       {error && <p className="text-red-500">{error}</p>}
+
+//       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+//         {categoryServices.length > 0 ? (
+//           categoryServices.map((item) => (
+//             <div
+//               key={item.id}
+//               className="flex items-center justify-between border border-gray-300 rounded-xl p-4"
+//             >
+//               <div>
+//                 <h3 className="text-md md:text-lg">{item.name}</h3>
+//                 <p className="text-sm text-gray-700">
+//                   ₹ <span className="text-blue-600">{item.price}</span> per Unit
+//                 </p>
+//                 <div className="flex items-center text-sm mt-1">
+//                   <MdOutlineStar size={18} color="#ffc71b" />
+//                   <span className="ms-1 text-gray-700">
+//                     {item.rating || 3}{" "}
+//                     <span className="text-gray-400">
+//                       ({item.reviews || 5} Reviews)
+//                     </span>
+//                   </span>
+//                 </div>
+
+//                 {/* <div className={`mt-2 text-sm py-1 rounded-xl text-center ${isActive ? "text-green-700 bg-green-100 " : "text-red-600 bg-red-100 "}}`}>
+//                   {isActive ? "Active" : "InActive"}
+//                 </div> */}
+//               </div>
+//               <div className="flex flex-col items-center gap-2">
+//                 <img
+//                   src={item.image || "fallback-image.jpg"}
+//                   alt={item.name}
+//                   className="w-24 h-20 object-cover rounded border"
+//                 />
+//                 <label className="relative inline-flex items-center cursor-pointer">
+//                   <input
+//                     type="checkbox"
+//                     checked={item.isEnabled}
+//                     onChange={() => handleToggleService(item.id, item.isEnabled)}
+//                     className="sr-only peer"
+//                   />
+//                   <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+//                   <span className={`ml-2 text-sm ${item.isEnabled ? "text-green-600" : "text-red-600"}`}>
+//                     {item.isEnabled ? "Active" : "Inactive"}
+//                   </span>
+//                 </label>
+//               </div>
+//             </div>
+//           ))
+//         ) : (
+//           <p className="text-gray-700">No services uploaded yet.</p>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default TechnicianServices;
+
 // import { ChevronRight, Pencil, PencilIcon, Plus, Trash2 } from "lucide-react";
 // import React, { useEffect, useState } from "react";
 // import { FaTrash } from "react-icons/fa6";
