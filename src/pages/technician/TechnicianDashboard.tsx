@@ -88,7 +88,7 @@ const TechnicianDashboard: React.FC = () => {
             image: service.serviceImg,
           }));
           setServices(fetchedServices);
-          setServiceCount(fetchedServices.length);
+          setServiceCount(fetchedServices?.length || 0);
         }
 
         // Handle today's bookings
@@ -109,8 +109,8 @@ const TechnicianDashboard: React.FC = () => {
 
         // Handle dashboard data
         if (dashboardData?.success) {
-          setTotalBookings(dashboardData.result.totalBookings || 0);
-          setTotalCompleted(dashboardData.result.totalCompleted || 0);
+          setTotalBookings(dashboardData?.result?.totalBookings || 0);
+          setTotalCompleted(dashboardData?.result?.totalCompleted || 0);
         }
 
         setLoading(false);
@@ -164,13 +164,13 @@ const TechnicianDashboard: React.FC = () => {
     );
   }
 
-  if (error) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="text-red-600 text-lg">{error}</div>
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div className="flex justify-center items-center min-h-screen">
+  //       <div className="text-red-600 text-lg">{error}</div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="relative space-y-8 px-6 bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen max-w-7xl mx-auto">

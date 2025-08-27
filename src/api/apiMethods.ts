@@ -98,6 +98,8 @@ export const getMonthlyBookingByTechId = (id: string) => apiRequest("getMonthlyB
 
 export const getBookingDashboardByTechId = (id: string) => apiRequest("getBookingDashboardByTechId", null, id);
 
+export const getAllBlogs = (data: any) => apiRequest("getAllBlogs", data);
+
 // export const getAllTechnicianDetails = async (id: string) => {
 //   const res = await fetch(`/api/techDetails/getTechAllDetails/${id}`);
 //   const data = await res.json();
