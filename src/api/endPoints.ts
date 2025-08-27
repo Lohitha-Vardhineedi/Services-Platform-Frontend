@@ -259,7 +259,12 @@ const endpoints: any = {
     url: (id: string) => {
       return `/api/bookingServices/getBookServiceByTechnicianIdDashboard/${id}`;
     },
-  }
+  },
+
+  getAllBlogs: {
+    method: "get",
+    url: () => `/api/blog/getAllBlogs`
+  },
 }
 
 export default endpoints;
