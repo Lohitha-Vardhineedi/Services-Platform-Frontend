@@ -69,13 +69,11 @@ const AllBlogs: React.FC = () => {
               <img
                 src={post.image || "https://via.placeholder.com/400x200"} // Fallback image
                 alt={post.title}
-                className="w-full h-48 object-cover transition-transform duration-300 ease-in-out hover:scale-110"
+                className="h-48 w-full object-cover transition-transform duration-300 ease-in-out hover:scale-110"
               />
             </div>
             <div className="p-4">
               <h2 className="text-xl font-semibold text-gray-800">{post.title}</h2>
-              <p className="text-gray-600 mt-2 line-clamp-2">{post.description}</p>
-
               <div className="flex items-center justify-between text-xs text-gray-500 mt-4">
                 <div className="flex items-center">
                   <Calendar size={14} className="mr-2" />
