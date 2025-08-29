@@ -64,38 +64,61 @@ const TechnicianServices: React.FC = () => {
     fetchCategoryServices();
   }, [technicianId]);
 
-  // 🔹 Toggle service status
-  const handleToggleService = async (categoryServiceId: string, currentStatus: boolean) => {
-    const newStatus = !currentStatus;
+  // const handleToggleService = async (categoryServiceId: string, currentStatus: boolean) => {
+  //   const newStatus = !currentStatus; 
 
-    // Optimistic UI update
+  //   setCategoryServices(prev =>
+  //     prev.map(s => (s.id === categoryServiceId ? { ...s, status: newStatus } : s))
+  //   );
+
+  //   try {
+  //     const payload = {
+  //       technicianId,
+  //       categoryServiceId,
+  //       status: newStatus,
+  //     };
+
+  //     const response = await changeServiceStatusByTechId(payload);
+
+  //     if (!response.success) {
+  //       // Revert if API fails
+  //       setCategoryServices(prev =>
+  //         prev.map(s => (s.id === categoryServiceId ? { ...s, status: currentStatus } : s))
+  //       );
+  //     }
+  //   } catch (err) {
+  //     console.error("Error updating service status:", err);
+  //     // Revert on error
+  //     setCategoryServices(prev =>
+  //       prev.map(s => (s.id === categoryServiceId ? { ...s, status: currentStatus } : s))
+  //     );
+  //   }
+  // };
+
+  // toggle handler
+
+  const handleToggleService = async (categoryServiceId: string, currentStatus: boolean) => {
+  try {
     setCategoryServices(prev =>
-      prev.map(s => (s.id === categoryServiceId ? { ...s, status: newStatus } : s))
+      prev.map(s => (s.id === categoryServiceId ? { ...s, status: !currentStatus } : s))
     );
 
-    try {
-      const payload = {
-        technicianId,
-        categoryServiceId,
-        status: newStatus,
-      };
+    const payload = { technicianId, categoryServiceId };
 
-      const response = await changeServiceStatusByTechId(payload);
+    const response = await changeServiceStatusByTechId(payload);
 
-      if (!response.success) {
-        // Revert if API fails
-        setCategoryServices(prev =>
-          prev.map(s => (s.id === categoryServiceId ? { ...s, status: currentStatus } : s))
-        );
-      }
-    } catch (err) {
-      console.error("Error updating service status:", err);
-      // Revert on error
+    if (!response.success) {
       setCategoryServices(prev =>
         prev.map(s => (s.id === categoryServiceId ? { ...s, status: currentStatus } : s))
       );
     }
-  };
+  } catch (err) {
+    console.error("Error updating service status:", err);
+    setCategoryServices(prev =>
+      prev.map(s => (s.id === categoryServiceId ? { ...s, status: currentStatus } : s))
+    );
+  }
+};
 
   return (
     <div className="border border-gray-200 shadow-md rounded-xl p-4 my-4 max-w-7xl mx-auto">

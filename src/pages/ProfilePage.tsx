@@ -80,7 +80,8 @@ console.log("id", technicianId)
         <meta name="description" content={`View the profile of ${technicianDetails.technician.username}, a top technician on PRNV Services.`} />
       </Helmet>
       <ProfileCard technician={technicianDetails.technician}/>
-      <AllFilters  services={technicianDetails.services}
+      <AllFilters  services={technicianDetails.services} 
+      technician={technicianDetails.technician}
         technicianImages={technicianDetails?.technicianImages?.imageUrl}
         ratings={technicianDetails.ratings}/>
     </div>

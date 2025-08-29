@@ -6,6 +6,7 @@ import { TechnicianService } from "../../pages/ProfilePage.js";
 
 interface AllFiltersProps {
   services: TechnicianService[];
+  technician: Technician;
   technicianImages: string[];
   ratings: any;
 }
@@ -13,6 +14,7 @@ const AllFilters: React.FC<AllFiltersProps> = ({
   services,
   technicianImages,
   ratings,
+  technician
 }) => {
 
   const [activeTab, setActiveTab] = useState("Overview");
@@ -24,7 +26,7 @@ const AllFilters: React.FC<AllFiltersProps> = ({
       return (
         <>
           <Photos images={technicianImages}/>
-            <Services services={services} />
+            <Services services={services} technician={technician}/>
           <Reviews ratings={ratings} />
           {/* <FreqQ /> */}
         </>
