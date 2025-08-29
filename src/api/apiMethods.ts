@@ -53,8 +53,6 @@ export const getAllPincodes = () => apiRequest("getAllPincodes");
 
 export const getAllTechnicianDetails = (id: string) => apiRequest("getAllTechnicianDetails", null, id);
 
-
-
 export const getCompanyReviews = (data: any) => apiRequest('getCompanyReviews', data)
 
 export const createGuestBooking = (formData: any) =>apiRequest('createGuestBooking', formData)
@@ -91,6 +89,8 @@ export const addReviewByUser= (formData :any ) => apiRequest('addReviewByUser', 
 export const getFranchisePlans = (data: any) => apiRequest('getFranchisePlans', data);
 
 export const getAllServicesByCatId = (id: string) =>apiRequest('getAllServicesByCatId', null , id)
+
+export const getCategoryServicesByTechId = (id: string) =>apiRequest('getCategoryServicesByTechId', null , id)
 
 export const changeServiceStatusByTechId = (payload: any) =>apiRequest('changeServiceStatusByTechId', payload)
 

@@ -4,10 +4,31 @@ import { FaCartPlus } from "react-icons/fa6";
 import { MdOutlineStar } from "react-icons/md";
 import { addToCart, removeFromCart, getCartItems } from "../../api/apiMethods";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeIcon } from "lucide-react";
+import { Eye } from "lucide-react";
+
+// ✅ Types
+interface TechnicianService {
+  categoryServiceId: string;
+  status: boolean;
+  _id: string;
+  details: {
+    _id: string;
+    categoryId: string;
+    serviceName: string;
+    serviceImg: string;
+    servicePrice: number;
+  };
+}
+
+interface Technician {
+  _id: string;
+  username: string;
+  categoryServices: TechnicianService[];
+}
 
 interface ServicesProps {
   services: TechnicianService[];
+  technician: Technician;
 }
 
 interface CartItem {
@@ -18,11 +39,12 @@ interface CartItem {
   quantity: number;
 }
 
-const Services: React.FC<ServicesProps> = ({ services }) => {
+const Services: React.FC<ServicesProps> = ({ services, technician }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState<{ [key: string]: boolean }>({});
   const navigate = useNavigate();
 
+  // ✅ Fetch Cart Items
   const fetchCartItems = async () => {
     try {
       const userId = localStorage.getItem("userId");
@@ -48,6 +70,7 @@ const Services: React.FC<ServicesProps> = ({ services }) => {
     fetchCartItems();
   }, []);
 
+  // ✅ Toggle Add/Remove Cart
   const handleCartToggle = async (serviceId: string) => {
     try {
       const userId = localStorage.getItem("userId");
@@ -57,35 +80,35 @@ const Services: React.FC<ServicesProps> = ({ services }) => {
       const isInCart = cartItems.some((item) => item.id === serviceId);
 
       if (isInCart) {
+        // Remove from cart
         const response = await removeFromCart({ userId, serviceId });
         if (response.success) {
           setCartItems((prev) => prev.filter((item) => item.id !== serviceId));
-          // Refresh cart items from server to ensure consistency
           await fetchCartItems();
         }
       } else {
-        const payload = {
-          userId,
-          serviceId,
-          quantity: 1,
-        };
-
+        // Add to cart
+        const payload = { userId, serviceId, quantity: 1 };
         const response = await addToCart(payload);
+
         if (response.success) {
-          const service = services.find((s) => s._id === serviceId);
+          // ✅ Only add active services
+          const service = technician?.categoryServices?.find(
+            (s) => s.details?._id === serviceId && s.status === true
+          );
+
           if (service) {
             setCartItems((prev) => [
               ...prev,
               {
-                id: service._id,
-                serviceName: service.serviceName,
-                servicePrice: service.servicePrice,
-                serviceImg: service.serviceImg,
+                id: service.details._id,
+                serviceName: service.details.serviceName,
+                servicePrice: service.details.servicePrice,
+                serviceImg: service.details.serviceImg,
                 quantity: 1,
               },
             ]);
           }
-          // Refresh cart items from server to ensure consistency
           await fetchCartItems();
         }
       }
@@ -111,71 +134,77 @@ const Services: React.FC<ServicesProps> = ({ services }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {services?.length > 0 ? (
-          services.map((service) => {
-            const isInCart = cartItems.some((item) => item.id === service._id);
-            const isLoading = loading[service._id];
+        {technician?.categoryServices?.filter((service) => service.status === true).length > 0 ? (
+          technician?.categoryServices
+            ?.filter((service) => service.status === true) // ✅ Only Active
+            .map((service) => {
+              const isInCart = cartItems.some(
+                (item) => item.id === service.details?._id
+              );
+              const isLoading = loading[service.details?._id];
 
-            return (
-              <div
-                key={service._id}
-                className="flex justify-between items-center border border-gray-300 rounded-xl py-4 px-6 shadow"
-              >
-                <div>
-                  <h3 className="text-md md:text-lg">{service.serviceName}</h3>
-                  <p className="text-sm text-gray-700">
-                    ₹{" "}
-                    <span className="text-blue-600">
-                      {service.servicePrice}
-                    </span>{" "}
-                    per Unit
-                  </p>
-                  <div className="flex items-center text-sm mt-1">
-                    <MdOutlineStar size={18} color="#ffc71b" />
-                    <span className="ms-1 text-gray-700">
-                      4.5 <span className="text-gray-400">(25 Reviews)</span>
-                    </span>
+              return (
+                <div
+                  key={service.details?._id}
+                  className="flex justify-between items-center border border-gray-300 rounded-xl py-4 px-6 shadow"
+                >
+                  <div>
+                    <h3 className="text-md md:text-lg">
+                      {service.details?.serviceName}
+                    </h3>
+                    <p className="text-sm text-gray-700">
+                      ₹{" "}
+                      <span className="text-blue-600">
+                        {service.details?.servicePrice}
+                      </span>{" "}
+                      per Unit
+                    </p>
+                    <div className="flex items-center text-sm mt-1">
+                      <MdOutlineStar size={18} color="#ffc71b" />
+                      <span className="ms-1 text-gray-700">
+                        4.5 <span className="text-gray-400">(25 Reviews)</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col items-center gap-2">
+                    <img
+                      src={service.details?.serviceImg}
+                      alt={service.details?.serviceName}
+                      className="w-28 h-28 object-cover rounded-md"
+                    />
+                    <button
+                      className={`rounded-md px-3 py-1 flex items-center justify-center text-sm font-medium
+                        ${
+                          isInCart
+                            ? "text-red-600 border border-red-600"
+                            : "bg-red-600 text-white hover:bg-red-700"
+                        } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                      onClick={() =>
+                        !isLoading && handleCartToggle(service.details?._id)
+                      }
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <span>Processing...</span>
+                      ) : isInCart ? (
+                        <>
+                          <BsCartDash size={16} />
+                          <span className="ml-2">Remove</span>
+                        </>
+                      ) : (
+                        <>
+                          <FaCartPlus size={16} />
+                          <span className="ml-2">Add to Cart</span>
+                        </>
+                      )}
+                    </button>
                   </div>
                 </div>
-
-                <div className="flex flex-col items-center gap-2">
-                  <img
-                    src={service.serviceImg}
-                    alt={service.serviceName}
-                    className="w-28 h-28 object-cover rounded-md"
-                  />
-                  <button
-                    className={`rounded-md px-3 py-1 flex items-center justify-center text-sm font-medium
-                ${
-                  isInCart
-                    ? "text-red-600 border border-red-600"
-                    : "bg-red-600 text-white hover:bg-red-700"
-                } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
-                    onClick={() => !isLoading && handleCartToggle(service._id)}
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <span>Processing...</span>
-                    ) : isInCart ? (
-                      <>
-                        <BsCartDash size={16} />
-                        <span className="ml-2">Remove</span>
-                      </>
-                    ) : (
-                      <>
-                        <FaCartPlus size={16} />
-                        <span className="ml-2">Add to Cart</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-              </div>
-            );
-          })
+              );
+            })
         ) : (
-          <div className="text-gray-700">
-            No services available
-          </div>
+          <div className="text-gray-700">No services available</div>
         )}
       </div>
     </div>
@@ -183,6 +212,381 @@ const Services: React.FC<ServicesProps> = ({ services }) => {
 };
 
 export default Services;
+
+
+// import React, { useEffect, useState } from "react";
+// import { BsCartDash } from "react-icons/bs";
+// import { FaCartPlus } from "react-icons/fa6";
+// import { MdOutlineStar } from "react-icons/md";
+// import { addToCart, removeFromCart, getCartItems } from "../../api/apiMethods";
+// import { useNavigate } from "react-router-dom";
+// import { Eye, EyeIcon } from "lucide-react";
+
+// interface ServicesProps {
+//   services: TechnicianService[];
+//   technician : Technician;
+// }
+
+// interface CartItem {
+//   id: string;
+//   serviceName: string;
+//   servicePrice: number;
+//   serviceImg: string;
+//   quantity: number;
+// }
+
+// const Services: React.FC<ServicesProps> = ({ services , technician}) => {
+//   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+//   const [loading, setLoading] = useState<{ [key: string]: boolean }>({});
+//   const navigate = useNavigate();
+
+//   const fetchCartItems = async () => {
+//     try {
+//       const userId = localStorage.getItem("userId");
+//       if (!userId) return;
+
+//       const response = await getCartItems(userId);
+//       if (response.success && response.result.cart) {
+//         const formattedItems = response.result.cart.items.map((item: any) => ({
+//           id: item.serviceId._id,
+//           serviceName: item.serviceId.serviceName,
+//           servicePrice: item.serviceId.servicePrice,
+//           serviceImg: item.serviceId.serviceImg,
+//           quantity: item.quantity,
+//         }));
+//         setCartItems(formattedItems);
+//       }
+//     } catch (error) {
+//       console.error("Error fetching cart items:", error);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchCartItems();
+//   }, []);
+
+//   const handleCartToggle = async (serviceId: string) => {
+//     try {
+//       const userId = localStorage.getItem("userId");
+//       if (!userId) return;
+
+//       setLoading((prev) => ({ ...prev, [serviceId]: true }));
+//       const isInCart = cartItems.some((item) => item.id === serviceId);
+
+//       if (isInCart) {
+//         const response = await removeFromCart({ userId, serviceId });
+//         if (response.success) {
+//           setCartItems((prev) => prev.filter((item) => item.id !== serviceId));
+//           // Refresh cart items from server to ensure consistency
+//           await fetchCartItems();
+//         }
+//       } else {
+//         const payload = {
+//           userId,
+//           serviceId,
+//           quantity: 1,
+//         };
+
+//         const response = await addToCart(payload);
+//         if (response.success) {
+//           const service = technician?.categoryServices?.find((s) => s._id === serviceId);
+//           if (service) {
+//             setCartItems((prev) => [
+//               ...prev,
+//               {
+//                 id: service._id,
+//                 serviceName: service.serviceName,
+//                 servicePrice: service.servicePrice,
+//                 serviceImg: service.serviceImg,
+//                 quantity: 1,
+//               },
+//             ]);
+//           }
+//           // Refresh cart items from server to ensure consistency
+//           await fetchCartItems();
+//         }
+//       }
+//     } catch (error) {
+//       console.error("Error toggling cart item:", error);
+//     } finally {
+//       setLoading((prev) => ({ ...prev, [serviceId]: false }));
+//     }
+//   };
+
+//   return (
+//     <div className="border border-gray-200 shadow-md rounded-xl p-4 my-4 overflow-y-auto scrollbar-hide max-h-[calc(100vh-220px)] sm:max-h-[calc(100vh-180px)] md:max-h-[calc(100vh-160px)]">
+//       <div className="flex items-center justify-between mb-3">
+//         <div className="text-xl sm:text-xl md:text-2xl lg:text-xl xl:text-2xl font-extralight">
+//           Services
+//         </div>
+//         <button
+//           className="flex text-sm items-center bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded me-1"
+//           onClick={() => navigate("/cart")}
+//         >
+//           <Eye className="me-2" size={18} /> View Cart
+//         </button>
+//       </div>
+
+//       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+//         {technician?.categoryServices?.length > 0 ? (
+//           technician?.categoryServices?.map((service) => {
+//             const isInCart = cartItems.some((item) => item.id === service.details?._id);
+//             const isLoading = loading[service.details?._id];
+
+//             return (
+//               <div
+//                 key={service.details?._id}
+//                 className="flex justify-between items-center border border-gray-300 rounded-xl py-4 px-6 shadow"
+//               >
+//                 <div>
+//                   <h3 className="text-md md:text-lg">{service.details?.serviceName}</h3>
+//                   <p className="text-sm text-gray-700">
+//                     ₹{" "}
+//                     <span className="text-blue-600">
+//                       {service.details?.servicePrice}
+//                     </span>{" "}
+//                     per Unit
+//                   </p>
+//                   <div className="flex items-center text-sm mt-1">
+//                     <MdOutlineStar size={18} color="#ffc71b" />
+//                     <span className="ms-1 text-gray-700">
+//                       4.5 <span className="text-gray-400">(25 Reviews)</span>
+//                     </span>
+//                   </div>
+//                 </div>
+
+//                 <div className="flex flex-col items-center gap-2">
+//                   <img
+//                     src={service.details?.serviceImg}
+//                     alt={service.details?.serviceName}
+//                     className="w-28 h-28 object-cover rounded-md"
+//                   />
+//                   <button
+//                     className={`rounded-md px-3 py-1 flex items-center justify-center text-sm font-medium
+//                 ${
+//                   isInCart
+//                     ? "text-red-600 border border-red-600"
+//                     : "bg-red-600 text-white hover:bg-red-700"
+//                 } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+//                     onClick={() => !isLoading && handleCartToggle(service.details?._id)}
+//                     disabled={isLoading}
+//                   >
+//                     {isLoading ? (
+//                       <span>Processing...</span>
+//                     ) : isInCart ? (
+//                       <>
+//                         <BsCartDash size={16} />
+//                         <span className="ml-2">Remove</span>
+//                       </>
+//                     ) : (
+//                       <>
+//                         <FaCartPlus size={16} />
+//                         <span className="ml-2">Add to Cart</span>
+//                       </>
+//                     )}
+//                   </button>
+//                 </div>
+//               </div>
+//             );
+//           })
+//         ) : (
+//           <div className="text-gray-700">
+//             No services available
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Services;
+
+// import React, { useEffect, useState } from "react";
+// import { BsCartDash } from "react-icons/bs";
+// import { FaCartPlus } from "react-icons/fa6";
+// import { MdOutlineStar } from "react-icons/md";
+// import { addToCart, removeFromCart, getCartItems } from "../../api/apiMethods";
+// import { useNavigate } from "react-router-dom";
+// import { Eye, EyeIcon } from "lucide-react";
+
+// interface ServicesProps {
+//   services: TechnicianService[];
+//   technician : Technician;
+// }
+
+// interface CartItem {
+//   id: string;
+//   serviceName: string;
+//   servicePrice: number;
+//   serviceImg: string;
+//   quantity: number;
+// }
+
+// const Services: React.FC<ServicesProps> = ({ services , technician}) => {
+//   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+//   const [loading, setLoading] = useState<{ [key: string]: boolean }>({});
+//   const navigate = useNavigate();
+
+//   const fetchCartItems = async () => {
+//     try {
+//       const userId = localStorage.getItem("userId");
+//       if (!userId) return;
+
+//       const response = await getCartItems(userId);
+//       if (response.success && response.result.cart) {
+//         const formattedItems = response.result.cart.items.map((item: any) => ({
+//           id: item.serviceId._id,
+//           serviceName: item.serviceId.serviceName,
+//           servicePrice: item.serviceId.servicePrice,
+//           serviceImg: item.serviceId.serviceImg,
+//           quantity: item.quantity,
+//         }));
+//         setCartItems(formattedItems);
+//       }
+//     } catch (error) {
+//       console.error("Error fetching cart items:", error);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchCartItems();
+//   }, []);
+
+//   const handleCartToggle = async (serviceId: string) => {
+//     try {
+//       const userId = localStorage.getItem("userId");
+//       if (!userId) return;
+
+//       setLoading((prev) => ({ ...prev, [serviceId]: true }));
+//       const isInCart = cartItems.some((item) => item.id === serviceId);
+
+//       if (isInCart) {
+//         const response = await removeFromCart({ userId, serviceId });
+//         if (response.success) {
+//           setCartItems((prev) => prev.filter((item) => item.id !== serviceId));
+//           // Refresh cart items from server to ensure consistency
+//           await fetchCartItems();
+//         }
+//       } else {
+//         const payload = {
+//           userId,
+//           serviceId,
+//           quantity: 1,
+//         };
+
+//         const response = await addToCart(payload);
+//         if (response.success) {
+//           const service = services.find((s) => s._id === serviceId);
+//           if (service) {
+//             setCartItems((prev) => [
+//               ...prev,
+//               {
+//                 id: service._id,
+//                 serviceName: service.serviceName,
+//                 servicePrice: service.servicePrice,
+//                 serviceImg: service.serviceImg,
+//                 quantity: 1,
+//               },
+//             ]);
+//           }
+//           // Refresh cart items from server to ensure consistency
+//           await fetchCartItems();
+//         }
+//       }
+//     } catch (error) {
+//       console.error("Error toggling cart item:", error);
+//     } finally {
+//       setLoading((prev) => ({ ...prev, [serviceId]: false }));
+//     }
+//   };
+
+//   return (
+//     <div className="border border-gray-200 shadow-md rounded-xl p-4 my-4 overflow-y-auto scrollbar-hide max-h-[calc(100vh-220px)] sm:max-h-[calc(100vh-180px)] md:max-h-[calc(100vh-160px)]">
+//       <div className="flex items-center justify-between mb-3">
+//         <div className="text-xl sm:text-xl md:text-2xl lg:text-xl xl:text-2xl font-extralight">
+//           Services
+//         </div>
+//         <button
+//           className="flex text-sm items-center bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded me-1"
+//           onClick={() => navigate("/cart")}
+//         >
+//           <Eye className="me-2" size={18} /> View Cart
+//         </button>
+//       </div>
+
+//       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+//         {services?.length > 0 ? (
+//           services.map((service) => {
+//             const isInCart = cartItems.some((item) => item.id === service._id);
+//             const isLoading = loading[service._id];
+
+//             return (
+//               <div
+//                 key={service._id}
+//                 className="flex justify-between items-center border border-gray-300 rounded-xl py-4 px-6 shadow"
+//               >
+//                 <div>
+//                   <h3 className="text-md md:text-lg">{service.serviceName}</h3>
+//                   <p className="text-sm text-gray-700">
+//                     ₹{" "}
+//                     <span className="text-blue-600">
+//                       {service.servicePrice}
+//                     </span>{" "}
+//                     per Unit
+//                   </p>
+//                   <div className="flex items-center text-sm mt-1">
+//                     <MdOutlineStar size={18} color="#ffc71b" />
+//                     <span className="ms-1 text-gray-700">
+//                       4.5 <span className="text-gray-400">(25 Reviews)</span>
+//                     </span>
+//                   </div>
+//                 </div>
+
+//                 <div className="flex flex-col items-center gap-2">
+//                   <img
+//                     src={service.serviceImg}
+//                     alt={service.serviceName}
+//                     className="w-28 h-28 object-cover rounded-md"
+//                   />
+//                   <button
+//                     className={`rounded-md px-3 py-1 flex items-center justify-center text-sm font-medium
+//                 ${
+//                   isInCart
+//                     ? "text-red-600 border border-red-600"
+//                     : "bg-red-600 text-white hover:bg-red-700"
+//                 } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+//                     onClick={() => !isLoading && handleCartToggle(service._id)}
+//                     disabled={isLoading}
+//                   >
+//                     {isLoading ? (
+//                       <span>Processing...</span>
+//                     ) : isInCart ? (
+//                       <>
+//                         <BsCartDash size={16} />
+//                         <span className="ml-2">Remove</span>
+//                       </>
+//                     ) : (
+//                       <>
+//                         <FaCartPlus size={16} />
+//                         <span className="ml-2">Add to Cart</span>
+//                       </>
+//                     )}
+//                   </button>
+//                 </div>
+//               </div>
+//             );
+//           })
+//         ) : (
+//           <div className="text-gray-700">
+//             No services available
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Services;
 
 // import { Pencil, Plus } from "lucide-react";
 // import React, { useEffect, useState } from "react";
