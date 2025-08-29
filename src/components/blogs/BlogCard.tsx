@@ -2,19 +2,21 @@ import React from "react";
 import { Calendar, Tag } from "lucide-react";
 
 // Define BlogPost interface to match BlogCard props
-interface BlogPost {
-  id: string;
+interface Blog {
+  _id: string;
+  name: string;
   image: string;
   title: string;
-  excerpt: string;
-  date: string;
-  category: string;
+  description: string;
   tags: string[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
 
 interface BlogCardProps {
-  post: BlogPost;
-  onClick: (post: BlogPost) => void;
+  post: Blog;
+  onClick: (post: Blog) => void;
 }
 
 const BlogCard: React.FC<BlogCardProps> = ({ post, onClick }) => {
@@ -27,11 +29,11 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, onClick }) => {
         <img
           src={post.image}
           alt={post.title}
-          className="w-full h-52 object-cover"
+          className="mx-auto h-48 object-cover"
         />
         <div className="absolute top-4 left-4">
           <span className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
-            {post.category}
+            {post.name}
           </span>
         </div>
       </div>
@@ -39,13 +41,14 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, onClick }) => {
         <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 hover:text-blue-600 transition-colors">
           {post.title}
         </h3>
-        <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
-          {post.excerpt}
-        </p>
         <div className="flex items-center justify-between text-xs text-gray-500">
           <div className="flex items-center">
             <Calendar size={14} className="mr-2" />
-            <span className="font-medium text-gray-500">{post.date}</span>
+            <span className="font-medium text-gray-500">{new Date(post.createdAt).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}</span>
           </div>
           <div className="flex items-center">
             <Tag size={14} className="mr-2" />

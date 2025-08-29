@@ -177,19 +177,7 @@ const BlogListPage: React.FC = () => {
               className="flex-shrink-0 w-[350px] snap-start transition-transform duration-300 hover:scale-105"
             >
               <BlogCard
-                post={{
-                  id: post._id,
-                  image: post.image || "https://via.placeholder.com/400x200",
-                  title: post.title,
-                  excerpt: post.description,
-                  date: new Date(post.createdAt).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  }),
-                  category: post.name || "General",
-                  tags: post.tags,
-                }}
+                post={post}
                 onClick={() => navigate(`/blog/${post._id}`, { state: post })}
               />
             </div>
