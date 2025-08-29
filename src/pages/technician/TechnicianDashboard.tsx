@@ -88,7 +88,7 @@ const TechnicianDashboard: React.FC = () => {
             image: service.serviceImg,
           }));
           setServices(fetchedServices);
-          setServiceCount(fetchedServices?.length || 0);
+          setServiceCount(fetchedServices.length || 0);
         }
 
         // Handle today's bookings

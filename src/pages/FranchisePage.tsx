@@ -28,7 +28,6 @@ import { useNavigate } from "react-router-dom";
 
 interface FormData {
   name: string;
-  mobile: string;
   phoneNumber: string;
   message: string;
 }
@@ -64,7 +63,6 @@ type FranchisePlan = {
 const FranchisePage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     name: "",
-    mobile: "",
     phoneNumber: "",
     message: "",
   });
@@ -104,14 +102,13 @@ const FranchisePage: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
     if (!/^\d{10}$/.test(formData.phoneNumber)) {
-      // setError("Please enter a valid 10-digit phone number (e.g., 9876543210)");
+      setError("Please enter a valid 10-digit phone number (e.g., 9876543210)");
       return;
     }
 
     if (!formData.message) {
-      // setError("Please select a category");
+      setError("Please enter your message");
       return;
     }
 
@@ -119,10 +116,10 @@ const FranchisePage: React.FC = () => {
       const response = await createFranchaseEnquiry(formData);
       if (response?.success) {
         alert("Thanks for contacting us! We'll get back to you soon.");
-        setFormData({ name: "", mobile: "", phoneNumber: "", message: "" });
+        setFormData({ name: "", phoneNumber: "", message: "" });
       } else {
         console.log(response?.message || "Failed to submit contact form");
-        // setError(response.message || "Failed to submit contact form");
+        setError(response.message || "Failed to submit contact form");
       }
     } catch (err: any) {
       console.log(
@@ -169,7 +166,7 @@ const FranchisePage: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-4">
+        <div className="grid lg:grid-cols-4 gap-2">
           <div className="lg:col-span-3">
             <div className="min-h-screen flex items-center justify-center">
               <div className="w-full max-w-xl mx-auto px-4">

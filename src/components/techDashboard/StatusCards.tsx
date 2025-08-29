@@ -21,7 +21,7 @@ const StatsCard: React.FC<StatsCardProps> = ({ icon, label, value, color = "bg-g
             <div>
               <p className="text-sm text-gray-500 font-medium group-hover:text-gray-600 transition-colors">{label}</p>
               <p className="text-2xl font-bold text-gray-800 group-hover:text-gray-900 transition-colors">
-                {value === 0 ? "No Data" : value}
+                {value}
               </p>
             </div>
           </div>
