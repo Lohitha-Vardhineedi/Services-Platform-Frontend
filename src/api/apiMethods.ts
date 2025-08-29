@@ -92,6 +92,8 @@ export const getFranchisePlans = (data: any) => apiRequest('getFranchisePlans', 
 
 export const getAllServicesByCatId = (id: string) =>apiRequest('getAllServicesByCatId', null , id)
 
+export const getCategoryServicesByTechId = (id: string) =>apiRequest('getCategoryServicesByTechId', null , id)
+
 export const changeServiceStatusByTechId = (payload: any) =>apiRequest('changeServiceStatusByTechId', payload)
 
 export const getTodaybookingBytechId = (id: string) => apiRequest("getTodaybookingBytechId", null, id);

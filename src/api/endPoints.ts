@@ -233,6 +233,12 @@ const endpoints: any = {
       return `/api/cateServices/getServicesByCateId/${categoryId}`;
     },
   },
+  getCategoryServicesByTechId: {
+    method: "get",
+    url: (techId: string) => { 
+      return `/api/techDetails/getCategoryServicesByTechId/${techId}`;
+    },
+  },
   changeServiceStatusByTechId: {
     method: "put",
     url: () => { 

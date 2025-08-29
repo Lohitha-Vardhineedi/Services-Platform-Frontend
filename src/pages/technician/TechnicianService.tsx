@@ -7,6 +7,7 @@ import {
   getServicesByTechId,
   getAllServicesByCatId,
   changeServiceStatusByTechId,
+  getCategoryServicesByTechId,
 } from "../../api/apiMethods";
 import { Link } from "react-router-dom";
 
@@ -28,25 +29,26 @@ const TechnicianServices: React.FC = () => {
 
   const storedData = localStorage.getItem("user");
   const user = storedData ? JSON.parse(storedData) : null;
-  const technicianId = user?._id; // 🔹 technicianId from localStorage
+  const technicianId = user?.id; 
   const categoryId = user?.category;
 
   // 🔹 Fetch all category services (default enabled = true)
   useEffect(() => {
-    if (!categoryId) return;
+    if (!technicianId) return;
 
     const fetchCategoryServices = async () => {
       setLoading(true);
       try {
-        const response = await getAllServicesByCatId(categoryId);
+        const response = await getCategoryServicesByTechId(technicianId);
         if (response.success && Array.isArray(response.result)) {
           setCategoryServices(
             response.result.map((item: any) => ({
-              id: item._id,
-              name: item.serviceName,
-              price: item.servicePrice,
-              image: item.serviceImg,
-              status: true, // 🔹 Initially enabled
+              id: item.details?._id,
+              name: item.details?.serviceName,
+              price: item.details?.servicePrice,
+              image: item.details?.serviceImg,
+              category: item.details?.categoryId,
+              status: item.status, 
             }))
           );
         } else {
@@ -60,7 +62,7 @@ const TechnicianServices: React.FC = () => {
     };
 
     fetchCategoryServices();
-  }, [categoryId]);
+  }, [technicianId]);
 
   // 🔹 Toggle service status
   const handleToggleService = async (categoryServiceId: string, currentStatus: boolean) => {
@@ -150,7 +152,7 @@ const TechnicianServices: React.FC = () => {
                   />
                   <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
                   <span className={`ml-2 text-sm ${item.status ? "text-green-600" : "text-red-600"}`}>
-                    {item.status ? "Active" : "Inactive"}
+                    {item.status  ? "Active" : "Inactive"}
                   </span>
                 </label>
               </div>
