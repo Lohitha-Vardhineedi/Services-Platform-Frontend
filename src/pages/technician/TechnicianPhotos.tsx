@@ -62,33 +62,30 @@ const TechnicianPhotos = () => {
     const imageUrlToDelete = images[index];
     const technicianId = localStorage.getItem("userId");
 
-    if (!technicianId || !imageUrlToDelete) {
-      console.error("Missing technicianId or imageUrlToDelete");
-      return;
-    }
-    try {
+
+    if (window.confirm("Are you sure you want to delete this image?")) {
+      if (!technicianId || !imageUrlToDelete) {
+        alert("Missing technicianId or imageUrlToDelete");
+        return;
+      }
+      try {
       const payload = {
         technicianId: technicianId,
         imageUrlToDelete: imageUrlToDelete,
       };
 
-      console.log("Deleting image with payload:", payload);
-
       const response = await deletePhotoBySingle(payload);
 
-      // const response = await axios.delete('/api/techImages/deleteSingletechImg', {
-      //   data: payload
-      // });
-
-      if (response.data.success) {
+      if (response?.data?.success) {
         setImages((prev) => prev.filter((_, i) => i !== index));
         console.log("Image deleted successfully");
       } else {
-        console.error("Failed to delete image:", response.data.message);
+        console.error("Failed to delete image:", response?.data?.message);
       }
     } catch (error) {
       console.error("Error deleting image:", error);
     }
+  }
   };
 
   return (

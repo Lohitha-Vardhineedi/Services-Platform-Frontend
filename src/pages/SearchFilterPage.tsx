@@ -4,12 +4,15 @@ import { IoCall, IoLocationOutline } from "react-icons/io5";
 import { LuMessageSquareText } from "react-icons/lu";
 import { MdOutlineStar } from "react-icons/md";
 import { FaThumbsUp } from "react-icons/fa";
-import { getAllTechByAddress, getSearchContentByAddress } from "../api/apiMethods";
+import {
+  getAllTechByAddress,
+  getSearchContentByAddress,
+} from "../api/apiMethods";
 import AdvertisementBanner from "../components/services/AdvertisementBanner";
 import ContactForm from "../components/services/ContactForms";
 import { ServiceFilters } from "../components/services/ServiceFilters";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { Helmet } from "react-helmet-async";
 
 interface Technician {
@@ -52,20 +55,19 @@ const SearchFilterPage: React.FC = () => {
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [errorContent, setErrorContent] = useState<string | null>(null);
-const searchAddress = localStorage.getItem("selectAddress");
-console.log("searchAddress", searchAddress);
+  const searchAddress = localStorage.getItem("selectAddress");
+  console.log("searchAddress", searchAddress);
 
+  const parsedSearchAddress = searchAddress ? JSON.parse(searchAddress) : null;
 
-const parsedSearchAddress = searchAddress ? JSON.parse(searchAddress) : null;
+  const categoryId = parsedSearchAddress?.category;
+  const areaName = parsedSearchAddress?.areaName;
+  const city = parsedSearchAddress?.city;
+  const pincode = parsedSearchAddress?.pincode;
+  const state = parsedSearchAddress?.state;
 
-const categoryId = parsedSearchAddress?.category;
-const areaName = parsedSearchAddress?.areaName;
-const city = parsedSearchAddress?.city;
-const pincode = parsedSearchAddress?.pincode;
-const state = parsedSearchAddress?.state ;
-
-const formData = { categoryId, areaName, pincode, city, state};
-console.log(formData);
+  const formData = { categoryId, areaName, pincode, city, state };
+  console.log(formData);
 
   const fetchTechBySearch = async () => {
     if (!categoryId || !areaName || !pincode || !city) {
@@ -93,19 +95,17 @@ console.log(formData);
     fetchTechBySearch();
   }, [categoryId, areaName, pincode, city]);
 
-
   const fetchSearchContent = async () => {
     if (!categoryId || !areaName || !pincode || !city || !state) {
       setErrorContent("Missing required search parameters");
       return;
     }
-     setIsDataLoading(true);
+    setIsDataLoading(true);
     setErrorContent(null);
     try {
       const response = await getSearchContentByAddress(formData);
-       console.log(response,"==>lohiresponse")
+      console.log(response, "==>lohiresponse");
       if (response?.success === true) {
-       
         setContent(response?.result);
       } else {
         setContent([]);
@@ -117,26 +117,42 @@ console.log(formData);
       setIsDataLoading(false);
     }
   };
-  console.log("setContent", content)
+  console.log("setContent", content);
   useEffect(() => {
     fetchSearchContent();
   }, [categoryId, areaName, pincode, city, state]);
 
-  const handleTechnicianClick = (technicianId: string, city?: string, pincode?: string) => {
-    const cityPincode = pincode && city ? `${pincode}-${city}` : pincode || city || "";
-    navigate(`/technicianById/${technicianId}?cityPincode=${encodeURIComponent(cityPincode)}`);
+  const handleTechnicianClick = (
+    technicianId: string,
+    city?: string,
+    pincode?: string
+  ) => {
+    const cityPincode =
+      pincode && city ? `${pincode}-${city}` : pincode || city || "";
+    navigate(
+      `/technicianById/${technicianId}?cityPincode=${encodeURIComponent(
+        cityPincode
+      )}`
+    );
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-4">
       <Helmet>
-        <title>{content?.meta_title || "Search for technicians in your area"}</title>
-        <meta name="description" content={content?.meta_description || "Search for technicians in your area"} />
+        <title>
+          {content?.meta_title || "Search for technicians in your area"}
+        </title>
+        <meta
+          name="description"
+          content={
+            content?.meta_description || "Search for technicians in your area"
+          }
+        />
       </Helmet>
 
       <AdvertisementBanner />
       <h2 className="text-xl font-semibold my-4">Technicians</h2>
-      <ServiceFilters/>
+      <ServiceFilters />
 
       <div className="flex flex-col md:flex-row p-2 gap-3">
         <div className="flex-1 space-y-3 overflow-y-auto scrollbar-hide max-h-[calc(100vh-200px)]">
@@ -158,7 +174,10 @@ console.log(formData);
                 }
               >
                 <img
-                  src={profile.technician.profileImage || "https://via.placeholder.com/150"}
+                  src={
+                    profile.technician.profileImage ||
+                    "https://via.placeholder.com/150"
+                  }
                   alt={profile.technician.username || "Technician"}
                   className="w-36 h-36 object-cover rounded-2xl"
                 />
@@ -171,7 +190,11 @@ console.log(formData);
                   <div className="flex gap-3 items-center">
                     <div className="flex items-center border border-amber-500 rounded-lg px-2 text-black font-bold">
                       {profile.ratings?.rating ?? "4"}
-                      <MdOutlineStar size={20} className="ml-1" color="#ffc71b" />
+                      <MdOutlineStar
+                        size={20}
+                        className="ml-1"
+                        color="#ffc71b"
+                      />
                     </div>
                     {profile.ratings?.rating && (
                       <span className="text-gray-600 text-sm">
@@ -235,34 +258,30 @@ console.log(formData);
               </div>
             ))
           ) : (
-            <div className="text-gray-500 text-center">No technicians found.</div>
+            <div className="text-gray-500 text-center">
+              No technicians found.
+            </div>
           )}
         </div>
         <ContactForm />
       </div>
 
       <div className="mt-6 space-y-4">
-         {isDataLoading ? (
-            <div className="text-center">Loading Data...</div>
-          ) : errorContent ? (
-            <div className="text-red-500 text-center">{errorContent}</div>
-          ) : content?.seo_content?.length > 0 ? (
-//           <div
-//   className="prose prose-lg max-w-none"
-//   dangerouslySetInnerHTML={{ __html: content.seo_content }}
-// />
-
-<div className="ql-snow">
-  <div className="ql-editor" dangerouslySetInnerHTML={{ __html: content.seo_content }} />
-</div>
-
-
-          )
-          : (
-            <div> No content for this Address</div>
-          )
-          }
-</div>
+        {isDataLoading ? (
+          <div className="text-center">Loading Data...</div>
+        ) : errorContent ? (
+          <div className="text-red-500 text-center">{errorContent}</div>
+        ) : content?.seo_content?.length > 0 ? (
+          <div className="ql-container border-black">
+            <div
+              className="ql-editor"
+              dangerouslySetInnerHTML={{ __html: content.seo_content }}
+            />
+          </div>
+        ) : (
+          <div> No content for this Address</div>
+        )}
+      </div>
     </div>
   );
 };
@@ -307,9 +326,7 @@ export default SearchFilterPage;
 //   }
 
 //   useEffect(() => {
-    
 
-    
 //   }, []);
 
 //   return (
