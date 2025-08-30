@@ -69,7 +69,8 @@ const CartPage = () => {
       const response = await getCartItems(userId);
       if (response.success && response.result.cart) {
         console.log(response)
-        const formattedItems = response.result.cart.items.map((item: any) => ({
+        const formattedItems = response.result.cart.map((item: any) => ({
+          
           _id: item?._id,
           serviceId: {
             _id: item?.serviceId?._id,
@@ -123,7 +124,7 @@ const CartPage = () => {
         ...prev,
         cart: {
           ...prev.cart,
-          items: prev.cart.items.map(item =>
+          items: prev.cart.items?.map(item =>
             item._id === itemId ? { ...item, bookingDate: selectedDate } : item
           )
         }

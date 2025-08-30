@@ -21,7 +21,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     try {
       const res = await getCartItems(userId);
-      const items = res?.result?.cart?.items || [];
+      const items = res?.result?.cart || [];
       setCartCount(items.length);
     } catch (error) {
       console.error("Error fetching cart count:", error);

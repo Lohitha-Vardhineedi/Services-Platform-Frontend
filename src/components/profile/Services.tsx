@@ -52,11 +52,24 @@ const Services: React.FC<ServicesProps> = ({ services, technician }) => {
 
       const response = await getCartItems(userId);
       if (response.success && response.result.cart) {
-        const formattedItems = response.result.cart.items.map((item: any) => ({
-          id: item.serviceId._id,
-          serviceName: item.serviceId.serviceName,
-          servicePrice: item.serviceId.servicePrice,
-          serviceImg: item.serviceId.serviceImg,
+        console.log("response", response.result.cart)
+        // const formattedItems = response.result.cart.items?.map((item: any) => ({
+        // const formattedItems = response.result.cart.map((item: any) => ({
+        //   id: item.serviceId,
+        //   serviceName: item.serviceName,
+        //   servicePrice: item.servicePrice,
+        //   serviceImg: item.serviceImg,
+        //   quantity: item.quantity,
+        // }));
+        // console.log("====> formattedItems", formattedItems)
+        // setCartItems(formattedItems);
+
+        // ✅ Formatting cart items correctly
+        const formattedItems = response.result.cart.map((item: any) => ({
+          id: item.serviceId,   // <-- must be serviceId
+          serviceName: item.serviceName,
+          servicePrice: item.servicePrice,
+          serviceImg: item.serviceImg,
           quantity: item.quantity,
         }));
         setCartItems(formattedItems);
@@ -71,6 +84,56 @@ const Services: React.FC<ServicesProps> = ({ services, technician }) => {
   }, []);
 
   // ✅ Toggle Add/Remove Cart
+  // const handleCartToggle = async (serviceId: string) => {
+  //   try {
+  //     const userId = localStorage.getItem("userId");
+  //     if (!userId) return;
+
+  //     setLoading((prev) => ({ ...prev, [serviceId]: true }));
+  //     const isInCart = cartItems.some((item) => item.id === serviceId);
+  //     // const isInCart = cartItems.some((item) => item.id === serviceId);
+
+  //     if (isInCart) {
+  //       // Remove from cart
+  //       const response = await removeFromCart({ userId, serviceId });
+  //       if (response.success) {
+  //         setCartItems((prev) => prev.filter((item) => item.id !== serviceId));
+  //         await fetchCartItems();
+  //       }
+  //     } else {
+  //       // Add to cart
+  //       const payload = { userId, serviceId, quantity: 1 };
+  //       const response = await addToCart(payload);
+
+  //       if (response.success) {
+  //         // ✅ Only add active services
+  //         const service = technician?.categoryServices?.find(
+  //           (s) => s.details?._id === serviceId && s.status === true
+  //         );
+
+  //         if (service) {
+  //           setCartItems((prev) => [
+  //             ...prev,
+  //             {
+  //               id: service.details._id,
+  //               serviceName: service.details.serviceName,
+  //               servicePrice: service.details.servicePrice,
+  //               serviceImg: service.details.serviceImg,
+  //               quantity: 1,
+  //             },
+  //           ]);
+  //         }
+  //         await fetchCartItems();
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error("Error toggling cart item:", error);
+  //   } finally {
+  //     setLoading((prev) => ({ ...prev, [serviceId]: false }));
+  //   }
+  // };
+
+  // ✅ Toggle add/remove
   const handleCartToggle = async (serviceId: string) => {
     try {
       const userId = localStorage.getItem("userId");
@@ -80,19 +143,15 @@ const Services: React.FC<ServicesProps> = ({ services, technician }) => {
       const isInCart = cartItems.some((item) => item.id === serviceId);
 
       if (isInCart) {
-        // Remove from cart
         const response = await removeFromCart({ userId, serviceId });
         if (response.success) {
           setCartItems((prev) => prev.filter((item) => item.id !== serviceId));
-          await fetchCartItems();
         }
       } else {
-        // Add to cart
         const payload = { userId, serviceId, quantity: 1 };
         const response = await addToCart(payload);
 
         if (response.success) {
-          // ✅ Only add active services
           const service = technician?.categoryServices?.find(
             (s) => s.details?._id === serviceId && s.status === true
           );
@@ -109,7 +168,6 @@ const Services: React.FC<ServicesProps> = ({ services, technician }) => {
               },
             ]);
           }
-          await fetchCartItems();
         }
       }
     } catch (error) {
@@ -118,6 +176,7 @@ const Services: React.FC<ServicesProps> = ({ services, technician }) => {
       setLoading((prev) => ({ ...prev, [serviceId]: false }));
     }
   };
+
 
   return (
     <div className="border border-gray-200 shadow-md rounded-xl p-4 my-4 overflow-y-auto scrollbar-hide max-h-[calc(100vh-220px)] sm:max-h-[calc(100vh-180px)] md:max-h-[calc(100vh-160px)]">
@@ -136,11 +195,18 @@ const Services: React.FC<ServicesProps> = ({ services, technician }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {technician?.categoryServices?.filter((service) => service.status === true).length > 0 ? (
           technician?.categoryServices
-            ?.filter((service) => service.status === true) // ✅ Only Active
+            ?.filter((service) => service.status === true)
             .map((service) => {
-              const isInCart = cartItems.some(
+              console.log("====>service ", service)
+              console.log("====>cartItems ", cartItems)
+              // const isInCart = cartItems?.some(
+              //   (item) => item.id === service?.categoryServiceId
+              // );
+
+              const isInCart = cartItems?.some(
                 (item) => item.id === service.details?._id
               );
+
               const isLoading = loading[service.details?._id];
 
               return (
@@ -175,10 +241,9 @@ const Services: React.FC<ServicesProps> = ({ services, technician }) => {
                     />
                     <button
                       className={`rounded-md px-3 py-1 flex items-center justify-center text-sm font-medium
-                        ${
-                          isInCart
-                            ? "text-red-600 border border-red-600"
-                            : "bg-red-600 text-white hover:bg-red-700"
+                        ${isInCart
+                          ? "text-red-600 border border-red-600"
+                          : "bg-red-600 text-white hover:bg-red-700"
                         } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
                       onClick={() =>
                         !isLoading && handleCartToggle(service.details?._id)

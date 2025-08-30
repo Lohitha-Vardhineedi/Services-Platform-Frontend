@@ -44,8 +44,7 @@ const CustomerReviewCarousel: React.FC = () => {
         setError('No reviews available at the moment.');
       }
     } catch (error) {
-      setError('Failed to fetch reviews. Please try again later.');
-      console.error('Error fetching company reviews:', error);
+      setError(error?.message);
     } finally {
       setIsLoading(false);
     }
@@ -80,12 +79,12 @@ const CustomerReviewCarousel: React.FC = () => {
         <div className="flex justify-center items-center h-64">
           <div className="bg-red-50 text-red-600 p-6 rounded-lg shadow-md text-center">
             <p className="text-lg font-semibold">{error}</p>
-            <button
+            {/* <button
               className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
               onClick={fetchCompanyReviews}
             >
               Retry
-            </button>
+            </button> */}
           </div>
         </div>
       ) : (
