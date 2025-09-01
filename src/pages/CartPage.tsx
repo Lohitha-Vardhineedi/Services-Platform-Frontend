@@ -206,7 +206,8 @@ const CartPage = () => {
 
       const payload = {
         userId,
-        serviceId: item._id,
+        serviceId: item.serviceId,
+        // serviceId: item._id,
         quantity: newQuantity
       };
 
@@ -243,7 +244,7 @@ const CartPage = () => {
 
       setSelectedItems(prev => prev.filter(item => item._id !== itemId));
 
-      await removeFromCart({ userId, serviceId: item._id });
+      await removeFromCart({ userId, serviceId: item.serviceId });
     } catch (err: any) {
       console.error("Error removing item:", err);
       setError("Failed to remove item");
@@ -357,10 +358,35 @@ const CartPage = () => {
     return <div className="max-w-4xl mx-auto p-6">Loading...</div>;
   }
 
-  if (error) {
-    return (
-      <div className="max-w-4xl mx-auto p-6">
-        <p className="text-red-500 text-center">{error}</p>
+
+
+// if (error) {
+//   return (
+//     <div className="max-w-4xl mx-auto p-6">
+//       <p className="text-red-500 text-center">{error}</p>
+//       <button
+//         onClick={() => setError(null)}
+//         className="mt-4 bg-fuchsia-500 text-white px-4 py-2 rounded-lg hover:bg-fuchsia-600"
+//       >
+//         Try Again
+//       </button>
+//     </div>
+//   );
+// }
+
+if (error) {
+  return (
+    <div className="max-w-4xl mx-auto p-6">
+      <p className="text-red-500 text-center">{error}</p>
+      <div className="flex justify-center gap-4 mt-4">
+        {error.includes("log in") && (
+          <button
+            onClick={() => navigate("/login")}
+            className="bg-fuchsia-500 text-white px-4 py-2 rounded-lg hover:bg-fuchsia-600"
+          >
+            Log In
+          </button>
+        )}
         <button
           onClick={() => setError(null)}
           className="mt-4 bg-fuchsia-500 text-white px-4 py-2 rounded-lg hover:bg-fuchsia-600"
@@ -368,8 +394,9 @@ const CartPage = () => {
           Try Again
         </button>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   if (!cartData || !cartData.cart?.items || cartData.cart?.items?.length === 0) {
     return (

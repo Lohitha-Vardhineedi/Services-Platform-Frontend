@@ -1,4 +1,4 @@
-import { addToCart } from "./apiMethods";
+
 
 const endpoints: any = {
   

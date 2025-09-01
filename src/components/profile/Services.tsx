@@ -133,7 +133,6 @@ const Services: React.FC<ServicesProps> = ({ services, technician }) => {
   //   }
   // };
 
-  // ✅ Toggle add/remove
   const handleCartToggle = async (serviceId: string) => {
     try {
       const userId = localStorage.getItem("userId");
