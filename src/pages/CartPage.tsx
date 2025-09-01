@@ -68,26 +68,30 @@ const CartPage = () => {
       }
       const response = await getCartItems(userId);
       if (response.success && response.result.cart) {
-        console.log(response)
-        const formattedItems = response.result.cart.map((item: any) => ({
-          
-          _id: item?._id,
-          serviceId: {
-            _id: item?.serviceId?._id,
-            technicianId: item.serviceId?.technicianId,
-            serviceName: item.serviceId?.serviceName,
-            serviceImg: item.serviceId?.serviceImg,
-            servicePrice: item.serviceId?.servicePrice,
-            price: item.serviceId?.price,
-            image: item.serviceId?.image,
-            ratings: item.serviceId?.ratings,
-            reviews: item.serviceId?.reviews,
-          },
-          quantity: item.quantity,
-          bookingDate: item.bookingDate,
-          isSelected: false,
-        }));
 
+        const formattedItems = response.result.cart.map((item: any) => ({
+
+          _id: item?._id,
+          serviceId: item?.serviceId,
+          serviceName: item?.serviceName,
+          serviceImg: item?.serviceImg,
+          servicePrice: item?.servicePrice,
+          quantity: item.quantity,
+          // serviceId: {
+          //   _id: item?.serviceId?._id,
+          //   technicianId: item.serviceId?.technicianId,
+          //   serviceName: item.serviceId?.serviceName,
+          //   serviceImg: item.serviceId?.serviceImg,
+          //   servicePrice: item.serviceId?.servicePrice,
+          //   price: item.serviceId?.price,
+          //   image: item.serviceId?.image,
+          //   ratings: item.serviceId?.ratings,
+          //   reviews: item.serviceId?.reviews,
+          // }, 
+          // bookingDate: item.bookingDate,
+          // isSelected: false,
+        }));
+        console.log(formattedItems, "formattedItems===>")
         const updatedCartData = {
           user: response.result.user,
           cart: {
@@ -95,6 +99,8 @@ const CartPage = () => {
             items: formattedItems,
           },
         };
+        console.log(updatedCartData,"updatedCartData");
+        
         setCartData(updatedCartData);
         setSelectedItems([]);
       } else {
@@ -317,12 +323,12 @@ const CartPage = () => {
     const today = new Date();
     const maxDate = new Date();
     maxDate.setDate(today.getDate() + 7); // 1 week from today
-        // maxDate.setDate(today.getDate() + 10); // 10 days from today
+    // maxDate.setDate(today.getDate() + 10); // 10 days from today
     // if (unit === 'week') {
     // } else if (unit === 'days') {
     // }
     return maxDate.toISOString().split("T")[0];
-};
+  };
   // const getMaxDate = () => {
   //   const today = new Date();
   //   const nextMonth = new Date();
@@ -356,7 +362,7 @@ const CartPage = () => {
     );
   }
 
-  if (!cartData || !cartData.cart.items || cartData.cart.items.length === 0) {
+  if (!cartData || !cartData.cart?.items || cartData.cart?.items?.length === 0) {
     return (
       <div className="max-w-4xl mx-auto p-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-6">Your Cart</h1>
@@ -383,7 +389,8 @@ const CartPage = () => {
       <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">Your Cart</h1>
 
       <div className="space-y-4">
-        {cartData.cart.items.map((item) => {
+        {cartData.cart?.items?.map((item) => {
+        
           const isProcessing = processingItems[item._id];
           return (
             <div
@@ -400,20 +407,20 @@ const CartPage = () => {
                   disabled={isProcessing}
                 />
                 <img
-                  src={item.serviceId.serviceImg || item.serviceId.image || "https://via.placeholder.com/64"}
-                  alt={item.serviceId.serviceName}
+                  src={item?.serviceImg || "https://via.placeholder.com/64"}
+                  alt={item?.serviceName}
                   className="rounded-xl w-16 h-16 object-cover"
                 />
                 <div className="ml-4">
-                  <p className="text-lg font-semibold">{item.serviceId.serviceName}</p>
+                  <p className="text-lg font-semibold">{item?.serviceName}</p>
                   <p className="text-gray-600">
-                    ₹ <span className="clr-blue">{item.serviceId.servicePrice || item.serviceId.price}</span> per unit
+                    ₹ <span className="clr-blue">{item?.servicePrice}</span> per unit
                   </p>
-                  {item.serviceId.ratings && (
+                  {item?.ratings && (
                     <div className="flex items-center gap-1 mt-1">
                       <span className="text-sm text-yellow-500">★</span>
-                      <span className="text-sm text-gray-600">{item.serviceId.ratings}</span>
-                      <span className="text-sm text-gray-500">({item.serviceId.reviews} reviews)</span>
+                      <span className="text-sm text-gray-600">{item.ratings}</span>
+                      <span className="text-sm text-gray-500">({item.reviews} reviews)</span>
                     </div>
                   )}
                 </div>
@@ -426,7 +433,7 @@ const CartPage = () => {
                       onClick={() => !isProcessing && handleRemove(item._id)}
                       className="p-1 rounded-full hover:bg-gray-200"
                       disabled={isProcessing}
-                      aria-label={`Remove ${item.serviceId.serviceName}`}
+                      aria-label={`Remove ${item?.serviceName}`}
                     >
                       <Trash2 size={16} className="text-red-500 hover:text-red-700" />
                     </button>
@@ -435,7 +442,7 @@ const CartPage = () => {
                       onClick={() => !isProcessing && handleQuantityChange(item._id, -1)}
                       className="p-1 rounded-full hover:bg-gray-200 clr-purple"
                       disabled={isProcessing}
-                      aria-label={`Decrease quantity of ${item.serviceId.serviceName}`}
+                      aria-label={`Decrease quantity of ${item?.serviceName}`}
                     >
                       <Minus size={12} />
                     </button>
@@ -447,14 +454,14 @@ const CartPage = () => {
                     onClick={() => !isProcessing && handleQuantityChange(item._id, 1)}
                     className="p-1 rounded-full hover:bg-gray-200 clr-purple"
                     disabled={isProcessing}
-                    aria-label={`Increase quantity of ${item.serviceId.serviceName}`}
+                    aria-label={`Increase quantity of ${item?.serviceName}`}
                   >
                     <GoPlus size={16} />
                   </button>
                 </div>
 
                 <div className="font-semibold text-gray-800">
-                  ₹ {(item.serviceId.servicePrice || item.serviceId.price || 0) * item.quantity}
+                  ₹ {(item?.servicePrice || 0) * item.quantity}
                 </div>
 
                 <div className="relative flex items-center space-x-2">
@@ -463,14 +470,14 @@ const CartPage = () => {
                       <span
                         className="text-sm text-blue-600 cursor-pointer hover:underline"
                         onClick={() => handleCalendarClick(item._id)}
-                        aria-label={`Edit date for ${item.serviceId.serviceName}`}
+                        aria-label={`Edit date for ${item?.serviceName}`}
                       >
                         📅 {item.bookingDate}
                       </span>
                       <button
                         onClick={() => handleClearDate(item._id)}
                         className="p-1 rounded-full hover:bg-gray-200"
-                        aria-label={`Clear date for ${item.serviceId.serviceName}`}
+                        aria-label={`Clear date for ${item?.serviceName}`}
                       >
                         <X size={16} className="text-gray-500 hover:text-gray-700" />
                       </button>
@@ -518,6 +525,8 @@ const CartPage = () => {
         <div className="mt-6 border-t pt-4">
           <h2 className="text-lg font-semibold mb-4">Selected Items</h2>
           {selectedItems.map((item) => {
+            console.log(selectedItems,"selectedItems==>");
+            
             const { subtotal, gst, total } = calculateItemTotal(item);
             return (
               <div key={item._id} className="mb-4 px-4 py-3 border rounded-lg space-y-1">
