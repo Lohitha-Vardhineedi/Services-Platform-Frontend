@@ -44,7 +44,7 @@ const Services: React.FC<ServicesProps> = ({ services, technician }) => {
   const [loading, setLoading] = useState<{ [key: string]: boolean }>({});
   const navigate = useNavigate();
 
-  // ✅ Fetch Cart Items
+
   const fetchCartItems = async () => {
     try {
       const userId = localStorage.getItem("userId");
@@ -66,7 +66,7 @@ const Services: React.FC<ServicesProps> = ({ services, technician }) => {
 
         // ✅ Formatting cart items correctly
         const formattedItems = response.result.cart.map((item: any) => ({
-          id: item.serviceId,   // <-- must be serviceId
+          id: item.serviceId,   
           serviceName: item.serviceName,
           servicePrice: item.servicePrice,
           serviceImg: item.serviceImg,
@@ -133,7 +133,6 @@ const Services: React.FC<ServicesProps> = ({ services, technician }) => {
   //   }
   // };
 
-  // ✅ Toggle add/remove
   const handleCartToggle = async (serviceId: string) => {
     try {
       const userId = localStorage.getItem("userId");
