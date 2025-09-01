@@ -83,7 +83,7 @@ const ViewBlog: React.FC = () => {
             <div>
               <h2 className="text-sm font-bold text-gray-700 mb-3">Blog Description</h2>
               <div
-                className="prose prose-sm max-w-none text-gray-700 leading-relaxed"
+                className="prose prose-sm max-w-none text-gray-700 leading-relaxed jodit-wysiwyg"
                 dangerouslySetInnerHTML={{ __html: blog.description }}
               />
             </div>

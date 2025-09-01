@@ -230,9 +230,9 @@ const ServicePage = () => {
           <div className="text-red-500 text-center">{errorContent}</div>
         ) : categoryDetails?.seo_content &&
           categoryDetails.seo_content.length > 0 ? (
-          <div className="ql-snow">
+          <div className="jodit-wysiwyg">
             <div
-              className="ql-editor"
+              className="jodit-wysiwyg"
               dangerouslySetInnerHTML={{ __html: categoryDetails?.seo_content }}
             />
           </div>
