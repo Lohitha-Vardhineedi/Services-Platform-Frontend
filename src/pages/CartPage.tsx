@@ -7,17 +7,23 @@ import { removeFromCart, addToCart, getCartItems, createBookService } from "../a
 
 interface CartItem {
   _id: string;
-  serviceId: {
-    _id: string;
-    technicianId: string;
-    serviceName: string;
-    serviceImg?: string;
-    servicePrice?: number;
-    price?: number;
-    image?: string;
-    ratings?: number;
-    reviews?: number;
-  };
+  // serviceId: {
+  //   _id: string;
+  //   technicianId: string;
+  //   serviceName: string;  
+  //   serviceImg?: string;
+  //   servicePrice?: number;
+  //   price?: number;
+  //   image?: string;
+  //   ratings?: number;
+  //   reviews?: number;
+  // };
+  technicianId: string;
+  serviceId : string;
+  serviceName: string;  
+  serviceImg?: string;
+  servicePrice?: number;
+  price?: number;
   quantity: number;
   bookingDate: string;
   otp?: number;
@@ -77,6 +83,9 @@ const CartPage = () => {
           serviceImg: item?.serviceImg,
           servicePrice: item?.servicePrice,
           quantity: item.quantity,
+          technicianId: item.serviceId?.technicianId,
+          bookingDate: item.bookingDate,
+          isSelected: false,
           // serviceId: {
           //   _id: item?.serviceId?._id,
           //   technicianId: item.serviceId?.technicianId,
@@ -337,7 +346,7 @@ const CartPage = () => {
   // };
 
   const calculateItemTotal = (item: CartItem) => {
-    const price = item.serviceId.servicePrice || item.serviceId.price || 0;
+    const price = item.servicePrice || item.price || 0;
     const subtotal = price * item.quantity;
     const gst = Math.round(subtotal * 0.18);
     const total = subtotal + gst;
@@ -526,12 +535,11 @@ const CartPage = () => {
           <h2 className="text-lg font-semibold mb-4">Selected Items</h2>
           {selectedItems.map((item) => {
             console.log(selectedItems,"selectedItems==>");
-            
             const { subtotal, gst, total } = calculateItemTotal(item);
             return (
               <div key={item._id} className="mb-4 px-4 py-3 border rounded-lg space-y-1">
                 <div className="flex justify-between">
-                  <span>{item.serviceId.serviceName} ({item.quantity})</span>
+                  <span>{item.serviceName} ({item.quantity})</span>
                   <span>₹{subtotal}</span>
                 </div>
                 <div className="flex justify-between text-sm text-gray-600">
