@@ -36,7 +36,7 @@ const AllFilters: React.FC<AllFiltersProps> = ({
       case "Photos":
         return <Photos images={technicianImages} />;
       case "Services":
-        return <Services services={services} />;
+        return <Services services={services} technician={technician}/>;
       case "Reviews":
         return <Reviews ratings={ratings} />;
       default:

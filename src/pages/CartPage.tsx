@@ -76,7 +76,6 @@ const CartPage = () => {
       if (response.success && response.result.cart) {
 
         const formattedItems = response.result.cart.map((item: any) => ({
-
           _id: item?._id,
           serviceId: item?.serviceId,
           serviceName: item?.serviceName,
@@ -207,7 +206,7 @@ const CartPage = () => {
 
       const payload = {
         userId,
-        serviceId: item.serviceId._id,
+        serviceId: item._id,
         quantity: newQuantity
       };
 
@@ -244,7 +243,7 @@ const CartPage = () => {
 
       setSelectedItems(prev => prev.filter(item => item._id !== itemId));
 
-      await removeFromCart({ userId, serviceId: item.serviceId._id });
+      await removeFromCart({ userId, serviceId: item._id });
     } catch (err: any) {
       console.error("Error removing item:", err);
       setError("Failed to remove item");
@@ -303,13 +302,14 @@ const CartPage = () => {
 
       const bookings = selectedItems.map(item => ({
         userId,
-        serviceId: item.serviceId._id,
-        technicianId: item.serviceId.technicianId,
+        serviceId: item._id,
+        // serviceId: item.serviceId._id,
+        technicianId: item.technicianId,
         quantity: item.quantity.toString(),
         bookingDate: item.bookingDate,
-        servicePrice: ((item.serviceId.servicePrice || item.serviceId.price || 0) * item.quantity).toString(),
-        gst: Math.round((item.serviceId.servicePrice || item.serviceId.price || 0) * item.quantity * 0.18).toString(),
-        totalPrice: Math.round((item.serviceId.servicePrice || item.serviceId.price || 0) * item.quantity * 1.18).toString()
+        servicePrice: ((item.servicePrice || item.price || 0) * item.quantity).toString(),
+        gst: Math.round((item.servicePrice || item.price || 0) * item.quantity * 0.18).toString(),
+        totalPrice: Math.round((item.servicePrice || item.price || 0) * item.quantity * 1.18).toString()
       }));
 
       const response = await createBookService(bookings);
@@ -563,9 +563,10 @@ const CartPage = () => {
       <div className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center text-sm sm:text-base font-medium mt-4 sm:mt-6">
         <span className="text-gray-800 mb-2 sm:mb-0">Missed Something?</span>
         <button
-          className="bg-red-600 text-white hover:bg-red-700 px-3 py-1.5 rounded-lg cursor-pointer text-sm sm:text-base"
+          className="bg-red-600 flex items-center text-white hover:bg-red-700 px-3 py-1.5 rounded-lg cursor-pointer text-sm sm:text-base"
           onClick={() => navigate("/categories")}
         >
+          <GoPlus size={23} className="font-bold me-1"/>
           Add More Items
         </button>
       </div>
