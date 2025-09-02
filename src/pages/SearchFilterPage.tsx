@@ -266,7 +266,7 @@ const SearchFilterPage: React.FC = () => {
         <ContactForm />
       </div>
 
-      <div className="mt-6 space-y-4">
+      <div className="mt-2 space-y-4">
         {isDataLoading ? (
           <div className="text-center">Loading Data...</div>
         ) : errorContent ? (
@@ -274,7 +274,7 @@ const SearchFilterPage: React.FC = () => {
         ) : content?.seo_content?.length > 0 ? (
           <div className="ql-container border-black">
             <div
-              className="ql-editor"
+              className="jodit-wysiwyg"
               dangerouslySetInnerHTML={{ __html: content.seo_content }}
             />
           </div>
