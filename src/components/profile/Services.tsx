@@ -63,7 +63,6 @@ const Services: React.FC<ServicesProps> = ({ services, technician }) => {
       console.error("Error fetching cart items:", error);
     }
   };
-
   useEffect(() => {
     fetchCartItems();
   }, []);
