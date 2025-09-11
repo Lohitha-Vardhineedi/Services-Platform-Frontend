@@ -1,7 +1,69 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { blogPosts } from './blogData';
-import { Calendar, Tag } from 'lucide-react';
+import { Calendar, Tag, View } from 'lucide-react';
+
+interface HtmlRendererProps {
+  html: string;
+}
+
+const HtmlRenderer: React.FC<HtmlRendererProps> = ({ html }) => {
+  const renderHtml = () => {
+    if (!html) return null;
+    
+    // Simple HTML tag parsing (for basic HTML only)
+    const elements = [];
+    let currentText = '';
+    let isInTag = false;
+    let currentTag = '';
+    
+    for (let i = 0; i < html.length; i++) {
+      const char = html[i];
+      
+      if (char === '<') {
+        // Push current text
+        if (currentText.trim()) {
+          elements.push(<Text key={i} className="text-gray-700 text-base">{currentText}</Text>);
+          currentText = '';
+        }
+        isInTag = true;
+        currentTag = '';
+      } else if (char === '>') {
+        isInTag = false;
+        const tag = currentTag.toLowerCase();
+        
+        if (tag.startsWith('h1') || tag.startsWith('h2') || tag.startsWith('h3')) {
+          elements.push(
+            <Text key={i} className="text-2xl font-bold text-gray-900 my-4">
+              {html.substring(i + 1, html.indexOf('</' + tag.split(' ')[0] + '>', i))}
+            </Text>
+          );
+        } else if (tag.startsWith('p')) {
+          elements.push(
+            <Text key={i} className="text-gray-700 text-base mb-4">
+              {html.substring(i + 1, html.indexOf('</p>', i))}
+            </Text>
+          );
+        }
+        // Skip ahead to closing tag
+        i = html.indexOf('>', i);
+      } else if (isInTag) {
+        currentTag += char;
+      } else {
+        currentText += char;
+      }
+    }
+    
+    // Push any remaining text
+    if (currentText.trim()) {
+      elements.push(<Text key="final" className="text-gray-700 text-base">{currentText}</Text>);
+    }
+    
+    return <View>{elements}</View>;
+  };
+
+  return <View className="space-y-4">{renderHtml()}</View>;
+};
 
 const BlogDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

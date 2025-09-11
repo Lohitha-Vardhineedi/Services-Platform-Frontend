@@ -197,38 +197,38 @@ export default LoginForm;
 //     }
 //   };
 
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     setError(null);
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setError(null);
 
-//     try {
-//       let response;
-//       if (role === 'technician') {
-//         response = await technicianLogin({ ...formData }) as any;
-//       } else {
-//         response = await userLogin({ ...formData }) as any;
-//       }
-//       console.log("asdasdsad", response.result.token)
-//       if (response?.result?.token) {
-//         console.log('Done')
-//         localStorage.setItem('jwt_token', response.result.token);
-//         localStorage.setItem('user', JSON.stringify(response.result));
-//         localStorage.setItem('userId', response.result.id);
-//         console.log("----",response.result.id)
-//         localStorage.setItem('role', response.result.role);
-//         window.dispatchEvent(new Event("cartUpdated"));
-//         if (role === 'technician') {
-//           navigate('/technician/dashboard');
-//         } else {
-//           navigate('/')
-//         }
-//       } else {
-//         throw new Error('Invalid credentials or server error');
-//       }
-//     } catch (err: any) {
-//       setError(err?.message || 'Login failed. Please try again.');
-//     }
-//   };
+  //   try {
+  //     let response;
+  //     if (role === 'technician') {
+  //       response = await technicianLogin({ ...formData }) as any;
+  //     } else {
+  //       response = await userLogin({ ...formData }) as any;
+  //     }
+  //     console.log("asdasdsad", response.result.token)
+  //     if (response?.result?.token) {
+  //       console.log('Done')
+  //       localStorage.setItem('jwt_token', response.result.token);
+  //       localStorage.setItem('user', JSON.stringify(response.result));
+  //       localStorage.setItem('userId', response.result.id);
+  //       console.log("----",response.result.id)
+  //       localStorage.setItem('role', response.result.role);
+  //       window.dispatchEvent(new Event("cartUpdated"));
+  //       if (role === 'technician') {
+  //         navigate('/technician/dashboard');
+  //       } else {
+  //         navigate('/')
+  //       }
+  //     } else {
+  //       throw new Error('Invalid credentials or server error');
+  //     }
+  //   } catch (err: any) {
+  //     setError(err?.message || 'Login failed. Please try again.');
+  //   }
+  // };
 
 //   return (
 //     <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8">

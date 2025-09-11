@@ -1,8 +1,5 @@
-
-
 const endpoints: any = {
-  
-   login: {
+  login: {
     method: "post",
     url: () => {
       return `/api/auth/login`;
@@ -20,103 +17,102 @@ const endpoints: any = {
       return `/api/reviews/${id}/stats`;
     },
   },
-  
 
   register: {
     method: "post",
-    url: () => `/api/auth/register`
+    url: () => `/api/auth/register`,
   },
-
 
   getUserProfile: {
     method: "get",
-    url: (userId: string) => `/api/userAuth/profile/${userId}`
+    url: (userId: string) => `/api/userAuth/profile/${userId}`,
   },
 
   updateUserProfile: {
     method: "put",
-    url: (userId: string) => `/api/auth/profile/${userId}`
+    url: (userId: string) => `/api/auth/profile/${userId}`,
   },
 
   userRegister: {
     method: "post",
-    url: () => `/api/userAuth/register`
+    url: () => `/api/userAuth/register`,
   },
   technicianRegister: {
     method: "post",
-    url: () => `/api/techAuth/register`
+    url: () => `/api/techAuth/register`,
   },
-  
+
   userLogin: {
     method: "post",
-    url: () => `/api/userAuth/login`
+    url: () => `/api/userAuth/login`,
   },
   technicianLogin: {
     method: "post",
-    url: () => `/api/techAuth/login`
+    url: () => `/api/techAuth/login`,
   },
   userGetProfile: {
     method: "get",
-    url: (userId: string) => `/api/userAuth/profile/${userId}`
+    url: (userId: string) => `/api/userAuth/profile/${userId}`,
   },
   userEditProfile: {
     method: "put",
-    url: () => `/api/userAuth/editProfile`
+    url: () => `/api/userAuth/editProfile`,
   },
-  
+
   technicianGetProfileDetails: {
     method: "get",
-    url: (userId: string) => `/api/techAuth/getTechProfile/${userId}`
+    url: (userId: string) => `/api/techAuth/getTechProfile/${userId}`,
   },
   technicianEditProfile: {
     method: "put",
-    url: () => `/api/techAuth/editProfile`
+    url: () => `/api/techAuth/editProfile`,
   },
   getPlans: {
     method: "get",
     url: () => {
       return `/api/subscriptions/plans`;
-    }
+    },
   },
-  gettechnicianPlanById: { 
+  gettechnicianPlanById: {
     method: "get",
-    url: (id: string) => `/api/technicianSubscription/getTechSubscriptionPlan/${id}`
+    url: (id: string) =>
+      `/api/technicianSubscription/getTechSubscriptionPlan/${id}`,
   },
-   addTechSubscriptionPlan: {
+  addTechSubscriptionPlan: {
     method: "post",
-    url: () => `/api/technicianSubscription/addTechSubscriptionPlan`
+    url: () => `/api/technicianSubscription/addTechSubscriptionPlan`,
   },
-  getTechImagesByTechId: { 
+  getTechImagesByTechId: {
     method: "get",
-    url: (id: string) => `/api/techImages/getTechImagesByTechId/${id}`
+    url: (id: string) => `/api/techImages/getTechImagesByTechId/${id}`,
   },
   getServicesByTechId: {
     method: "get",
-    url: (id: string) => `/api/services/getServicesByTechId/${id}`
+    url: (id: string) => `/api/services/getServicesByTechId/${id}`,
   },
-  updateTechnicianControl: {  
+  updateTechnicianControl: {
     method: "put",
-    url: () => `/api/techAuth/updateTechnicianControl`
+    url: () => `/api/techAuth/updateTechnicianControl`,
   },
   updateServiceControl: {
     method: "put",
-    url: () => `/api/services/updateServiceControl`
+    url: () => `/api/services/updateServiceControl`,
   },
   createServiceControl: {
     method: "post",
-    url: () => `/api/services/createServiceControl`
+    url: () => `/api/services/createServiceControl`,
   },
   deleteServiceById: {
     method: "delete",
-    url: (id: string) => `/api/services/deleteServiceById/${id}`
+    url: (id: string) => `/api/services/deleteServiceById/${id}`,
   },
   createTechImagesControl: {
     method: "post",
-    url: () => `/api/techImages/createTechImagesControl`
+    url: () => `/api/techImages/createTechImagesControl`,
   },
   getAllPincodes: {
     method: "get",
-    url: () => `/api/pincodes/allAreas`
+    url: () => `/api/pincodes/allAreas`,
   },
 
   getAllTechnicianDetails: {
@@ -125,23 +121,23 @@ const endpoints: any = {
       return `/api/techDetails/getTechAllDetails/${id}`;
     },
   },
-    addToCart: {
+  addToCart: {
     method: "post",
-    url: () => `/api/cart/addToCart`
+    url: () => `/api/cart/addToCart`,
   },
-   getCartItems: {
+  getCartItems: {
     method: "get",
     url: (id: string) => {
       return `/api/cart/getCart/${id}`;
     },
   },
-     removeFromCart: {
+  removeFromCart: {
     method: "put",
-    url: () => `/api/cart/removeFromCartService`
+    url: () => `/api/cart/removeFromCartService`,
   },
-     createBookService: {
+  createBookService: {
     method: "post",
-    url: () => `/api/bookingServices/createBookService`
+    url: () => `/api/bookingServices/createBookService`,
   },
   getOrdersByUserId: {
     method: "get",
@@ -157,11 +153,11 @@ const endpoints: any = {
   },
   bookingCancleByUser: {
     method: "put",
-    url: () => `/api/bookingServices/BookingCancleByUser`
+    url: () => `/api/bookingServices/BookingCancleByUser`,
   },
   updateBookingStatus: {
     method: "put",
-    url: () => `/api/bookingServices/BookingStatusByTechnician`
+    url: () => `/api/bookingServices/BookingStatusByTechnician`,
   },
   getTechnicianReviews: {
     method: "get",
@@ -172,48 +168,48 @@ const endpoints: any = {
 
   getCompanyReviews: {
     method: "get",
-    url : '/api/companyReview/getCompanyReviews'
+    url: "/api/companyReview/getCompanyReviews",
   },
 
   createGuestBooking: {
     method: "post",
-    url:"/api/guestBooking/addGuestBooking"
+    url: "/api/guestBooking/addGuestBooking",
   },
 
-   createGetInTouch: {
+  createGetInTouch: {
     method: "post",
-    url:"/api/getInTouch/addGetInTouch"
+    url: "/api/getInTouch/addGetInTouch",
   },
 
   createFranchaseEnquiry: {
     method: "post",
-    url:"/api/franchaseEnquiry/addFranchaseEnquiry"
+    url: "/api/franchaseEnquiry/addFranchaseEnquiry",
   },
 
   createCompanyReview: {
     method: "post",
-    url:"/api/companyReview/createReview"
+    url: "/api/companyReview/createReview",
   },
 
   getAllTechByAddress: {
     method: "post",
-    url:'/api/techDetails/getAllTechByAddress'
+    url: "/api/techDetails/getAllTechByAddress",
   },
 
   getSearchContentByAddress: {
     method: "post",
-    url:'/api/searchContentData/getSearchContentByLocation'
+    url: "/api/searchContentData/getSearchContentByLocation",
   },
 
-  getTechByCategorie:{
-    method:"get",
+  getTechByCategorie: {
+    method: "get",
     url: (categoryId: string) => {
       return `/api/techDetails/getAllTechniciansByCateId/${categoryId}`;
     },
   },
 
-  deletePhotoBySingle :{
-    method:"delete",
+  deletePhotoBySingle: {
+    method: "delete",
     url: () => {
       return `/api/techImages/deleteSingletechImg`;
     },
@@ -221,27 +217,27 @@ const endpoints: any = {
 
   addReviewByUser: {
     method: "post",
-    url:'/api/techReview/addReviewByUser'
+    url: "/api/techReview/addReviewByUser",
   },
   getFranchisePlans: {
     method: "get",
-    url: () => `/api/franchiseSubscription/franchisePlans` 
+    url: () => `/api/franchiseSubscription/franchisePlans`,
   },
   getAllServicesByCatId: {
     method: "get",
-    url: (categoryId: string) => { 
+    url: (categoryId: string) => {
       return `/api/cateServices/getServicesByCateId/${categoryId}`;
     },
   },
   getCategoryServicesByTechId: {
     method: "get",
-    url: (techId: string) => { 
+    url: (techId: string) => {
       return `/api/techDetails/getCategoryServicesByTechId/${techId}`;
     },
   },
   changeServiceStatusByTechId: {
     method: "put",
-    url: () => { 
+    url: () => {
       return `/api/techAuth/changeServiceStatus`;
     },
   },
@@ -269,8 +265,8 @@ const endpoints: any = {
 
   getAllBlogs: {
     method: "get",
-    url: () => `/api/blog/getAllBlogs`
+    url: () => `/api/blog/getAllBlogs`,
   },
-}
+};
 
 export default endpoints;
