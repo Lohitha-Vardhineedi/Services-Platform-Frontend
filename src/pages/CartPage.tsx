@@ -276,6 +276,7 @@ const CartPage = () => {
         setError("User not logged in");
         return;
       }
+      console.log("selectedItems", selectedItems)
 
       if (selectedItems.length === 0) {
         setError("No items selected for booking");
@@ -284,7 +285,7 @@ const CartPage = () => {
 
       const bookings = selectedItems.map(item => ({
         userId,
-        serviceId: item._id,
+        serviceId: item.serviceId,
         // serviceId: item.serviceId._id,
         technicianId: item.technicianId,
         quantity: item.quantity.toString(),
