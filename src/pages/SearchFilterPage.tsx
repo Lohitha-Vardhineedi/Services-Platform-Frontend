@@ -265,8 +265,26 @@ const SearchFilterPage: React.FC = () => {
         </div>
         <ContactForm />
       </div>
+      
+ {/* <div className="mt-6 space-y-4">
+        {isDataLoading ? (
+          <div className="text-center">Loading Data...</div>
+        ) : errorContent ? (
+          <div className="text-red-500 text-center">{errorContent}</div>
+        ) : categoryDetails?.seo_content &&
+          categoryDetails.seo_content.length > 0 ? (
+          <div className="jodit-wysiwyg">
+            <div
+              className="jodit-wysiwyg"
+              dangerouslySetInnerHTML={{ __html: categoryDetails?.seo_content }}
+            />
+          </div>
+        ) : (
+          <div>No Content for this Category</div>
+        )}
+      </div> */}
 
-      <div className="mt-2 space-y-4">
+      <div className="mt-6 space-y-4">
         {isDataLoading ? (
           <div className="text-center">Loading Data...</div>
         ) : errorContent ? (
@@ -282,6 +300,7 @@ const SearchFilterPage: React.FC = () => {
           <div> No content for this Address</div>
         )}
       </div>
+
     </div>
   );
 };

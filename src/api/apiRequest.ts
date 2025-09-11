@@ -40,8 +40,8 @@ const apiRequest = (
       .then((response) => res(response?.data))
       .catch((error) => {
         if (error.response?.status === 401 && jwt_token !== "demo-token") {
-          localStorage.removeItem("jwt_token");
-          localStorage.clear();
+          // localStorage.removeItem("jwt_token");
+          // localStorage.clear();
         }
         if (axios.isAxiosError(error)) {
           rej({
