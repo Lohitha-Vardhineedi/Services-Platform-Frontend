@@ -110,10 +110,18 @@ const AppRoutes: React.FC = () => {
           </>
         }
       />
-      <Route
+      {/* <Route
         path="/:categoryname/:cityname/:areaname-pincode"
         element={<SearchFilterPage />}
-      />
+      /> */}
+
+
+  <Route path="/:categoryname/:cityname" element={<SearchFilterPage />} />
+  <Route path="/:categoryname/:cityname/:areaname-pincode" element={<SearchFilterPage />} />
+  <Route path="/:categoryname/:cityname/:areaname-pincode/:subarea" element={<SearchFilterPage />} />
+
+
+
       <Route
         path="/categories"
         element={

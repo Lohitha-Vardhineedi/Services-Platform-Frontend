@@ -87,7 +87,7 @@ const TechnicianProfile: React.FC = () => {
               pincode: data.result.pincode || "",
               description: data.result.description || "",
               profileImage:
-                data.result.profileImage || "https://via.placeholder.com/150",
+                data.result.profileImage ,
               phoneNumber: data.result.phoneNumber || "",
             });
           }
@@ -657,7 +657,7 @@ export default TechnicianProfile;
 //                 .replace(/(, )+/g, ', ')
 //                 .replace(/^, |, $/g, ''),
 //               years: data.result.description || '',
-//               image: data.result.profileImage || 'https://via.placeholder.com/150',
+//               image: data.result.profileImage ,
 //               phone: data.result.phoneNumber || '',
 //               description: data.result.description || '',
 //             });
