@@ -42,36 +42,11 @@ const OTPInput: React.FC<OTPModalProps> = ({
     }
   };
 
-  // const handleOTPSubmit = () => {
-  //   const fullOtp = otp.join('');
-  //   if (fullOtp.length !== 6) {
-  //     setError('Please enter a 6-digit OTP');
-  //     return;
-  //   }
-
-  //   if (bookingOtp && fullOtp !== bookingOtp) {
-  //     setError('Invalid OTP. Please try again.');
-  //     return;
-  //   }
-
-  //   console.log('OTP submitted:', fullOtp);
-  //   localStorage.setItem(`otp_${bookingId}`, 'submitted');
-  //   setOtpSubmitted(true);
-  //   setShowSuccess(true);
-  //   setCurrentStep('success');
-  //   setOtp(['', '', '', '', '', '']);
-
-  //   setTimeout(() => {
-  //     setShowSuccess(false);
-  //     setActiveTab('upcoming');
-  //     setCurrentStep('upcoming-details');
-  //   }, 3000);
-  // };
-
-const handleOTPSubmit = () => {
-  const fullOtp = otp.join('');
-  if (fullOtp.length !== 6) {
-    setError('Please enter a 6-digit OTP');
+  
+  const handleOTPSubmit = () => {
+    const fullOtp = otp.join('');
+    if (fullOtp.length !== 6) {
+      setError('Please enter a 6-digit OTP');
     return;
   }
 
@@ -86,7 +61,7 @@ const handleOTPSubmit = () => {
   }, 4000);
 };
 
-  return (
+return (
     <div className="flex gap-2 flex-wrap items-center space-x-4 md:col-span-2 sm:col-span-1 mt-4">
       <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
         <Key className="w-6 h-6 text-yellow-600" />
@@ -106,13 +81,13 @@ const handleOTPSubmit = () => {
               error ? 'border-red-500' : 'border-gray-300'
             } rounded-md text-xl focus:outline-none focus:ring-2 focus:ring-blue-500`}
             aria-label={`OTP digit ${index + 1}`}
-          />
+            />
         ))}
       </div>
       <button
         className="py-2 px-4 bg-blue-500 text-white rounded-2xl font-semibold shadow-lg hover:bg-blue-600 transition-colors"
         onClick={handleOTPSubmit}
-      >
+        >
         Submit
       </button>
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
@@ -121,6 +96,31 @@ const handleOTPSubmit = () => {
 };
 
 export default OTPInput;
+// const handleOTPSubmit = () => {
+//   const fullOtp = otp.join('');
+//   if (fullOtp.length !== 6) {
+//     setError('Please enter a 6-digit OTP');
+//     return;
+//   }
+
+//   if (bookingOtp && fullOtp !== bookingOtp) {
+//     setError('Invalid OTP. Please try again.');
+//     return;
+//   }
+
+//   console.log('OTP submitted:', fullOtp);
+//   localStorage.setItem(`otp_${bookingId}`, 'submitted');
+//   setOtpSubmitted(true);
+//   setShowSuccess(true);
+//   setCurrentStep('success');
+//   setOtp(['', '', '', '', '', '']);
+
+//   setTimeout(() => {
+//     setShowSuccess(false);
+//     setActiveTab('upcoming');
+//     setCurrentStep('upcoming-details');
+//   }, 3000);
+// };
 
 // import React, { useRef, useState } from 'react';
 // import { Key } from 'lucide-react';

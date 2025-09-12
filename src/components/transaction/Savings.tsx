@@ -90,38 +90,7 @@ const Savings: React.FC<SavingsProps> = ({ setCurrentStep, booking }) => {
   const baseAmount = bookingData.servicePrice * bookingData.quantity;
   // Discount is assumed to be 0 for now (modify if you have discount logic)
   const discount = 0;
-
-  // Function to handle sharing payment details
-  // const handleShare = async () => {
-  //   const shareText = `
-  //     Payment Summary for ${service.serviceName}
-  //     Base Amount: ₹${baseAmount}
-  //     Discount Applied: -₹${discount}
-  //     GST (18%): ₹${bookingData.gst}
-  //     Total Amount: ₹${bookingData.totalPrice}
-  //   `.trim();
-
-  //   if (navigator.share) {
-  //     try {
-  //       await navigator.share({
-  //         title: 'Payment Summary',
-  //         text: shareText,
-  //       });
-  //     } catch (error) {
-  //       console.error('Error sharing:', error);
-  //       alert('Failed to share payment details.');
-  //     }
-  //   } else {
-  //     // Fallback: Copy to clipboard
-  //     navigator.clipboard.writeText(shareText).then(() => {
-  //       alert('Payment details copied to clipboard!');
-  //     }).catch((error) => {
-  //       console.error('Error copying to clipboard:', error);
-  //       alert('Failed to copy payment details.');
-  //     });
-  //   }
-  // };
-
+  
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 min-h-96">
       <div className="border-b border-gray-200 px-6 py-4">
@@ -173,18 +142,12 @@ const Savings: React.FC<SavingsProps> = ({ setCurrentStep, booking }) => {
           ) : (
             <button
             className="w-full bg-purple-500 text-white py-4 rounded-2xl font-semibold shadow-lg hover:bg-purple-600 transition-colors"
-          onClick={() => setCurrentStep('bookings')}
+            onClick={() => setCurrentStep('bookings')}
             >
           Done
           </button>
           )}
           
-          {/* <button
-            className="w-full bg-gray-500 text-white py-4 rounded-2xl font-semibold shadow-lg hover:bg-gray-600 transition-colors"
-            onClick={handleShare}
-            Share Payment Details
-          >
-          </button> */}
         </div>
       </div>
     </div>
@@ -192,6 +155,43 @@ const Savings: React.FC<SavingsProps> = ({ setCurrentStep, booking }) => {
 };
 
 export default Savings;
+{/* <button
+  className="w-full bg-gray-500 text-white py-4 rounded-2xl font-semibold shadow-lg hover:bg-gray-600 transition-colors"
+  onClick={handleShare}
+  Share Payment Details
+  >
+  </button> */}
+
+  // Function to handle sharing payment details
+  // const handleShare = async () => {
+  //   const shareText = `
+  //     Payment Summary for ${service.serviceName}
+  //     Base Amount: ₹${baseAmount}
+  //     Discount Applied: -₹${discount}
+  //     GST (18%): ₹${bookingData.gst}
+  //     Total Amount: ₹${bookingData.totalPrice}
+  //   `.trim();
+
+  //   if (navigator.share) {
+  //     try {
+  //       await navigator.share({
+  //         title: 'Payment Summary',
+  //         text: shareText,
+  //       });
+  //     } catch (error) {
+  //       console.error('Error sharing:', error);
+  //       alert('Failed to share payment details.');
+  //     }
+  //   } else {
+  //     // Fallback: Copy to clipboard
+  //     navigator.clipboard.writeText(shareText).then(() => {
+  //       alert('Payment details copied to clipboard!');
+  //     }).catch((error) => {
+  //       console.error('Error copying to clipboard:', error);
+  //       alert('Failed to copy payment details.');
+  //     });
+  //   }
+  // };
 // import React from 'react';
 // import { ChevronLeft } from 'lucide-react';
 

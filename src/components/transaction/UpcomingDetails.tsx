@@ -95,52 +95,15 @@ const { technician, service, user } = bookingData;
 };
 
 
-  // const handleStatusUpdate = async (status: string, otp?: string) => {
-  //   setIsUpdatingStatus(true);
-  //   try {
-  //     const requestData = {
-  //       orderId: booking._id,
-  //       technicianId: localStorage.getItem("userId"),
-  //       status,
-  //       ...(otp && { otp: Number(otp) })
-  //     };
 
-  //     const response = await updateBookingStatus(requestData);
-
-  //     if (response?.success === true) {
-  //       if (status === "completed") {
-  //         setActiveTab("completed");
-  //         setCurrentStep("completed-details");
-  //       } else if (status === "declined") {
-  //         setActiveTab("cancelled");
-  //         setCurrentStep("cancelled-details");
-  //       } else if (status === "accepted") {
-  //         setActiveTab('upcoming');
-  //         setCurrentStep('upcoming-details');
-  //       } else if (status === "started") {
-
-  //         setShowSuccess(true);
-  //       }
-  //       return true;
-  //     }
-  //     return false;
-  //   } catch (error) {
-  //     alert(error?.message)
-  //     console.error("Error updating status:", error);
-  //     return false;
-  //   } finally {
-  //     setIsUpdatingStatus(false);
-  //   }
-  // };
-
-  return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 min-h-96">
+return (
+  <div className="bg-white rounded-lg shadow-sm border border-gray-200 min-h-96">
       {showSuccess ? (
         <SuccessModal
-          onClose={() => {
-            setShowSuccess(false);
-            setActiveTab("upcoming");
-            setCurrentStep("upcoming-details");
+        onClose={() => {
+          setShowSuccess(false);
+          setActiveTab("upcoming");
+          setCurrentStep("upcoming-details");
           }}
         />
       ) : (
@@ -151,7 +114,7 @@ const { technician, service, user } = bookingData;
                 onClick={() => setCurrentStep("bookings")}
                 className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 transition-colors"
                 aria-label="Go back to bookings"
-              >
+                >
                 <ChevronLeft className="w-5 h-5" />
                 <span>Back</span>
               </button>
@@ -165,7 +128,7 @@ const { technician, service, user } = bookingData;
               <span className={`px-4 py-2 rounded-full text-sm font-medium ${bookingState.status === "upcoming" ? "bg-purple-100 text-purple-600" :
                   bookingState.status === "accepted" ? "bg-blue-100 text-blue-600" :
                     bookingState.status === "started" ? "bg-yellow-100 text-yellow-600" :
-                      "bg-green-100 text-green-600"
+                    "bg-green-100 text-green-600"
                 }`}>
                 {bookingState.status.charAt(0).toUpperCase() + bookingState.status.slice(1)}
               </span>
@@ -270,7 +233,7 @@ const { technician, service, user } = bookingData;
                         className={`py-2 px-4 bg-red-100 text-red-600 rounded-2xl font-semibold shadow-lg hover:bg-red-200 transition-colors flex items-center gap-2 ${isUpdatingStatus ? 'opacity-70 cursor-not-allowed' : ''}`}
                         onClick={() => handleStatusUpdate("declined")}
                         disabled={isUpdatingStatus}
-                      >
+                        >
                         <X className="w-5 h-5" />
                         {isUpdatingStatus ? 'Processing...' : 'Decline'}
                       </button>
@@ -323,7 +286,7 @@ const { technician, service, user } = bookingData;
                   className={`py-2 px-4 bg-gray-50 border-2 text-red-600 rounded-2xl font-semibold shadow-lg hover:bg-gray-100 transition-colors ${isCancelling ? 'opacity-70 cursor-not-allowed' : ''}`}
                   onClick={handleCancel}
                   disabled={isCancelling}
-                >
+                  >
                   {isCancelling ? 'Cancelling...' : 'Cancel Service'}
                 </button>
               </div>
@@ -336,6 +299,43 @@ const { technician, service, user } = bookingData;
 };
 
 export default UpcomingDetails;
+// const handleStatusUpdate = async (status: string, otp?: string) => {
+//   setIsUpdatingStatus(true);
+//   try {
+//     const requestData = {
+//       orderId: booking._id,
+//       technicianId: localStorage.getItem("userId"),
+//       status,
+//       ...(otp && { otp: Number(otp) })
+//     };
+
+//     const response = await updateBookingStatus(requestData);
+
+//     if (response?.success === true) {
+//       if (status === "completed") {
+//         setActiveTab("completed");
+//         setCurrentStep("completed-details");
+//       } else if (status === "declined") {
+//         setActiveTab("cancelled");
+//         setCurrentStep("cancelled-details");
+//       } else if (status === "accepted") {
+//         setActiveTab('upcoming');
+//         setCurrentStep('upcoming-details');
+//       } else if (status === "started") {
+
+//         setShowSuccess(true);
+//       }
+//       return true;
+//     }
+//     return false;
+//   } catch (error) {
+//     alert(error?.message)
+//     console.error("Error updating status:", error);
+//     return false;
+//   } finally {
+//     setIsUpdatingStatus(false);
+//   }
+// };
 
 
 // import React, { useState, useEffect } from "react";
