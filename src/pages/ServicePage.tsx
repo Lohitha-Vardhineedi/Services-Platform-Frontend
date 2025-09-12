@@ -357,7 +357,7 @@ export default ServicePage;
 //                 onClick={() => navigate(`/technicianById/${profile.technician?._id}`)}
 //               >
 //                 <img
-//                   src={profile.technician.profileImage || "https://via.placeholder.com/150"}
+//                   src={profile.technician.profileImage}
 //                   alt={profile.technician.username}
 //                   className="w-36 h-36 object-cover rounded-2xl"
 //                 />
@@ -547,7 +547,7 @@ export default ServicePage;
 //                 onClick={() => navigate(`/technicianById/${profile.technician?._id}`)}
 //               >
 //                 <img
-//                   src={profile.technician.profileImage || "https://via.placeholder.com/150"}
+//                   src={profile.technician.profileImage }
 //                   alt={profile.technician.username}
 //                   className="w-36 h-36 object-cover rounded-2xl"
 //                 />
@@ -728,7 +728,7 @@ export default ServicePage;
 //                 onClick={() => navigate(`/technicianById/${profile.technician._id}`)}
 //               >
 //                 <img
-//                   src={profile.technician.profileImage || "https://via.placeholder.com/150"}
+//                   src={profile.technician.profileImage }
 //                   alt={profile.technician.username}
 //                   className="w-36 h-36 object-cover rounded-2xl"
 //                 />

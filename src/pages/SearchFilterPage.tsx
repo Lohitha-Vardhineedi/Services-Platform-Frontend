@@ -38,6 +38,7 @@ interface SearchContent {
   id: string;
   categoryId: string;
   areaName: string;
+  subAreaName: string;
   city: string;
   state: string;
   pincode: string;
@@ -62,15 +63,16 @@ const SearchFilterPage: React.FC = () => {
 
   const categoryId = parsedSearchAddress?.category;
   const areaName = parsedSearchAddress?.areaName;
+  const subAreaName = parsedSearchAddress?.subAreaName;
   const city = parsedSearchAddress?.city;
   const pincode = parsedSearchAddress?.pincode;
   const state = parsedSearchAddress?.state;
 
-  const formData = { categoryId, areaName, pincode, city, state };
+  const formData = { categoryId, areaName, subAreaName, pincode, city, state };
   console.log(formData);
 
   const fetchTechBySearch = async () => {
-    if (!categoryId || !areaName || !pincode || !city) {
+       if (!categoryId || !city ) {
       setError("Missing required search parameters");
       return;
     }
@@ -93,10 +95,11 @@ const SearchFilterPage: React.FC = () => {
   };
   useEffect(() => {
     fetchTechBySearch();
-  }, [categoryId, areaName, pincode, city]);
+  }, [categoryId, areaName, pincode, city, state, subAreaName]);
 
   const fetchSearchContent = async () => {
-    if (!categoryId || !areaName || !pincode || !city || !state) {
+    if (!categoryId || !city ) {
+    // if (!categoryId || !areaName || !subAreaName || !pincode || !city || !state) {
       setErrorContent("Missing required search parameters");
       return;
     }
@@ -120,7 +123,7 @@ const SearchFilterPage: React.FC = () => {
   console.log("setContent", content);
   useEffect(() => {
     fetchSearchContent();
-  }, [categoryId, areaName, pincode, city, state]);
+  }, [categoryId, areaName, pincode, city, state, subAreaName]);
 
   const handleTechnicianClick = (
     technicianId: string,
@@ -175,8 +178,7 @@ const SearchFilterPage: React.FC = () => {
               >
                 <img
                   src={
-                    profile.technician.profileImage ||
-                    "https://via.placeholder.com/150"
+                    profile.technician.profileImage 
                   }
                   alt={profile.technician.username || "Technician"}
                   className="w-36 h-36 object-cover rounded-2xl"
@@ -306,6 +308,7 @@ const SearchFilterPage: React.FC = () => {
 };
 
 export default SearchFilterPage;
+
 // import React, { useEffect, useState } from "react";
 // import { useLocation, useNavigate, useParams } from "react-router-dom";
 // import { IoCall, IoLocationOutline } from "react-icons/io5";
@@ -367,8 +370,7 @@ export default SearchFilterPage;
 //               >
 //                 <img
 //                   src={
-//                     profile.technician.profileImage ||
-//                     "https://via.placeholder.com/150"
+//                     profile.technician.profileImage 
 //                   }
 //                   alt={profile.technician.username}
 //                   className="w-36 h-36 object-cover rounded-2xl"

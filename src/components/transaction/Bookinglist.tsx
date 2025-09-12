@@ -150,8 +150,7 @@ const BookingsList: React.FC<BookingsListProps> = ({
                   <img
                     src={
                       bookingData.service?.serviceImg ||
-                      bookingData.technician?.profileImage ||
-                      'https://via.placeholder.com/80'
+                      bookingData.technician?.profileImage 
                     }
                     alt={bookingData.service?.serviceName || 'Service'}
                     className="w-full h-full object-cover"
@@ -335,7 +334,7 @@ export default BookingsList;
 //             <div className="flex items-center space-x-4">
 //               <div className="w-16 h-16 bg-gray-200 rounded-xl overflow-hidden flex-shrink-0">
 //                 <img
-//                   src={bookingData.service?.serviceImg || bookingData?.technician?.profileImage || 'https://via.placeholder.com/80'}
+//                   src={bookingData.service?.serviceImg || bookingData?.technician?.profileImage }
 //                   alt={bookingData.service?.serviceName || 'Service'}
 //                   className="w-full h-full object-cover"
 //                 />

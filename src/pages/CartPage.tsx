@@ -399,7 +399,7 @@ if (error) {
                   disabled={isProcessing}
                 />
                 <img
-                  src={item?.serviceImg || "https://via.placeholder.com/64"}
+                  src={item?.serviceImg }
                   alt={item?.serviceName}
                   className="rounded-xl w-16 h-16 object-cover"
                 />
