@@ -33,14 +33,14 @@ const Footer: React.FC = () => {
                   ABOUT US
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   to="/contact"
                   className="text-gray-600 hover:text-blue-700 hover:underline transition-colors text-sm"
                 >
                   CONTACT US
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   to="/faq"
