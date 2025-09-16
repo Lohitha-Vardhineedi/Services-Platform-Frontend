@@ -64,6 +64,7 @@ const { technician, service, user } = bookingData;
     };
 
     const response = await updateBookingStatus(requestData);
+    console.log('---response',response)
 
     if (response?.success === true) {
       // Update local state to re-render component
