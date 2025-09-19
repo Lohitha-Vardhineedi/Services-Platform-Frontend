@@ -1,33 +1,46 @@
-import React, { useState, useEffect } from 'react'
-import { FaThumbsUp } from 'react-icons/fa6'
-import { IoCall, IoLocationOutline, IoShareSocial } from 'react-icons/io5'
-import { LuMessageSquareText } from 'react-icons/lu'
-import { MdOutlineStar } from 'react-icons/md'
-import { Technician } from '../../pages/ProfilePage'
+import React, { useState, useEffect } from "react";
+import { FaThumbsUp } from "react-icons/fa6";
+import { IoCall, IoLocationOutline, IoShareSocial } from "react-icons/io5";
+import { LuMessageSquareText } from "react-icons/lu";
+import { MdOutlineStar } from "react-icons/md";
+import { Rating, Technician } from "../../pages/ProfilePage";
 
 interface ProfileCardProps {
   technician: Technician;
+  rating: Rating[];
 }
 
-const ProfileCard: React.FC<ProfileCardProps> = ({ technician }) => {
+const ProfileCard: React.FC<ProfileCardProps> = ({ technician, rating }) => {
+  const reviewCont = rating.length || '3';
+  const averageRating =
+    rating && rating.length > 0
+      ? (rating.reduce((sum, r) => sum + r.rating, 0) / rating.length).toFixed(
+          1
+        )
+      : "4";
   return (
     <div className="border border-gray-300 rounded-xl p-5 flex flex-col md:flex-row relative overflow-hidden">
       <div className="flex flex-col items-center md:items-start md:mr-6 mb-4 md:mb-0 relative w-full md:w-auto">
         <img
-          src={technician.profileImage}
+          src={
+            technician.profileImage ||
+            "https://img-new.cgtrader.com/items/4519471/f444ec0898/large/mechanic-avatar-3d-icon-3d-model-f444ec0898.jpg"
+          }
           alt={technician.username}
           className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover border-2 border-gray-300"
         />
       </div>
       <div className="flex-1 min-w-0">
-        <h2 className="text-xl font-semibold truncate">{technician.username}</h2>
+        <h2 className="text-xl font-semibold truncate">
+          {technician.username}
+        </h2>
 
         <div className="flex flex-wrap items-center gap-4 my-3">
           <div className="flex items-center border border-amber-500 rounded-lg px-2 py-1 text-black text-sm font-bold">
-            4.8
+            {averageRating}
             <MdOutlineStar size={18} className="ml-1" color="#ffc71b" />
           </div>
-          <div className="text-gray-600 text-sm font-light">84 Ratings</div>
+          <div className="text-black text-sm font-semibold">{reviewCont} Reviews</div>
         </div>
         {technician.service && (
           <div className="flex flex-wrap gap-2">
@@ -41,12 +54,13 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ technician }) => {
           <IoLocationOutline size={27} color="red" />
           <span className="text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
             {" "}
-            {technician.buildingName}, {technician.areaName}, {technician.city}, {technician.state}
+            {technician.buildingName}, {technician.areaName}, {technician.city},{" "}
+            {technician.state}
           </span>
         </div>
         {technician?.description && (
           <div className="flex items-center">
-            <FaThumbsUp size={22} color="#00B800" className='flex' />
+            <FaThumbsUp size={22} color="#00B800" className="flex" />
             <span className="text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
               {" "}
               {technician?.description}
@@ -67,15 +81,18 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ technician }) => {
         </div>
       </div>
     </div>
-  )
-}
-export default ProfileCard
+  );
+};
+export default ProfileCard;
 
-{/* <div className="flex bg-fuchsia-500 rounded-xl text-white px-4 py-1 font-bold items-center cursor-pointer hover:bg-fuchsia-600">
+{
+  /* <div className="flex bg-fuchsia-500 rounded-xl text-white px-4 py-1 font-bold items-center cursor-pointer hover:bg-fuchsia-600">
   <IoCall size={22} className="me-2" />
   <span> {technician?.phoneNumber}</span>
-</div> */}
-        {/* <div className="flex flex-wrap gap-2">
+</div> */
+}
+{
+  /* <div className="flex flex-wrap gap-2">
                     {profile.services?.map((s, i) => (
                       <div
                         key={i}
@@ -84,8 +101,8 @@ export default ProfileCard
                         {s.serviceName}
                       </div>
                     ))}
-                  </div> */}
-
+                  </div> */
+}
 
 // const ProfileCard = ({ technicianId }: ProfileCardProps) => {
 //     const [save, setSave] = useState(false)
@@ -192,8 +209,6 @@ export default ProfileCard
 //         <div className="border border-gray-300 rounded-xl p-5 flex flex-col md:flex-row relative overflow-hidden">
 //             {/* Make this container relative for absolute positioning */}
 //             <div className="flex flex-col items-center md:items-start md:mr-6 mb-4 md:mb-0 relative w-full md:w-auto">
-
-
 
 //                 <img
 //                     src={profile.image}
@@ -374,7 +389,6 @@ export default ProfileCard
 
 // export default ProfileCard
 
-
 // import React, { useState } from 'react'
 // import { CiStar } from 'react-icons/ci'
 // import { FaRegBookmark, FaThumbsUp } from 'react-icons/fa6'
@@ -467,7 +481,6 @@ export default ProfileCard
 //                 </div>
 
 //             </div>
-
 
 //         </div>
 //     )

@@ -15,6 +15,7 @@ import { FaThumbsUp, FaUser, FaTimes } from "react-icons/fa";
 interface Profile {
   username: string;
   category: string;
+  categoryName:string;
   buildingName: string;
   areaName: string;
   subAreaName: string;
@@ -30,6 +31,7 @@ interface ApiResponse {
   result?: {
     username?: string;
     category?: string;
+    categoryName?: string;
     buildingName?: string;
     areaName?: string;
     subArea?: string;
@@ -79,6 +81,7 @@ const TechnicianProfile: React.FC = () => {
             setProfile({
               username: data.result.username || "",
               category: data.result.category || "",
+              categoryName: data.result.categoryName|| "",
               buildingName: data.result.buildingName || "",
               areaName: data.result.areaName || "",
               subAreaName: data.result.subAreaName || "",
@@ -299,10 +302,10 @@ const TechnicianProfile: React.FC = () => {
                   84 Ratings
                 </div>
               </div>
-              {profile.category && (
+              {profile.categoryName && (
                 <div className="flex flex-wrap gap-2">
                   <span className="bg-fuchsia-200 px-3 py-1 rounded-xl text-black text-sm font-light">
-                    {profile.category}
+                    {profile.categoryName}
                   </span>
                 </div>
               )}
