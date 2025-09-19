@@ -43,7 +43,7 @@ export interface TechnicianDetailsResponse {
   technician: Technician;
   services: TechnicianService[];
   technicianImages: TechnicianImages;
-  ratings: Rating;
+  ratings: Rating[];
 }
 
 
@@ -79,7 +79,7 @@ console.log("id", technicianId)
         <title>{technicianDetails.technician.username}'s Profile - PRNV Services</title>
         <meta name="description" content={`View the profile of ${technicianDetails.technician.username}, a top technician on PRNV Services.`} />
       </Helmet>
-      <ProfileCard technician={technicianDetails.technician}/>
+      <ProfileCard technician={technicianDetails.technician} rating={technicianDetails.ratings}/>
       <AllFilters  services={technicianDetails.services} 
       technician={technicianDetails.technician}
         technicianImages={technicianDetails?.technicianImages?.imageUrl}

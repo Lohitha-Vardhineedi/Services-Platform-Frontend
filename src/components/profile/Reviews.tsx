@@ -36,7 +36,7 @@ const Reviews: React.FC<ReviewsProps> = ({ ratings }) => {
           >
             <div className="flex gap-3 items-center">
               <img
-                src={review?.image}
+                src={review?.image || 'https://i.pinimg.com/736x/21/24/92/21249201424022cdd93cd144f099b056.jpg'}
                 alt={review?.name}
                 className="w-14 h-14 object-cover rounded-full"
               />

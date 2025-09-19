@@ -10,6 +10,7 @@ import { ServiceFilters } from "../components/services/ServiceFilters";
 import { ContactForm } from "../components/services/ContactForms";
 import { getTechByCategorie } from "../api/apiMethods";
 import { Helmet } from "react-helmet-async";
+import { Rating } from "./ProfilePage";
 
 interface Technician {
   technician: {
@@ -24,9 +25,7 @@ interface Technician {
     phoneNumber: string;
     description?: string;
   };
-  ratings?: {
-    rating: number;
-  };
+  ratings?: Rating[];
   servicesDone?: number;
 }
 
@@ -52,6 +51,7 @@ const ServicePage = () => {
   const categoryDetails = location?.state?.category as Category;
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [errorContent, setErrorContent] = useState<string | null>(null);
+  // const averageRating = rating.reduce((sum, r) => sum + r.rating, 0) / rating.length  || 4;
 
   useEffect(() => {
     if (!categoryId) return;
@@ -67,9 +67,7 @@ const ServicePage = () => {
           technician: {
             _id: item.technician._id,
             username: item.technician.username,
-            profileImage:
-              item.technician.profileImage ||
-              "https://img-new.cgtrader.com/items/4519471/f444ec0898/large/mechanic-avatar-3d-icon-3d-model-f444ec0898.jpg",
+            profileImage: item.technician.profileImage,
             service:
               item.services?.length > 0
                 ? item.services[0].serviceName
@@ -146,7 +144,10 @@ const ServicePage = () => {
                 }
               >
                 <img
-                  src={profile.technician.profileImage}
+                  src={
+                    profile.technician.profileImage ||
+                    "https://img-new.cgtrader.com/items/4519471/f444ec0898/large/mechanic-avatar-3d-icon-3d-model-f444ec0898.jpg"
+                  }
                   alt={profile.technician.username}
                   className="w-36 h-36 object-cover rounded-2xl"
                 />
@@ -156,16 +157,23 @@ const ServicePage = () => {
                   </h2>
                   <div className="flex gap-3 items-center">
                     <div className="flex items-center border border-amber-500 rounded-lg px-2 text-black font-bold">
-                      {profile.ratings?.rating ?? "4"}
+                      {profile.ratings && profile.ratings.length > 0
+                        ? (
+                            profile.ratings.reduce(
+                              (sum, r) => sum + r.rating,
+                              0
+                            ) / profile.ratings.length
+                          ).toFixed(1)
+                        : "4"}
                       <MdOutlineStar
                         size={20}
                         className="ms-1"
                         color="#ffc71b"
                       />
                     </div>
-                    {profile.ratings?.rating && (
+                    {profile.ratings && (
                       <span className="text-gray-600 text-sm">
-                        {profile.ratings.rating} Ratings
+                        {profile.ratings.length} Ratings
                       </span>
                     )}
                   </div>
