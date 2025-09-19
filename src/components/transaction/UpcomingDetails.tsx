@@ -53,7 +53,7 @@ const { technician, service, user } = bookingData;
     }
   };
 
-  const handleStatusUpdate = async (status: string, otp?: string) => {
+  const handleOtpUpdate = async (status: string, otp?: string) => {
   setIsUpdatingStatus(true);
   try {
     const requestData = {
@@ -66,6 +66,45 @@ const { technician, service, user } = bookingData;
     const response = await updateBookingStatus(requestData);
     console.log('---response',response)
 
+    if (response?.success === true) {
+      // Update local state to re-render component
+      setBookingState((prev) => ({ ...prev, status }));
+
+      // Tab and step updates
+      if (status === "completed") {
+        setActiveTab("completed");
+        setCurrentStep("completed-details");
+      } else if (status === "declined") {
+        setActiveTab("cancelled");
+        setCurrentStep("cancelled-details");
+      } else if (status === "accepted") {
+        setActiveTab('upcoming');
+        setCurrentStep('upcoming-details');
+      } else if (status === "started") {
+        setShowSuccess(true); // Show confirmation modal
+      }
+      return true;
+    }
+    return false;
+  } catch (error) {
+    alert(error?.message)
+    console.error("Error updating status:", error);
+    return false;
+  } finally {
+    setIsUpdatingStatus(false);
+  }
+};
+
+  const handleStatusUpdate = async (status: string) => {
+  setIsUpdatingStatus(true);
+  try {
+    const requestData = {
+      orderId: bookingState._id,
+      technicianId: localStorage.getItem("userId"),
+      status,
+    };
+
+    const response = await updateBookingStatus(requestData);
     if (response?.success === true) {
       // Update local state to re-render component
       setBookingState((prev) => ({ ...prev, status }));
@@ -263,7 +302,7 @@ return (
                       setActiveTab={setActiveTab}
                       setShowSuccess={setShowSuccess}
                       bookingId={bookingState._id}
-                      onOtpSubmit={(otp) => handleStatusUpdate("started", otp)}
+                      onOtpSubmit={(otp) => handleOtpUpdate("started", otp)}
                     />
                   )}
 

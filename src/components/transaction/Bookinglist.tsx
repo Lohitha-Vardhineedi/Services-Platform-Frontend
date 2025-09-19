@@ -52,8 +52,12 @@ const BookingsList: React.FC<BookingsListProps> = ({
     return false;
   });
 
+    const sortedBookings = activeTab === 'completed' 
+    ? [...filteredBookings].sort((a, b) => new Date(b.booking.bookingDate) - new Date(a.booking.bookingDate))
+    : filteredBookings;
+  
   // If no bookings found
-  if (filteredBookings?.length === 0) {
+  if (sortedBookings?.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 min-h-96">
         <div className="border-b border-gray-200 px-6 py-4 flex items-center space-x-3">
@@ -125,7 +129,7 @@ const BookingsList: React.FC<BookingsListProps> = ({
 
       {/* Bookings list */}
       <div className="p-6 space-y-4">
-        {filteredBookings?.map((bookingData) => {
+        {sortedBookings?.map((bookingData) => {
           const isCancelled = ['cancelled', 'declined'].includes(
             bookingData.booking.status.toLowerCase()
           );
