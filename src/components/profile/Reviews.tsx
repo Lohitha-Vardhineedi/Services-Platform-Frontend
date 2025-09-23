@@ -36,13 +36,13 @@ const Reviews: React.FC<ReviewsProps> = ({ ratings }) => {
           >
             <div className="flex gap-3 items-center">
               <img
-                src={review?.image || 'https://i.pinimg.com/736x/21/24/92/21249201424022cdd93cd144f099b056.jpg'}
-                alt={review?.name}
+                src={review?.profileImage || 'https://i.pinimg.com/736x/21/24/92/21249201424022cdd93cd144f099b056.jpg'}
+                alt={review?.serviceId}
                 className="w-14 h-14 object-cover rounded-full"
               />
               <div className="flex flex-col">
                 <span className="text-md sm:text-md md:text-md lg:text-lg xl:text-lg font-extralight">
-                  {review?.name}
+                  {review?.username}
                 </span>
                 <span className="text-sm text-gray-500">
                   {formatDate(review.createdAt)}

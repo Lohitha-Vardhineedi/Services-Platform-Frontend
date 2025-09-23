@@ -152,7 +152,7 @@ export const GuestBooking = () => {
                 <div className="flex px-3 py-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-fuchsia-600">
                   <IoCall size={20} color="#aaa" />
                   <input
-                    type="tel"
+                    type="number"
                     name="phoneNumber"
                     id="phoneNumber"
                     value={formData.phoneNumber}
@@ -161,6 +161,7 @@ export const GuestBooking = () => {
                     className="text-sm md:text-base focus:outline-none ms-2 w-full"
                     required
                     pattern="[0-9]{10}"
+                    maxLength={10}
                     title="Please enter a valid 10-digit phone number"
                     aria-label="Phone number"
                   />

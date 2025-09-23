@@ -172,7 +172,7 @@ const SavingsModal: React.FC<{
           View Transaction Details
         </motion.button>
 
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* <div className="absolute inset-0 overflow-hidden pointer-events-none ">
           {Array.from({ length: 8 }).map((_, index) => (
             <motion.div
               key={index}
@@ -200,7 +200,35 @@ const SavingsModal: React.FC<{
               {["💰", "🎉", "👍", "⭐", "🎊", "💸", "🏆", "🔥"][index % 8]}
             </motion.div>
           ))}
-        </div>
+        </div> */}
+         <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                {["💰", "🎯", "👍", "⭐", "🎊", "💸", "🏆", "🔥"].map((emoji, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{
+                      y: 100,
+                      x: Math.random() * 100,
+                      opacity: 0,
+                      rotate: Math.random() * 360,
+                    }}
+                    animate={{
+                      y: -100,
+                      opacity: [0, 1, 0],
+                      rotate: Math.random() * 360 + 180,
+                    }}
+                    transition={{
+                      duration: 2 + Math.random() * 2,
+                      delay: index * 0.3,
+                      repeat: Infinity,
+                      repeatDelay: 3,
+                    }}
+                    className="absolute text-3xl"
+                    style={{ left: `${20 + index * 15}%` }}
+                  >
+                    {emoji}
+                  </motion.div>
+                ))}
+              </div>
       </motion.div>
     </motion.div>
   );
@@ -1703,34 +1731,34 @@ export default CartPage;
 //               >
 //                 View Transaction Details
 //               </motion.button>
-//               <div className="absolute inset-0 overflow-hidden pointer-events-none">
-//                 {["💰", "🎯", "👍", "⭐"].map((emoji, index) => (
-//                   <motion.div
-//                     key={index}
-//                     initial={{
-//                       y: 100,
-//                       x: Math.random() * 100,
-//                       opacity: 0,
-//                       rotate: Math.random() * 360,
-//                     }}
-//                     animate={{
-//                       y: -100,
-//                       opacity: [0, 1, 0],
-//                       rotate: Math.random() * 360 + 180,
-//                     }}
-//                     transition={{
-//                       duration: 2 + Math.random() * 2,
-//                       delay: index * 0.3,
-//                       repeat: Infinity,
-//                       repeatDelay: 3,
-//                     }}
-//                     className="absolute text-2xl"
-//                     style={{ left: `${20 + index * 15}%` }}
-//                   >
-//                     {emoji}
-//                   </motion.div>
-//                 ))}
-//               </div>
+              // <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              //   {["💰", "🎯", "👍", "⭐"].map((emoji, index) => (
+              //     <motion.div
+              //       key={index}
+              //       initial={{
+              //         y: 100,
+              //         x: Math.random() * 100,
+              //         opacity: 0,
+              //         rotate: Math.random() * 360,
+              //       }}
+              //       animate={{
+              //         y: -100,
+              //         opacity: [0, 1, 0],
+              //         rotate: Math.random() * 360 + 180,
+              //       }}
+              //       transition={{
+              //         duration: 2 + Math.random() * 2,
+              //         delay: index * 0.3,
+              //         repeat: Infinity,
+              //         repeatDelay: 3,
+              //       }}
+              //       className="absolute text-2xl"
+              //       style={{ left: `${20 + index * 15}%` }}
+              //     >
+              //       {emoji}
+              //     </motion.div>
+              //   ))}
+              // </div>
 //             </motion.div>
 //           </motion.div>
 //         )}

@@ -98,9 +98,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
               Phone Number <span className="text-red-500">*</span>
             </label>
             <input
-              type="text"
+              type="number"
               name="phoneNumber"
               required
+              placeholder='Enter 10 digits phone Number'
               value={formData.phoneNumber}
               onChange={handleChange}
               className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
@@ -116,6 +117,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
                 type={showPassword ? 'text' : 'password'}
                 name="password"
                 required
+                placeholder='Password must be with in 6 to 10 digits'
                 value={formData.password}
                 onChange={handleChange}
                 className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500 pr-10"

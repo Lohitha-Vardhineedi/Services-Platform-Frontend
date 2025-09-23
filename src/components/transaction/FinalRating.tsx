@@ -102,6 +102,9 @@ const FinalRating: React.FC<FinalRatingProps> = ({ setCurrentStep, booking }) =>
   });
 
   const handleSubmit = async() => {
+    if(!formData.review && !formData.rating){
+      alert("fill the review")
+    }
     try{
       const response = await addReviewByUser(formData)
       if(response?.success && response?.result){
@@ -113,7 +116,6 @@ const FinalRating: React.FC<FinalRatingProps> = ({ setCurrentStep, booking }) =>
       setCurrentStep('congratulations');
     }catch(err){
       console.log('user review err', err)
-        alert('You have already reviewed this service.')
         setCurrentStep('booking');
     }
   };

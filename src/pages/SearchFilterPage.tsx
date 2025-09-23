@@ -178,7 +178,8 @@ const SearchFilterPage: React.FC = () => {
               >
                 <img
                   src={
-                    profile.technician.profileImage 
+                    profile.technician.profileImage ||
+                    "https://img-new.cgtrader.com/items/4519471/f444ec0898/large/mechanic-avatar-3d-icon-3d-model-f444ec0898.jpg"
                   }
                   alt={profile.technician.username || "Technician"}
                   className="w-36 h-36 object-cover rounded-2xl"

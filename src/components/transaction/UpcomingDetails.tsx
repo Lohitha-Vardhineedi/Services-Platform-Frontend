@@ -32,6 +32,16 @@ const { technician, service, user } = bookingData;
   const formattedUserAddress = `${user?.buildingName}, ${user?.areaName}, ${user?.city}, ${user?.state} - ${user?.pincode}`;
 
   const handleCancel = async () => {
+    // Show confirmation dialog
+  const isConfirmed = window.confirm(
+    "Are you sure you want to cancel this booking? This action cannot be undone."
+  );
+
+  // Proceed only if the user confirms
+  if (!isConfirmed) {
+    return;
+  }
+
     setIsCancelling(true);
     const data = {
       orderId: bookingState._id,
@@ -96,6 +106,18 @@ const { technician, service, user } = bookingData;
 };
 
   const handleStatusUpdate = async (status: string) => {
+
+    // Show confirmation dialog for 'declined' status
+  if (status === "declined") {
+    const isConfirmed = window.confirm(
+      "Are you sure you want to decline this booking? This action cannot be undone."
+    );
+
+    // Proceed only if the user confirms
+    if (!isConfirmed) {
+      return false;
+    }
+  }
   setIsUpdatingStatus(true);
   try {
     const requestData = {

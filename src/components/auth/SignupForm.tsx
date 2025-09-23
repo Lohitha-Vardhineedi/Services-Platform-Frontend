@@ -349,7 +349,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
 
           {[
             { id: "name", label: "Name", type: "text" },
-            { id: "mobile", label: "Phone Number", type: "tel" },
+            { id: "mobile", label: "Phone Number", type: "number" },
             { id: "password", label: "Password", type: "password" },
             { id: "buildingName", label: "House/Building Name", type: "text" },
             { id: "pincode", label: "Pincode", type: "text" },
