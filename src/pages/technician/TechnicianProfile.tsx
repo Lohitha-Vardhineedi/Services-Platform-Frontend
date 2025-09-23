@@ -526,8 +526,8 @@ const TechnicianProfile: React.FC = () => {
                           Sub Area
                         </label>
                         <select
-                          name="subArea"
-                          value={editProfile.subAreaArea}
+                          name="subAreaName"
+                          value={editProfile.subAreaName}
                           onChange={handleEditChange}
                           className="w-full border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200"
                         >

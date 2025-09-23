@@ -24,7 +24,7 @@ interface ReviewData {
 interface AuthenticatedUser {
   id: string;
   role: 'user' | 'technician';
-  name?: string;
+  username?: string;
 }
 
 const CompanyReviewModal: React.FC<ReviewModalProps> = ({ showReviewModal, setShowReviewModal }) => {
@@ -32,7 +32,7 @@ const CompanyReviewModal: React.FC<ReviewModalProps> = ({ showReviewModal, setSh
   const [comment, setComment] = useState<string>('');
   const reviewModalRef = useRef<HTMLDivElement>(null);
 
-  const user: User | null = localStorage.getItem('user')
+  const user: AuthenticatedUser = localStorage.getItem('user')
     ? JSON.parse(localStorage.getItem('user') as string)
     : null;
 
@@ -69,7 +69,7 @@ const CompanyReviewModal: React.FC<ReviewModalProps> = ({ showReviewModal, setSh
         setSelectedRating(0); 
         setComment('');
       } else {
-        console.error('Failed to submit review:', response.statusText);
+        console.error('Failed to submit review:', response);
         alert('Failed to submit review. Please try again.');
       }
     } catch (error) {
