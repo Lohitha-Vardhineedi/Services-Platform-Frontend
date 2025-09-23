@@ -91,7 +91,7 @@ const Services: React.FC<ServicesProps> = ({ services, technician }) => {
       const isInCart = cartItems.some((item) => item.id === categoryServiceId);
 
       if (isInCart) {
-        const response = await removeFromCart({ userId, serviceId: categoryServiceId });
+        const response = await removeFromCart({ userId, serviceId: categoryServiceId , technicianId});
         if (response.success) {
           setCartItems((prev) => prev.filter((item) => item.id !== categoryServiceId));
         }
