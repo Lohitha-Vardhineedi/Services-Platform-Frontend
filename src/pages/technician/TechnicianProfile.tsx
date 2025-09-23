@@ -10,12 +10,13 @@ import {
 import { Link } from "react-router-dom";
 import { ChevronRight, Pencil } from "lucide-react";
 import { FaThumbsUp, FaUser, FaTimes } from "react-icons/fa";
+import { Rating } from "../ProfilePage";
 
 // Define interfaces for type safety
 interface Profile {
   username: string;
   category: string;
-  categoryName:string;
+  categoryName: string;
   buildingName: string;
   areaName: string;
   subAreaName: string;
@@ -25,6 +26,7 @@ interface Profile {
   description: string;
   profileImage: string;
   phoneNumber: string;
+  rating: Rating[];
 }
 
 interface ApiResponse {
@@ -41,6 +43,7 @@ interface ApiResponse {
     description?: string;
     profileImage?: string;
     phoneNumber?: string;
+    ratings: Rating[];
   };
 }
 
@@ -49,6 +52,7 @@ const TechnicianProfile: React.FC = () => {
   const [profile, setProfile] = useState<Profile>({
     username: "",
     category: "",
+    categoryName: "",
     buildingName: "",
     areaName: "",
     subAreaName: "",
@@ -58,6 +62,7 @@ const TechnicianProfile: React.FC = () => {
     description: "",
     profileImage: "",
     phoneNumber: "",
+    rating: [],
   });
   const [editProfile, setEditProfile] = useState<Profile>({ ...profile });
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -81,7 +86,7 @@ const TechnicianProfile: React.FC = () => {
             setProfile({
               username: data.result.username || "",
               category: data.result.category || "",
-              categoryName: data.result.categoryName|| "",
+              categoryName: data.result.categoryName || "",
               buildingName: data.result.buildingName || "",
               areaName: data.result.areaName || "",
               subAreaName: data.result.subAreaName || "",
@@ -89,9 +94,9 @@ const TechnicianProfile: React.FC = () => {
               state: data.result.state || "",
               pincode: data.result.pincode || "",
               description: data.result.description || "",
-              profileImage:
-                data.result.profileImage ,
+              profileImage: data.result.profileImage,
               phoneNumber: data.result.phoneNumber || "",
+              rating: data.result.ratings || null,
             });
           }
         }
@@ -283,7 +288,7 @@ const TechnicianProfile: React.FC = () => {
           <div className="border border-gray-300 rounded-xl p-5 flex flex-col md:flex-row relative overflow-hidden">
             <div className="flex flex-col items-center md:items-start md:mr-6 mb-4 md:mb-0 relative w-full md:w-auto">
               <img
-                src={profile.profileImage}
+                src={profile.profileImage || "https://img-new.cgtrader.com/items/4519471/f444ec0898/large/mechanic-avatar-3d-icon-3d-model-f444ec0898.jpg"}
                 alt={profile.username}
                 className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover border-2 border-gray-300"
               />
@@ -295,11 +300,16 @@ const TechnicianProfile: React.FC = () => {
 
               <div className="flex flex-wrap items-center gap-4 my-3">
                 <div className="flex items-center border border-amber-500 rounded-lg px-2 py-1 text-black text-sm font-bold">
-                  4.8
+                  {profile && profile.rating ? (profile.rating.length) : '4'}
                   <MdOutlineStar size={18} className="ml-1" color="#ffc71b" />
                 </div>
                 <div className="text-gray-600 text-sm font-light">
-                  84 Ratings
+                  {profile.rating && profile.rating.length > 0
+                    ? (
+                        profile.rating.reduce((sum, r) => sum + r.rating, 0) /
+                        profile.rating.length
+                      ).toFixed(1)
+                    : "4"}
                 </div>
               </div>
               {profile.categoryName && (

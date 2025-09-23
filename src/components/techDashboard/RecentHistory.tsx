@@ -1,23 +1,32 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { TodayEarningsProps } from '../../pages/technician/TechnicianDashboard';
+import { DollarSign } from 'lucide-react';
 
-interface RecentHistoryProps {
-  bookings: any[];
-}
 
-const RecentHistory: React.FC<RecentHistoryProps> = ({ bookings }) => {
+
+const TodayEarnings: React.FC<TodayEarningsProps> = ({
+  bookings,
+  totalEarnings,
+}) => {
   const navigate = useNavigate();
 
   const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'completed':
-        return 'bg-green-100 text-green-700';
-      case 'cancelled':
-        return 'bg-red-100 text-red-700';
-      case 'pending':
-        return 'bg-yellow-100 text-yellow-700';
+    switch (status) {
+      case "completed":
+        return "bg-green-100 text-green-700";
+
+      case "cancelled":
+      case "declined":
+        return "bg-red-100 text-red-700";
+
+      case "upcoming":
+      case "started":
+      case "accepted":
+        return "bg-yellow-100 text-yellow-700";
+
       default:
-        return 'bg-gray-100 text-gray-700';
+        return "bg-gray-100 text-gray-700";
     }
   };
 
@@ -26,15 +35,18 @@ const RecentHistory: React.FC<RecentHistoryProps> = ({ bookings }) => {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-gradient-to-r from-green-100 to-emerald-100 rounded-lg group-hover:from-green-200 group-hover:to-emerald-200 transition-all duration-300">
-            <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+            <DollarSign className="w-5 h-5 text-green-600" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-800">Today's Bookings</h3>
+            <h3 className="text-lg font-semibold text-gray-800">
+              Today's Booking
+            </h3>
           </div>
         </div>
-        <button className="text-blue-600 hover:text-blue-700 text-sm font-medium" onClick={() => navigate('/technician/transactions')}>
+        <button
+          className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+          onClick={() => navigate("/technician/transactions")}
+        >
           View All
         </button>
       </div>
@@ -47,31 +59,59 @@ const RecentHistory: React.FC<RecentHistoryProps> = ({ bookings }) => {
         ) : (
           bookings.map((activity, index) => (
             <div
-              key={activity._id}
+              key={activity.booking._id}
               className="flex items-start gap-4 p-4 rounded-xl border border-gray-100 hover:border-gray-200 hover:bg-gray-50 transition-all duration-200 cursor-pointer group/item"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center group-hover/item:bg-blue-200 transition-colors">
-                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                <svg
+                  className="w-5 h-5 text-blue-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
                 </svg>
               </div>
               <div className="flex-1 min-w-0 scrollbar-hide">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <h4 className="text-sm font-semibold text-gray-800 group-hover/item:text-blue-600 transition-colors">
-                      {activity.service?.serviceName || "Service"}
+                      {activity.service.serviceName || "Service"}
                     </h4>
                     <p className="text-xs text-gray-600 mt-1">
-                      {activity.user?.username || "Unknown Client"}
+                      {activity.user.username || "Unknown Client"}
                     </p>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(activity.status)}`}>
-                      {activity.status}
-                    </span>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                          activity.booking.status
+                        )}`}
+                      >
+                        {activity.booking.status}
+                      </span>
+                      <span className="text-xs font-medium text-gray-600">
+                        ₹{activity.booking.totalPrice}
+                      </span>
+                    </div>
                   </div>
                   <div className="flex flex-col items-end gap-2">
                     <p className="text-xs text-gray-500 mt-1">
-                      {new Date(activity.bookingDate).toLocaleDateString("en-IN")}
+                      {new Date(
+                        activity.booking.bookingDate
+                      ).toLocaleDateString(
+                        "en-GB", // change locale if needed
+                        {
+                          day: "2-digit",
+                          month: "numeric",
+                          year: "numeric",
+                        }
+                      )}
                     </p>
                   </div>
                 </div>
@@ -83,10 +123,15 @@ const RecentHistory: React.FC<RecentHistoryProps> = ({ bookings }) => {
       <div className="mt-6 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-600">Today's Schedule</p>
-            <p className="font-semibold text-gray-800">{bookings.length} Bookings</p>
+            <p className="text-sm text-gray-600">Today's Summary</p>
+            <p className="font-semibold text-gray-800">
+              {bookings.length} Bookings
+            </p>
           </div>
-          <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors" onClick={() => navigate('/technician/transactions')}>
+          <button
+            className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors"
+            onClick={() => navigate("/technician/transactions")}
+          >
             View Schedule
           </button>
         </div>
@@ -95,7 +140,7 @@ const RecentHistory: React.FC<RecentHistoryProps> = ({ bookings }) => {
   );
 };
 
-export default RecentHistory;
+export default TodayEarnings;
 // import React from 'react';
 // import '../../index.css'
 // import { useNavigate } from 'react-router-dom';

@@ -11,9 +11,9 @@ import { PieChart as PieChartIcon } from 'lucide-react';
 
 const AvgRatingChart: React.FC = () => {
   const jobStatusData = [
-    { name: 'High', value: 40, color: '#10B981' },    // Green
-    { name: 'Medium', value: 35, color: '#FACC15' },  // Yellow moved to red place
-    { name: 'Low', value: 25, color: '#EF4444' },     // Red moved to yellow place
+    { name: "High", value: 40, color: "#10B981" },
+    { name: "Medium", value: 35, color: "#FACC15" },
+    { name: "Low", value: 25, color: "#EF4444" },
   ];
 
   const CustomTooltip = ({ active, payload }: any) => {
@@ -39,8 +39,13 @@ const AvgRatingChart: React.FC = () => {
           const percentage = ((entry.payload.value / total) * 100).toFixed(1);
           return (
             <li key={`item-${index}`} className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: entry.color }} />
-              <span className="text-gray-700 font-medium">{percentage}% {entry.payload.name}</span>
+              <span
+                className="w-3 h-3 rounded-full"
+                style={{ backgroundColor: entry.color }}
+              />
+              <span className="text-gray-700 font-medium">
+                {percentage}% {entry.payload.name}
+              </span>
             </li>
           );
         })}
@@ -56,7 +61,9 @@ const AvgRatingChart: React.FC = () => {
             <PieChartIcon className="w-5 h-5 text-purple-600" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-800">Average Rating</h3>
+            <h3 className="text-lg font-semibold text-gray-800">
+              Average Rating
+            </h3>
           </div>
         </div>
       </div>

@@ -14,7 +14,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const fetchCartCount = async () => {
     const userId = localStorage.getItem("userId");
-    if (!userId) {
+    const role = localStorage.getItem('role')
+    if(role == 'technician'){
+      console.log("your are technician")
+      return;
+    }
+    if (!userId ) {
       setCartCount(0);
       return;
     }

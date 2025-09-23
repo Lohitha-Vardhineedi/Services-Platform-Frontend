@@ -14,29 +14,31 @@ import {
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 interface MonthlyEarningsChartProps {
-  monthlyEarnings: any[];
+  monthlyEarnings: MonthlyEarning[];
 }
 
-const MonthlyEarningsChart: React.FC<MonthlyEarningsChartProps> = ({ monthlyEarnings }) => {
+const MonthlyEarningsChart: React.FC<MonthlyEarningsChartProps> = ({
+  monthlyEarnings,
+}) => {
   const monthlyData = monthlyEarnings.map((item) => ({
     month: item.monthName.slice(0, 3),
     earnings: item.totalEarnings,
     jobs: item.bookingCount,
   }));
 
-  const maxEarnings = Math.max(...monthlyData.map(d => d.earnings), 100);
+  const maxEarnings = Math.max(...monthlyData.map((d) => d.earnings), 100);
 
   const chartData = {
-    labels: monthlyData.map(data => data.month),
+    labels: monthlyData.map((data) => data.month),
     datasets: [
       {
-        label: 'Earnings (₹)',
-        data: monthlyData.map(data => data.earnings),
-        backgroundColor: 'rgba(59, 130, 246, 0.6)',
-        borderColor: 'rgba(59, 130, 246, 1)',
+        label: "Earnings (₹)",
+        data: monthlyData.map((data) => data.earnings),
+        backgroundColor: "rgba(59, 130, 246, 0.6)",
+        borderColor: "rgba(59, 130, 246, 1)",
         borderWidth: 1,
-        hoverBackgroundColor: 'rgba(59, 130, 246, 0.8)',
-        hoverBorderColor: 'rgba(59, 130, 246, 1)',
+        hoverBackgroundColor: "rgba(59, 130, 246, 0.8)",
+        hoverBorderColor: "rgba(59, 130, 246, 1)",
       },
     ],
   };
@@ -46,7 +48,7 @@ const MonthlyEarningsChart: React.FC<MonthlyEarningsChartProps> = ({ monthlyEarn
     maintainAspectRatio: false,
     animation: {
       duration: 1000,
-      easing: 'easeOutQuad',
+      easing: "easeOutQuad",
       delay: (context: any) => context.dataIndex * 100,
     },
     scales: {
@@ -56,35 +58,35 @@ const MonthlyEarningsChart: React.FC<MonthlyEarningsChartProps> = ({ monthlyEarn
         ticks: {
           stepSize: Math.ceil(maxEarnings / 1000) * 100,
           callback: (value: number) => `₹${value}`,
-          color: '#4B5563',
+          color: "#4B5563",
         },
         grid: {
-          color: '#E5E7EB',
+          color: "#E5E7EB",
         },
         title: {
           display: true,
-          text: 'Earnings',
-          color: '#4B5563',
+          text: "Earnings",
+          color: "#4B5563",
           font: {
             size: 14,
-            weight: 'bold',
+            weight: "bold",
           },
         },
       },
       x: {
         ticks: {
-          color: '#4B5563',
+          color: "#4B5563",
         },
         grid: {
           display: false,
         },
         title: {
           display: true,
-          text: 'Month',
-          color: '#4B5563',
+          text: "Month",
+          color: "#4B5563",
           font: {
             size: 14,
-            weight: 'bold',
+            weight: "bold",
           },
         },
       },
@@ -107,10 +109,10 @@ const MonthlyEarningsChart: React.FC<MonthlyEarningsChartProps> = ({ monthlyEarn
             ];
           },
         },
-        backgroundColor: 'rgba(31, 41, 55, 0.9)',
-        titleColor: '#FFFFFF',
-        bodyColor: '#D1D5DB',
-        borderColor: 'rgba(59, 130, 246, 0.2)',
+        backgroundColor: "rgba(31, 41, 55, 0.9)",
+        titleColor: "#FFFFFF",
+        bodyColor: "#D1D5DB",
+        borderColor: "rgba(59, 130, 246, 0.2)",
         borderWidth: 1,
       },
     },
@@ -121,22 +123,44 @@ const MonthlyEarningsChart: React.FC<MonthlyEarningsChartProps> = ({ monthlyEarn
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-lg group-hover:from-blue-200 group-hover:to-indigo-200 transition-all duration-300">
-            <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            <svg
+              className="w-5 h-5 text-blue-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+              />
             </svg>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-800">Monthly Earnings</h3>
+            <h3 className="text-lg font-semibold text-gray-800">
+              Monthly Earnings
+            </h3>
           </div>
         </div>
         <div className="flex items-center gap-2 text-sm text-gray-500">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+            />
           </svg>
           <span>{new Date().getFullYear()}</span>
         </div>
       </div>
-      {monthlyData.every(data => data.earnings === 0) ? (
+      {monthlyData.every((data) => data.earnings === 0) ? (
         <div className="text-center text-gray-600 py-4">
           No earnings data available for this year
         </div>
@@ -148,24 +172,54 @@ const MonthlyEarningsChart: React.FC<MonthlyEarningsChartProps> = ({ monthlyEarn
           <div className="grid grid-cols-2 gap-4">
             <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl hover:from-blue-100 hover:to-indigo-100 transition-all duration-300 cursor-pointer group/card">
               <div className="flex items-center gap-2 mb-2">
-                <svg className="w-4 h-4 text-blue-600 group-hover/card:animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                <svg
+                  className="w-4 h-4 text-blue-600 group-hover/card:animate-spin"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+                  />
                 </svg>
                 <p className="text-sm text-gray-600">Total Earnings</p>
               </div>
               <p className="text-xl font-bold text-gray-800 group-hover/card:text-blue-600 transition-colors">
-                ₹{monthlyEarnings.reduce((acc, item) => acc + item.totalEarnings, 0)}
+                ₹
+                {monthlyEarnings.reduce(
+                  (acc, item) => acc + item.totalEarnings,
+                  0
+                )}
               </p>
             </div>
             <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl hover:from-green-100 hover:to-emerald-100 transition-all duration-300 cursor-pointer group/card">
               <div className="flex items-center gap-2 mb-2">
-                <svg className="w-4 h-4 text-green-600 group-hover/card:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                <svg
+                  className="w-4 h-4 text-green-600 group-hover/card:animate-bounce"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                  />
                 </svg>
                 <p className="text-sm text-gray-600">Avg per Month</p>
               </div>
               <p className="text-xl font-bold text-gray-800 group-hover/card:text-green-600 transition-colors">
-                ₹{(monthlyEarnings.reduce((acc, item) => acc + item.totalEarnings, 0) / 12).toFixed(2)}
+                ₹
+                {(
+                  monthlyEarnings.reduce(
+                    (acc, item) => acc + item.totalEarnings,
+                    0
+                  ) / 12
+                ).toFixed(2)}
               </p>
             </div>
           </div>
