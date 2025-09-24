@@ -349,7 +349,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
 
           {[
             { id: "name", label: "Name", type: "text" },
-            { id: "mobile", label: "Phone Number", type: "number" },
+            { id: "mobile", label: "Phone Number", type: "tel" },
             { id: "password", label: "Password", type: "password" },
             { id: "buildingName", label: "House/Building Name", type: "text" },
             { id: "pincode", label: "Pincode", type: "text" },
@@ -516,6 +516,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
                   required={required}
                   value={formData[id]}
                   onChange={handleChange}
+                  maxLength={id === "mobile" ? 10 : 100}
                   pattern={id === "mobile" ? "[0-9]{10}" : undefined}
                   className="mt-1 w-full border border-gray-300 rounded-md p-2"
                 />

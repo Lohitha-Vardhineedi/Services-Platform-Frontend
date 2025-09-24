@@ -11,6 +11,7 @@ import { ContactForm } from "../components/services/ContactForms";
 import { getTechByCategorie } from "../api/apiMethods";
 import { Helmet } from "react-helmet-async";
 import { Rating } from "./ProfilePage";
+import { BsWhatsapp } from "react-icons/bs";
 
 interface Technician {
   technician: {
@@ -226,7 +227,7 @@ const ServicePage = () => {
                       <IoCall size={20} className="me-2" />
                       <span className="text-sm">{profile.technician.phoneNumber}</span>
                     </div> */}
-                    <div className=" bg-green-600 rounded text-white px-2 py-1 hover:bg-green-500">
+                    <div className="bg-green-600 rounded text-white px-2 py-1 hover:bg-green-500">
                       <button
                         onClick={() =>
                           openWhatsApp(
@@ -236,8 +237,8 @@ const ServicePage = () => {
                         }
                         className="flex items-center"
                       >
-                        <LuMessageSquareText size={20} className="me-2" />
-                        <span className="text-sm">Message</span>
+                        <BsWhatsapp size={18} className="me-2" />
+                        <span className="text-sm">WhatsApp</span>
                       </button>
                     </div>
                   </div>

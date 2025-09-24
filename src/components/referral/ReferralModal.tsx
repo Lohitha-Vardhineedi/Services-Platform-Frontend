@@ -306,6 +306,7 @@ function ReferralModal({ isOpen, onClose }: ReferralModalProps) {
                               onChange={(e) => setFormData({...formData, phoneNumber: e.target.value})}
                               className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                               placeholder="Enter your phone number"
+                              maxLength={10}
                               required
                             />
                           </div>

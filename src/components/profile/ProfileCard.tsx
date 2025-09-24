@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { FaThumbsUp } from "react-icons/fa6";
-import { IoCall, IoLocationOutline, IoShareSocial } from "react-icons/io5";
-import { LuMessageSquareText } from "react-icons/lu";
+import { IoLocationOutline, IoShareSocial } from "react-icons/io5";
 import { MdOutlineStar } from "react-icons/md";
 import { Rating, Technician } from "../../pages/ProfilePage";
+import { BsWhatsapp } from "react-icons/bs";
 
 interface ProfileCardProps {
   technician: Technician;
@@ -11,13 +11,48 @@ interface ProfileCardProps {
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ technician, rating }) => {
-  const reviewCont = rating.length || '3';
+  const reviewCont = rating.length || "3";
   const averageRating =
     rating && rating.length > 0
       ? (rating.reduce((sum, r) => sum + r.rating, 0) / rating.length).toFixed(
           1
         )
       : "4";
+
+  function openWhatsApp(number: number, message: string) {
+    const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank"); // opens in new tab
+  }
+
+  // Dynamic share function using Web Share API
+const handleShare = async () => {
+  // Construct a shareable URL using technician._id
+  const shareUrl = `${window.location.origin}/technicianById/${technician._id}`;
+  const shareData = {
+    title: `${technician.username}'s Profile`,
+    text: `${technician.username} - ${technician.service} Expert\nRated ${averageRating} ★ | ${reviewCont} Reviews\nLocation: ${technician.city}, ${technician.state}\nCheck out the profile: ${shareUrl}`,
+    url: shareUrl,
+  };
+
+  // Combine title, text, and URL for fallback sharing, formatted like a YouTube link
+  const fallbackText = `${shareData.title}\n${shareData.text.replace(/\n/g, '\n')}\n🔗 ${shareUrl}`;
+
+  try {
+    // Check if Web Share API is supported
+    if (navigator.share) {
+      await navigator.share(shareData);
+      alert("Profile details to share.");
+    } else {
+      // Fallback: Copy combined text to clipboard
+      await navigator.clipboard.writeText(fallbackText);
+      alert("Profile details copied to clipboard! Paste to share.");
+    }
+  } catch (error) {
+    await navigator.clipboard.writeText(fallbackText);
+    alert("Profile details copied to clipboard! Paste to share.");
+  }
+};
+
   return (
     <div className="border border-gray-300 rounded-xl p-5 flex flex-col md:flex-row relative overflow-hidden">
       <div className="flex flex-col items-center md:items-start md:mr-6 mb-4 md:mb-0 relative w-full md:w-auto">
@@ -40,7 +75,9 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ technician, rating }) => {
             {averageRating}
             <MdOutlineStar size={18} className="ml-1" color="#ffc71b" />
           </div>
-          <div className="text-black text-sm font-semibold">{reviewCont} Reviews</div>
+          <div className="text-black text-sm font-semibold">
+            {reviewCont} Reviews
+          </div>
         </div>
         {technician.service && (
           <div className="flex flex-wrap gap-2">
@@ -70,11 +107,22 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ technician, rating }) => {
         )}
 
         <div className="flex gap-4 mt-4 flex-wrap">
-          <div className="flex items-center bg-green-600 hover:bg-green-500 rounded-xl text-white px-4 py-1 font-bold cursor-pointer">
-            <LuMessageSquareText size={18} className="mr-2" />
-            Message
+          <div
+            className="flex items-center bg-green-600 hover:bg-green-500 rounded-xl text-white px-4 py-1 font-bold cursor-pointer"
+            onClick={() =>
+              openWhatsApp(
+                +919603558369,
+                "Hello, I am interested in your services"
+              )
+            }
+          >
+            <BsWhatsapp size={18} className="mr-2" />
+            WhatsApp
           </div>
-          <div className="flex items-center bg-blue-500 hover:bg-blue-600 rounded-xl text-white px-4 py-1 font-bold cursor-pointer">
+          <div 
+          className="flex items-center bg-blue-500 hover:bg-blue-600 rounded-xl text-white px-4 py-1 font-bold cursor-pointer"
+          onClick={handleShare}
+          >
             <IoShareSocial size={18} className="mr-2" />
             Share
           </div>

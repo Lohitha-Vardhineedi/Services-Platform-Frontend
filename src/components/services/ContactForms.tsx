@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { IoCall, IoPerson } from "react-icons/io5";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { BiSolidCategory } from "react-icons/bi";
-import { getAllCategories, createGuestBooking, createGetInTouch } from "../../api/apiMethods";
+import { getAllCategories, createGetInTouch } from "../../api/apiMethods";
 
 export const ContactForm = () => {
   const [categories, setCategories] = useState([]);
@@ -52,32 +52,42 @@ export const ContactForm = () => {
 
   // Handle form input changes
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
     setError(null);
     setSuccess(null);
   };
 
+  // Validate form data
+  const validateForm = () => {
+    // Name validation: only letters and spaces, 2-50 characters
+    const nameRegex = /^[A-Za-z\s]{2,50}$/;
+    if (!formData.name) {
+      return "Name is required";
+    }
+    if (!nameRegex.test(formData.name)) {
+      return "Name must be 2-50 characters long and contain only letters and spaces";
+    }
 
-  // Handle category selection
-  const handleCategorySelect = (category) => {
-    setFormData((prev) => ({
-      ...prev,
-      categoryId: category._id,
-    }));
-    setSearchTerm(category.category_name);
+    // Phone number validation: exactly 10 digits
+    const phoneRegex = /^\d{10}$/;
+    if (!formData.phoneNumber) {
+      return "Phone number is required";
+    }
+    if (!phoneRegex.test(formData.phoneNumber)) {
+      return "Phone number must be exactly 10 digits with no other characters";
+    }
+
+    // Category validation
+    if (!formData.categoryId) {
+      return "Please select a category";
+    }
+
+    return null;
   };
-
-  // Filter categories based on search term
-  const filteredCategories = categories
-    .filter(
-      (category) =>
-        category?.status === 1 &&
-        category?.category_name.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .slice(0, 5); // Limit to 5 suggestions for better UX
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -85,15 +95,10 @@ export const ContactForm = () => {
     setError(null);
     setSuccess(null);
 
-    // Validate phone number
-    if (!/^\d{10}$/.test(formData.phoneNumber)) {
-      setError("Please enter a valid 10-digit phone number (e.g., 9876543210)");
-      return;
-    }
-
-    // Validate category selection
-    if (!formData.categoryId) {
-      setError("Please select a category");
+    // Validate form
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
       return;
     }
 
@@ -101,7 +106,6 @@ export const ContactForm = () => {
     try {
       const response = await createGetInTouch(formData);
       if (response.success) {
-        // setSuccess("Thanks for contacting us! We'll get back to you soon.");
         alert("Thanks for contacting us! We'll get back to you soon.");
         setFormData({ name: "", phoneNumber: "", categoryId: "" });
         setSearchTerm("");
@@ -116,7 +120,7 @@ export const ContactForm = () => {
   };
 
   return (
-    <div className="bg-gray-50 ">
+    <div className="bg-gray-50">
       <div className="max-w-md mx-auto">
         <div className="bg-white border border-gray-300 rounded-xl shadow-lg p-6">
           <div className="rounded-xl shadow-xl p-4">
@@ -150,7 +154,7 @@ export const ContactForm = () => {
                 <div className="flex px-3 py-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-fuchsia-600">
                   <IoCall size={20} color="#aaa" />
                   <input
-                    type="number"
+                    type="tel" // Changed to text to prevent browser number input quirks
                     name="phoneNumber"
                     id="phoneNumber"
                     value={formData.phoneNumber}
@@ -158,14 +162,12 @@ export const ContactForm = () => {
                     placeholder="Enter your phone number"
                     className="text-sm md:text-base focus:outline-none ms-2 w-full"
                     required
-                    pattern="[0-9]{10}"
                     maxLength={10}
-                    title="Please enter a valid 10-digit phone number"
                     aria-label="Phone number"
                   />
                 </div>
 
-                {/* Category Search Input */}
+                {/* Category Select Input */}
                 <div className="flex px-3 py-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-fuchsia-600">
                   <BiSolidCategory size={20} color="#aaa" />
                   <select
@@ -181,7 +183,7 @@ export const ContactForm = () => {
                       Select a category
                     </option>
                     {categories
-                      // .filter((category) => category?.status === 1)
+                      .filter((category) => category?.status === 1)
                       .sort((a, b) => a.category_name.toLowerCase().localeCompare(b.category_name.toLowerCase()))
                       .map((item) => (
                         <option key={item._id} value={item._id}>
@@ -219,6 +221,227 @@ export const ContactForm = () => {
 };
 
 export default ContactForm;
+// import React, { useState, useEffect, useRef } from "react";
+// import { IoCall, IoPerson } from "react-icons/io5";
+// import { MdKeyboardDoubleArrowRight } from "react-icons/md";
+// import { BiSolidCategory } from "react-icons/bi";
+// import { getAllCategories, createGuestBooking, createGetInTouch } from "../../api/apiMethods";
+
+// export const ContactForm = () => {
+//   const [categories, setCategories] = useState([]);
+//   const [error, setError] = useState(null);
+//   const [success, setSuccess] = useState(null);
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [formData, setFormData] = useState({
+//     name: "",
+//     phoneNumber: "",
+//     categoryId: "",
+//   });
+//   const [searchTerm, setSearchTerm] = useState("");
+//   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+//   const dropdownRef = useRef(null);
+
+//   // Fetch categories
+//   const fetchCategoriesForSearch = async () => {
+//     try {
+//       const response = await getAllCategories();
+//       if (response.success === true && Array.isArray(response.data)) {
+//         setCategories(response.data);
+//       } else {
+//         setError("Invalid response format");
+//       }
+//     } catch (err) {
+//       setError(err?.message || "Failed to fetch categories");
+//     }
+//   };
+
+//   // Fetch categories on component mount
+//   useEffect(() => {
+//     fetchCategoriesForSearch();
+//   }, []);
+
+//   // Handle clicks outside the dropdown to close it
+//   useEffect(() => {
+//     const handleClickOutside = (event) => {
+//       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+//         setIsDropdownOpen(false);
+//       }
+//     };
+//     document.addEventListener("mousedown", handleClickOutside);
+//     return () => {
+//       document.removeEventListener("mousedown", handleClickOutside);
+//     };
+//   }, []);
+
+//   // Handle form input changes
+//   const handleChange = (e) => {
+//     setFormData((prev) => ({
+//       ...prev,
+//       [e.target.name]: e.target.value,
+//     }));
+//     setError(null);
+//     setSuccess(null);
+//   };
+
+
+//   // Handle category selection
+//   const handleCategorySelect = (category) => {
+//     setFormData((prev) => ({
+//       ...prev,
+//       categoryId: category._id,
+//     }));
+//     setSearchTerm(category.category_name);
+//   };
+
+//   // Filter categories based on search term
+//   const filteredCategories = categories
+//     .filter(
+//       (category) =>
+//         category?.status === 1 &&
+//         category?.category_name.toLowerCase().includes(searchTerm.toLowerCase())
+//     )
+//     .slice(0, 5); // Limit to 5 suggestions for better UX
+
+//   // Handle form submission
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setError(null);
+//     setSuccess(null);
+
+//     // Validate phone number
+//     if (!/^\d{10}$/.test(formData.phoneNumber)) {
+//       setError("Please enter a valid 10-digit phone number (e.g., 9876543210)");
+//       return;
+//     }
+
+//     // Validate category selection
+//     if (!formData.categoryId) {
+//       setError("Please select a category");
+//       return;
+//     }
+
+//     setIsLoading(true);
+//     try {
+//       const response = await createGetInTouch(formData);
+//       if (response.success) {
+//         // setSuccess("Thanks for contacting us! We'll get back to you soon.");
+//         alert("Thanks for contacting us! We'll get back to you soon.");
+//         setFormData({ name: "", phoneNumber: "", categoryId: "" });
+//         setSearchTerm("");
+//       } else {
+//         setError(response.message || "Failed to submit contact form");
+//       }
+//     } catch (err) {
+//       setError(err?.message || "An error occurred while submitting the form");
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   };
+
+//   return (
+//     <div className="bg-gray-50 ">
+//       <div className="max-w-md mx-auto">
+//         <div className="bg-white border border-gray-300 rounded-xl shadow-lg p-6">
+//           <div className="rounded-xl shadow-xl p-4">
+//             <div className="text-lg md:text-xl text-center mb-6 font-semibold">
+//               Get in <span className="text-fuchsia-600">Touch</span>
+//             </div>
+//             {error && (
+//               <div className="text-red-500 text-sm mb-4 text-center">
+//                 {error}
+//               </div>
+//             )}
+//             <form onSubmit={handleSubmit}>
+//               <div className="flex flex-col space-y-6">
+//                 {/* Name Input */}
+//                 <div className="flex px-3 py-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-fuchsia-600">
+//                   <IoPerson size={20} color="#aaa" />
+//                   <input
+//                     type="text"
+//                     name="name"
+//                     id="name"
+//                     value={formData.name}
+//                     onChange={handleChange}
+//                     placeholder="Enter your Name"
+//                     className="text-sm md:text-base focus:outline-none ms-2 w-full"
+//                     required
+//                     aria-label="Name"
+//                   />
+//                 </div>
+
+//                 {/* Phone Input */}
+//                 <div className="flex px-3 py-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-fuchsia-600">
+//                   <IoCall size={20} color="#aaa" />
+//                   <input
+//                     type="number"
+//                     name="phoneNumber"
+//                     id="phoneNumber"
+//                     value={formData.phoneNumber}
+//                     onChange={handleChange}
+//                     placeholder="Enter your phone number"
+//                     className="text-sm md:text-base focus:outline-none ms-2 w-full"
+//                     required
+//                     pattern="[0-9]{10}"
+//                     max={10}
+//                     title="Please enter a valid 10-digit phone number"
+//                     aria-label="Phone number"
+//                   />
+//                 </div>
+
+//                 {/* Category Search Input */}
+//                 <div className="flex px-3 py-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-fuchsia-600">
+//                   <BiSolidCategory size={20} color="#aaa" />
+//                   <select
+//                     id="categoryId"
+//                     name="categoryId"
+//                     value={formData.categoryId}
+//                     onChange={handleChange}
+//                     required
+//                     className="text-sm md:text-base focus:outline-none ms-2 w-full bg-transparent"
+//                     aria-label="Select category"
+//                   >
+//                     <option value="" disabled>
+//                       Select a category
+//                     </option>
+//                     {categories
+//                       // .filter((category) => category?.status === 1)
+//                       .sort((a, b) => a.category_name.toLowerCase().localeCompare(b.category_name.toLowerCase()))
+//                       .map((item) => (
+//                         <option key={item._id} value={item._id}>
+//                           {item.category_name}
+//                         </option>
+//                       ))}
+//                   </select>
+//                 </div>
+
+//                 {/* Submit Button */}
+//                 <button
+//                   type="submit"
+//                   className="bg-fuchsia-500 text-white py-3 rounded-xl hover:bg-fuchsia-600 transition-colors disabled:bg-fuchsia-300"
+//                   disabled={isLoading}
+//                 >
+//                   <div className="flex items-center justify-center">
+//                     <span className="text-sm md:text-lg font-semibold me-2">
+//                       {isLoading ? "Submitting..." : "Get in Touch"}
+//                     </span>
+//                     <MdKeyboardDoubleArrowRight size={30} />
+//                   </div>
+//                 </button>
+
+//                 {/* Footer Text */}
+//                 <div className="text-sm text-gray-500 text-center mt-4">
+//                   We will get back to you as soon as possible
+//                 </div>
+//               </div>
+//             </form>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ContactForm;
 // import React, { useState, useEffect } from "react";
 // import { IoCall, IoPerson } from "react-icons/io5";
 // import { MdKeyboardDoubleArrowRight } from "react-icons/md";
