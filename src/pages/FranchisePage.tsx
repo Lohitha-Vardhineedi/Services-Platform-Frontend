@@ -363,7 +363,7 @@ const FranchisePage: React.FC = () => {
                       <Phone className="w-4 h-4 text-white" />
                     </div>
                     <span className="text-sm text-gray-700">
-                      +91 9603558369
+                      +91 9603558369 ,9059789177
                     </span>
                   </div>
                   <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors group">
@@ -373,10 +373,10 @@ const FranchisePage: React.FC = () => {
                    <span
                   className="text-sm text-gray-700 cursor-pointer hover:underline"
                   onClick={() =>
-                    (window.location.href = "mailto:info@prnvservices.com")
+                    (window.location.href = "mailto:prnvserviceswork@gmail.com")
                   }
                 >
-                  info@prnvservices.com
+                  prnvserviceswork@gmail.com
                 </span>
                   </div>
                   <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors group">

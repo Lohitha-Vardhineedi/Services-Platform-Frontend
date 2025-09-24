@@ -240,6 +240,7 @@ const AboutUs: React.FC = () => {
               <div className="flex flex-col items-center gap-2">
                 <Phone className="text-blue-600" size={20} />
                 <span className="text-sm font-medium">Phone</span>
+                <span className="text-sm text-gray-600">+91 9059789177</span>
                 <span className="text-sm text-gray-600">+91 9603558369</span>
               </div>
               <div className="flex flex-col items-center gap-2">
@@ -249,10 +250,10 @@ const AboutUs: React.FC = () => {
                 <span
                   className="text-sm text-gray-600 cursor-pointer hover:underline"
                   onClick={() =>
-                    (window.location.href = "mailto:info@prnvservices.com")
+                    (window.location.href = "mailto:prnvserviceswork@gmail.com")
                   }
                 >
-                  info@prnvservices.com
+                  prnvserviceswork@gmail.com
                 </span>
               </div>
               <div className="flex flex-col items-center gap-2">
