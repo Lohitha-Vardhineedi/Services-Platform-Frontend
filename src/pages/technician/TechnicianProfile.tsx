@@ -434,6 +434,7 @@ const TechnicianProfile: React.FC = () => {
                           name="phoneNumber"
                           value={editProfile.phoneNumber}
                           readOnly
+                          maxLength={10}
                           className="w-full border border-gray-300 rounded-xl p-3 bg-gray-50 text-gray-500 cursor-not-allowed"
                         />
                       </div>

@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { AuthContext } from '../../context/AuthContext';
+import React, { useEffect, useState, useContext } from "react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { AuthContext } from "../../context/AuthContext";
 
 // Define types
-type UserRole = 'user' | 'technician';
+type UserRole = "user" | "technician";
 
 interface LoginFormProps {
   defaultRole?: UserRole;
@@ -15,10 +15,13 @@ interface LoginData {
   password: string;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = "user" }) => {
   const { login } = useContext(AuthContext)!;
   const [role, setRole] = useState<UserRole>(defaultRole);
-  const [formData, setFormData] = useState<LoginData>({ phoneNumber: '', password: '' });
+  const [formData, setFormData] = useState<LoginData>({
+    phoneNumber: "",
+    password: "",
+  });
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,10 +29,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
 
   // Redirect based on URL if applicable
   useEffect(() => {
-    if (location.pathname.includes('/login/technician')) {
-      setRole('technician');
+    if (location.pathname.includes("/login/technician")) {
+      setRole("technician");
     } else {
-      setRole('user');
+      setRole("user");
     }
   }, [location.pathname]);
 
@@ -51,13 +54,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
 
     try {
       await login(role, formData);
-      if (role === 'technician') {
-        navigate('/technician/dashboard');
+      if (role === "technician") {
+        navigate("/technician/dashboard");
       } else {
-        navigate('/');
+        navigate("/");
       }
     } catch (err: any) {
-      setError(err?.message || 'Login failed. Please try again.');
+      setError(err?.message || "Login failed. Please try again.");
     }
   };
 
@@ -74,7 +77,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
       </div>
 
       <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Sign In</h2>
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+          Sign In
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && <p className="text-red-600 text-sm text-center">{error}</p>}
@@ -98,10 +103,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
               Phone Number <span className="text-red-500">*</span>
             </label>
             <input
-              type="text"
+              type="tel"
               name="phoneNumber"
               required
+              placeholder="Enter 10 digits phone Number"
               value={formData.phoneNumber}
+              maxLength={10}
               onChange={handleChange}
               className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500"
             />
@@ -113,9 +120,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = 'user' }) => {
             </label>
             <div className="relative">
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 name="password"
                 required
+                placeholder="Password must be with in 6 to 10 digits"
                 value={formData.password}
                 onChange={handleChange}
                 className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500 pr-10"
@@ -197,38 +205,38 @@ export default LoginForm;
 //     }
 //   };
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setError(null);
+// const handleSubmit = async (e: React.FormEvent) => {
+//   e.preventDefault();
+//   setError(null);
 
-  //   try {
-  //     let response;
-  //     if (role === 'technician') {
-  //       response = await technicianLogin({ ...formData }) as any;
-  //     } else {
-  //       response = await userLogin({ ...formData }) as any;
-  //     }
-  //     console.log("asdasdsad", response.result.token)
-  //     if (response?.result?.token) {
-  //       console.log('Done')
-  //       localStorage.setItem('jwt_token', response.result.token);
-  //       localStorage.setItem('user', JSON.stringify(response.result));
-  //       localStorage.setItem('userId', response.result.id);
-  //       console.log("----",response.result.id)
-  //       localStorage.setItem('role', response.result.role);
-  //       window.dispatchEvent(new Event("cartUpdated"));
-  //       if (role === 'technician') {
-  //         navigate('/technician/dashboard');
-  //       } else {
-  //         navigate('/')
-  //       }
-  //     } else {
-  //       throw new Error('Invalid credentials or server error');
-  //     }
-  //   } catch (err: any) {
-  //     setError(err?.message || 'Login failed. Please try again.');
-  //   }
-  // };
+//   try {
+//     let response;
+//     if (role === 'technician') {
+//       response = await technicianLogin({ ...formData }) as any;
+//     } else {
+//       response = await userLogin({ ...formData }) as any;
+//     }
+//     console.log("asdasdsad", response.result.token)
+//     if (response?.result?.token) {
+//       console.log('Done')
+//       localStorage.setItem('jwt_token', response.result.token);
+//       localStorage.setItem('user', JSON.stringify(response.result));
+//       localStorage.setItem('userId', response.result.id);
+//       console.log("----",response.result.id)
+//       localStorage.setItem('role', response.result.role);
+//       window.dispatchEvent(new Event("cartUpdated"));
+//       if (role === 'technician') {
+//         navigate('/technician/dashboard');
+//       } else {
+//         navigate('/')
+//       }
+//     } else {
+//       throw new Error('Invalid credentials or server error');
+//     }
+//   } catch (err: any) {
+//     setError(err?.message || 'Login failed. Please try again.');
+//   }
+// };
 
 //   return (
 //     <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -322,7 +330,6 @@ export default LoginForm;
 
 // export default LoginForm;
 
-
 // import React, { useEffect, useState } from 'react';
 // import { useNavigate, useLocation } from 'react-router-dom';
 // import { login } from '../../api/apiMethods';
@@ -357,7 +364,6 @@ export default LoginForm;
 //       navigate(`/login/${selectedRole}`);
 //     }
 //   };
-
 
 //   const handleSubmit = async (e: React.FormEvent) => {
 //     e.preventDefault();

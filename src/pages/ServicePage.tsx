@@ -11,6 +11,7 @@ import { ContactForm } from "../components/services/ContactForms";
 import { getTechByCategorie } from "../api/apiMethods";
 import { Helmet } from "react-helmet-async";
 import { Rating } from "./ProfilePage";
+import { BsWhatsapp } from "react-icons/bs";
 
 interface Technician {
   technician: {
@@ -101,17 +102,42 @@ const ServicePage = () => {
     window.open(url, "_blank"); // opens in new tab
   }
 
-  const handleFilterChange = (filter: string) => {
+ const handleFilterChange = (filter: string) => {
     let updatedTechnicians = [...technicians];
+
     if (filter === "topRated") {
-      updatedTechnicians = technicians.filter(
-        (tech) => (tech.ratings?.rating ?? 0) >= 3.0
-      );
+      // Filter technicians with an average rating >= 3.0
+      updatedTechnicians = updatedTechnicians
+        .filter((tech) => {
+          if (!tech.ratings || tech.ratings.length === 0) return false;
+          const averageRating =
+            tech.ratings.reduce((sum, r) => sum + r.rating, 0) /
+            tech.ratings.length;
+          return averageRating >= 3.0;
+        })
+        .sort((a, b) => {
+          const avgRatingA =
+            a.ratings && a.ratings.length > 0
+              ? a.ratings.reduce((sum, r) => sum + r.rating, 0) /
+                a.ratings.length
+              : 0;
+          const avgRatingB =
+            b.ratings && b.ratings.length > 0
+              ? b.ratings.reduce((sum, r) => sum + r.rating, 0) /
+                b.ratings.length
+              : 0;
+          return avgRatingB - avgRatingA; // Sort in descending order
+        });
     } else if (filter === "popular") {
-      updatedTechnicians = technicians.sort(
+      // Sort by servicesDone in descending order
+      updatedTechnicians = updatedTechnicians.sort(
         (a, b) => (b.servicesDone ?? 0) - (a.servicesDone ?? 0)
       );
+    } else {
+      // Reset to original list if no filter is selected
+      updatedTechnicians = [...technicians];
     }
+
     setFilteredTechnicians(updatedTechnicians);
   };
 
@@ -144,10 +170,7 @@ const ServicePage = () => {
                 }
               >
                 <img
-                  src={
-                    profile.technician.profileImage ||
-                    "https://img-new.cgtrader.com/items/4519471/f444ec0898/large/mechanic-avatar-3d-icon-3d-model-f444ec0898.jpg"
-                  }
+                  src={ profile.technician.profileImage || "https://img-new.cgtrader.com/items/4519471/f444ec0898/large/mechanic-avatar-3d-icon-3d-model-f444ec0898.jpg" }
                   alt={profile.technician.username}
                   className="w-36 h-36 object-cover rounded-2xl"
                 />
@@ -204,7 +227,7 @@ const ServicePage = () => {
                       <IoCall size={20} className="me-2" />
                       <span className="text-sm">{profile.technician.phoneNumber}</span>
                     </div> */}
-                    <div className=" bg-green-600 rounded text-white px-2 py-1 hover:bg-green-500">
+                    <div className="bg-green-600 rounded text-white px-2 py-1 hover:bg-green-500">
                       <button
                         onClick={() =>
                           openWhatsApp(
@@ -214,8 +237,8 @@ const ServicePage = () => {
                         }
                         className="flex items-center"
                       >
-                        <LuMessageSquareText size={20} className="me-2" />
-                        <span className="text-sm">Message</span>
+                        <BsWhatsapp size={18} className="me-2" />
+                        <span className="text-sm">WhatsApp</span>
                       </button>
                     </div>
                   </div>

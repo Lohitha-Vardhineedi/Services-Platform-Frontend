@@ -516,6 +516,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
                   required={required}
                   value={formData[id]}
                   onChange={handleChange}
+                  maxLength={id === "mobile" ? 10 : 100}
                   pattern={id === "mobile" ? "[0-9]{10}" : undefined}
                   className="mt-1 w-full border border-gray-300 rounded-md p-2"
                 />

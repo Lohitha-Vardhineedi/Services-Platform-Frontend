@@ -81,7 +81,7 @@ const BlogListPage: React.FC = () => {
         container.scrollTo({ left: newScrollPosition, behavior: "smooth" });
         setScrollPosition(newScrollPosition);
       }
-    }, 3000);
+    }, 1000);
 
     return () => clearInterval(scrollInterval);
   }, [scrollPosition, isPaused, blogs]);
@@ -110,7 +110,7 @@ const BlogListPage: React.FC = () => {
 
   const handleTouchEnd = () => {
     touchStartX.current = null;
-    setTimeout(() => setIsPaused(false), 2000);
+    setTimeout(() => setIsPaused(false), 1500);
   };
 
   // Calculate active indicator

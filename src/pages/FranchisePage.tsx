@@ -320,6 +320,7 @@ const FranchisePage: React.FC = () => {
                         value={formData.phoneNumber}
                         onChange={handleInputChange}
                         required
+                        maxLength={10}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
                         placeholder="Enter your mobile number"
                       />
@@ -362,16 +363,21 @@ const FranchisePage: React.FC = () => {
                       <Phone className="w-4 h-4 text-white" />
                     </div>
                     <span className="text-sm text-gray-700">
-                      +91 9603558369
+                      +91 9603558369 ,9059789177
                     </span>
                   </div>
                   <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors group">
                     <div className="w-8 h-8 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center group-hover:animate-pulse">
                       <Mail className="w-4 h-4 text-white" />
                     </div>
-                    <span className="text-sm text-gray-700">
-                      prnvservices@gmail.com
-                    </span>
+                   <span
+                  className="text-sm text-gray-700 cursor-pointer hover:underline"
+                  onClick={() =>
+                    (window.location.href = "mailto:prnvserviceswork@gmail.com")
+                  }
+                >
+                  prnvserviceswork@gmail.com
+                </span>
                   </div>
                   <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors group">
                     <div className="w-8 h-8 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center group-hover:animate-bounce">

@@ -14,6 +14,8 @@ import { ServiceFilters } from "../components/services/ServiceFilters";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Helmet } from "react-helmet-async";
+import { BsWhatsapp } from "react-icons/bs";
+import { Rating } from "./ProfilePage";
 
 interface Technician {
   _id: string;
@@ -30,9 +32,7 @@ interface Technician {
 
 interface TechnicianProfile {
   technician: Technician;
-  ratings?: {
-    rating: number;
-  };
+  ratings?: Rating[];
 }
 interface SearchContent {
   id: string;
@@ -72,7 +72,7 @@ const SearchFilterPage: React.FC = () => {
   console.log(formData);
 
   const fetchTechBySearch = async () => {
-       if (!categoryId || !city ) {
+    if (!categoryId || !city) {
       setError("Missing required search parameters");
       return;
     }
@@ -98,8 +98,8 @@ const SearchFilterPage: React.FC = () => {
   }, [categoryId, areaName, pincode, city, state, subAreaName]);
 
   const fetchSearchContent = async () => {
-    if (!categoryId || !city ) {
-    // if (!categoryId || !areaName || !subAreaName || !pincode || !city || !state) {
+    if (!categoryId || !city) {
+      // if (!categoryId || !areaName || !subAreaName || !pincode || !city || !state) {
       setErrorContent("Missing required search parameters");
       return;
     }
@@ -138,6 +138,11 @@ const SearchFilterPage: React.FC = () => {
       )}`
     );
   };
+
+  function openWhatsApp(number: number, message: string) {
+    const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank"); // opens in new tab
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-4">
@@ -178,7 +183,8 @@ const SearchFilterPage: React.FC = () => {
               >
                 <img
                   src={
-                    profile.technician.profileImage 
+                    profile.technician.profileImage ||
+                    "https://img-new.cgtrader.com/items/4519471/f444ec0898/large/mechanic-avatar-3d-icon-3d-model-f444ec0898.jpg"
                   }
                   alt={profile.technician.username || "Technician"}
                   className="w-36 h-36 object-cover rounded-2xl"
@@ -191,16 +197,23 @@ const SearchFilterPage: React.FC = () => {
 
                   <div className="flex gap-3 items-center">
                     <div className="flex items-center border border-amber-500 rounded-lg px-2 text-black font-bold">
-                      {profile.ratings?.rating ?? "4"}
+                      {profile.ratings && profile.ratings.length > 0
+                        ? (
+                            profile.ratings.reduce(
+                              (sum, r) => sum + r.rating,
+                              0
+                            ) / profile.ratings.length
+                          ).toFixed(1)
+                        : "4"}
                       <MdOutlineStar
                         size={20}
                         className="ml-1"
                         color="#ffc71b"
                       />
                     </div>
-                    {profile.ratings?.rating && (
+                    {profile.ratings && (
                       <span className="text-gray-600 text-sm">
-                        {profile.ratings.rating} Ratings
+                        {profile.ratings.length} Ratings
                       </span>
                     )}
                   </div>
@@ -235,7 +248,7 @@ const SearchFilterPage: React.FC = () => {
                   )}
 
                   <div className="flex gap-3">
-                    <button
+                    {/* <button
                       className="flex items-center bg-fuchsia-500 rounded text-white px-2 py-1 hover:bg-fuchsia-600 transition-colors duration-200"
                       onClick={(e) => {
                         e.stopPropagation();
@@ -245,15 +258,18 @@ const SearchFilterPage: React.FC = () => {
                       <span className="text-sm">
                         {profile.technician.phoneNumber || "N/A"}
                       </span>
-                    </button>
+                    </button> */}
                     <button
                       className="flex items-center bg-green-600 rounded text-white px-2 py-1 hover:bg-green-500 transition-colors duration-200"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                      }}
+                      onClick={() =>
+                        openWhatsApp(
+                          +919603558369,
+                          "Hello, I am interested in your services"
+                        )
+                      }
                     >
-                      <LuMessageSquareText size={20} className="mr-2" />
-                      <span className="text-sm">Message</span>
+                      <BsWhatsapp size={18} className="mr-2" />
+                      <span className="text-sm">WhatsApp</span>
                     </button>
                   </div>
                 </div>
@@ -267,8 +283,8 @@ const SearchFilterPage: React.FC = () => {
         </div>
         <ContactForm />
       </div>
-      
- {/* <div className="mt-6 space-y-4">
+
+      {/* <div className="mt-6 space-y-4">
         {isDataLoading ? (
           <div className="text-center">Loading Data...</div>
         ) : errorContent ? (
@@ -302,7 +318,6 @@ const SearchFilterPage: React.FC = () => {
           <div> No content for this Address</div>
         )}
       </div>
-
     </div>
   );
 };
@@ -370,7 +385,7 @@ export default SearchFilterPage;
 //               >
 //                 <img
 //                   src={
-//                     profile.technician.profileImage 
+//                     profile.technician.profileImage
 //                   }
 //                   alt={profile.technician.username}
 //                   className="w-36 h-36 object-cover rounded-2xl"
