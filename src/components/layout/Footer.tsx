@@ -83,14 +83,22 @@ const Footer: React.FC = () => {
                 </p>
               </div>
 
-              <div className="flex items-center">
+              <div className="flex items-center gap-3">
                 <Phone className="w-5 h-5 text-blue-700 mr-3" />
+                <p className="text-gray-600">9603558369</p>
                 <p className="text-gray-600">9603558369</p>
               </div>
 
               <div className="flex items-center">
                 <Mail className="w-5 h-5 text-blue-700 mr-3" />
-                <p className="text-gray-600">info@prnvservices.com</p>
+                 <span
+                  className="text-sm text-gray-600 cursor-pointer hover:underline"
+                  onClick={() =>
+                    (window.location.href = "mailto:prnvserviceswork@gmail.com")
+                  }
+                >
+                  prnvserviceswork@gmail.com
+                </span>
               </div>
             </div>
           </div>
