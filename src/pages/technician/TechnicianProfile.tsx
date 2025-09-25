@@ -222,6 +222,7 @@ const TechnicianProfile: React.FC = () => {
       if (imageFile) {
         formData.append("profileImage", imageFile);
       }
+      console.log(formData)
       await updateTechnicianControl(formData);
       setProfile({ ...editProfile, profileImage: editProfile.profileImage });
       setEditModalOpen(false);
