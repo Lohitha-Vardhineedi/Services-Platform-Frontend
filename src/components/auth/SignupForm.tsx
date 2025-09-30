@@ -284,7 +284,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
         <div className="bg-blue-900 rounded px-1 py-1 w-fit flex">
           <img
             src="https://prnvservices.com/uploads/logo/1695377568_logo-white.png"
-            alt="Justdial Logo"
+            alt="Prnv services Logo"
             className="h-8 w-auto"
           />
         </div>
