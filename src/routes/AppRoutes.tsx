@@ -40,11 +40,10 @@ import ReferralForm from "../components/referral/ReferralForm";
 import FAQ from "../components/footerComponents/FAQ";
 import AllBlogs from "../components/blogs/AllBlogs";
 import ViewBlog from "../components/blogs/ViewBlog";
-import RefundPolicy from '../components/footerComponents/RefundPolicy';
-import PrivacyPolicy from '../components/footerComponents/PrivacyPolicy';
-import TermsConditions from '../components/footerComponents/TermsConditions';
+import RefundPolicy from "../components/footerComponents/RefundPolicy";
+import PrivacyPolicy from "../components/footerComponents/PrivacyPolicy";
+import TermsConditions from "../components/footerComponents/TermsConditions";
 import ProfessionalAgreement from "../components/footerComponents/ProfessionalAgreement";
-
 
 // Define types
 type UserRole = "user" | "technician";
@@ -115,12 +114,15 @@ const AppRoutes: React.FC = () => {
         element={<SearchFilterPage />}
       /> */}
 
-
-  <Route path="/:categoryname/:cityname" element={<SearchFilterPage />} />
-  <Route path="/:categoryname/:cityname/:areaname-pincode" element={<SearchFilterPage />} />
-  <Route path="/:categoryname/:cityname/:areaname-pincode/:subarea" element={<SearchFilterPage />} />
-
-
+      <Route path="/:categoryname/:cityname" element={<SearchFilterPage />} />
+      <Route
+        path="/:categoryname/:cityname/:areaname-pincode"
+        element={<SearchFilterPage />}
+      />
+      <Route
+        path="/:categoryname/:cityname/:areaname-pincode/:subarea"
+        element={<SearchFilterPage />}
+      />
 
       <Route
         path="/categories"
@@ -221,6 +223,16 @@ const AppRoutes: React.FC = () => {
               <title>PRNV Services subscription plans</title>
               <meta
                 name="description"
+                content="A dynamic description for your MERN project's home page to boost SEO."
+              />
+              <meta name="keywords" content="MERN, React, Node.js, SEO" />
+              <meta property="og:title" content="Your MERN App - Home" />
+              <meta
+                property="og:description"
+                content="Engaging description for shares."
+              />
+              <meta
+                name="description"
                 content="Explore our subscription plans to find the best fit for your needs."
               />
             </Helmet>
@@ -245,10 +257,7 @@ const AppRoutes: React.FC = () => {
         }
       />
 
-      <Route
-        path="/blog/:blogId"
-        element={<ViewBlog />}
-      />
+      <Route path="/blog/:blogId" element={<ViewBlog />} />
 
       <Route
         path="/subscription/:subscriptionId"
@@ -271,7 +280,6 @@ const AppRoutes: React.FC = () => {
         }
       />
 
-
       <Route
         path="*"
         element={
@@ -288,55 +296,83 @@ const AppRoutes: React.FC = () => {
         }
       />
 
-      <Route path="/professional-agreement" element={
-        <>
-        <Helmet>
-          <title>Professional Agreement</title>
-          <meta name="description" content="Learn more about the professional agreement at PRNV Services." />
-        </Helmet>
-        <ProfessionalAgreement/>
-        </>
-        } />
-      <Route path="/faqs" element={
-        <>
-        <Helmet>
-          <title>Frequently asked questions</title>
-          <meta name="description" content="Find answers to common questions about PRNV Services." />
-        </Helmet>
-        <FAQ />
-        </>
-        } />
-      <Route path="/refund-policy" element={
-        <>
-        <Helmet>
-          <title>Refund Policy</title>
-          <meta name="description" content="Learn more about the refund policy at PRNV Services." />
-        </Helmet>
-        <RefundPolicy />
-        </>
-        } />
+      <Route
+        path="/professional-agreement"
+        element={
+          <>
+            <Helmet>
+              <title>Professional Agreement</title>
+              <meta
+                name="description"
+                content="Learn more about the professional agreement at PRNV Services."
+              />
+            </Helmet>
+            <ProfessionalAgreement />
+          </>
+        }
+      />
+      <Route
+        path="/faqs"
+        element={
+          <>
+            <Helmet>
+              <title>Frequently asked questions</title>
+              <meta
+                name="description"
+                content="Find answers to common questions about PRNV Services."
+              />
+            </Helmet>
+            <FAQ />
+          </>
+        }
+      />
+      <Route
+        path="/refund-policy"
+        element={
+          <>
+            <Helmet>
+              <title>Refund Policy</title>
+              <meta
+                name="description"
+                content="Learn more about the refund policy at PRNV Services."
+              />
+            </Helmet>
+            <RefundPolicy />
+          </>
+        }
+      />
 
+      <Route
+        path="/privacy-policy"
+        element={
+          <>
+            <Helmet>
+              <title>Privacy Policy</title>
+              <meta
+                name="description"
+                content="Learn more about the privacy policy at PRNV Services."
+              />
+            </Helmet>
+            <PrivacyPolicy />
+          </>
+        }
+      />
 
-        <Route path="/privacy-policy" element={
-        <>
-        <Helmet>
-          <title>Privacy Policy</title>
-          <meta name="description" content="Learn more about the privacy policy at PRNV Services." />
-        </Helmet>
-        <PrivacyPolicy />
-        </>
-        } />
-
-
-        <Route path="/terms-conditions" element={
-        <>
-        <Helmet>
-          <title>Terms & Conditions</title>
-          <meta name="description" content="Learn more about the terms and conditions at PRNV Services." />
-        </Helmet>
-        <TermsConditions />
-        </>
-        } />
+      <Route
+        path="/terms-conditions"
+        element={
+          <>
+            <Helmet>
+              <title>Terms & Conditions</title>
+              <meta
+                name="description"
+                content="Learn more about the terms and conditions at PRNV Services."
+              />
+            </Helmet>
+            <TermsConditions />
+          </>
+        }
+      />
 
       {/* Auth Routes - Login and Signup */}
       <Route element={<AuthLayout />}>
