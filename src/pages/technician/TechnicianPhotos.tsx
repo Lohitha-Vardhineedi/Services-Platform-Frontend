@@ -10,11 +10,16 @@ import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 
 const TechnicianPhotos = () => {
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const inputImageRef = useRef<HTMLInputElement | null>(null);
+  const inputVideoRef = useRef<HTMLInputElement | null>(null);
   const [images, setImages] = useState<string[]>([]);
+  const [videos, setVideos] = useState<string[]>([]);
   const [showAll, setShowAll] = useState(false);
   const [isTechnician, setIsTechnician] = useState(false);
   const [techId, setTechId] = useState<string | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB in bytes
 
   useEffect(() => {
     const role = localStorage.getItem("role");
@@ -29,6 +34,9 @@ const TechnicianPhotos = () => {
           if (data?.result && Array.isArray(data.result.imageUrl)) {
             setImages(data.result.imageUrl);
           }
+          if (data?.result && Array.isArray(data.result.videoUrl)) {
+            setVideos(data.result.videoUrl);
+          }
         })
         .catch((err: any) => {
           console.error("Failed to fetch technician images:", err);
@@ -37,15 +45,26 @@ const TechnicianPhotos = () => {
   }, []);
 
   const visibleImages = showAll ? images : images.slice(0, 6);
+  const totalMedia = images.length + videos.length;
 
-  const handleUploadClick = () => {
-    inputRef.current?.click();
+  const handleUploadImageClick = () => {
+    inputImageRef.current?.click();
   };
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUploadVideoClick = () => {
+    inputVideoRef.current?.click();
+  };
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !techId) return;
 
+    if (file.size > MAX_FILE_SIZE) {
+      setUploadError("Image file size exceeds 10MB limit");
+      return;
+    }
+
+    setUploadError(null);
     const formData = new FormData();
     formData.append("technicianId", techId);
     formData.append("photos", file);
@@ -54,39 +73,110 @@ const TechnicianPhotos = () => {
       await createTechImagesControl(formData);
       setImages((prev) => [URL.createObjectURL(file), ...prev]);
     } catch (error) {
-      console.error("Upload failed:", error);
+      console.error("Image upload failed:", error);
+      setUploadError("Failed to upload image. Please try again.");
     }
   };
 
-  const handleDelete = async (index: number) => {
-    const imageUrlToDelete = images[index];
+  const handleVideoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !techId) return;
+
+    if (file.size > MAX_FILE_SIZE) {
+      setUploadError("Video file size exceeds 10MB limit");
+      return;
+    }
+
+    setUploadError(null);
+    const formData = new FormData();
+    formData.append("technicianId", techId);
+    formData.append("videos", file);
+
+    try {
+      const response = await createTechImagesControl(formData);
+      if (response?.data?.success) {
+        setVideos((prev) => [URL.createObjectURL(file), ...prev]);
+      } else {
+        setUploadError("Failed to upload video. Please try again.");
+      }
+    } catch (error) {
+      console.error("Video upload failed:", error);
+      setUploadError("Failed to upload video. Please try again.");
+    }
+  };
+
+  const handleDelete = async (type: 'image' | 'video', index: number) => {
+    const urlToDelete = type === 'image' ? images[index] : videos[index];
     const technicianId = localStorage.getItem("userId");
 
-
-    if (window.confirm("Are you sure you want to delete this image?")) {
-      if (!technicianId || !imageUrlToDelete) {
-        alert("Missing technicianId or imageUrlToDelete");
+    if (window.confirm("Are you sure you want to delete this media?")) {
+      if (!technicianId || !urlToDelete) {
+        alert("Missing technicianId or urlToDelete");
         return;
       }
       try {
-      const payload = {
-        technicianId: technicianId,
-        imageUrlToDelete: imageUrlToDelete,
-      };
+        const payload = {
+          technicianId: technicianId,
+          imageUrlToDelete: type === 'image' ? urlToDelete : undefined,
+          videoUrlToDelete: type === 'video' ? urlToDelete : undefined,
+        };
 
-      const response = await deletePhotoBySingle(payload);
+        const response = await deletePhotoBySingle(payload);
 
-      if (response?.data?.success) {
-        setImages((prev) => prev.filter((_, i) => i !== index));
-        console.log("Image deleted successfully");
-      } else {
-        console.error("Failed to delete image:", response?.data?.message);
+        if (response?.data?.success) {
+          if (type === 'image') {
+            setImages((prev) => prev.filter((_, i) => i !== index));
+          } else {
+            setVideos((prev) => prev.filter((_, i) => i !== index));
+          }
+          console.log("Media deleted successfully");
+        } else {
+          console.error("Failed to delete media:", response?.data?.message);
+        }
+      } catch (error) {
+        console.error("Error deleting media:", error);
       }
-    } catch (error) {
-      console.error("Error deleting image:", error);
     }
-  }
   };
+
+  const isVideoUrl = (url: string) => {
+    return url.match(/\.(mp4|webm|ogg)$/i) || (typeof url === 'string' && url.startsWith('blob:'));
+  };
+
+  const renderMedia = (src: string, index: number, type: 'image' | 'video') => {
+    const actualType = type === 'video' || isVideoUrl(src) ? 'video' : 'image';
+    return (
+      <div key={`${type}-${index}`} className="relative group">
+        {actualType === 'image' ? (
+          <img
+            src={src}
+            alt={`Image ${index + 1}`}
+            className="w-full h-36 object-cover rounded-lg"
+          />
+        ) : (
+          <video
+            src={src}
+            controls
+            className="w-full h-36 object-cover rounded-lg"
+          />
+        )}
+        {isTechnician && (
+          <button
+            onClick={() => handleDelete(actualType, index)}
+            className="absolute top-2 right-2 bg-red-600 text-white p-1 rounded-full hover:bg-red-700"
+          >
+            <FaTrash size={14} />
+          </button>
+        )}
+      </div>
+    );
+  };
+
+  const allMedia = [
+    ...images.map((img, i) => ({ src: img, type: 'image' as const, index: i })),
+    ...videos.map((vid, i) => ({ src: vid, type: 'video' as const, index: i })),
+  ];
+  const visibleMedia = showAll ? allMedia : allMedia.slice(0, 6);
 
   return (
     <div className="border border-gray-200 shadow-md rounded-xl p-4 max-w-7xl mx-auto">
@@ -101,52 +191,58 @@ const TechnicianPhotos = () => {
         </div>
       </div>
 
-      {/* Upload Button (only for technician) */}
+      {/* Upload Buttons (only for technician) */}
+      {isTechnician && (
+        <div className="mb-4 flex gap-4">
+          <button
+            onClick={handleUploadImageClick}
+            className="flex items-center mt-5 gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            <IoMdCloudUpload className="text-xl" />
+            Upload Photo
+          </button>
+          <input
+            type="file"
+            accept="image/*"
+            ref={inputImageRef}
+            onChange={handleImageChange}
+            hidden
+          />
+          <button
+            onClick={handleUploadVideoClick}
+            className="flex items-center mt-5 gap-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+          >
+            <IoMdCloudUpload className="text-xl" />
+            Upload Video
+          </button>
+          <input
+            type="file"
+            accept="video/mp4,video/webm,video/ogg"
+            ref={inputVideoRef}
+            onChange={handleVideoChange}
+            hidden
+          />
+        </div>
+      )}
+
+      {/* Upload Error Message */}
+      {uploadError && (
+        <div className="mb-4 text-red-600 text-sm text-center">
+          {uploadError}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
-        {/* {visibleImages.map((img: string, index: number) => (
-          <div key={index} className="relative group">
-            <img
-              src={img}
-              alt={`Image ${index + 1}`}
-              className="w-full h-36 object-cover rounded-lg"
-            />
-            {isTechnician && (
-              <button
-                onClick={() => handleDelete(index)}
-                className="absolute top-2 right-2 bg-red-600 text-white p-1 rounded-full hover:bg-red-700"
-              >
-                <FaTrash size={14} />
-              </button>
-            )}
-          </div>
-        ))} */}
-        {visibleImages && visibleImages.length > 0 ? (
-          visibleImages.map((img: string, index: number) => (
-            <div key={index} className="relative group">
-              <img
-                src={img}
-                alt={`Image ${index + 1}`}
-                className="w-full h-36 object-cover rounded-lg"
-              />
-              {isTechnician && (
-                <button
-                  onClick={() => handleDelete(index)}
-                  className="absolute top-2 right-2 bg-red-600 text-white p-1 rounded-full hover:bg-red-700"
-                >
-                  <FaTrash size={14} />
-                </button>
-              )}
-            </div>
-          ))
+        {visibleMedia && visibleMedia.length > 0 ? (
+          visibleMedia.map((media) => renderMedia(media.src, media.index, media.type))
         ) : (
-          <div className="text-gray-500 text-center py-4">
-            No images available
+          <div className="text-gray-500 text-center py-4 col-span-full">
+            No media available
           </div>
         )}
       </div>
 
-      {images.length > 6 && (
+      {totalMedia > 6 && (
         <div
           className="flex justify-center mt-4 cursor-pointer text-blue-600 hover:underline text-sm"
           onClick={() => setShowAll(!showAll)}
@@ -160,25 +256,6 @@ const TechnicianPhotos = () => {
               View More <FaChevronDown />
             </span>
           )}
-        </div>
-      )}
-
-      {isTechnician && (
-        <div className="mb-4">
-          <button
-            onClick={handleUploadClick}
-            className="flex items-center mt-5 gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            <IoMdCloudUpload className="text-xl" />
-            Upload Photo
-          </button>
-          <input
-            type="file"
-            accept="image/*"
-            ref={inputRef}
-            onChange={handleFileChange}
-            hidden
-          />
         </div>
       )}
     </div>
