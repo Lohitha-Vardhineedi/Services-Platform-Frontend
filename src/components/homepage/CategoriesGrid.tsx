@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { CategoryContext } from '../../context/CategoryContext';
 
-interface Category {
+export interface Category {
   _id: string;
   category_name: string;
   category_slug: string;
