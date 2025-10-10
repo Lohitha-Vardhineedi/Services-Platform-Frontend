@@ -91,7 +91,9 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
 
 const AppRoutes: React.FC = () => {
   return (
+   
     <Routes>
+      
       {/* Public Routes - Accessible to everyone */}
       <Route
         path="/"
@@ -109,11 +111,11 @@ const AppRoutes: React.FC = () => {
             <HomePage />
           </>
         }
-      />
+      /> 
       {/* <Route
         path="/:categoryname/:cityname/:areaname-pincode"
         element={<SearchFilterPage />}
-      /> */}
+      />
 
 
   <Route path="/:categoryname/:cityname" element={<SearchFilterPage />} />
