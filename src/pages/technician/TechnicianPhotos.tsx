@@ -19,6 +19,7 @@ const TechnicianPhotos = () => {
   const [techId, setTechId] = useState<string | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
+  const MAX_IMAGES = 5; // Maximum 5 images allowed
   const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB in bytes
 
   useEffect(() => {
@@ -48,6 +49,11 @@ const TechnicianPhotos = () => {
   const totalMedia = images.length + videos.length;
 
   const handleUploadImageClick = () => {
+    // Check image limit before opening file dialog
+    if (images.length >= MAX_IMAGES) {
+      setUploadError(`Image limit of ${MAX_IMAGES} reached. Please delete an existing image to upload a new one.`);
+      return;
+    }
     inputImageRef.current?.click();
   };
 
@@ -59,8 +65,16 @@ const TechnicianPhotos = () => {
     const file = e.target.files?.[0];
     if (!file || !techId) return;
 
+    // Double-check the limit here as well
+    if (images.length >= MAX_IMAGES) {
+      setUploadError(`Image limit of ${MAX_IMAGES} reached. Please delete an existing image to upload a new one.`);
+      e.target.value = ''; // Clear the input
+      return;
+    }
+
     if (file.size > MAX_FILE_SIZE) {
       setUploadError("Image file size exceeds 10MB limit");
+      e.target.value = ''; // Clear the input
       return;
     }
 
@@ -72,9 +86,12 @@ const TechnicianPhotos = () => {
     try {
       await createTechImagesControl(formData);
       setImages((prev) => [URL.createObjectURL(file), ...prev]);
+      // Clear the input after successful upload
+      e.target.value = '';
     } catch (error) {
       console.error("Image upload failed:", error);
       setUploadError("Failed to upload image. Please try again.");
+      e.target.value = ''; // Clear the input on error
     }
   };
 
@@ -84,6 +101,7 @@ const TechnicianPhotos = () => {
 
     if (file.size > MAX_FILE_SIZE) {
       setUploadError("Video file size exceeds 10MB limit");
+      e.target.value = ''; // Clear the input
       return;
     }
 
@@ -96,12 +114,15 @@ const TechnicianPhotos = () => {
       const response = await createTechImagesControl(formData);
       if (response?.data?.success) {
         setVideos((prev) => [URL.createObjectURL(file), ...prev]);
+        e.target.value = ''; // Clear the input after successful upload
       } else {
         setUploadError("Failed to upload video. Please try again.");
+        e.target.value = ''; // Clear the input on error
       }
     } catch (error) {
       console.error("Video upload failed:", error);
       setUploadError("Failed to upload video. Please try again.");
+      e.target.value = ''; // Clear the input on error
     }
   };
 
@@ -196,7 +217,12 @@ const TechnicianPhotos = () => {
         <div className="mb-4 flex gap-4">
           <button
             onClick={handleUploadImageClick}
-            className="flex items-center mt-5 gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            disabled={images.length >= MAX_IMAGES}
+            className={`flex items-center mt-5 gap-2 px-4 py-2 rounded ${
+              images.length >= MAX_IMAGES
+                ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                : 'bg-blue-600 text-white hover:bg-blue-700'
+            }`}
           >
             <IoMdCloudUpload className="text-xl" />
             Upload Photo
