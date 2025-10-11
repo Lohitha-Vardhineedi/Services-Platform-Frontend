@@ -18,8 +18,7 @@ export const updateUserProfile = (userId: string, data: any) =>
   apiRequest("updateUserProfile", data, userId);
 
 export const userRegister = (data: any) => apiRequest("userRegister", data);
-export const technicianRegister = (data: any) =>
-  apiRequest("technicianRegister", data);
+export const technicianRegister = (data: any) =>  apiRequest("technicianRegister", data);
 
 export const userLogin = (data: any) => apiRequest("userLogin", data);
 
