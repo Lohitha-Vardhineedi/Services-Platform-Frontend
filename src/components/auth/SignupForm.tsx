@@ -161,7 +161,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
         .finally(() => setCatLoading(false));
 
       setPlanLoading(true);
-      getPlans()
+      getPlans({})
         .then((res: any) => {
           if (Array.isArray(res?.data)) {
             const freePlan = res.data.find((plan: SubscriptionPlan) => plan.name === "Free Plan");
@@ -394,6 +394,9 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
         }
 
         if (response.success) {
+          if(defaultRole === "technician"){
+            alert('Thank you for registering. Once your account is verified, you will receive access to log in.');
+          }
           navigate(`/login/${defaultRole}`);
         }
       } catch (err: any) {
