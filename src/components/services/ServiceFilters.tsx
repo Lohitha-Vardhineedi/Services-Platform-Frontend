@@ -24,7 +24,7 @@ const FILTER_ICONS: FilterIcon[] = [
   },
 ];
 
-export const ServiceFilters: FC<ServiceFiltersProps> = ({ onFilterChange }) => {
+export const ServiceFilters: FC<ServiceFiltersProps> = ( { onFilterChange } ) => {
   const [activeFilter, setActiveFilter] = useState<string>("");
 
   const handleFilterClick = (filterId: string) => {

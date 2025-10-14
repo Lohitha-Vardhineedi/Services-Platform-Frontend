@@ -10,30 +10,33 @@ import {
 } from "../api/apiMethods";
 import AdvertisementBanner from "../components/services/AdvertisementBanner";
 import ContactForm from "../components/services/ContactForms";
-import { ServiceFilters } from "../components/services/ServiceFilters";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Helmet } from "react-helmet-async";
 import { BsWhatsapp } from "react-icons/bs";
 import { Rating } from "./ProfilePage";
+import { FC } from "react";
 
 interface Technician {
   _id: string;
   username: string;
   profileImage?: string;
-  categories?: string;
+  category?: string;
   areaName?: string;
   city?: string;
   state?: string;
   pincode?: string;
   phoneNumber?: string;
   description?: string;
+  services?: any[]; // Added to match JSON structure
 }
 
 interface TechnicianProfile {
   technician: Technician;
   ratings?: Rating[];
+  services?: any[]; // Added to match JSON structure
 }
+
 interface SearchContent {
   id: string;
   categoryId: string;
@@ -47,10 +50,65 @@ interface SearchContent {
   seo_content: any;
 }
 
+interface FilterIcon {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+}
+
+interface ServiceFiltersProps {
+  onFilterChange?: (filter: string) => void; // Made optional to prevent error if not passed
+}
+
+const FILTER_ICONS: FilterIcon[] = [
+  {
+    id: "popular",
+    label: "Popular",
+    icon: <MdOutlineStar size={23} color="#00b800" className="flex" />,
+  },
+  {
+    id: "topRated",
+    label: "Top Rated",
+    icon: <MdOutlineStar size={23} color="#ffc71b" className="flex" />,
+  },
+];
+
+export const ServiceFilters: FC<ServiceFiltersProps> = ({ onFilterChange }) => {
+  const [activeFilter, setActiveFilter] = useState<string>("");
+
+  const handleFilterClick = (filterId: string) => {
+    const newFilter = activeFilter === filterId ? "" : filterId;
+    setActiveFilter(newFilter);
+    if (typeof onFilterChange === 'function') {
+      onFilterChange(newFilter);
+    }
+  };
+
+  return (
+    <div className="flex flex-wrap my-3 gap-4 px-2">
+      {FILTER_ICONS.map((filter) => (
+        <div
+          key={filter.id}
+          className={`border border-gray-500 shadow py-2 px-4 flex items-center rounded-xl cursor-pointer hover:bg-fuchsia-300 ${
+            activeFilter === filter.id ? "bg-fuchsia-300" : ""
+          }`}
+          onClick={() => handleFilterClick(filter.id)}
+        >
+          {filter.icon}
+          <span className="text-sm sm:text-sm md:text-md lg:text-md xl:text-lg ms-2">
+            {filter.label}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const SearchFilterPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [technicians, setTechnicians] = useState<TechnicianProfile[]>([]);
+  const [filteredTechnicians, setFilteredTechnicians] = useState<TechnicianProfile[]>([]);
   const [content, setContent] = useState<SearchContent | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(false);
@@ -82,13 +140,16 @@ const SearchFilterPage: React.FC = () => {
       const response = await getAllTechByAddress(formData);
       if (response.success && Array.isArray(response.result)) {
         setTechnicians(response.result);
+        setFilteredTechnicians(response.result); // Initialize filtered with all
       } else {
         setTechnicians([]);
+        setFilteredTechnicians([]);
       }
     } catch (error) {
       console.error("Error fetching technicians:", error);
       setError("Failed to fetch technicians. Please try again.");
       setTechnicians([]);
+      setFilteredTechnicians([]);
     } finally {
       setIsLoading(false);
     }
@@ -125,6 +186,45 @@ const SearchFilterPage: React.FC = () => {
     fetchSearchContent();
   }, [categoryId, areaName, pincode, city, state, subAreaName]);
 
+  const handleFilterChange = (filter: string) => {
+    let updatedTechnicians = [...technicians];
+
+    if (filter === "topRated") {
+      // Filter technicians with an average rating >= 3.0
+      updatedTechnicians = updatedTechnicians
+        .filter((tech) => {
+          if (!tech.ratings || tech.ratings.length === 0) return false;
+          const averageRating =
+            tech.ratings.reduce((sum, r) => sum + r.rating, 0) /
+            tech.ratings.length;
+          return averageRating >= 3.0;
+        })
+        .sort((a, b) => {
+          const avgRatingA =
+            a.ratings && a.ratings.length > 0
+              ? a.ratings.reduce((sum, r) => sum + r.rating, 0) /
+                a.ratings.length
+              : 0;
+          const avgRatingB =
+            b.ratings && b.ratings.length > 0
+              ? b.ratings.reduce((sum, r) => sum + r.rating, 0) /
+                b.ratings.length
+              : 0;
+          return avgRatingB - avgRatingA; // Sort in descending order
+        });
+    } else if (filter === "popular") {
+      // Sort by services.length in descending order (as proxy for servicesDone)
+      updatedTechnicians = updatedTechnicians.sort(
+        (a, b) => (b.services?.length ?? 0) - (a.services?.length ?? 0)
+      );
+    } else {
+      // Reset to original list if no filter is selected
+      updatedTechnicians = [...technicians];
+    }
+
+    setFilteredTechnicians(updatedTechnicians);
+  };
+
   const handleTechnicianClick = (
     technicianId: string,
     city?: string,
@@ -160,7 +260,7 @@ const SearchFilterPage: React.FC = () => {
 
       <AdvertisementBanner />
       <h2 className="text-xl font-semibold my-4">Technicians</h2>
-      <ServiceFilters />
+      <ServiceFilters onFilterChange={handleFilterChange} />
 
       <div className="flex flex-col md:flex-row p-2 gap-3">
         <div className="flex-1 space-y-3 overflow-y-auto scrollbar-hide max-h-[calc(100vh-200px)]">
@@ -168,8 +268,8 @@ const SearchFilterPage: React.FC = () => {
             <div className="text-center">Loading technicians...</div>
           ) : error ? (
             <div className="text-red-500 text-center">{error}</div>
-          ) : technicians.length > 0 ? (
-            technicians.map((profile, index) => (
+          ) : filteredTechnicians.length > 0 ? (
+            filteredTechnicians.map((profile, index) => (
               <div
                 key={profile.technician._id || index}
                 className="border border-gray-300 rounded-2xl shadow p-3 flex flex-col md:flex-row items-center gap-4 hover:bg-gray-100 cursor-pointer transition-colors duration-200"
@@ -218,11 +318,11 @@ const SearchFilterPage: React.FC = () => {
                     )}
                   </div>
 
-                  {profile.technician?.categories && (
+                  {/* {profile.technician?.category && (
                     <div className="bg-fuchsia-200 px-3 py-1 rounded-xl text-black text-sm inline-block">
-                      {profile.technician.categories}
+                      {profile.technician.category}
                     </div>
-                  )}
+                  )} */}
 
                   <div className="flex items-center">
                     <IoLocationOutline size={20} color="red" />
@@ -261,12 +361,14 @@ const SearchFilterPage: React.FC = () => {
                     </button> */}
                     <button
                       className="flex items-center bg-green-600 rounded text-white px-2 py-1 hover:bg-green-500 transition-colors duration-200"
-                      onClick={() =>
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const phone = profile.technician.phoneNumber ? parseInt(profile.technician.phoneNumber) : 919603558369;
                         openWhatsApp(
-                          +919603558369,
+                          phone,
                           "Hello, I am interested in your services"
-                        )
-                      }
+                        );
+                      }}
                     >
                       <BsWhatsapp size={18} className="mr-2" />
                       <span className="text-sm">WhatsApp</span>

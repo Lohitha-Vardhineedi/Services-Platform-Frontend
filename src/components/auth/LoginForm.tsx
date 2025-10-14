@@ -70,7 +70,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = "user" }) => {
         <div className="bg-blue-900 rounded px-2 py-1 flex items-center">
           <img
             src="https://prnvservices.com/uploads/logo/1695377568_logo-white.png"
-            alt="Justdial Logo"
+            alt="Prnv services Logo"
             className="h-8 w-auto"
           />
         </div>

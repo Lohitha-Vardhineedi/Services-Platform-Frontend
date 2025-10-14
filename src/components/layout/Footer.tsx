@@ -123,7 +123,8 @@ const Footer: React.FC = () => {
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center hover:bg-blue-400 hover:text-white transition-colors"
               >
-                <Twitter className="w-5 h-5" />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/X_logo_2023_original.svg" className="w-5 h-5" />
+                {/* <Twitter className="w-5 h-5" /> */}
               </a>
               <a
                 href="https://www.youtube.com/channel/UCGNrnML4lA3ix6WYUtcUw3A"
