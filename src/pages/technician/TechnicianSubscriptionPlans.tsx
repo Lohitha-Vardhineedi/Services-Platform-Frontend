@@ -10,7 +10,7 @@ import {
   Cross,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { getPlans, getTechnicianLeads } from '../../api/apiMethods'; // Added getTechnicianLeads
+import { getPlans,  } from '../../api/apiMethods'; 
 
 const iconMap = {
   Star,
