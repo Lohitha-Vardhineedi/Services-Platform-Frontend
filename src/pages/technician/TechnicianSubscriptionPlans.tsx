@@ -24,7 +24,7 @@ const TechnicianSubscriptionPlans = () => {
   const navigate = useNavigate();
   const [plans, setPlans] = useState([]);
   const [error, setError] = useState(null);
-  const [technicianLeads, setTechnicianLeads] = useState({}); // New state for remaining leads
+  const [technicianLeads, setTechnicianLeads] = useState({});
 
   const fetchPlans = async () => {
     try {
@@ -61,7 +61,7 @@ const TechnicianSubscriptionPlans = () => {
 
   useEffect(() => {
     fetchPlans();
-    fetchTechnicianLeads(); // Call new API
+    fetchTechnicianLeads(); 
   }, []);
 
   const handleFullDetails = (plan) => {
