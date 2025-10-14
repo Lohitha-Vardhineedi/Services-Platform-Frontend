@@ -160,12 +160,16 @@ const TechnicianPhotos = () => {
     }
   };
 
-  const isVideoUrl = (url: string) => {
-    return url.match(/\.(mp4|webm|ogg)$/i) || (typeof url === 'string' && url.startsWith('blob:'));
+  const isVideoUrl = (url: string, originalType?: 'image' | 'video') => {
+    // Check the original type from the upload source if available
+    if (originalType === 'image') return false;
+    if (originalType === 'video') return true;
+    // Fall back to URL pattern for existing media
+    return url.match(/\.(mp4|webm|ogg)$/i) || false;
   };
 
   const renderMedia = (src: string, index: number, type: 'image' | 'video') => {
-    const actualType = type === 'video' || isVideoUrl(src) ? 'video' : 'image';
+    const actualType = isVideoUrl(src, type) ? 'video' : 'image';
     return (
       <div key={`${type}-${index}`} className="relative group">
         {actualType === 'image' ? (
