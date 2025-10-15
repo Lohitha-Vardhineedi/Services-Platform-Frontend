@@ -154,6 +154,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = "user" }) => {
         >
           Sign Up
         </Link>
+
+        <Link
+          to={'/terms-and-conditions'}
+          className="text-blue-600 hover:underline font-medium ms-1"
+        >
+          Terms and Conditions
+        </Link>
       </p>
     </main>
   );

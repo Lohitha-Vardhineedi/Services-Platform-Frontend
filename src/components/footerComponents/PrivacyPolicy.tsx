@@ -250,8 +250,7 @@ const PrivacyPolicy: React.FC = () => {
             </div>
 
             <h3 className="text-xl font-semibold text-gray-800 mb-3 mt-8">Professional (Technician/Service Provider):</h3>
-            <p>
-              The Professional (Technician/Service Provider) has to pay a monthly fee by enrolling in one of four plans. When a professional (technician/service provider) subscribes to any of these plans, the fee is non-refundable. During the payment process, the details of your cards or UPI will be safely stored with us, making your payment safe and secure.
+            <p>One of our plans.
             </p>
             
             <div className="bg-yellow-50 p-6 rounded-lg border-l-4 border-yellow-400">
