@@ -57,7 +57,7 @@ const ProfessionalAgreement: React.FC = () => {
                 <li>Pan Card / Voter Id / Driving License</li>
                 <li>Permanent Address</li>
                 <li>Current Address</li>
-                <li>Bank details</li>
+                {/* <li>Bank details</li> */}
               </ol>
             </div>
 
