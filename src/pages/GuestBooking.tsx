@@ -8,9 +8,8 @@ import { CategoryContext } from "../context/CategoryContext";
 interface GuestResponse {
   success: boolean;
   message?: string;
-  result?: {id: string, name: string, phoneNumber: string, categoryId: string, categoryName: string, message: string};
+  result?: { id: string; name: string; phoneNumber: string; categoryId: string; categoryName: string; message: string };
 }
-
 
 export interface Category {
   _id: string;
@@ -25,7 +24,7 @@ export interface Category {
 }
 
 export const GuestBooking = () => {
- const { categories }: { categories: Category[] } = useContext(CategoryContext);
+  const { categories }: { categories: Category[] } = useContext(CategoryContext);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -56,6 +55,19 @@ export const GuestBooking = () => {
   // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // Validate name: only alphabets and spaces allowed
+    if (name === "name" && value && !/^[A-Za-z\s]*$/.test(value)) {
+      setError("Name can only contain alphabets and spaces");
+      return;
+    }
+
+    // Validate phone number: only digits allowed
+    if (name === "phoneNumber" && value && !/^\d*$/.test(value)) {
+      setError("Phone number can only contain digits");
+      return;
+    }
+
     setFormData((prev) => {
       const newData = {
         ...prev,
@@ -73,38 +85,25 @@ export const GuestBooking = () => {
     setSuccess(null);
   };
 
-  // Handle category search input
-  // const handleSearchChange = (e) => {
-  //   const value = e.target.value;
-  //   setSearchTerm(value);
-  //   setIsDropdownOpen(value.length > 0);
-  // };
-
-  // Handle category selection
-  // const handleCategorySelect = (category) => {
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     categoryId: category._id,
-  //     categoryName: category.category_name,
-  //   }));
-  //   setSearchTerm(category.category_name);
-  //   setIsDropdownOpen(false);
-  // };
-
- // Filter categories based on search term
-  // const filteredCategories = categories
-  //   .filter(
-  //     (category) =>
-  //       category?.status === 1 &&
-  //       category?.category_name.toLowerCase().includes(searchTerm.toLowerCase())
-  //   )
-  //   .slice(0, 5); // Limit to 5 suggestions
+  // Restrict phone number input to digits only
+  const handlePhoneKeyPress = (e) => {
+    const charCode = e.charCode;
+    if (charCode < 48 || charCode > 57) {
+      e.preventDefault();
+    }
+  };
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
+
+    // Validate name
+    if (!formData.name || !/^[A-Za-z\s]+$/.test(formData.name)) {
+      setError("Please enter a valid name (alphabets and spaces only)");
+      return;
+    }
 
     // Validate phone number
     if (!/^\d{10}$/.test(formData.phoneNumber)) {
@@ -122,7 +121,7 @@ export const GuestBooking = () => {
     try {
       const response = (await createGuestBooking(formData)) as GuestResponse;
       if (response.success) {
-        alert(response.message || "Booking created successfully! We'll get back to you soon.");
+        setSuccess(response.message || "Booking created successfully! We'll get back to you soon.");
         setFormData({ name: "", phoneNumber: "", categoryId: "", categoryName: "", message: "" });
         setSearchTerm("");
       } else {
@@ -144,10 +143,11 @@ export const GuestBooking = () => {
               Guest <span className="text-fuchsia-600 ms-1">Booking</span>
             </div>
             {error && <div className="text-red-500 text-sm mb-4 text-center">{error}</div>}
+            {success && <div className="text-green-500 text-sm mb-4 text-center">{success}</div>}
             <form onSubmit={handleSubmit}>
               <div className="flex flex-col space-y-6">
                 {/* Name Input */}
-                <div className="flex px-3 py-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-fuchsia-600">
+                <div className="flex px-3 py-3 border border-gray-400 rounded-lg focus-within:ring Summerside ring-fuchsia-600">
                   <IoPerson size={20} color="#aaa" />
                   <input
                     type="text"
@@ -158,6 +158,8 @@ export const GuestBooking = () => {
                     placeholder="Enter your Name"
                     className="text-sm md:text-base focus:outline-none ms-2 w-full"
                     required
+                    pattern="[A-Za-z\s]+"
+                    title="Name can only contain alphabets and spaces"
                     aria-label="Name"
                   />
                 </div>
@@ -166,15 +168,15 @@ export const GuestBooking = () => {
                 <div className="flex px-3 py-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-fuchsia-600">
                   <IoCall size={20} color="#aaa" />
                   <input
-                    type="number"
+                    type="text" // Changed to text to better control input
                     name="phoneNumber"
                     id="phoneNumber"
                     value={formData.phoneNumber}
                     onChange={handleChange}
+                    onKeyPress={handlePhoneKeyPress}
                     placeholder="Enter your phone number"
                     className="text-sm md:text-base focus:outline-none ms-2 w-full"
                     required
-                    pattern="[0-9]{10}"
                     maxLength={10}
                     title="Please enter a valid 10-digit phone number"
                     aria-label="Phone number"
@@ -197,7 +199,6 @@ export const GuestBooking = () => {
                       Select a category
                     </option>
                     {categories
-                      // .filter((category) => category?.status === 1)
                       .sort((a, b) => a.category_name.toLowerCase().localeCompare(b.category_name.toLowerCase()))
                       .map((item) => (
                         <option key={item._id} value={item._id}>
@@ -250,6 +251,280 @@ export const GuestBooking = () => {
 };
 
 export default GuestBooking;
+
+
+
+
+
+
+
+
+
+// import React, { useEffect, useState, useRef, useContext } from "react";
+// import { IoCall, IoPerson } from "react-icons/io5";
+// import { MdKeyboardDoubleArrowRight, MdMessage } from "react-icons/md";
+// import { BiSolidCategory } from "react-icons/bi";
+// import { createGuestBooking } from "../api/apiMethods";
+// import { CategoryContext } from "../context/CategoryContext";
+
+// interface GuestResponse {
+//   success: boolean;
+//   message?: string;
+//   result?: {id: string, name: string, phoneNumber: string, categoryId: string, categoryName: string, message: string};
+// }
+
+
+// export interface Category {
+//   _id: string;
+//   category_name: string;
+//   category_slug: string;
+//   category_image: string;
+//   meta_title: string;
+//   meta_description: string;
+//   status: number;
+//   totalviews: number;
+//   ratings: number | null;
+// }
+
+// export const GuestBooking = () => {
+//  const { categories }: { categories: Category[] } = useContext(CategoryContext);
+//   const [error, setError] = useState<string | null>(null);
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [formData, setFormData] = useState({
+//     name: "",
+//     phoneNumber: "",
+//     categoryId: "",
+//     categoryName: "",
+//     message: "",
+//   });
+//   const [searchTerm, setSearchTerm] = useState("");
+//   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+//   const dropdownRef = useRef(null);
+//   const [success, setSuccess] = useState<string | null>(null);
+
+//   // Handle clicks outside the dropdown to close it
+//   useEffect(() => {
+//     const handleClickOutside = (event: MouseEvent) => {
+//       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+//         setIsDropdownOpen(false);
+//       }
+//     };
+//     document.addEventListener("mousedown", handleClickOutside);
+//     return () => {
+//       document.removeEventListener("mousedown", handleClickOutside);
+//     };
+//   }, []);
+
+//   // Handle form input changes
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData((prev) => {
+//       const newData = {
+//         ...prev,
+//         [name]: value,
+//       };
+//       if (name === "categoryId" && value) {
+//         const selectedCategory = categories.find((cat) => cat._id === value);
+//         if (selectedCategory) {
+//           newData.categoryName = selectedCategory.category_name;
+//         }
+//       }
+//       return newData;
+//     });
+//     setError(null);
+//     setSuccess(null);
+//   };
+
+//   // Handle category search input
+//   // const handleSearchChange = (e) => {
+//   //   const value = e.target.value;
+//   //   setSearchTerm(value);
+//   //   setIsDropdownOpen(value.length > 0);
+//   // };
+
+//   // Handle category selection
+//   // const handleCategorySelect = (category) => {
+//   //   setFormData((prev) => ({
+//   //     ...prev,
+//   //     categoryId: category._id,
+//   //     categoryName: category.category_name,
+//   //   }));
+//   //   setSearchTerm(category.category_name);
+//   //   setIsDropdownOpen(false);
+//   // };
+
+//  // Filter categories based on search term
+//   // const filteredCategories = categories
+//   //   .filter(
+//   //     (category) =>
+//   //       category?.status === 1 &&
+//   //       category?.category_name.toLowerCase().includes(searchTerm.toLowerCase())
+//   //   )
+//   //   .slice(0, 5); // Limit to 5 suggestions
+
+//   // Handle form submission
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setError(null);
+//     setSuccess(null);
+
+//     // Validate phone number
+//     if (!/^\d{10}$/.test(formData.phoneNumber)) {
+//       setError("Please enter a valid 10-digit phone number");
+//       return;
+//     }
+
+//     // Validate category selection
+//     if (!formData.categoryId) {
+//       setError("Please select a category");
+//       return;
+//     }
+
+//     setIsLoading(true);
+//     try {
+//       const response = (await createGuestBooking(formData)) as GuestResponse;
+//       if (response.success) {
+//         alert(response.message || "Booking created successfully! We'll get back to you soon.");
+//         setFormData({ name: "", phoneNumber: "", categoryId: "", categoryName: "", message: "" });
+//         setSearchTerm("");
+//       } else {
+//         setError(response.message || "Failed to create booking");
+//       }
+//     } catch (err: any) {
+//       setError(err?.message || "An error occurred while creating the booking");
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gray-50 py-8">
+//       <div className="max-w-md mx-auto">
+//         <div className="bg-white border border-gray-300 rounded-xl shadow-xl p-6">
+//           <div className="rounded-xl p-4">
+//             <div className="text-lg md:text-xl text-center mb-6 font-semibold">
+//               Guest <span className="text-fuchsia-600 ms-1">Booking</span>
+//             </div>
+//             {error && <div className="text-red-500 text-sm mb-4 text-center">{error}</div>}
+//             <form onSubmit={handleSubmit}>
+//               <div className="flex flex-col space-y-6">
+//                 {/* Name Input */}
+//                 <div className="flex px-3 py-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-fuchsia-600">
+//                   <IoPerson size={20} color="#aaa" />
+//                   <input
+//                     type="text"
+//                     name="name"
+//                     id="name"
+//                     value={formData.name}
+//                     onChange={handleChange}
+//                     placeholder="Enter your Name"
+//                     className="text-sm md:text-base focus:outline-none ms-2 w-full"
+//                     required
+//                     aria-label="Name"
+//                   />
+//                 </div>
+
+//                 {/* Phone Input */}
+//                 <div className="flex px-3 py-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-fuchsia-600">
+//                   <IoCall size={20} color="#aaa" />
+//                   <input
+//                     type="number"
+//                     name="phoneNumber"
+//                     id="phoneNumber"
+//                     value={formData.phoneNumber}
+//                     onChange={handleChange}
+//                     placeholder="Enter your phone number"
+//                     className="text-sm md:text-base focus:outline-none ms-2 w-full"
+//                     required
+//                     pattern="[0-9]{10}"
+//                     maxLength={10}
+//                     title="Please enter a valid 10-digit phone number"
+//                     aria-label="Phone number"
+//                   />
+//                 </div>
+
+//                 {/* Category Search Input */}
+//                 <div className="flex px-3 py-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-fuchsia-600">
+//                   <BiSolidCategory size={20} color="#aaa" />
+//                   <select
+//                     id="categoryId"
+//                     name="categoryId"
+//                     value={formData.categoryId}
+//                     onChange={handleChange}
+//                     required
+//                     className="text-sm md:text-base focus:outline-none ms-2 w-full bg-transparent"
+//                     aria-label="Select category"
+//                   >
+//                     <option value="" disabled>
+//                       Select a category
+//                     </option>
+//                     {categories
+//                       // .filter((category) => category?.status === 1)
+//                       .sort((a, b) => a.category_name.toLowerCase().localeCompare(b.category_name.toLowerCase()))
+//                       .map((item) => (
+//                         <option key={item._id} value={item._id}>
+//                           {item.category_name}
+//                         </option>
+//                       ))}
+//                   </select>
+//                 </div>
+
+//                 {/* Message Input */}
+//                 <div className="flex px-3 py-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-fuchsia-600">
+//                   <MdMessage size={20} color="#aaa" />
+//                   <textarea
+//                     name="message"
+//                     id="message"
+//                     value={formData.message}
+//                     onChange={handleChange}
+//                     placeholder="Enter your message (optional)"
+//                     className="text-sm md:text-base focus:outline-none ms-2 w-full resize-none"
+//                     rows={3}
+//                     aria-label="Message"
+//                   />
+//                 </div>
+
+//                 {/* Submit Button */}
+//                 <button
+//                   type="submit"
+//                   className="bg-fuchsia-500 text-white py-3 rounded-xl hover:bg-fuchsia-600 transition-colors disabled:bg-fuchsia-300"
+//                   disabled={isLoading}
+//                 >
+//                   <div className="flex items-center justify-center">
+//                     <span className="text-sm md:text-lg font-semibold me-2">
+//                       {isLoading ? "Booking..." : "Book Now"}
+//                     </span>
+//                     <MdKeyboardDoubleArrowRight size={30} />
+//                   </div>
+//                 </button>
+
+//                 {/* Footer Text */}
+//                 <div className="text-sm text-gray-500 text-center mt-4">
+//                   We will get back to you as soon as possible
+//                 </div>
+//               </div>
+//             </form>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default GuestBooking;
+
+
+
+
+
+
+
+
+
+
+
+
+
 // import React, { useEffect, useState, useRef } from "react";
 // import { IoCall, IoPerson } from "react-icons/io5";
 // import { MdKeyboardDoubleArrowRight, MdMessage } from "react-icons/md";
