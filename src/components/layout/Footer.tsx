@@ -1,4 +1,3 @@
-import React from "react";
 import {
   MapPin,
   Phone,
@@ -165,6 +164,30 @@ const Footer: React.FC = () => {
         {/* Bottom Footer */}
         <div className="border-t border-gray-300 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="flex space-x-4 mb-4 md:mb-0">
+              <a
+                href="https://play.google.com/store/apps/details?id=your.app.package"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                  alt="Get it on Google Play"
+                  className="h-10 w-auto"
+                />
+              </a>
+              <a
+                href="https://apps.apple.com/app/your-app/idyourappid"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg"
+                  alt="Download on the App Store"
+                  className="h-10 w-auto"
+                />
+              </a>
+            </div>
             <div className="flex space-x-6 text-sm">
               <Link
                 to="/privacy-policy"
@@ -188,3 +211,204 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
+
+
+
+
+
+
+
+
+
+
+
+// import React from "react";
+// import {
+//   MapPin,
+//   Phone,
+//   Mail,
+//   Facebook,
+//   Twitter,
+//   Youtube,
+//   Linkedin,
+//   Instagram,
+// } from "lucide-react";
+// import { FaPinterest } from "react-icons/fa"; 
+// import { Link } from "react-router-dom";
+
+// const Footer: React.FC = () => {
+//   return (
+//     <footer className="bg-gray-100 pt-16 pb-8">
+//       <div className="container max-w-7xl mx-auto px-4">
+//         {/* Footer Links Section */}
+//         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          
+//           {/* Quick Links */}
+//           <div>
+//             <h4 className="text-lg md:text-xl text-blue-700 font-semibold mb-8">
+//               QUICK LINKS
+//             </h4>
+//             <ul className="space-y-3">
+//               <li>
+//                 <Link
+//                   to="/about"
+//                   className="text-gray-600 hover:text-blue-700 hover:underline transition-colors text-sm"
+//                 >
+//                   ABOUT US
+//                 </Link>
+//               </li>
+//               {/* <li>
+//                 <Link
+//                   to="/contact"
+//                   className="text-gray-600 hover:text-blue-700 hover:underline transition-colors text-sm"
+//                 >
+//                   CONTACT US
+//                 </Link>
+//               </li> */}
+//               <li>
+//                 <Link
+//                   to="/faq"
+//                   className="text-gray-600 hover:text-blue-700 hover:underline transition-colors text-sm"
+//                 >
+//                   FAQ's
+//                 </Link>
+//               </li>
+//               <li>
+//                 <Link
+//                   to="/professional-agreement"
+//                   className="text-gray-600 hover:text-blue-700 hover:underline transition-colors text-sm"
+//                 >
+//                   PROFESSIONAL AGREEMENT DETAILS
+//                 </Link>
+//               </li>
+//               <li>
+//                 <Link
+//                   to="/refund-policy"
+//                   className="text-gray-600 hover:text-blue-700 hover:underline transition-colors text-sm "
+//                 >
+//                   PRNV SERVICES REFUND POLICY
+//                 </Link>
+//               </li>
+//             </ul>
+//           </div>
+
+//           {/* Contact Us */}
+//           <div>
+//             <h4 className="text-lg md:text-xl text-blue-700 font-semibold mb-8">
+//               CONTACT US
+//             </h4>
+//             <div className="space-y-4">
+//               <div className="flex items-start">
+//                 <MapPin className="w-5 h-5 text-blue-700 mr-3 mt-1 flex-shrink-0" />
+//                 <p className="text-gray-600 text-sm">
+//                   PRNV SERVICES, Flat No. 301, Sai Manor Apartment, H.NO. 7-1-621/10, 
+//                   Near Umesh Chandra Statue, IAS Quarters Lane, SR Nagar, 
+//                   Hyderabad, Telangana, 500038
+//                 </p>
+//               </div>
+
+//               <div className="flex items-center gap-3">
+//                 <Phone className="w-5 h-5 text-blue-700 mr-3" />
+//                 <p className="text-gray-600">9603558369</p>
+//                 <p className="text-gray-600">9059789177</p>
+//               </div>
+
+//               <div className="flex items-center">
+//                 <Mail className="w-5 h-5 text-blue-700 mr-3" />
+//                  <span
+//                   className="text-sm text-gray-600 cursor-pointer hover:underline"
+//                   onClick={() =>
+//                     (window.location.href = "mailto:prnvserviceswork@gmail.com")
+//                   }
+//                 >
+//                   prnvserviceswork@gmail.com
+//                 </span>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* Social Links */}
+//           <div>
+//             <h4 className="text-lg md:text-xl text-blue-700 font-semibold mb-8">
+//               SOCIAL LINKS
+//             </h4>
+//             <div className="flex space-x-4">
+//               <a
+//                 href="https://www.facebook.com/prnvservices/"
+//                 target="_blank"
+//                 rel="noopener noreferrer"
+//                 className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors"
+//               >
+//                 <Facebook className="w-5 h-5" />
+//               </a>
+//               <a
+//                 href="https://x.com/prnvserviceshyd"
+//                 target="_blank"
+//                 rel="noopener noreferrer"
+//                 className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center hover:bg-blue-400 hover:text-white transition-colors"
+//               >
+//                 <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/X_logo_2023_original.svg" className="w-5 h-5" />
+//                 {/* <Twitter className="w-5 h-5" /> */}
+//               </a>
+//               <a
+//                 href="https://www.youtube.com/channel/UCGNrnML4lA3ix6WYUtcUw3A"
+//                 target="_blank"
+//                 rel="noopener noreferrer"
+//                 className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center hover:bg-red-600 hover:text-white transition-colors"
+//               >
+//                 <Youtube className="w-5 h-5" />
+//               </a>
+//               <a
+//                 href="https://www.linkedin.com/company/prnvservices/posts/?feedView=all"
+//                 target="_blank"
+//                 rel="noopener noreferrer"
+//                 className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center hover:bg-blue-700 hover:text-white transition-colors"
+//               >
+//                 <Linkedin className="w-5 h-5" />
+//               </a>
+//               <a
+//                 href="https://www.instagram.com/prnv.services/"
+//                 target="_blank"
+//                 rel="noopener noreferrer"
+//                 className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center hover:bg-pink-500 hover:text-white transition-colors"
+//               >
+//                 <Instagram className="w-5 h-5" />
+//               </a>
+//               <a
+//                 href="https://in.pinterest.com/prnv_services/"
+//                 target="_blank"
+//                 rel="noopener noreferrer"
+//                 className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors"
+//               >
+//                 <FaPinterest className="w-5 h-5" />
+//               </a>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Bottom Footer */}
+//         <div className="border-t border-gray-300 pt-8">
+//           <div className="flex flex-col md:flex-row justify-between items-center">
+//             <div className="flex space-x-6 text-sm">
+//               <Link
+//                 to="/privacy-policy"
+//                 className="text-gray-600 hover:text-blue-700 transition-colors"
+//               >
+//                 PRIVACY POLICY
+//               </Link>
+//               <span className="text-gray-400">|</span>
+//               <Link
+//                 to="/terms-conditions"
+//                 className="text-gray-600 hover:text-blue-700 transition-colors"
+//               >
+//                 TERMS & CONDITIONS
+//               </Link>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </footer>
+//   );
+// };
+
+// export default Footer;
