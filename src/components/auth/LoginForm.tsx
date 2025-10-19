@@ -69,8 +69,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = "user" }) => {
       <div className="flex justify-center mb-6">
         <div className="bg-blue-900 rounded px-2 py-1 flex items-center">
           <img
-            src="https://prnvservices.com/uploads/logo/1695377568_logo-white.png"
-            alt="Justdial Logo"
+            src="https://old.prnvservices.com/uploads/logo/1695377568_logo-white.png"
+            alt="PRNV Logo"
             className="h-8 w-auto"
           />
         </div>
@@ -244,7 +244,7 @@ export default LoginForm;
 //         <div className="bg-blue-900 rounded px-2 py-1 flex items-center">
 //           <img
 //             src="https://prnvservices.com/uploads/logo/1695377568_logo-white.png"
-//             alt="Justdial Logo"
+//             alt="PRNV Logo"
 //             className="h-8 w-auto"
 //           />
 //         </div>
@@ -392,7 +392,7 @@ export default LoginForm;
 //         <div className="bg-blue-900 rounded px-1 py-1 w-fit flex ">
 //           <img
 //             src="https://prnvservices.com/uploads/logo/1695377568_logo-white.png"
-//             alt="Justdial Logo"
+//             alt="PRNV Logo"
 //             className="h-8 w-auto "
 //           />
 
