@@ -38,7 +38,7 @@ const PrivacyPolicy: React.FC = () => {
             <div className="bg-gray-50 p-6 rounded-lg">
               <ol className="list-decimal list-inside space-y-2 text-sm">
                 <li><strong>Account</strong> means an individual account created for you to access our service or to be a part of our service.</li>
-                <li><strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to PRNV Services, 6th floor, Swathi Plaza, Leelanagar, Ameerpet, Hyderabad.</li>
+                <li><strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to PRNV SERVICES, Flat No. 301, Sai Manor Apartment, H.NO. 7-1-621/10, Near Umesh Chandra Statue, IAS Quarters Lane, SR Nagar, Hyderabad, Telangana, 500038</li>
                 <li><strong>Cookies</strong> are small files placed on your computer, mobile device, or any other device by a website, containing the details of your browsing history on that website among its many uses.</li>
                 <li><strong>Device</strong> means any device that can access the service, such as a computer, a cellphone, or a digital tablet.</li>
                 <li><strong>Personal Data</strong> is any information related to an identified or identifiable individual.</li>
@@ -250,8 +250,7 @@ const PrivacyPolicy: React.FC = () => {
             </div>
 
             <h3 className="text-xl font-semibold text-gray-800 mb-3 mt-8">Professional (Technician/Service Provider):</h3>
-            <p>
-              The Professional (Technician/Service Provider) has to pay a monthly fee by enrolling in one of four plans. When a professional (technician/service provider) subscribes to any of these plans, the fee is non-refundable. During the payment process, the details of your cards or UPI will be safely stored with us, making your payment safe and secure.
+            <p>One of our plans.
             </p>
             
             <div className="bg-yellow-50 p-6 rounded-lg border-l-4 border-yellow-400">

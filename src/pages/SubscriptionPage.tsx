@@ -122,7 +122,7 @@ const SubscriptionPage: React.FC = () => {
         <div className="grid grid-cols-1 place-items-center">
         {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"> */}
           {plans
-            .filter(plan => plan.name === "Economy Plan") 
+            .filter(plan => plan.name === "Free Plan"  || plan.name === "Economy Plan") 
             .map((plan: Plan) => {
               const config = PLAN_CONFIG[plan.name] || {
                 gradient: "from-gray-400 to-gray-600",

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Pencil } from "lucide-react"; // You need to install lucide-react or use any SVG
+import { Pencil } from "lucide-react"; 
 
 const ProfileEdit: React.FC = () => {
   const [formData, setFormData] = useState({
