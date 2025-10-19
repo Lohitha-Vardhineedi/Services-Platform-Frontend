@@ -679,7 +679,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
                 // src="https://prnvservices.com/uploads/logo/1695377568_logo-white.png"
                 src="../public/asserts/prnv_logo.jpg"
                 alt="Prnv services Logo"
-                className="h-8 w-auto rounded-sm"
+                className="h-10 w-auto rounded-sm"
               />
             </div>
           </div>
