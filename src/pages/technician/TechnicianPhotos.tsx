@@ -244,13 +244,13 @@ const TechnicianPhotos = () => {
             onChange={handleImageChange}
             hidden
           />
-          <button
+          {/* <button
             onClick={handleUploadVideoClick}
             className="flex items-center mt-5 gap-2 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
           >
             <IoMdCloudUpload className="text-xl" />
             Upload Video
-          </button>
+          </button> */}
           <input
             type="file"
             accept="video/mp4,video/webm,video/ogg"

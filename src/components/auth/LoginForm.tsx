@@ -89,11 +89,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = "user" }) => {
   return (
     <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex justify-center mb-6">
-        <div className="bg-blue-900 rounded px-2 py-1 flex items-center">
+        <div className="bg-blue-900 flex items-center">
           <img
-            src="https://prnvservices.com/uploads/logo/1695377568_logo-white.png"
+            // src="https://prnvservices.com/uploads/logo/1695377568_logo-white.png"
+            src="../public/asserts/prnv_logo.jpg"
             alt="Prnv services Logo"
-            className="h-8 w-auto"
+            className="h-10 w-auto rounded"
           />
         </div>
       </div>
@@ -177,12 +178,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = "user" }) => {
             className="text-blue-600 hover:underline font-medium ms-1"
           >
             Sign Up
-          </Link>
-          <Link
-            to={'/terms-and-conditions'}
-            className="text-blue-600 hover:underline font-medium ms-1"
-          >
-            Terms and Conditions
           </Link>
         </p>
       </div>
