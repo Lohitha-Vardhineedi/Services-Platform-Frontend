@@ -103,7 +103,7 @@ function Header() {
             <button onClick={handleLogoClick}>
               <img
                 src="https://old.prnvservices.com/uploads/logo/1695377568_logo-white.png"
-                alt="Prnv Logo"
+                alt="PRNV Logo"
                 className="h-8 w-auto"
               />
             </button>
@@ -230,7 +230,7 @@ function Header() {
                   to="/contact"
                   className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                 >
-                  Guestttt
+                  Guest
                 </Link>
               </>
             )}
