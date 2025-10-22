@@ -91,8 +91,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = "user" }) => {
       <div className="flex justify-center mb-6">
         <div className="bg-blue-900 flex items-center">
           <img
-            // src="https://prnvservices.com/uploads/logo/1695377568_logo-white.png"
-            src="../public/asserts/prnv_logo.jpg"
+            src="https://old.prnvservices.com/uploads/logo/1695377568_logo-white.png"
             alt="Prnv services Logo"
             className="h-10 w-auto rounded"
           />
@@ -150,6 +149,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = "user" }) => {
                 name="password"
                 required
                 placeholder="Password (6-10 characters)"
+                minLength={6}
+                maxLength={10}
                 value={formData.password}
                 onChange={handleChange}
                 className="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500 pr-10"

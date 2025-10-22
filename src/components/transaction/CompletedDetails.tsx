@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChevronLeft, User, Wrench, Phone, MapPin, Key } from 'lucide-react';
 import { BiRupee } from 'react-icons/bi';
+import { formatDate } from './Bookinglist';
 
 interface BookingData {
   _id: string;
@@ -93,7 +94,7 @@ const CompletedDetails: React.FC<CompletedDetailsProps> = ({
             Completed
           </span>
           <span className="text-gray-400 text-sm">
-            Date: {new Date(bookingData.bookingDate).toLocaleDateString()}
+            Date: {formatDate(bookingData.bookingDate)}
           </span>
         </div>
         <div className="w-full h-64 bg-gray-200 rounded-2xl mb-6 overflow-hidden">

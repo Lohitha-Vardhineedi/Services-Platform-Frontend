@@ -4,6 +4,7 @@ import { IoLocationOutline, IoShareSocial } from "react-icons/io5";
 import { MdOutlineStar } from "react-icons/md";
 import { Rating, Technician } from "../../pages/ProfilePage";
 import { BsWhatsapp, BsPatchCheckFill } from "react-icons/bs";
+import { BadgeCheck } from "lucide-react";
 
 interface ProfileCardProps {
   technician: Technician;
@@ -35,7 +36,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ technician, rating }) => {
     };
 
     // Combine title, text, and URL for fallback sharing, formatted like a YouTube link
-    const fallbackText = `${shareData.title}\n${shareData.text.replace(/\n/g, '\n')}\n🔗 ${shareUrl}`;
+    const fallbackText = `${shareData.title}\n${shareData.text.replace(
+      /\n/g,
+      "\n"
+    )}\n🔗 ${shareUrl}`;
 
     try {
       // Check if Web Share API is supported
@@ -56,23 +60,29 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ technician, rating }) => {
   return (
     <div className="border border-gray-300 rounded-xl p-5 flex flex-col md:flex-row relative overflow-hidden">
       <div className="flex flex-col items-center md:items-start md:mr-6 mb-4 md:mb-0 relative w-full md:w-auto">
-        <img
-          src={
-            technician.profileImage ||
-            "https://img-new.cgtrader.com/items/4519471/f444ec0898/large/mechanic-avatar-3d-icon-3d-model-f444ec0898.jpg"
-          }
-          alt={technician.username}
-          className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover border-2 border-gray-300"
-        />
+        <div className="relative">
+          <img
+            src={
+              technician.profileImage ||
+              "https://img-new.cgtrader.com/items/4519471/f444ec0898/large/mechanic-avatar-3d-icon-3d-model-f444ec0898.jpg"
+            }
+            alt={technician.username}
+            className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover shadow-lg ring-2 ring-blue-200"
+          />
+          <div className="absolute -bottom-1 -right-1 p-2">
+            {/* <BadgeCheck className="w-6 h-6 text-white"/> */}
+            <BsPatchCheckFill size={25} className="mr-1" color="blue" />
+          </div>
+        </div>
       </div>
       <div className="flex-1 min-w-0">
         <h2 className="text-xl font-semibold truncate">
           {technician.username}
         </h2>
-        <div className="flex items-center text-sm font-semibold text-blue-600 mt-1">
+        {/* <div className="flex items-center text-sm font-semibold text-blue-600 mt-1">
           <BsPatchCheckFill size={16} className="mr-1" color="#00B800" />
           Profile Verified
-        </div>
+        </div> */}
         <div className="flex flex-wrap items-center gap-4 my-3">
           <div className="flex items-center border border-amber-500 rounded-lg px-2 py-1 text-black text-sm font-bold">
             {averageRating}
@@ -122,7 +132,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ technician, rating }) => {
             <BsWhatsapp size={18} className="mr-2" />
             WhatsApp
           </div>
-          <div 
+          <div
             className="flex items-center bg-blue-500 hover:bg-blue-600 rounded-xl text-white px-4 py-1 font-bold cursor-pointer"
             onClick={handleShare}
           >
@@ -135,14 +145,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ technician, rating }) => {
   );
 };
 export default ProfileCard;
-
-
-
-
-
-
-
-
 
 // import React from "react";
 // import { FaThumbsUp } from "react-icons/fa6";
@@ -265,7 +267,7 @@ export default ProfileCard;
 //             <BsWhatsapp size={18} className="mr-2" />
 //             WhatsApp
 //           </div>
-//           <div 
+//           <div
 //           className="flex items-center bg-blue-500 hover:bg-blue-600 rounded-xl text-white px-4 py-1 font-bold cursor-pointer"
 //           onClick={handleShare}
 //           >
@@ -278,16 +280,6 @@ export default ProfileCard;
 //   );
 // };
 // export default ProfileCard;
-
-
-
-
-
-
-
-
-
-
 
 {
   /* <div className="flex bg-fuchsia-500 rounded-xl text-white px-4 py-1 font-bold items-center cursor-pointer hover:bg-fuchsia-600">

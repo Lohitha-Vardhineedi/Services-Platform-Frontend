@@ -1,5 +1,6 @@
 import React from 'react';
 import { User, Wrench, Phone, MapPin, XCircle } from 'lucide-react';
+import { formatDate } from './Bookinglist';
 
 interface BookingData {
   _id: string;
@@ -70,7 +71,7 @@ const CancelledCard: React.FC<CancelledCardProps> = ({ booking, role }) => {
   return (
     <div className="bg-white border border-red-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-sm text-gray-500">Date: {new Date(bookingData.bookingDate).toLocaleDateString()}</span>
+        <span className="text-sm text-gray-500">Date: {formatDate(bookingData.bookingDate)}</span>
         <span className="text-red-600 bg-red-100 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
           <XCircle className="w-4 h-4" />
           Cancelled

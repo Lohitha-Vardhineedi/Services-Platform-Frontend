@@ -14,6 +14,7 @@ import OTPInput from "./OTPModel";
 import SuccessModal from "./SuccessModel";
 import { bookingCancleByUser, updateBookingStatus } from "../../api/apiMethods";
 import { BiRupee } from "react-icons/bi";
+import { formatDate } from "./Bookinglist";
 
 const UpcomingDetails: React.FC<UpcomingDetailsProps> = ({
   booking: bookingData,
@@ -194,7 +195,7 @@ return (
                 }`}>
                 {bookingState.status.charAt(0).toUpperCase() + bookingState.status.slice(1)}
               </span>
-              <span className="text-gray-400 text-sm">Date: {new Date(bookingState.bookingDate).toLocaleDateString()}</span>
+              <span className="text-gray-400 text-sm">Date: {formatDate(bookingState.bookingDate)}</span>
             </div>
             <div className="w-full h-64 bg-gray-200 rounded-2xl mb-6 overflow-hidden">
               <img
