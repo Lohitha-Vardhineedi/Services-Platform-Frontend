@@ -607,7 +607,7 @@ const TechnicianProfile: React.FC = () => {
                         />
                       </div>
 
-                      <div>
+                      {/* <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">
                           House/Building Name
                         </label>
@@ -706,7 +706,7 @@ const TechnicianProfile: React.FC = () => {
                           readOnly
                           className="w-full border border-gray-300 rounded-xl p-3 bg-gray-50 text-gray-500 cursor-not-allowed focus:ring-0"
                         />
-                      </div>
+                      </div> */}
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-4 pt-6">

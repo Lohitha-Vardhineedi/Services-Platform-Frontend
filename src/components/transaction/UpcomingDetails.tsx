@@ -199,7 +199,7 @@ return (
             </div>
             <div className="w-full h-64 bg-gray-200 rounded-2xl mb-6 overflow-hidden">
               <img
-                src={service?.serviceImg}
+                src={service?.serviceImg || 'https://i.pinimg.com/736x/f9/a5/8f/f9a58fd2ace26a52bbc9f67671aa1ed3.jpg'}
                 alt={`Image of ${service?.serviceName} service`}
                 className="w-full h-full object-cover"
               />
