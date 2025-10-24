@@ -155,9 +155,6 @@ const computeStatus = (args: {
   return { expired: false, reason: "" };
 };
 
-/* ──────────────────────────────────────────────────────────────────────────
-   Small UI atoms
-   ────────────────────────────────────────────────────────────────────────── */
 const Badge: React.FC<{ label: string; className?: string }> = ({ label, className = "" }) => (
   <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ${className}`}>
     {label}
@@ -181,9 +178,6 @@ const Progress: React.FC<{ pct: number; bar: string }> = ({ pct, bar }) => (
   </div>
 );
 
-/* ──────────────────────────────────────────────────────────────────────────
-   Page
-   ────────────────────────────────────────────────────────────────────────── */
 const SubscriptionPage: React.FC = () => {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [sub, setSub] = useState<TechSubResult | null>(null);
@@ -286,7 +280,7 @@ const SubscriptionPage: React.FC = () => {
 
               <div className="flex flex-col items-start sm:items-end gap-2">
                 {status.expired && (
-                  <div className="text-sm bg-white/15 rounded-lg px-3 py-1.5 backdrop-blur">
+                  <div className="text-sm bg-red-600 rounded-lg px-3 py-1.5 backdrop-blur">
                     <span className="inline-flex items-center gap-1">
                       <AlertTriangle className="w-4 h-4" /> {status.reason || "Plan expired"}
                     </span>
