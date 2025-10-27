@@ -500,17 +500,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
     [formData, defaultRole, navigate, validateForm, scrollToFirstError]
   );
 
-<<<<<<< HEAD
-  return (
-    <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="flex justify-center">
-        <div className="bg-blue-900 rounded px-1 py-1 w-fit flex">
-          <img
-            src="https://old.prnvservices.com/uploads/logo/1695377568_logo-white.png"
-            alt="PRNV Logo"
-            className="h-8 w-auto"
-          />
-=======
   const nameInputProps = {
     pattern: "[A-Za-z ]+",
     maxLength: 60,
@@ -601,7 +590,6 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
               Close
             </button>
           </div>
->>>>>>> 279d2fbde29d4050f2ab0cdabc471e303d05d529
         </div>
       </div>,
       document.body
@@ -616,9 +604,10 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
             <div className="bg-blue-900 rounded w-fit flex">
               <img
                 src="https://old.prnvservices.com/uploads/logo/1695377568_logo-white.png"
-                alt="Prnv services Logo"
+                alt="Prnv Logo"
                 className="h-10 w-auto rounded-sm"
               />
+
             </div>
           </div>
           <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
