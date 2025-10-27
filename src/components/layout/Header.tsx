@@ -103,7 +103,7 @@ function Header() {
             <button onClick={handleLogoClick}>
               <img
                 src="https://old.prnvservices.com/uploads/logo/1695377568_logo-white.png"
-                alt="PRNV Logo"
+                alt="PRNV"
                 className="h-8 w-auto"
               />
             </button>
