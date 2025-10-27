@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+// TransactionPage.tsx
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Clock, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import TransactionSidebar from '../components/transaction/TransactionSidebar';
 import BookingsList from '../components/transaction/Bookinglist';
 import UpcomingDetails from '../components/transaction/UpcomingDetails';
@@ -13,82 +14,15 @@ import OTPModal from '../components/transaction/OTPModel';
 import { getOrdersByUserId } from '../api/apiMethods';
 import CancelledCard from '../components/transaction/CancellationDetails';
 
-interface Booking {
-  _id: string;
-  userId: string;
-  technicianId: string;
-  serviceId: string;
-  quantity: number;
-  bookingDate: string;
-  servicePrice: number;
-  gst: number;
-  totalPrice: number;
-  status: string;
-  otp: number;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-}
-
-interface Technician {
-  _id: string;
-  userId: string;
-  username: string;
-  role: string;
-  phoneNumber: string;
-  category: string;
-  buildingName: string;
-  areaName: string;
-  city: string;
-  state: string;
-  pincode: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-  description?: string;
-  profileImage?: string;
-  service?: string;
-}
-
-interface Service {
-  _id: string;
-  technicianId: string;
-  serviceName: string;
-  serviceImg: string;
-  servicePrice: number;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-}
-
-interface BookingData {
-  booking: Booking;
-  technician: Technician;
-  service: Service | null;
-}
-
-interface User {
-  _id: string;
-  username: string;
-  phoneNumber: string;
-  role: string;
-  buildingName: string;
-  areaName: string;
-  city: string;
-  state: string;
-  pincode: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-}
-
+interface Booking { /* ... your same types ... */ }
+interface Technician { /* ... */ }
+interface Service { /* ... */ }
+interface BookingData { booking: Booking; technician: Technician; service: Service | null; }
+interface User { /* ... */ }
 interface ApiResponse {
   success: boolean;
   message: string;
-  result: {
-    user: User;
-    bookings: BookingData[];
-  };
+  result: { user: User; bookings: BookingData[]; };
 }
 
 const TransactionPage: React.FC = () => {
@@ -97,151 +31,131 @@ const TransactionPage: React.FC = () => {
   const [role, setRole] = useState<'user' | 'technician' | null>(null);
   const [bookingsData, setBookingsData] = useState<BookingData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [refreshing, setRefreshing] = useState<boolean>(false); // <-- new
   const [error, setError] = useState<string | null>(null);
   const [selectedBooking, setSelectedBooking] = useState<BookingData | null>(null);
-  const [stepData, setStepData] = useState<any>(null); // Added to store data passed with
 
-  // Transaction status options
   const transactionTabs = [
     { id: 'upcoming', name: 'Upcoming', color: 'text-purple-600', bgColor: 'bg-purple-100' },
     { id: 'completed', name: 'Completed', color: 'text-green-600', bgColor: 'bg-green-100' },
     { id: 'cancelled', name: 'Cancelled', color: 'text-red-600', bgColor: 'bg-red-100' },
   ];
 
-  // Get role from localStorage and fetch bookings
   useEffect(() => {
     const storedRole = localStorage.getItem('role') as 'user' | 'technician' | null;
     setRole(storedRole);
-  },[]);
+  }, []);
 
-     const fetchBookings = async () => {
+  const fetchBookings = useCallback(async (isRefresh = false) => {
     try {
-      setLoading(true);
+      if (isRefresh) setRefreshing(true);
+      else setLoading(true);
+
       const userId = localStorage.getItem('userId');
-      if (!userId) {
-        throw new Error('User ID not found');
-      }
+      if (!userId) throw new Error('User ID not found');
 
       const response: ApiResponse = await getOrdersByUserId(userId);
-      if (response.success) {
-        setBookingsData(response.result.bookings);
-      } else {
-        throw new Error(response.message || 'Failed to fetch bookings');
-      }
-    } catch (err) {
-      setError(err.message || 'An error occurred while fetching bookings');
+      if (!response.success) throw new Error(response.message || 'Failed to fetch bookings');
+
+      // ✅ No pre-sorting: let BookingsList own the freshness sorting
+      setBookingsData(response.result.bookings || []);
+      setError(null);
+    } catch (err: any) {
+      setError(err?.message || 'An error occurred while fetching bookings');
     } finally {
       setLoading(false);
+      setRefreshing(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchBookings(false);
+  }, [fetchBookings]);
+
+  const handleBookingSelect = (booking: BookingData) => {
+    setSelectedBooking(booking);
+    const status = (booking.booking.status || '').toLowerCase();
+
+    if (status === 'completed') {
+      setActiveTab('completed');
+      setCurrentStep('completed-details');
+    } else if (status === 'cancelled' || status === 'declined') {
+      setActiveTab('cancelled');
+      setCurrentStep('cancelled-details');
+    } else {
+      setActiveTab('upcoming');
+      setCurrentStep('upcoming-details');
     }
   };
 
-  useEffect(() => {
-    fetchBookings();
-  }, [activeTab]);
-
-
-  const handleBookingSelect = (booking: BookingData) => {
-  console.log("booking", booking);
-  setSelectedBooking(booking);
-
-  const status = booking.booking.status;
-
-  if (status === 'completed') {
-    setActiveTab('completed');
-    setCurrentStep('completed-details');
-  } else if (status === 'cancelled' || status === 'declined') {
-    setActiveTab('cancelled');
-    setCurrentStep('cancelled-details');
-  } else {
-    setActiveTab('upcoming');
-    setCurrentStep('upcoming-details');
-  }
-};
-
-
   const renderMainContent = () => {
-    if (loading) {
+    if (loading && !bookingsData.length) {
       return <div className="text-center py-8">Loading bookings...</div>;
     }
-
     if (error) {
-      return <div className="text-center py-8 text-red-500">{error}</div>;
+      return (
+        <div className="text-center py-8 text-red-500">
+          {error}{' '}
+          <button
+            className="ml-2 underline text-blue-600"
+            onClick={() => fetchBookings(true)}
+          >
+            Retry
+          </button>
+        </div>
+      );
     }
 
     switch (currentStep) {
       case 'upcoming-details':
-      return selectedBooking ? (
-        <UpcomingDetails
-          booking={selectedBooking}
-          setCurrentStep={setCurrentStep}
-          role={role}
-          setActiveTab={setActiveTab}
-          onBookingCancelled={fetchBookings}
-        />
-      ) : (
-        <div className="text-center py-8">No booking selected</div>
-      );
+        return selectedBooking ? (
+          <UpcomingDetails
+            booking={selectedBooking}
+            setCurrentStep={setCurrentStep}
+            role={role}
+            setActiveTab={setActiveTab}
+            onBookingCancelled={() => fetchBookings(true)}
+          />
+        ) : <div className="text-center py-8">No booking selected</div>;
+
       case 'completed-details':
         return selectedBooking ? (
-          <CompletedDetails
-            booking={selectedBooking}
-            setCurrentStep={setCurrentStep}
-            role={role}
-          />
-        ) : (
-          <div className="text-center py-8">No booking selected</div>
-        );
+          <CompletedDetails booking={selectedBooking} setCurrentStep={setCurrentStep} role={role} />
+        ) : <div className="text-center py-8">No booking selected</div>;
+
       case 'cancelled-details':
         return selectedBooking ? (
-          <CancelledCard
-            booking={selectedBooking}
-            setCurrentStep={setCurrentStep}
-            role={role}
-          />
-        ) : (
-          <div className="text-center py-8">No booking selected</div>
-        );
+          <CancelledCard booking={selectedBooking} setCurrentStep={setCurrentStep} role={role} />
+        ) : <div className="text-center py-8">No booking selected</div>;
+
       case 'congratulations':
-        return (
-          <CongratulationsModal
-            setCurrentStep={setCurrentStep}
-            role={role}
-          />
-        );
+        return <CongratulationsModal setCurrentStep={setCurrentStep} role={role} />;
+
       case 'savings':
-        return <Savings
-            setCurrentStep={setCurrentStep}
-            booking={selectedBooking}
-          />
+        return <Savings setCurrentStep={setCurrentStep} booking={selectedBooking} />;
+
       case 'final-rating':
-        return (
-          <FinalRating
-            setCurrentStep={setCurrentStep}
-            booking={selectedBooking}
-          />
-        );
+        return <FinalRating setCurrentStep={setCurrentStep} booking={selectedBooking} />;
+
       case 'success':
-        return (
-          <SuccessModal
-            setCurrentStep={setCurrentStep}
-            setActiveTab={setActiveTab}
-          />
-        );
+        return <SuccessModal setCurrentStep={setCurrentStep} setActiveTab={setActiveTab} />;
+
       case 'otp-modal':
-        return (
-          <OTPModal
-            setCurrentStep={setCurrentStep}
-            setActiveTab={setActiveTab}
-          />
-        );
+        return <OTPModal setCurrentStep={setCurrentStep} setActiveTab={setActiveTab} />;
+
       default:
         return (
-          <BookingsList
-            bookings={bookingsData}
-            activeTab={activeTab}
-            onBookingSelect={handleBookingSelect}
-            role={role}
-          />
+          <>
+            {refreshing && (
+              <div className="text-xs text-gray-400 mb-2">Refreshing…</div>
+            )}
+            <BookingsList
+              bookings={bookingsData}
+              activeTab={activeTab}
+              onBookingSelect={handleBookingSelect}
+              role={role}
+            />
+          </>
         );
     }
   };
@@ -249,15 +163,21 @@ const TransactionPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">My Transactions</h1>
-          <div className="flex items-center space-x-2 text-sm text-gray-500">
-            <Link to="/" className="hover:underline">
-              Home
-            </Link>
-            <ChevronRight className="w-4 h-4" />
-            <span>My Transactions</span>
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">My Transactions</h1>
+            <div className="flex items-center space-x-2 text-sm text-gray-500">
+              <Link to="/" className="hover:underline">Home</Link>
+              <ChevronRight className="w-4 h-4" />
+              <span>My Transactions</span>
+            </div>
           </div>
+          <button
+            onClick={() => fetchBookings(true)}
+            className="text-sm px-3 py-2 rounded-lg border border-gray-300 hover:bg-gray-100"
+          >
+            Refresh
+          </button>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
@@ -269,13 +189,900 @@ const TransactionPage: React.FC = () => {
           />
           <div className="flex-1">{renderMainContent()}</div>
         </div>
-
       </div>
     </div>
   );
 };
 
 export default TransactionPage;
+
+// import React, { useState, useEffect } from 'react';
+// import { Link } from 'react-router-dom';
+// import { Clock, ChevronRight } from 'lucide-react';
+// import TransactionSidebar from '../components/transaction/TransactionSidebar';
+// import BookingsList from '../components/transaction/Bookinglist';
+// import UpcomingDetails from '../components/transaction/UpcomingDetails';
+// import CompletedDetails from '../components/transaction/CompletedDetails';
+// import CongratulationsModal from '../components/transaction/CongratulationsModel';
+// import Savings from '../components/transaction/Savings';
+// import FinalRating from '../components/transaction/FinalRating';
+// import SuccessModal from '../components/transaction/SuccessModel';
+// import OTPModal from '../components/transaction/OTPModel';
+// import { getOrdersByUserId } from '../api/apiMethods';
+// import CancelledCard from '../components/transaction/CancellationDetails';
+
+// interface Booking {
+//   _id: string;
+//   userId: string;
+//   technicianId: string;
+//   serviceId: string;
+//   quantity: number;
+//   bookingDate: string;
+//   servicePrice: number;
+//   gst: number;
+//   totalPrice: number;
+//   status: string;
+//   otp: number;
+//   createdAt: string;
+//   updatedAt: string;
+//   __v: number;
+// }
+
+// interface Technician {
+//   _id: string;
+//   userId: string;
+//   username: string;
+//   role: string;
+//   phoneNumber: string;
+//   category: string;
+//   buildingName: string;
+//   areaName: string;
+//   city: string;
+//   state: string;
+//   pincode: string;
+//   createdAt: string;
+//   updatedAt: string;
+//   __v: number;
+//   description?: string;
+//   profileImage?: string;
+//   service?: string;
+// }
+
+// interface Service {
+//   _id: string;
+//   technicianId: string;
+//   serviceName: string;
+//   serviceImg: string;
+//   servicePrice: number;
+//   createdAt: string;
+//   updatedAt: string;
+//   __v: number;
+// }
+
+// interface BookingData {
+//   booking: Booking;
+//   technician: Technician;
+//   service: Service | null;
+// }
+
+// interface User {
+//   _id: string;
+//   username: string;
+//   phoneNumber: string;
+//   role: string;
+//   buildingName: string;
+//   areaName: string;
+//   city: string;
+//   state: string;
+//   pincode: string;
+//   createdAt: string;
+//   updatedAt: string;
+//   __v: number;
+// }
+
+// interface ApiResponse {
+//   success: boolean;
+//   message: string;
+//   result: {
+//     user: User;
+//     bookings: BookingData[];
+//   };
+// }
+
+// const TransactionPage: React.FC = () => {
+//   const [activeTab, setActiveTab] = useState<'upcoming' | 'completed' | 'cancelled'>('upcoming');
+//   const [currentStep, setCurrentStep] = useState<string>('bookings');
+//   const [role, setRole] = useState<'user' | 'technician' | null>(null);
+//   const [bookingsData, setBookingsData] = useState<BookingData[]>([]);
+//   const [loading, setLoading] = useState<boolean>(true);
+//   const [error, setError] = useState<string | null>(null);
+//   const [selectedBooking, setSelectedBooking] = useState<BookingData | null>(null);
+//   const [stepData, setStepData] = useState<any>(null); // Added to store data passed with
+
+//   // Transaction status options
+//   const transactionTabs = [
+//     { id: 'upcoming', name: 'Upcoming', color: 'text-purple-600', bgColor: 'bg-purple-100' },
+//     { id: 'completed', name: 'Completed', color: 'text-green-600', bgColor: 'bg-green-100' },
+//     { id: 'cancelled', name: 'Cancelled', color: 'text-red-600', bgColor: 'bg-red-100' },
+//   ];
+
+//   // Get role from localStorage
+//   useEffect(() => {
+//     const storedRole = localStorage.getItem('role') as 'user' | 'technician' | null;
+//     setRole(storedRole);
+//   }, []);
+
+//   const fetchBookings = async () => {
+//     try {
+//       setLoading(true);
+//       const userId = localStorage.getItem('userId');
+//       if (!userId) {
+//         throw new Error('User ID not found');
+//       }
+
+//       const response: ApiResponse = await getOrdersByUserId(userId);
+//       if (response.success) {
+//         setBookingsData(response.result.bookings);
+//       } else {
+//         throw new Error(response.message || 'Failed to fetch bookings');
+//       }
+//     } catch (err) {
+//       setError(err.message || 'An error occurred while fetching bookings');
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchBookings();
+//   }, []); // Fetch once on mount
+
+//   const getFilteredAndSortedBookings = () => {
+//     let filtered = [...bookingsData];
+
+//     if (activeTab === 'upcoming') {
+//       filtered = filtered.filter(b => !['completed', 'cancelled', 'declined'].includes(b.booking.status));
+//       // Sort by bookingDate ascending (soonest upcoming first for freshness)
+//       return filtered.sort((a, b) => new Date(a.booking.bookingDate).getTime() - new Date(b.booking.bookingDate).getTime());
+//     } else if (activeTab === 'completed') {
+//       filtered = filtered.filter(b => b.booking.status === 'completed');
+//       // Sort by updatedAt descending (most recent completed first)
+//       return filtered.sort((a, b) => new Date(b.booking.bookingDate).getTime() - new Date(a.booking.bookingDate).getTime());
+//     } else if (activeTab === 'cancelled') {
+//       filtered = filtered.filter(b => ['cancelled', 'declined'].includes(b.booking.status));
+//       // Sort by updatedAt descending (most recent cancelled first)
+//       return filtered.sort((a, b) => new Date(b.booking.bookingDate).getTime() - new Date(a.booking.bookingDate).getTime());
+//     }
+
+//     return filtered;
+//   };
+
+//   const handleBookingSelect = (booking: BookingData) => {
+//     console.log("booking", booking);
+//     setSelectedBooking(booking);
+
+//     const status = booking.booking.status;
+
+//     if (status === 'completed') {
+//       setActiveTab('completed');
+//       setCurrentStep('completed-details');
+//     } else if (status === 'cancelled' || status === 'declined') {
+//       setActiveTab('cancelled');
+//       setCurrentStep('cancelled-details');
+//     } else {
+//       setActiveTab('upcoming');
+//       setCurrentStep('upcoming-details');
+//     }
+//   };
+
+//   const renderMainContent = () => {
+//     if (loading) {
+//       return <div className="text-center py-8">Loading bookings...</div>;
+//     }
+
+//     if (error) {
+//       return <div className="text-center py-8 text-red-500">{error}</div>;
+//     }
+
+//     const filteredBookings = getFilteredAndSortedBookings();
+
+//     switch (currentStep) {
+//       case 'upcoming-details':
+//         return selectedBooking ? (
+//           <UpcomingDetails
+//             booking={selectedBooking}
+//             setCurrentStep={setCurrentStep}
+//             role={role}
+//             setActiveTab={setActiveTab}
+//             onBookingCancelled={fetchBookings}
+//           />
+//         ) : (
+//           <div className="text-center py-8">No booking selected</div>
+//         );
+//       case 'completed-details':
+//         return selectedBooking ? (
+//           <CompletedDetails
+//             booking={selectedBooking}
+//             setCurrentStep={setCurrentStep}
+//             role={role}
+//           />
+//         ) : (
+//           <div className="text-center py-8">No booking selected</div>
+//         );
+//       case 'cancelled-details':
+//         return selectedBooking ? (
+//           <CancelledCard
+//             booking={selectedBooking}
+//             setCurrentStep={setCurrentStep}
+//             role={role}
+//           />
+//         ) : (
+//           <div className="text-center py-8">No booking selected</div>
+//         );
+//       case 'congratulations':
+//         return (
+//           <CongratulationsModal
+//             setCurrentStep={setCurrentStep}
+//             role={role}
+//           />
+//         );
+//       case 'savings':
+//         return (
+//           <Savings
+//             setCurrentStep={setCurrentStep}
+//             booking={selectedBooking}
+//           />
+//         );
+//       case 'final-rating':
+//         return (
+//           <FinalRating
+//             setCurrentStep={setCurrentStep}
+//             booking={selectedBooking}
+//           />
+//         );
+//       case 'success':
+//         return (
+//           <SuccessModal
+//             setCurrentStep={setCurrentStep}
+//             setActiveTab={setActiveTab}
+//           />
+//         );
+//       case 'otp-modal':
+//         return (
+//           <OTPModal
+//             setCurrentStep={setCurrentStep}
+//             setActiveTab={setActiveTab}
+//           />
+//         );
+//       default:
+//         return (
+//           <BookingsList
+//             bookings={filteredBookings}
+//             activeTab={activeTab}
+//             onBookingSelect={handleBookingSelect}
+//             role={role}
+//           />
+//         );
+//     }
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gray-50">
+//       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+//         <div className="mb-8">
+//           <h1 className="text-3xl font-bold text-gray-900 mb-2">My Transactions</h1>
+//           <div className="flex items-center space-x-2 text-sm text-gray-500">
+//             <Link to="/" className="hover:underline">
+//               Home
+//             </Link>
+//             <ChevronRight className="w-4 h-4" />
+//             <span>My Transactions</span>
+//           </div>
+//         </div>
+
+//         <div className="flex flex-col lg:flex-row gap-8">
+//           <TransactionSidebar
+//             activeTab={activeTab}
+//             setActiveTab={setActiveTab}
+//             setCurrentStep={setCurrentStep}
+//             transactionTabs={transactionTabs}
+//           />
+//           <div className="flex-1">{renderMainContent()}</div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default TransactionPage;
+// import React, { useState, useEffect } from 'react';
+// import { Link } from 'react-router-dom';
+// import { Clock, ChevronRight } from 'lucide-react';
+// import TransactionSidebar from '../components/transaction/TransactionSidebar';
+// import BookingsList from '../components/transaction/Bookinglist';
+// import UpcomingDetails from '../components/transaction/UpcomingDetails';
+// import CompletedDetails from '../components/transaction/CompletedDetails';
+// import CongratulationsModal from '../components/transaction/CongratulationsModel';
+// import Savings from '../components/transaction/Savings';
+// import FinalRating from '../components/transaction/FinalRating';
+// import SuccessModal from '../components/transaction/SuccessModel';
+// import OTPModal from '../components/transaction/OTPModel';
+// import { getOrdersByUserId } from '../api/apiMethods';
+// import CancelledCard from '../components/transaction/CancellationDetails';
+
+// interface Booking {
+//   _id: string;
+//   userId: string;
+//   technicianId: string;
+//   serviceId: string;
+//   quantity: number;
+//   bookingDate: string;
+//   servicePrice: number;
+//   gst: number;
+//   totalPrice: number;
+//   status: string;
+//   otp: number;
+//   createdAt: string;
+//   updatedAt: string;
+//   __v: number;
+// }
+
+// interface Technician {
+//   _id: string;
+//   userId: string;
+//   username: string;
+//   role: string;
+//   phoneNumber: string;
+//   category: string;
+//   buildingName: string;
+//   areaName: string;
+//   city: string;
+//   state: string;
+//   pincode: string;
+//   createdAt: string;
+//   updatedAt: string;
+//   __v: number;
+//   description?: string;
+//   profileImage?: string;
+//   service?: string;
+// }
+
+// interface Service {
+//   _id: string;
+//   technicianId: string;
+//   serviceName: string;
+//   serviceImg: string;
+//   servicePrice: number;
+//   createdAt: string;
+//   updatedAt: string;
+//   __v: number;
+// }
+
+// interface BookingData {
+//   booking: Booking;
+//   technician: Technician;
+//   service: Service | null;
+// }
+
+// interface User {
+//   _id: string;
+//   username: string;
+//   phoneNumber: string;
+//   role: string;
+//   buildingName: string;
+//   areaName: string;
+//   city: string;
+//   state: string;
+//   pincode: string;
+//   createdAt: string;
+//   updatedAt: string;
+//   __v: number;
+// }
+
+// interface ApiResponse {
+//   success: boolean;
+//   message: string;
+//   result: {
+//     user: User;
+//     bookings: BookingData[];
+//   };
+// }
+
+// const TransactionPage: React.FC = () => {
+//   const [activeTab, setActiveTab] = useState<'upcoming' | 'completed' | 'cancelled'>('upcoming');
+//   const [currentStep, setCurrentStep] = useState<string>('bookings');
+//   const [role, setRole] = useState<'user' | 'technician' | null>(null);
+//   const [bookingsData, setBookingsData] = useState<BookingData[]>([]);
+//   const [loading, setLoading] = useState<boolean>(true);
+//   const [error, setError] = useState<string | null>(null);
+//   const [selectedBooking, setSelectedBooking] = useState<BookingData | null>(null);
+//   const [stepData, setStepData] = useState<any>(null); // Added to store data passed with
+
+//   // Transaction status options
+//   const transactionTabs = [
+//     { id: 'upcoming', name: 'Upcoming', color: 'text-purple-600', bgColor: 'bg-purple-100' },
+//     { id: 'completed', name: 'Completed', color: 'text-green-600', bgColor: 'bg-green-100' },
+//     { id: 'cancelled', name: 'Cancelled', color: 'text-red-600', bgColor: 'bg-red-100' },
+//   ];
+
+//   // Get role from localStorage
+//   useEffect(() => {
+//     const storedRole = localStorage.getItem('role') as 'user' | 'technician' | null;
+//     setRole(storedRole);
+//   }, []);
+
+//   const fetchBookings = async () => {
+//     try {
+//       setLoading(true);
+//       const userId = localStorage.getItem('userId');
+//       if (!userId) {
+//         throw new Error('User ID not found');
+//       }
+
+//       const response: ApiResponse = await getOrdersByUserId(userId);
+//       if (response.success) {
+//         setBookingsData(response.result.bookings);
+//       } else {
+//         throw new Error(response.message || 'Failed to fetch bookings');
+//       }
+//     } catch (err) {
+//       setError(err.message || 'An error occurred while fetching bookings');
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchBookings();
+//   }, []); // Fetch once on mount
+
+//   const getFilteredAndSortedBookings = () => {
+//     let filtered = [...bookingsData];
+
+//     if (activeTab === 'upcoming') {
+//       filtered = filtered.filter(b => !['completed', 'cancelled', 'declined'].includes(b.booking.status));
+//       // Sort by bookingDate ascending (soonest upcoming first for freshness)
+//       return filtered.sort((a, b) => new Date(a.booking.bookingDate).getTime() - new Date(b.booking.bookingDate).getTime());
+//     } else if (activeTab === 'completed') {
+//       filtered = filtered.filter(b => b.booking.status === 'completed');
+//       // Sort by updatedAt descending (most recent completed first)
+//       return filtered.sort((a, b) => new Date(b.booking.updatedAt).getTime() - new Date(a.booking.updatedAt).getTime());
+//     } else if (activeTab === 'cancelled') {
+//       filtered = filtered.filter(b => ['cancelled', 'declined'].includes(b.booking.status));
+//       // Sort by updatedAt descending (most recent cancelled first)
+//       return filtered.sort((a, b) => new Date(b.booking.updatedAt).getTime() - new Date(a.booking.updatedAt).getTime());
+//     }
+
+//     return filtered;
+//   };
+
+//   const handleBookingSelect = (booking: BookingData) => {
+//     console.log("booking", booking);
+//     setSelectedBooking(booking);
+
+//     const status = booking.booking.status;
+
+//     if (status === 'completed') {
+//       setActiveTab('completed');
+//       setCurrentStep('completed-details');
+//     } else if (status === 'cancelled' || status === 'declined') {
+//       setActiveTab('cancelled');
+//       setCurrentStep('cancelled-details');
+//     } else {
+//       setActiveTab('upcoming');
+//       setCurrentStep('upcoming-details');
+//     }
+//   };
+
+//   const renderMainContent = () => {
+//     if (loading) {
+//       return <div className="text-center py-8">Loading bookings...</div>;
+//     }
+
+//     if (error) {
+//       return <div className="text-center py-8 text-red-500">{error}</div>;
+//     }
+
+//     const filteredBookings = getFilteredAndSortedBookings();
+
+//     switch (currentStep) {
+//       case 'upcoming-details':
+//         return selectedBooking ? (
+//           <UpcomingDetails
+//             booking={selectedBooking}
+//             setCurrentStep={setCurrentStep}
+//             role={role}
+//             setActiveTab={setActiveTab}
+//             onBookingCancelled={fetchBookings}
+//           />
+//         ) : (
+//           <div className="text-center py-8">No booking selected</div>
+//         );
+//       case 'completed-details':
+//         return selectedBooking ? (
+//           <CompletedDetails
+//             booking={selectedBooking}
+//             setCurrentStep={setCurrentStep}
+//             role={role}
+//           />
+//         ) : (
+//           <div className="text-center py-8">No booking selected</div>
+//         );
+//       case 'cancelled-details':
+//         return selectedBooking ? (
+//           <CancelledCard
+//             booking={selectedBooking}
+//             setCurrentStep={setCurrentStep}
+//             role={role}
+//           />
+//         ) : (
+//           <div className="text-center py-8">No booking selected</div>
+//         );
+//       case 'congratulations':
+//         return (
+//           <CongratulationsModal
+//             setCurrentStep={setCurrentStep}
+//             role={role}
+//           />
+//         );
+//       case 'savings':
+//         return (
+//           <Savings
+//             setCurrentStep={setCurrentStep}
+//             booking={selectedBooking}
+//           />
+//         );
+//       case 'final-rating':
+//         return (
+//           <FinalRating
+//             setCurrentStep={setCurrentStep}
+//             booking={selectedBooking}
+//           />
+//         );
+//       case 'success':
+//         return (
+//           <SuccessModal
+//             setCurrentStep={setCurrentStep}
+//             setActiveTab={setActiveTab}
+//           />
+//         );
+//       case 'otp-modal':
+//         return (
+//           <OTPModal
+//             setCurrentStep={setCurrentStep}
+//             setActiveTab={setActiveTab}
+//           />
+//         );
+//       default:
+//         return (
+//           <BookingsList
+//             bookings={filteredBookings}
+//             activeTab={activeTab}
+//             onBookingSelect={handleBookingSelect}
+//             role={role}
+//           />
+//         );
+//     }
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gray-50">
+//       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+//         <div className="mb-8">
+//           <h1 className="text-3xl font-bold text-gray-900 mb-2">My Transactions</h1>
+//           <div className="flex items-center space-x-2 text-sm text-gray-500">
+//             <Link to="/" className="hover:underline">
+//               Home
+//             </Link>
+//             <ChevronRight className="w-4 h-4" />
+//             <span>My Transactions</span>
+//           </div>
+//         </div>
+
+//         <div className="flex flex-col lg:flex-row gap-8">
+//           <TransactionSidebar
+//             activeTab={activeTab}
+//             setActiveTab={setActiveTab}
+//             setCurrentStep={setCurrentStep}
+//             transactionTabs={transactionTabs}
+//           />
+//           <div className="flex-1">{renderMainContent()}</div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default TransactionPage;
+
+
+
+
+
+
+// import React, { useState, useEffect } from 'react';
+// import { Link } from 'react-router-dom';
+// import { Clock, ChevronRight } from 'lucide-react';
+// import TransactionSidebar from '../components/transaction/TransactionSidebar';
+// import BookingsList from '../components/transaction/Bookinglist';
+// import UpcomingDetails from '../components/transaction/UpcomingDetails';
+// import CompletedDetails from '../components/transaction/CompletedDetails';
+// import CongratulationsModal from '../components/transaction/CongratulationsModel';
+// import Savings from '../components/transaction/Savings';
+// import FinalRating from '../components/transaction/FinalRating';
+// import SuccessModal from '../components/transaction/SuccessModel';
+// import OTPModal from '../components/transaction/OTPModel';
+// import { getOrdersByUserId } from '../api/apiMethods';
+// import CancelledCard from '../components/transaction/CancellationDetails';
+
+// interface Booking {
+//   _id: string;
+//   userId: string;
+//   technicianId: string;
+//   serviceId: string;
+//   quantity: number;
+//   bookingDate: string;
+//   servicePrice: number;
+//   gst: number;
+//   totalPrice: number;
+//   status: string;
+//   otp: number;
+//   createdAt: string;
+//   updatedAt: string;
+//   __v: number;
+// }
+
+// interface Technician {
+//   _id: string;
+//   userId: string;
+//   username: string;
+//   role: string;
+//   phoneNumber: string;
+//   category: string;
+//   buildingName: string;
+//   areaName: string;
+//   city: string;
+//   state: string;
+//   pincode: string;
+//   createdAt: string;
+//   updatedAt: string;
+//   __v: number;
+//   description?: string;
+//   profileImage?: string;
+//   service?: string;
+// }
+
+// interface Service {
+//   _id: string;
+//   technicianId: string;
+//   serviceName: string;
+//   serviceImg: string;
+//   servicePrice: number;
+//   createdAt: string;
+//   updatedAt: string;
+//   __v: number;
+// }
+
+// interface BookingData {
+//   booking: Booking;
+//   technician: Technician;
+//   service: Service | null;
+// }
+
+// interface User {
+//   _id: string;
+//   username: string;
+//   phoneNumber: string;
+//   role: string;
+//   buildingName: string;
+//   areaName: string;
+//   city: string;
+//   state: string;
+//   pincode: string;
+//   createdAt: string;
+//   updatedAt: string;
+//   __v: number;
+// }
+
+// interface ApiResponse {
+//   success: boolean;
+//   message: string;
+//   result: {
+//     user: User;
+//     bookings: BookingData[];
+//   };
+// }
+
+// const TransactionPage: React.FC = () => {
+//   const [activeTab, setActiveTab] = useState<'upcoming' | 'completed' | 'cancelled'>('upcoming');
+//   const [currentStep, setCurrentStep] = useState<string>('bookings');
+//   const [role, setRole] = useState<'user' | 'technician' | null>(null);
+//   const [bookingsData, setBookingsData] = useState<BookingData[]>([]);
+//   const [loading, setLoading] = useState<boolean>(true);
+//   const [error, setError] = useState<string | null>(null);
+//   const [selectedBooking, setSelectedBooking] = useState<BookingData | null>(null);
+//   const [stepData, setStepData] = useState<any>(null); // Added to store data passed with
+
+//   // Transaction status options
+//   const transactionTabs = [
+//     { id: 'upcoming', name: 'Upcoming', color: 'text-purple-600', bgColor: 'bg-purple-100' },
+//     { id: 'completed', name: 'Completed', color: 'text-green-600', bgColor: 'bg-green-100' },
+//     { id: 'cancelled', name: 'Cancelled', color: 'text-red-600', bgColor: 'bg-red-100' },
+//   ];
+
+//   // Get role from localStorage and fetch bookings
+//   useEffect(() => {
+//     const storedRole = localStorage.getItem('role') as 'user' | 'technician' | null;
+//     setRole(storedRole);
+//   },[]);
+
+//      const fetchBookings = async () => {
+//     try {
+//       setLoading(true);
+//       const userId = localStorage.getItem('userId');
+//       if (!userId) {
+//         throw new Error('User ID not found');
+//       }
+
+//       const response: ApiResponse = await getOrdersByUserId(userId);
+//       if (response.success) {
+//         setBookingsData(response.result.bookings);
+//       } else {
+//         throw new Error(response.message || 'Failed to fetch bookings');
+//       }
+//     } catch (err) {
+//       setError(err.message || 'An error occurred while fetching bookings');
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchBookings();
+//   }, [activeTab]);
+
+
+//   const handleBookingSelect = (booking: BookingData) => {
+//   console.log("booking", booking);
+//   setSelectedBooking(booking);
+
+//   const status = booking.booking.status;
+
+//   if (status === 'completed') {
+//     setActiveTab('completed');
+//     setCurrentStep('completed-details');
+//   } else if (status === 'cancelled' || status === 'declined') {
+//     setActiveTab('cancelled');
+//     setCurrentStep('cancelled-details');
+//   } else {
+//     setActiveTab('upcoming');
+//     setCurrentStep('upcoming-details');
+//   }
+// };
+
+
+//   const renderMainContent = () => {
+//     if (loading) {
+//       return <div className="text-center py-8">Loading bookings...</div>;
+//     }
+
+//     if (error) {
+//       return <div className="text-center py-8 text-red-500">{error}</div>;
+//     }
+
+//     switch (currentStep) {
+//       case 'upcoming-details':
+//       return selectedBooking ? (
+//         <UpcomingDetails
+//           booking={selectedBooking}
+//           setCurrentStep={setCurrentStep}
+//           role={role}
+//           setActiveTab={setActiveTab}
+//           onBookingCancelled={fetchBookings}
+//         />
+//       ) : (
+//         <div className="text-center py-8">No booking selected</div>
+//       );
+//       case 'completed-details':
+//         return selectedBooking ? (
+//           <CompletedDetails
+//             booking={selectedBooking}
+//             setCurrentStep={setCurrentStep}
+//             role={role}
+//           />
+//         ) : (
+//           <div className="text-center py-8">No booking selected</div>
+//         );
+//       case 'cancelled-details':
+//         return selectedBooking ? (
+//           <CancelledCard
+//             booking={selectedBooking}
+//             setCurrentStep={setCurrentStep}
+//             role={role}
+//           />
+//         ) : (
+//           <div className="text-center py-8">No booking selected</div>
+//         );
+//       case 'congratulations':
+//         return (
+//           <CongratulationsModal
+//             setCurrentStep={setCurrentStep}
+//             role={role}
+//           />
+//         );
+//       case 'savings':
+//         return <Savings
+//             setCurrentStep={setCurrentStep}
+//             booking={selectedBooking}
+//           />
+//       case 'final-rating':
+//         return (
+//           <FinalRating
+//             setCurrentStep={setCurrentStep}
+//             booking={selectedBooking}
+//           />
+//         );
+//       case 'success':
+//         return (
+//           <SuccessModal
+//             setCurrentStep={setCurrentStep}
+//             setActiveTab={setActiveTab}
+//           />
+//         );
+//       case 'otp-modal':
+//         return (
+//           <OTPModal
+//             setCurrentStep={setCurrentStep}
+//             setActiveTab={setActiveTab}
+//           />
+//         );
+//       default:
+//         return (
+//           <BookingsList
+//             bookings={bookingsData}
+//             activeTab={activeTab}
+//             onBookingSelect={handleBookingSelect}
+//             role={role}
+//           />
+//         );
+//     }
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gray-50">
+//       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+//         <div className="mb-8">
+//           <h1 className="text-3xl font-bold text-gray-900 mb-2">My Transactions</h1>
+//           <div className="flex items-center space-x-2 text-sm text-gray-500">
+//             <Link to="/" className="hover:underline">
+//               Home
+//             </Link>
+//             <ChevronRight className="w-4 h-4" />
+//             <span>My Transactions</span>
+//           </div>
+//         </div>
+
+//         <div className="flex flex-col lg:flex-row gap-8">
+//           <TransactionSidebar
+//             activeTab={activeTab}
+//             setActiveTab={setActiveTab}
+//             setCurrentStep={setCurrentStep}
+//             transactionTabs={transactionTabs}
+//           />
+//           <div className="flex-1">{renderMainContent()}</div>
+//         </div>
+
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default TransactionPage;
+
+
+
+
+
 
 // import React, { useState } from 'react';
 // import { Link } from 'react-router-dom';

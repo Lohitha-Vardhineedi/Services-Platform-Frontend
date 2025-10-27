@@ -3,7 +3,8 @@ import { FaThumbsUp } from "react-icons/fa6";
 import { IoLocationOutline, IoShareSocial } from "react-icons/io5";
 import { MdOutlineStar } from "react-icons/md";
 import { Rating, Technician } from "../../pages/ProfilePage";
-import { BsWhatsapp } from "react-icons/bs";
+import { BsWhatsapp, BsPatchCheckFill } from "react-icons/bs";
+import { BadgeCheck } from "lucide-react";
 
 interface ProfileCardProps {
   technician: Technician;
@@ -25,51 +26,63 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ technician, rating }) => {
   }
 
   // Dynamic share function using Web Share API
-const handleShare = async () => {
-  // Construct a shareable URL using technician._id
-  const shareUrl = `${window.location.origin}/technicianById/${technician._id}`;
-  const shareData = {
-    title: `${technician.username}'s Profile`,
-    text: `${technician.username} - ${technician.service} Expert\nRated ${averageRating} ★ | ${reviewCont} Reviews\nLocation: ${technician.city}, ${technician.state}\nCheck out the profile: ${shareUrl}`,
-    url: shareUrl,
-  };
+  const handleShare = async () => {
+    // Construct a shareable URL using technician._id
+    const shareUrl = `${window.location.origin}/technicianById/${technician._id}`;
+    const shareData = {
+      title: `${technician.username}'s Profile`,
+      text: `${technician.username} - ${technician.service} Expert\nRated ${averageRating} ★ | ${reviewCont} Reviews\nLocation: ${technician.city}, ${technician.state}\nCheck out the profile: ${shareUrl}`,
+      url: shareUrl,
+    };
 
-  // Combine title, text, and URL for fallback sharing, formatted like a YouTube link
-  const fallbackText = `${shareData.title}\n${shareData.text.replace(/\n/g, '\n')}\n🔗 ${shareUrl}`;
+    // Combine title, text, and URL for fallback sharing, formatted like a YouTube link
+    const fallbackText = `${shareData.title}\n${shareData.text.replace(
+      /\n/g,
+      "\n"
+    )}\n🔗 ${shareUrl}`;
 
-  try {
-    // Check if Web Share API is supported
-    if (navigator.share) {
-      await navigator.share(shareData);
-      alert("Profile details to share.");
-    } else {
-      // Fallback: Copy combined text to clipboard
+    try {
+      // Check if Web Share API is supported
+      if (navigator.share) {
+        await navigator.share(shareData);
+        alert("Profile details to share.");
+      } else {
+        // Fallback: Copy combined text to clipboard
+        await navigator.clipboard.writeText(fallbackText);
+        alert("Profile details copied to clipboard! Paste to share.");
+      }
+    } catch (error) {
       await navigator.clipboard.writeText(fallbackText);
       alert("Profile details copied to clipboard! Paste to share.");
     }
-  } catch (error) {
-    await navigator.clipboard.writeText(fallbackText);
-    alert("Profile details copied to clipboard! Paste to share.");
-  }
-};
+  };
 
   return (
     <div className="border border-gray-300 rounded-xl p-5 flex flex-col md:flex-row relative overflow-hidden">
       <div className="flex flex-col items-center md:items-start md:mr-6 mb-4 md:mb-0 relative w-full md:w-auto">
-        <img
-          src={
-            technician.profileImage ||
-            "https://img-new.cgtrader.com/items/4519471/f444ec0898/large/mechanic-avatar-3d-icon-3d-model-f444ec0898.jpg"
-          }
-          alt={technician.username}
-          className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover border-2 border-gray-300"
-        />
+        <div className="relative">
+          <img
+            src={
+              technician.profileImage ||
+              "https://img-new.cgtrader.com/items/4519471/f444ec0898/large/mechanic-avatar-3d-icon-3d-model-f444ec0898.jpg"
+            }
+            alt={technician.username}
+            className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover shadow-lg ring-2 ring-blue-200"
+          />
+          <div className="absolute -bottom-1 -right-1 p-2">
+            {/* <BadgeCheck className="w-6 h-6 text-white"/> */}
+            <BsPatchCheckFill size={25} className="mr-1" color="blue" />
+          </div>
+        </div>
       </div>
       <div className="flex-1 min-w-0">
         <h2 className="text-xl font-semibold truncate">
           {technician.username}
         </h2>
-
+        {/* <div className="flex items-center text-sm font-semibold text-blue-600 mt-1">
+          <BsPatchCheckFill size={16} className="mr-1" color="#00B800" />
+          Profile Verified
+        </div> */}
         <div className="flex flex-wrap items-center gap-4 my-3">
           <div className="flex items-center border border-amber-500 rounded-lg px-2 py-1 text-black text-sm font-bold">
             {averageRating}
@@ -119,9 +132,9 @@ const handleShare = async () => {
             <BsWhatsapp size={18} className="mr-2" />
             WhatsApp
           </div>
-          <div 
-          className="flex items-center bg-blue-500 hover:bg-blue-600 rounded-xl text-white px-4 py-1 font-bold cursor-pointer"
-          onClick={handleShare}
+          <div
+            className="flex items-center bg-blue-500 hover:bg-blue-600 rounded-xl text-white px-4 py-1 font-bold cursor-pointer"
+            onClick={handleShare}
           >
             <IoShareSocial size={18} className="mr-2" />
             Share
@@ -132,6 +145,141 @@ const handleShare = async () => {
   );
 };
 export default ProfileCard;
+
+// import React from "react";
+// import { FaThumbsUp } from "react-icons/fa6";
+// import { IoLocationOutline, IoShareSocial } from "react-icons/io5";
+// import { MdOutlineStar } from "react-icons/md";
+// import { Rating, Technician } from "../../pages/ProfilePage";
+// import { BsWhatsapp } from "react-icons/bs";
+
+// interface ProfileCardProps {
+//   technician: Technician;
+//   rating: Rating[];
+// }
+
+// const ProfileCard: React.FC<ProfileCardProps> = ({ technician, rating }) => {
+//   const reviewCont = rating.length || "3";
+//   const averageRating =
+//     rating && rating.length > 0
+//       ? (rating.reduce((sum, r) => sum + r.rating, 0) / rating.length).toFixed(
+//           1
+//         )
+//       : "4";
+
+//   function openWhatsApp(number: number, message: string) {
+//     const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+//     window.open(url, "_blank"); // opens in new tab
+//   }
+
+//   // Dynamic share function using Web Share API
+// const handleShare = async () => {
+//   // Construct a shareable URL using technician._id
+//   const shareUrl = `${window.location.origin}/technicianById/${technician._id}`;
+//   const shareData = {
+//     title: `${technician.username}'s Profile`,
+//     text: `${technician.username} - ${technician.service} Expert\nRated ${averageRating} ★ | ${reviewCont} Reviews\nLocation: ${technician.city}, ${technician.state}\nCheck out the profile: ${shareUrl}`,
+//     url: shareUrl,
+//   };
+
+//   // Combine title, text, and URL for fallback sharing, formatted like a YouTube link
+//   const fallbackText = `${shareData.title}\n${shareData.text.replace(/\n/g, '\n')}\n🔗 ${shareUrl}`;
+
+//   try {
+//     // Check if Web Share API is supported
+//     if (navigator.share) {
+//       await navigator.share(shareData);
+//       alert("Profile details to share.");
+//     } else {
+//       // Fallback: Copy combined text to clipboard
+//       await navigator.clipboard.writeText(fallbackText);
+//       alert("Profile details copied to clipboard! Paste to share.");
+//     }
+//   } catch (error) {
+//     await navigator.clipboard.writeText(fallbackText);
+//     alert("Profile details copied to clipboard! Paste to share.");
+//   }
+// };
+
+//   return (
+//     <div className="border border-gray-300 rounded-xl p-5 flex flex-col md:flex-row relative overflow-hidden">
+//       <div className="flex flex-col items-center md:items-start md:mr-6 mb-4 md:mb-0 relative w-full md:w-auto">
+//         <img
+//           src={
+//             technician.profileImage ||
+//             "https://img-new.cgtrader.com/items/4519471/f444ec0898/large/mechanic-avatar-3d-icon-3d-model-f444ec0898.jpg"
+//           }
+//           alt={technician.username}
+//           className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover border-2 border-gray-300"
+//         />
+//       </div>
+//       <div className="flex-1 min-w-0">
+//         <h2 className="text-xl font-semibold truncate">
+//           {technician.username}
+//         </h2>
+
+//         <div className="flex flex-wrap items-center gap-4 my-3">
+//           <div className="flex items-center border border-amber-500 rounded-lg px-2 py-1 text-black text-sm font-bold">
+//             {averageRating}
+//             <MdOutlineStar size={18} className="ml-1" color="#ffc71b" />
+//           </div>
+//           <div className="text-black text-sm font-semibold">
+//             {reviewCont} Reviews
+//           </div>
+//         </div>
+//         {technician.service && (
+//           <div className="flex flex-wrap gap-2">
+//             <span className="bg-fuchsia-200 px-3 py-1 rounded-xl text-black text-sm font-light">
+//               {technician.service}
+//             </span>
+//           </div>
+//         )}
+
+//         <div className="flex my-3 items-center">
+//           <IoLocationOutline size={27} color="red" />
+//           <span className="text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
+//             {" "}
+//             {technician.buildingName}, {technician.areaName}, {technician.city},{" "}
+//             {technician.state}
+//           </span>
+//         </div>
+//         {technician?.description && (
+//           <div className="flex items-center">
+//             <FaThumbsUp size={22} color="#00B800" className="flex" />
+//             <span className="text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
+//               {" "}
+//               {technician?.description}
+//               {/* Years in Services */}
+//             </span>
+//           </div>
+//         )}
+
+//         <div className="flex gap-4 mt-4 flex-wrap">
+//           <div
+//             className="flex items-center bg-green-600 hover:bg-green-500 rounded-xl text-white px-4 py-1 font-bold cursor-pointer"
+//             onClick={() =>
+//               openWhatsApp(
+//                 +919603558369,
+//                 "Hello, I am interested in your services"
+//               )
+//             }
+//           >
+//             <BsWhatsapp size={18} className="mr-2" />
+//             WhatsApp
+//           </div>
+//           <div
+//           className="flex items-center bg-blue-500 hover:bg-blue-600 rounded-xl text-white px-4 py-1 font-bold cursor-pointer"
+//           onClick={handleShare}
+//           >
+//             <IoShareSocial size={18} className="mr-2" />
+//             Share
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+// export default ProfileCard;
 
 {
   /* <div className="flex bg-fuchsia-500 rounded-xl text-white px-4 py-1 font-bold items-center cursor-pointer hover:bg-fuchsia-600">

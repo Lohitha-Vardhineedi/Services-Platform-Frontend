@@ -56,7 +56,7 @@ const TermsConditions: React.FC = () => {
                   <li>To get compensation from the professional (technician/service provider) for any damage during work as per the agreement with PRNV Services, the customer should mention the total work amount accepted, work started, work completed, the total amount paid, rating & reviews.</li>
                   <li>Customers don't have to pay GST, as most professionals (technicians/service providers) are under the GST limit.</li>
                   <li>Customers don't have to pay commissions to the company because PRNV Services follows the principle of No Middlemen – No Commissions.</li>
-                  <li>Customers can choose, contact and fix the timing with the professional (technician/service provider).</li>
+                  <li>Customers can choose, contact and fix the date with the professional (technician/service provider).</li>
                   <li>Customers will get the lowest price in the market because of the offers & internal competition among professionals (technicians/service providers).</li>
                   <li>Customers have a weapon of rating & reviews. To achieve this, the professional (technician/service provider) will work politely and professionally by giving his 100% effort.</li>
                   <li>Customers don't have to pay GST, as most professionals (technicians/service providers) are under the GST limit.</li>
@@ -70,7 +70,9 @@ const TermsConditions: React.FC = () => {
             <h2 className="text-2xl font-semibold text-blue-700 mt-8 mb-4">Professional (Technician/Service Provider):</h2>
             <div className="space-y-4">
               <p>
-                We will collect your business name, phone number, permanent and current address, pin code, a description of your services, languages known, first and last name, and email address during the Account registration process. You may also have to submit other information required to be provided to PRNV Services for this registration process. This registration form and document submission may change from time to time for the security and safety of the professional (technician/service provider) and PRNV Services. You can post a short description of your work, work photos, and more on your profile page. We may also request payment information from you, such as credit/debit card, gpay, or other card information. PRNV Services will also keep track of your work earnings to help you improve your services.
+                We will collect your business name, phone number, permanent and current address, pin code, a description of your services, first and last name during the Account registration process. You may also have to submit other information required to be provided to PRNV Services for this registration process. This registration form and document submission may change from time to time for the security and safety of the professional (technician/service provider) and PRNV Services. You can post a short description of your work, work photos, and more on your profile page. 
+                {/* We may also request payment information from you,  */}
+                PRNV Services will also keep track of your work earnings to help you improve your services.
               </p>
 
               <h3 className="text-xl font-semibold text-gray-800 mt-6 mb-3">Background Verification:</h3>
@@ -113,10 +115,10 @@ const TermsConditions: React.FC = () => {
                   <li>Professionals (Technicians/Service Providers) have full access to the profile page to make necessary changes.</li>
                   <li>Professionals (Technicians/Service Providers) can change the pin code during the Time of renewal. He can't change the pincode in the ongoing plan.</li>
                   <li>Professionals (Technicians/Service Providers) best work videos will be shown on our youtube channel to boost their business.</li>
-                  <li>Professionals (Technicians/Service Providers) have the freedom to discuss the work details with customers and fix the time of service.</li>
+                  <li>Professionals (Technicians/Service Providers) have the freedom to discuss the work details with customers and fix the date of service.</li>
                   <li>Professionals (Technicians/Service Providers) can offer better discounts than other professionals (technicians/service providers) to get the best business.</li>
                   <li>Professionals (Technicians/Service Providers) can get the total work amount on the spot without any deductions. In other companies, the professional (technician/service provider) will get the payment for work done after 15 - 30 days with TDS & other deductions.</li>
-                  <li>Professionals (Technicians/Service Providers) can independently operate their availability ON/OFF mode for the work.</li>
+                  {/* <li>Professionals (Technicians/Service Providers) can independently operate their availability ON/OFF mode for the work.</li> */}
                   <li>Professionals (Technicians/Service Providers) can boost their profile by sharing with customers & people in their circle. With this, the professional (technician/service provider) will get their customers and people from other professionals (technicians/service providers) referrals too.</li>
                   <li>The best work videos of professional (technician/service provider) will be shared on our Youtube channel.</li>
                 </ol>

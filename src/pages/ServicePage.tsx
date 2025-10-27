@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { IoCall, IoLocationOutline } from "react-icons/io5";
-import { LuMessageSquareText } from "react-icons/lu";
 import { MdOutlineStar } from "react-icons/md";
 import { FaThumbsUp } from "react-icons/fa";
-import axios from "axios";
 import AdvertisementBanner from "../components/services/AdvertisementBanner";
 import { ServiceFilters } from "../components/services/ServiceFilters";
 import { ContactForm } from "../components/services/ContactForms";
