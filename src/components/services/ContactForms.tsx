@@ -219,9 +219,10 @@ export const ContactForm = () => {
                     id="message"
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="Enter your message (optional)"
+                    placeholder="Enter your message"
                     className="text-sm md:text-base focus:outline-none ms-2 w-full resize-none"
-                    rows={3}
+                    rows={4}
+                    required
                     aria-label="Message"
                   />
                 </div>

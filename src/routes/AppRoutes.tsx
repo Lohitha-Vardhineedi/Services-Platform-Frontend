@@ -217,7 +217,7 @@ const AppRoutes: React.FC = () => {
           </>
         }
       />
-      <Route path="/technicians/:categoryId" element={<ServicePage />} />
+      <Route path="/:category_slug" element={<ServicePage />} />
       <Route
         path="/subscription"
         element={

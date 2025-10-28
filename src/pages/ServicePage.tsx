@@ -1,15 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { IoCall, IoLocationOutline } from "react-icons/io5";
 import { MdOutlineStar } from "react-icons/md";
 import { FaThumbsUp } from "react-icons/fa";
+import { BsWhatsapp } from "react-icons/bs";
+
 import AdvertisementBanner from "../components/services/AdvertisementBanner";
 import { ServiceFilters } from "../components/services/ServiceFilters";
 import { ContactForm } from "../components/services/ContactForms";
 import { getTechByCategorie } from "../api/apiMethods";
 import { Helmet } from "react-helmet-async";
-import { Rating } from "./ProfilePage";
-import { BsWhatsapp } from "react-icons/bs";
+import { CategoryContext, Category } from "../context/CategoryContext";
+
+export interface Rating {
+  _id: string;
+  userId: string;
+  serviceId: string;
+  review: string;
+  rating: number;
+  createdAt: string;
+  username: string;
+  profileImage: string;
+}
 
 interface Technician {
   technician: {
@@ -28,125 +40,112 @@ interface Technician {
   servicesDone?: number;
 }
 
-interface Category {
-  _id: string;
-  category_name: string;
-  category_image: string;
-  meta_title: string;
-  meta_description: string;
-  status: number;
-  seo_content?: string;
-}
+/* --------------------------------------------------------------- */
 
-const ServicePage = () => {
-  const location = useLocation();
-  const { categoryId } = useParams<{ categoryId: string }>();
+const ServicePage: React.FC = () => {
+  const { category_slug } = useParams<{ category_slug: string }>();
   const navigate = useNavigate();
-  const [technicians, setTechnicians] = useState<Technician[]>([]);
-  const [filteredTechnicians, setFilteredTechnicians] = useState<Technician[]>(
-    []
+  const { categories } = useContext(CategoryContext);
+
+  /* ---- find the category once (memoised) ---- */
+  const selectedCategory = React.useMemo(
+    () =>
+      categories.find((c) => c.category_slug === category_slug) ?? undefined,
+    [categories, category_slug]
   );
-  const [error, setError] = useState("");
-  const categoryDetails = location?.state?.category as Category;
-  const [isDataLoading, setIsDataLoading] = useState(false);
-  const [errorContent, setErrorContent] = useState<string | null>(null);
-  // const averageRating = rating.reduce((sum, r) => sum + r.rating, 0) / rating.length  || 4;
+
+  const [technicians, setTechnicians] = useState<Technician[]>([]);
+  const [filteredTechnicians, setFilteredTechnicians] = useState<Technician[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  /* ---- fetch technicians ------------------------------------------------ */
+  const fetchTechnicians = useCallback(async () => {
+    if (!selectedCategory?._id) return; // safety – will be skipped on first render
+
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await getTechByCategorie(selectedCategory._id) as any;
+      const data = res?.result?.technicians ?? [];
+
+      const mapped: Technician[] = data.map((item: any) => ({
+        technician: {
+          _id: item.technician._id,
+          username: item.technician.username,
+          profileImage: item.technician.profileImage,
+          service:
+            item.services?.length > 0 ? item.services[0].serviceName : undefined,
+          areaName: item.technician.areaName,
+          city: item.technician.city,
+          state: item.technician.state,
+          pincode: item.technician.pincode,
+          phoneNumber: item.technician.phoneNumber,
+          description: item.technician.description,
+        },
+        ratings: item.ratings ?? undefined,
+        servicesDone: item.techSubDetails?.subscriptions?.[0]?.ordersCount ?? 0,
+      }));
+
+      setTechnicians(mapped);
+      setFilteredTechnicians(mapped);
+    } catch (e: any) {
+      const msg = e?.message ?? "Failed to load technicians";
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
+  }, [selectedCategory?._id]);
 
   useEffect(() => {
-    if (!categoryId) return;
+    fetchTechnicians();
+  }, [fetchTechnicians]);
 
-    const fetchTechByCategoryId = async () => {
-      try {
-        setIsDataLoading(true);
-        const response = await getTechByCategorie(categoryId);
-        const data = response?.result?.technicians || [];
+  /* ---- WhatsApp helper ------------------------------------------------- */
+  const openWhatsApp = (number: string, message: string) => {
+    const url = `https://wa.me/${number.replace(/[^\d]/g, "")}?text=${encodeURIComponent(
+      message
+    )}`;
+    window.open(url, "_blank");
+  };
 
-        // Map API response to Technician interface
-        const mappedTechnicians: Technician[] = data.map((item: any) => ({
-          technician: {
-            _id: item.technician._id,
-            username: item.technician.username,
-            profileImage: item.technician.profileImage,
-            service:
-              item.services?.length > 0
-                ? item.services[0].serviceName
-                : undefined,
-            areaName: item.technician.areaName,
-            city: item.technician.city,
-            state: item.technician.state,
-            pincode: item.technician.pincode,
-            phoneNumber: item.technician.phoneNumber,
-            description: item.technician.description,
-          },
-          ratings: item.ratings || null, // Ratings are null in the provided response
-          servicesDone: item.techSubDetails?.subscriptions[0]?.ordersCount || 0,
-        }));
-
-        setTechnicians(mappedTechnicians);
-        setFilteredTechnicians(mappedTechnicians);
-      } catch (error: any) {
-        setError(error?.message || "Failed to fetch technicians");
-        setErrorContent(error?.message || "Failed to fetch technicians");
-      } finally {
-        setIsDataLoading(false);
-      }
-    };
-
-    fetchTechByCategoryId();
-  }, [categoryId]);
-
-  function openWhatsApp(number: number, message: string) {
-    const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
-    window.open(url, "_blank"); // opens in new tab
-  }
-
- const handleFilterChange = (filter: string) => {
-    let updatedTechnicians = [...technicians];
+  /* ---- Filter handler -------------------------------------------------- */
+  const handleFilterChange = (filter: string) => {
+    let list = [...technicians];
 
     if (filter === "topRated") {
-      // Filter technicians with an average rating >= 3.0
-      updatedTechnicians = updatedTechnicians
-        .filter((tech) => {
-          if (!tech.ratings || tech.ratings.length === 0) return false;
-          const averageRating =
-            tech.ratings.reduce((sum, r) => sum + r.rating, 0) /
-            tech.ratings.length;
-          return averageRating >= 3.0;
-        })
-        .sort((a, b) => {
-          const avgRatingA =
-            a.ratings && a.ratings.length > 0
-              ? a.ratings.reduce((sum, r) => sum + r.rating, 0) /
-                a.ratings.length
-              : 0;
-          const avgRatingB =
-            b.ratings && b.ratings.length > 0
-              ? b.ratings.reduce((sum, r) => sum + r.rating, 0) /
-                b.ratings.length
-              : 0;
-          return avgRatingB - avgRatingA; // Sort in descending order
-        });
+      list = list
+        .filter((t) => t.ratings && t.ratings.length > 0)
+        .map((t) => ({
+          ...t,
+          _avg:
+            t.ratings!.reduce((s, r) => s + r.rating, 0) / t.ratings!.length,
+        }))
+        .sort((a, b) => (b._avg ?? 0) - (a._avg ?? 0))
+        .map(({ _avg, ...rest }) => rest);
     } else if (filter === "popular") {
-      // Sort by servicesDone in descending order
-      updatedTechnicians = updatedTechnicians.sort(
-        (a, b) => (b.servicesDone ?? 0) - (a.servicesDone ?? 0)
-      );
-    } else {
-      // Reset to original list if no filter is selected
-      updatedTechnicians = [...technicians];
+      list.sort((a, b) => (b.servicesDone ?? 0) - (a.servicesDone ?? 0));
     }
 
-    setFilteredTechnicians(updatedTechnicians);
+    setFilteredTechnicians(list);
+  };
+
+  /* ---- Render helpers -------------------------------------------------- */
+  const avgRating = (ratings?: Rating[]) => {
+    if (!ratings?.length) return "4";
+    const avg =
+      ratings.reduce((s, r) => s + r.rating, 0) / ratings.length;
+    return avg.toFixed(1);
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-4">
       <Helmet>
-        <title>{categoryDetails?.meta_title || "Service Page"}</title>
+        <title>{selectedCategory?.meta_title ?? "Service Page"}</title>
         <meta
           name="description"
           content={
-            categoryDetails?.meta_description ||
+            selectedCategory?.meta_description ??
             "Explore our services and find the best technicians."
           }
         />
@@ -154,119 +153,117 @@ const ServicePage = () => {
 
       <AdvertisementBanner />
       <h2 className="text-xl font-semibold my-4">Technicians</h2>
+
       <ServiceFilters onFilterChange={handleFilterChange} />
 
       <div className="flex flex-col md:flex-row p-2 gap-3">
+        {/* ---- Technicians list ---- */}
         <div className="flex-1 space-y-3 overflow-y-auto scrollbar-hide max-h-[calc(100vh-200px)]">
-          {filteredTechnicians.length > 0 ? (
-            filteredTechnicians.map((profile, index) => (
+          {loading ? (
+            <p className="text-center">Loading technicians…</p>
+          ) : error ? (
+            <p className="text-red-600 text-center">{error}</p>
+          ) : filteredTechnicians.length === 0 ? (
+            <p className="text-gray-500 text-center">No technicians found.</p>
+          ) : (
+            filteredTechnicians.map((profile) => (
               <div
-                key={index}
+                key={profile.technician._id}
                 className="border border-gray-300 rounded-2xl shadow p-3 flex flex-col md:flex-row items-center gap-4 hover:bg-gray-100 cursor-pointer"
                 onClick={() =>
-                  navigate(`/technicianById/${profile.technician?._id}`)
+                  navigate(`/technicianById/${profile.technician._id}`)
                 }
               >
                 <img
-                  src={ profile.technician.profileImage || "https://img-new.cgtrader.com/items/4519471/f444ec0898/large/mechanic-avatar-3d-icon-3d-model-f444ec0898.jpg" }
+                  src={
+                    profile.technician.profileImage ||
+                    "https://img-new.cgtrader.com/items/4519471/f444ec0898/large/mechanic-avatar-3d-icon-3d-model-f444ec0898.jpg"
+                  }
                   alt={profile.technician.username}
                   className="w-36 h-36 object-cover rounded-2xl"
                 />
+
                 <div className="flex-1 space-y-2.5">
                   <h2 className="text-lg font-semibold">
                     {profile.technician.username}
                   </h2>
+
+                  {/* rating */}
                   <div className="flex gap-3 items-center">
                     <div className="flex items-center border border-amber-500 rounded-lg px-2 text-black font-bold">
-                      {profile.ratings && profile.ratings.length > 0
-                        ? (
-                            profile.ratings.reduce(
-                              (sum, r) => sum + r.rating,
-                              0
-                            ) / profile.ratings.length
-                          ).toFixed(1)
-                        : "4"}
-                      <MdOutlineStar
-                        size={20}
-                        className="ms-1"
-                        color="#ffc71b"
-                      />
+                      {avgRating(profile.ratings)}
+                      <MdOutlineStar size={20} className="ml-1" color="#ffc71b" />
                     </div>
-                    {profile.ratings && (
+                    {profile.ratings?.length ? (
                       <span className="text-gray-600 text-sm">
-                        {profile.ratings.length} Ratings
+                        {profile.ratings.length} Rating{profile.ratings.length > 1 ? "s" : ""}
                       </span>
-                    )}
+                    ) : null}
                   </div>
-                  {profile.technician?.service && (
+
+                  {/* service tag */}
+                  {profile.technician.service && (
                     <div className="flex flex-wrap gap-2">
                       <div className="bg-fuchsia-200 px-3 py-1 rounded-xl text-black text-sm">
-                        {profile.technician?.service}
+                        {profile.technician.service}
                       </div>
                     </div>
                   )}
+
+                  {/* location */}
                   <div className="flex items-center">
                     <IoLocationOutline size={20} color="red" />
-                    <span className="text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
+                    <span className="text-sm md:text-base lg:text-lg font-extralight ml-2">
                       {profile.technician.areaName}, {profile.technician.city},{" "}
                       {profile.technician.state}, {profile.technician.pincode}
                     </span>
                   </div>
-                  {profile.technician?.description && (
+
+                  {/* experience */}
+                  {profile.technician.description && (
                     <div className="flex items-center">
-                      <FaThumbsUp size={22} color="#00B800" className="flex" />
-                      <span className="text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
-                        {profile.technician?.description} years in Services
+                      <FaThumbsUp size={22} color="#00B800" />
+                      <span className="text-sm md:text-base lg:text-lg font-extralight ml-2">
+                        {profile.technician.description} years in Services
                       </span>
                     </div>
                   )}
+
+                  {/* WhatsApp button */}
                   <div className="flex gap-3">
-                    {/* <div className="flex items-center bg-fuchsia-500 rounded text-white px-2 py-1 hover:bg-fuchsia-600">
-                      <IoCall size={20} className="me-2" />
-                      <span className="text-sm">{profile.technician.phoneNumber}</span>
-                    </div> */}
-                    <div className="bg-green-600 rounded text-white px-2 py-1 hover:bg-green-500">
-                      <button
-                        onClick={() =>
-                          openWhatsApp(
-                            +919603558369,
-                            "Hello, I am interested in your services"
-                          )
-                        }
-                        className="flex items-center"
-                      >
-                        <BsWhatsapp size={18} className="me-2" />
-                        <span className="text-sm">WhatsApp</span>
-                      </button>
-                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openWhatsApp(
+                          profile.technician.phoneNumber,
+                          "Hello, I am interested in your services"
+                        );
+                      }}
+                      className="bg-green-600 rounded text-white px-2 py-1 hover:bg-green-500 flex items-center"
+                    >
+                      <BsWhatsapp size={18} className="mr-2" />
+                      <span className="text-sm">WhatsApp</span>
+                    </button>
                   </div>
                 </div>
               </div>
             ))
-          ) : (
-            <div className="text-gray-500 text-center">
-              No technicians found.
-            </div>
           )}
         </div>
+
+        {/* ---- Contact form (right side) ---- */}
         <ContactForm />
       </div>
 
+      {/* ---- SEO content --------------------------------------------------- */}
       <div className="mt-6 space-y-4">
-        {isDataLoading ? (
-          <div className="text-center">Loading Data...</div>
-        ) : errorContent ? (
-          <div className="text-red-500 text-center">{errorContent}</div>
-        ) : categoryDetails?.seo_content &&
-          categoryDetails.seo_content.length > 0 ? (
-          <div className="jodit-wysiwyg">
-            <div
-              className="jodit-wysiwyg"
-              dangerouslySetInnerHTML={{ __html: categoryDetails?.seo_content }}
-            />
-          </div>
+        {loading ? null : error ? null : selectedCategory?.seo_content ? (
+          <div
+            className="seo-prose"
+            dangerouslySetInnerHTML={{ __html: selectedCategory.seo_content }}
+          />
         ) : (
-          <div>No Content for this Category</div>
+          <p className="text-gray-500">No content for this category.</p>
         )}
       </div>
     </div>
@@ -274,6 +271,286 @@ const ServicePage = () => {
 };
 
 export default ServicePage;
+// import React, { useContext, useEffect, useState } from "react";
+// import { useLocation, useNavigate, useParams } from "react-router-dom";
+// import { IoCall, IoLocationOutline } from "react-icons/io5";
+// import { MdOutlineStar } from "react-icons/md";
+// import { FaThumbsUp } from "react-icons/fa";
+// import AdvertisementBanner from "../components/services/AdvertisementBanner";
+// import { ServiceFilters } from "../components/services/ServiceFilters";
+// import { ContactForm } from "../components/services/ContactForms";
+// import { getTechByCategorie } from "../api/apiMethods";
+// import { Helmet } from "react-helmet-async";
+// import { Rating } from "./ProfilePage";
+// import { BsWhatsapp } from "react-icons/bs";
+// import { CategoryContext } from '../context/CategoryContext';
+
+// interface Technician {
+//   technician: {
+//     _id: string;
+//     username: string;
+//     profileImage?: string;
+//     service?: string;
+//     areaName: string;
+//     city: string;
+//     state: string;
+//     pincode: string;
+//     phoneNumber: string;
+//     description?: string;
+//   };
+//   ratings?: Rating[];
+//   servicesDone?: number;
+// }
+
+// interface Category {
+//   _id: string;
+//   category_name: string;
+//   category_image: string;
+//   category_slug: string;
+//   meta_title: string;
+//   meta_description: string;
+//   status: number;
+//   seo_content?: string;
+// }
+
+// const ServicePage = () => {
+//   const location = useLocation();
+//     const { categories } = useContext(CategoryContext);
+//     const { category_slug } = useParams<{ category_slug: string }>();
+//   const navigate = useNavigate();
+//   const [technicians, setTechnicians] = useState<Technician[]>([]);
+//   const [filteredTechnicians, setFilteredTechnicians] = useState<Technician[]>(
+//     []
+//   );
+//   const [error, setError] = useState("");
+//   const [isDataLoading, setIsDataLoading] = useState(false);
+//   const [errorContent, setErrorContent] = useState<string | null>(null);
+//   let categoryDetails: Category | undefined;
+
+//   useEffect(() => {
+//     if (!category_slug) return;
+//     const category = categories.find(cat => cat.category_slug === category_slug);
+//     categoryDetails = category;
+
+//     const fetchTechByCategoryId = async () => {
+//       try {
+//         setIsDataLoading(true);
+//         const response = await getTechByCategorie(category?._id || "");
+//         const data = response?.result?.technicians || [];
+
+//         // Map API response to Technician interface
+//         const mappedTechnicians: Technician[] = data.map((item: any) => ({
+//           technician: {
+//             _id: item.technician._id,
+//             username: item.technician.username,
+//             profileImage: item.technician.profileImage,
+//             service:
+//               item.services?.length > 0
+//                 ? item.services[0].serviceName
+//                 : undefined,
+//             areaName: item.technician.areaName,
+//             city: item.technician.city,
+//             state: item.technician.state,
+//             pincode: item.technician.pincode,
+//             phoneNumber: item.technician.phoneNumber,
+//             description: item.technician.description,
+//           },
+//           ratings: item.ratings || null, // Ratings are null in the provided response
+//           servicesDone: item.techSubDetails?.subscriptions[0]?.ordersCount || 0,
+//         }));
+
+//         setTechnicians(mappedTechnicians);
+//         setFilteredTechnicians(mappedTechnicians);
+//       } catch (error: any) {
+//         setError(error?.message || "Failed to fetch technicians");
+//         setErrorContent(error?.message || "Failed to fetch technicians");
+//       } finally {
+//         setIsDataLoading(false);
+//       }
+//     };
+
+//     fetchTechByCategoryId();
+//   }, [category_slug, categories]);
+
+//   function openWhatsApp(number: number, message: string) {
+//     const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+//     window.open(url, "_blank"); // opens in new tab
+//   }
+
+//  const handleFilterChange = (filter: string) => {
+//     let updatedTechnicians = [...technicians];
+
+//     if (filter === "topRated") {
+//       // Filter technicians with an average rating >= 3.0
+//       updatedTechnicians = updatedTechnicians
+//         .filter((tech) => {
+//           if (!tech.ratings || tech.ratings.length === 0) return false;
+//           const averageRating =
+//             tech.ratings.reduce((sum, r) => sum + r.rating, 0) /
+//             tech.ratings.length;
+//           return averageRating >= 3.0;
+//         })
+//         .sort((a, b) => {
+//           const avgRatingA =
+//             a.ratings && a.ratings.length > 0
+//               ? a.ratings.reduce((sum, r) => sum + r.rating, 0) /
+//                 a.ratings.length
+//               : 0;
+//           const avgRatingB =
+//             b.ratings && b.ratings.length > 0
+//               ? b.ratings.reduce((sum, r) => sum + r.rating, 0) /
+//                 b.ratings.length
+//               : 0;
+//           return avgRatingB - avgRatingA; // Sort in descending order
+//         });
+//     } else if (filter === "popular") {
+//       // Sort by servicesDone in descending order
+//       updatedTechnicians = updatedTechnicians.sort(
+//         (a, b) => (b.servicesDone ?? 0) - (a.servicesDone ?? 0)
+//       );
+//     } else {
+//       // Reset to original list if no filter is selected
+//       updatedTechnicians = [...technicians];
+//     }
+
+//     setFilteredTechnicians(updatedTechnicians);
+//   };
+
+//   return (
+//     <div className="max-w-7xl mx-auto px-4 py-4">
+//       <Helmet>
+//         <title>{categoryDetails?.meta_title || "Service Page"}</title>
+//         <meta
+//           name="description"
+//           content={
+//             categoryDetails?.meta_description ||
+//             "Explore our services and find the best technicians."
+//           }
+//         />
+//       </Helmet>
+
+//       <AdvertisementBanner />
+//       <h2 className="text-xl font-semibold my-4">Technicians</h2>
+//       <ServiceFilters onFilterChange={handleFilterChange} />
+
+//       <div className="flex flex-col md:flex-row p-2 gap-3">
+//         <div className="flex-1 space-y-3 overflow-y-auto scrollbar-hide max-h-[calc(100vh-200px)]">
+//           {filteredTechnicians.length > 0 ? (
+//             filteredTechnicians.map((profile, index) => (
+//               <div
+//                 key={index}
+//                 className="border border-gray-300 rounded-2xl shadow p-3 flex flex-col md:flex-row items-center gap-4 hover:bg-gray-100 cursor-pointer"
+//                 onClick={() =>
+//                   navigate(`/technicianById/${profile.technician?._id}`)
+//                 }
+//               >
+//                 <img
+//                   src={ profile.technician.profileImage || "https://img-new.cgtrader.com/items/4519471/f444ec0898/large/mechanic-avatar-3d-icon-3d-model-f444ec0898.jpg" }
+//                   alt={profile.technician.username}
+//                   className="w-36 h-36 object-cover rounded-2xl"
+//                 />
+//                 <div className="flex-1 space-y-2.5">
+//                   <h2 className="text-lg font-semibold">
+//                     {profile.technician.username}
+//                   </h2>
+//                   <div className="flex gap-3 items-center">
+//                     <div className="flex items-center border border-amber-500 rounded-lg px-2 text-black font-bold">
+//                       {profile.ratings && profile.ratings.length > 0
+//                         ? (
+//                             profile.ratings.reduce(
+//                               (sum, r) => sum + r.rating,
+//                               0
+//                             ) / profile.ratings.length
+//                           ).toFixed(1)
+//                         : "4"}
+//                       <MdOutlineStar
+//                         size={20}
+//                         className="ms-1"
+//                         color="#ffc71b"
+//                       />
+//                     </div>
+//                     {profile.ratings && (
+//                       <span className="text-gray-600 text-sm">
+//                         {profile.ratings.length} Ratings
+//                       </span>
+//                     )}
+//                   </div>
+//                   {profile.technician?.service && (
+//                     <div className="flex flex-wrap gap-2">
+//                       <div className="bg-fuchsia-200 px-3 py-1 rounded-xl text-black text-sm">
+//                         {profile.technician?.service}
+//                       </div>
+//                     </div>
+//                   )}
+//                   <div className="flex items-center">
+//                     <IoLocationOutline size={20} color="red" />
+//                     <span className="text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
+//                       {profile.technician.areaName}, {profile.technician.city},{" "}
+//                       {profile.technician.state}, {profile.technician.pincode}
+//                     </span>
+//                   </div>
+//                   {profile.technician?.description && (
+//                     <div className="flex items-center">
+//                       <FaThumbsUp size={22} color="#00B800" className="flex" />
+//                       <span className="text-sm sm:text-sm md:text-lg lg:text-lg xl:text-lg font-extralight ms-2">
+//                         {profile.technician?.description} years in Services
+//                       </span>
+//                     </div>
+//                   )}
+//                   <div className="flex gap-3">
+//                     {/* <div className="flex items-center bg-fuchsia-500 rounded text-white px-2 py-1 hover:bg-fuchsia-600">
+//                       <IoCall size={20} className="me-2" />
+//                       <span className="text-sm">{profile.technician.phoneNumber}</span>
+//                     </div> */}
+//                     <div className="bg-green-600 rounded text-white px-2 py-1 hover:bg-green-500">
+//                       <button
+//                         onClick={() =>
+//                           openWhatsApp(
+//                             +919603558369,
+//                             "Hello, I am interested in your services"
+//                           )
+//                         }
+//                         className="flex items-center"
+//                       >
+//                         <BsWhatsapp size={18} className="me-2" />
+//                         <span className="text-sm">WhatsApp</span>
+//                       </button>
+//                     </div>
+//                   </div>
+//                 </div>
+//               </div>
+//             ))
+//           ) : (
+//             <div className="text-gray-500 text-center">
+//               No technicians found.
+//             </div>
+//           )}
+//         </div>
+//         <ContactForm />
+//       </div>
+
+//       <div className="mt-6 space-y-4">
+//         {isDataLoading ? (
+//           <div className="text-center">Loading Data...</div>
+//         ) : errorContent ? (
+//           <div className="text-red-500 text-center">{errorContent}</div>
+//         ) : categoryDetails?.seo_content &&
+//           categoryDetails.seo_content.length > 0 ? (
+//           <div className="jodit-wysiwyg">
+//             <div
+//               className="jodit-wysiwyg"
+//               dangerouslySetInnerHTML={{ __html: categoryDetails?.seo_content }}
+//             />
+//           </div>
+//         ) : (
+//           <div>No Content for this Category</div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ServicePage;
 
 // import React, { useEffect, useState } from "react";
 // import { useLocation, useNavigate, useParams } from "react-router-dom";

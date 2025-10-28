@@ -33,7 +33,6 @@ const bgColor = [
 const CategoriesGrid: React.FC<CategoriesGridProps> = ({ lang }) => {
   const { categories, error, loading } = useContext(CategoryContext);
   const navigate = useNavigate();
-  const { categoryId } = useParams<{ categoryId: string }>();
   const location = useLocation();
 
   return (
@@ -72,7 +71,7 @@ const CategoriesGrid: React.FC<CategoriesGridProps> = ({ lang }) => {
                     animationFillMode: 'both',
                   }}
                   onClick={() => {
-                    navigate(`/technicians/${category._id}`, {
+                    navigate(`/${category.category_slug}`, {
                       state: { category },
                     });
                     console.log('Clicked category:', category);
@@ -131,7 +130,7 @@ const CategoriesGrid: React.FC<CategoriesGridProps> = ({ lang }) => {
                     animationFillMode: 'both',
                   }}
                   onClick={() => {
-                    navigate(`/technicians/${category._id}`, {
+                    navigate(`/${category.category_slug}`, {
                       state: { category },
                     });
                     console.log('Clicked category:', category);
