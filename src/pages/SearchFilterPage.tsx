@@ -168,7 +168,6 @@ const SearchFilterPage: React.FC = () => {
     setErrorContent(null);
     try {
       const response = await getSearchContentByAddress(formData);
-      console.log(response, "==>lohiresponse");
       if (response?.success === true) {
         setContent(response?.result);
       } else {
@@ -412,7 +411,7 @@ const SearchFilterPage: React.FC = () => {
         ) : content?.seo_content?.length > 0 ? (
           <div className="ql-container border-black">
             <div
-              className="jodit-wysiwyg"
+              className="seo-prose"
               dangerouslySetInnerHTML={{ __html: content.seo_content }}
             />
           </div>

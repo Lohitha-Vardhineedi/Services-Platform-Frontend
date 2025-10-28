@@ -1,10 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
-/* Base styles for JoditEditor content area, mimicking Quill's .ql-editor */
-/* 'Times New Roman', 'Arial', */
 .seo-prose {
   font-family: 'Poppins', sans-serif !important;
   font-size: 20px;
@@ -22,7 +18,7 @@
 
 /* Headings */
 .seo-prose h1 {
-  font-size: 36px !important;
+  font-size: 36px;
   margin: 1.2em 0 .6em;
   font-weight: 700;
 }
@@ -118,7 +114,6 @@
   background: #f3f4f6;
   font-weight: 600;
 }
-
 
 /* Hide Google Translate banner and extra branding */
 .goog-logo-link,
@@ -222,3 +217,8 @@ body {
     }
   }
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+

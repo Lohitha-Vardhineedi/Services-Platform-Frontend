@@ -157,7 +157,7 @@ const CustomerReviews: React.FC = () => {
   return (
     <section className="py-16 bg-gradient-to-b from-gray-50 to-gray-100">
       <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-6">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-6">
         What Our Customers Say
         </h2>
         <CustomerReviewCarousel />
