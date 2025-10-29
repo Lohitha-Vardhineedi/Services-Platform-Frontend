@@ -59,7 +59,7 @@ type TechSubResult = {
 type TechSubResponse = {
   success: boolean;
   message: string;
-  result: TechSubResult;
+  result: {activePlan: TechSubResult | null , history: TechSubResult[]};
 };
 
 /* ──────────────────────────────────────────────────────────────────────────
@@ -188,10 +188,10 @@ const SubscriptionPage: React.FC = () => {
     (async () => {
       try {
         const userId = localStorage.getItem("userId") || "";
-        const plansRes = (await getPlans()) as PlansResponse;
+        const plansRes = (await getPlans({})) as PlansResponse;
         setPlans(plansRes?.data ?? []);
         const subRes = (await gettechnicianPlanById(userId)) as TechSubResponse;
-        if (subRes?.result) setSub(subRes.result);
+        if (subRes?.result) setSub(subRes.result.activePlan);
       } catch (e) {
         console.error(e);
       } finally {
