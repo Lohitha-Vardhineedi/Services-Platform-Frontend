@@ -1,18 +1,39 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import { MapPin, RefreshCw, Search } from "lucide-react";
 import { BiSolidCategory } from "react-icons/bi";
 import { getAllCategories, getAllPincodes } from "../../api/apiMethods";
 import { useNavigate } from "react-router-dom";
 import { buildSearchPath } from "../../utils/SearchUtils";
+import { CategoryContext } from "../../context/CategoryContext";
+
+interface PincodeArea {
+  _id: string;
+  name: string;
+  subAreas: { _id: string; name: string }[];
+}
+
+interface PincodeData {
+  _id: string;
+  code: string;
+  city: string;
+  state: string;
+  areas: PincodeArea[];
+}
+
+interface PincodeResponse {
+  success: boolean;
+  data: PincodeData[];
+}
 
 function SearchBarSection() {
   const navigate = useNavigate();
 
   // States for dropdowns
-  const [categories, setCategories] = useState<any[]>([]);
-  const [pincodeData, setPincodeData] = useState<any[]>([]);
+  // const [categories, setCategories] = useState<any[]>([]);
+  const {categories} = useContext(CategoryContext)
+  const [pincodeData, setPincodeData] = useState<PincodeData[]>([]);
   const [areaOptions, setAreaOptions] = useState<any[]>([]);
-  const [subAreaOptions, setSubAreaOptions] = useState<any[]>([]);
+  const [subAreaOptions, setSubAreaOptions] = useState<{ _id: string; name: string }[]>([]);
 
   // Selected values
   const [selectedCity, setSelectedCity] = useState("Hyderabad");
@@ -25,35 +46,10 @@ function SearchBarSection() {
   const [error, setError] = useState<string | null>(null);
   const cityOptions = ["Hyderabad"];
 
-  /** ------------------------
-   *  Fetch Categories
-   * ----------------------- */
   useEffect(() => {
     (async () => {
       try {
-        const res = await getAllCategories();
-        if (res.success && Array.isArray(res.data)) {
-          setCategories(
-            res.data.sort((a, b) =>
-              a.category_name.toLowerCase().localeCompare(b.category_name.toLowerCase())
-            )
-          );
-        } else {
-          setError("Failed to fetch categories");
-        }
-      } catch {
-        setError("Error fetching categories");
-      }
-    })();
-  }, []);
-
-  /** ------------------------
-   *  Fetch Pincodes
-   * ----------------------- */
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await getAllPincodes();
+        const res = await getAllPincodes() as PincodeResponse ;
         if (res.success && Array.isArray(res.data)) {
           setPincodeData(res.data);
         } else {
@@ -121,66 +117,25 @@ function SearchBarSection() {
       setSelectedCategory({ name: "", slug: "", id: "" });
     }
   };
-
-  /** ------------------------
-   *  Search Handler
-   * ----------------------- */
-  // const handleSearch = useCallback(() => {
-  //   if (!selectedCategory.slug || !selectedCity) {
-  //     setError("Please select category and city");
-  //     return;
-  //   }
-
-  //   // Build slugs safely
-  //   const citySlug = selectedCity.toLowerCase().replace(/\s+/g, "-");
-  //   const areaSlug = selectedArea ? selectedArea.toLowerCase().replace(/\s+/g, "-") : "";
-  //   const subAreaSlug = selectedSubArea
-  //     ? selectedSubArea.toLowerCase().replace(/\s+/g, "-")
-  //     : "";
-
-  //   // Prepare filter object
-  //   const searchData = {
-  //     category: selectedCategory.id,
-  //     areaName: selectedArea,
-  //     pincode: selectedPincode,
-  //     city: selectedCity,
-  //     state: selectedState,
-  //     subArea: selectedSubArea || null,
-  //   };
-
-  //   localStorage.setItem("selectAddress", JSON.stringify(searchData));
-
-  //   // Decide path based on selected values
-  //   let path = `/${selectedCategory.slug}/${citySlug}`;
-
-  //   if (selectedArea) {
-  //     path += `/${areaSlug}-${selectedPincode}`;
-  //     if (selectedSubArea) {
-  //       path += `/${subAreaSlug}`;
-  //     }
-  //   }
-
-  //   navigate(path, { state: searchData });
-  // }, [selectedCategory, selectedCity, selectedArea, selectedSubArea, selectedPincode, selectedState, navigate]);
-
-
-const handleSearch = useCallback(() => {
-  if (!selectedCategory.slug || !selectedCity) {
-    setError("Please select category and city");
-    return;
-  }
-
-  // Prepare filter object
-  const searchData = {
-    category: selectedCategory.id,
-    city: selectedCity,
-    state: selectedState,
-    pincode: selectedPincode,
-    areaName: selectedArea ,
-    subAreaName: selectedSubArea ,
-  };
-
-  localStorage.setItem("selectAddress", JSON.stringify(searchData));
+  
+  
+  const handleSearch = useCallback(() => {
+    if (!selectedCategory.slug || !selectedCity) {
+      setError("Please select category and city");
+      return;
+    }
+    
+    // Prepare filter object
+    const searchData = {
+      category: selectedCategory.id,
+      city: selectedCity,
+      state: selectedState,
+      pincode: selectedPincode,
+      areaName: selectedArea ,
+      subAreaName: selectedSubArea ,
+    };
+    
+    localStorage.setItem("selectAddress", JSON.stringify(searchData));
 
   // Build path cleanly
   const path = buildSearchPath(
@@ -190,7 +145,7 @@ const handleSearch = useCallback(() => {
     selectedPincode,
     selectedSubArea
   );
-
+  
   navigate(path, { state: searchData });
 }, [
   selectedCategory,
@@ -203,22 +158,22 @@ const handleSearch = useCallback(() => {
 ]);
 
 
-  const handleReset = () => {
-    setSelectedCategory({ name: "", slug: "", id: "" });
-    setSelectedCity("");
-    setSelectedState("");
-    setSelectedPincode("");
-    setSelectedArea("");
-    setSelectedSubArea("");
-    setSubAreaOptions([]);
-    setError(null);
-  };
+const handleReset = () => {
+  setSelectedCategory({ name: "", slug: "", id: "" });
+  setSelectedCity("");
+  setSelectedState("");
+  setSelectedPincode("");
+  setSelectedArea("");
+  setSelectedSubArea("");
+  setSubAreaOptions([]);
+  setError(null);
+};
 
-  /** ------------------------
-   *  JSX
-   * ----------------------- */
-  return (
-    <div className="text-center mb-8">
+/** ------------------------
+ *  JSX
+ * ----------------------- */
+return (
+  <div className="text-center mb-8">
       <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
         Hyderabad's Largest Marketplace !!
       </h1>
@@ -236,12 +191,14 @@ const handleSearch = useCallback(() => {
               className="w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-700"
               value={selectedCategory.name}
               onChange={handleCategoryChange}
-            >
+              >
               <option value="" disabled>
                 Select Category
               </option>
-              {categories.map((cat, idx) => (
-                <option key={idx} value={cat.category_name}>
+              {categories.sort((a, b) =>
+             a.category_name.toLowerCase().localeCompare(b.category_name.toLowerCase())
+            ).map((cat, idx) => (
+              <option key={idx} value={cat.category_name}>
                   {cat.category_name}
                 </option>
               ))}
@@ -249,7 +206,7 @@ const handleSearch = useCallback(() => {
             <BiSolidCategory
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-400"
               size={20}
-            />
+              />
           </div>
 
           {/* City Dropdown */}
@@ -271,7 +228,7 @@ const handleSearch = useCallback(() => {
             <MapPin
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-400"
               size={20}
-            />
+              />
           </div>
 
           {/* Area Dropdown */}
@@ -280,7 +237,7 @@ const handleSearch = useCallback(() => {
               className="w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-700"
               value={selectedArea}
               onChange={handleAreaChange}
-            >
+              >
               <option value="" disabled>
                 Select Area
               </option>
@@ -295,7 +252,7 @@ const handleSearch = useCallback(() => {
             <MapPin
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-400"
               size={20}
-            />
+              />
           </div>
 
           {/* Subarea Dropdown */}
@@ -305,7 +262,7 @@ const handleSearch = useCallback(() => {
               value={selectedSubArea}
               onChange={(e) => setSelectedSubArea(e.target.value)}
               disabled={!subAreaOptions.length}
-            >
+              >
               <option value="" disabled>
                 Select Subarea
               </option>
@@ -318,7 +275,7 @@ const handleSearch = useCallback(() => {
             <MapPin
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-400"
               size={20}
-            />
+              />
           </div>
 
           {/* Action Buttons */}
@@ -333,7 +290,7 @@ const handleSearch = useCallback(() => {
             <button
               className="flex items-center gap-2 px-4 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition"
               onClick={handleReset}
-            >
+              >
               <RefreshCw size={20} />
               Reset
             </button>
@@ -347,6 +304,11 @@ const handleSearch = useCallback(() => {
 export default SearchBarSection;
 
 
+  /** ------------------------
+   *  Search Handler
+   * ----------------------- */
+  // const handleSearch = useCallback(() => {
+
 // import React, { useEffect, useState } from "react";
 // import { MapPin, RefreshCw, Search } from "lucide-react";
 // import { BiSolidCategory } from "react-icons/bi";
@@ -354,8 +316,44 @@ export default SearchBarSection;
 // import { useNavigate } from "react-router-dom";
 
 // function SearchBarSection() {
-//   const navigate = useNavigate();
-
+  //   const navigate = useNavigate();
+  
+  //   if (!selectedCategory.slug || !selectedCity) {
+    //     setError("Please select category and city");
+    //     return;
+    //   }
+    
+    //   // Build slugs safely
+    //   const citySlug = selectedCity.toLowerCase().replace(/\s+/g, "-");
+    //   const areaSlug = selectedArea ? selectedArea.toLowerCase().replace(/\s+/g, "-") : "";
+    //   const subAreaSlug = selectedSubArea
+    //     ? selectedSubArea.toLowerCase().replace(/\s+/g, "-")
+    //     : "";
+  
+    //   // Prepare filter object
+    //   const searchData = {
+    //     category: selectedCategory.id,
+    //     areaName: selectedArea,
+    //     pincode: selectedPincode,
+    //     city: selectedCity,
+    //     state: selectedState,
+    //     subArea: selectedSubArea || null,
+    //   };
+  
+    //   localStorage.setItem("selectAddress", JSON.stringify(searchData));
+  
+    //   // Decide path based on selected values
+    //   let path = `/${selectedCategory.slug}/${citySlug}`;
+  
+    //   if (selectedArea) {
+    //     path += `/${areaSlug}-${selectedPincode}`;
+    //     if (selectedSubArea) {
+    //       path += `/${subAreaSlug}`;
+    //     }
+    //   }
+  
+    //   navigate(path, { state: searchData });
+    // }, [selectedCategory, selectedCity, selectedArea, selectedSubArea, selectedPincode, selectedState, navigate]);
 //   // States for dropdowns
 //   const [categories, setCategories] = useState([]);
 //   const [pincodeData, setPincodeData] = useState([]);

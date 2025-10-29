@@ -26,6 +26,12 @@ interface Review {
   } | null;
 }
 
+interface ReviewsResponse {
+  success: boolean;
+  result: Review[];
+  message: string;
+}
+
 const CustomerReviewCarousel: React.FC = () => {
   const [page, setPage] = useState<number>(0);
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -37,13 +43,13 @@ const CustomerReviewCarousel: React.FC = () => {
     try {
       setIsLoading(true);
       setError(null);
-      const response = await getCompanyReviews();
+      const response = await getCompanyReviews({}) as ReviewsResponse;
       if (response?.success && response.result?.length > 0) {
         setReviews(response.result);
       } else {
         setError('No reviews available at the moment.');
       }
-    } catch (error) {
+    } catch (error: any) {
       setError(error?.message);
     } finally {
       setIsLoading(false);
