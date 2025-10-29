@@ -21,43 +21,58 @@ const iconMap: { [key: string]: LucideIcon } = {
   Shield,
 };
 
-interface PlanFeature {
+export interface Feature {
   name: string;
   included: boolean;
 }
 
-interface FullFeature {
+export interface FullFeature {
   text: string;
 }
 
-export interface Plan {
+export interface SubscriptionPlan {
   _id: string;
   name: string;
+  originalPrice: number;
+  discount: string; // stored as string like "40", "33.34"
+  discountPercentage: number;
   price: number;
-  originalPrice?: number;
+  gstPercentage: number;
   gst: number;
   finalPrice: number;
-  validity: number | null;
-  validityUnit: string;
-  icon: string;
-  color: string;
-  features: PlanFeature[];
+  validity: number | null; // days or null
+  leads: number | null;    // number of leads or null
+  features: Feature[];
   fullFeatures: FullFeature[];
-  discount?: number;
-  isPopular?: boolean;
-  buttonColor: string;
-  leads?: number;
+  isPopular: boolean;
+  isActive: boolean;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  __v: number;
+
+  // Optional commission fields (present only in some plans)
+  commisionAmount?: number;
+  endUpPrice?: number | null;
+  executiveCommissionAmount?: number;
+  refExecutiveCommisionAmount?: number;
+  referalCommisionAmount?: number;
+}
+
+export interface PlanResponse {
+  success: boolean;
+  data: SubscriptionPlan[];
+  message: string;
 }
 
 const SubscriptionPage: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const navigate = useNavigate();
-  const [plans, setPlans] = useState<Plan[]>([]);
+  const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const fetchPlans = async () => {
     try {
-      const response = await getPlans();
+      const response = await getPlans({}) as PlanResponse;
       if (response) {
         setPlans(response?.data);
       } else {
@@ -73,7 +88,7 @@ const SubscriptionPage: React.FC = () => {
     fetchPlans();
   }, []);
 
-  const handleFullDetails = (plan: Plan): void => {
+  const handleFullDetails = (plan: SubscriptionPlan): void => {
     const originalGst = plan.originalPrice ? Math.round(plan.originalPrice * 0.18) : 0;
     navigate(`/subscription/${plan._id}`, { 
       state: { plan, originalGst } 
@@ -123,8 +138,8 @@ const SubscriptionPage: React.FC = () => {
         {/* Updated layout: Flex row, centered (justify-center), equal height (items-stretch), wraps for 3+ plans, gap for spacing */}
         <div className="flex justify-center items-stretch flex-wrap gap-9 w-full">
           {plans
-            .filter(plan => plan.name === "Free Plan" || plan.name === "Economy Plan") 
-            .map((plan: Plan) => {
+            .filter(plan => plan.isActive) 
+            .map((plan: SubscriptionPlan) => {
               const config = PLAN_CONFIG[plan.name] || {
                 gradient: "from-gray-400 to-gray-600",
                 icon: Star,
@@ -184,6 +199,11 @@ const SubscriptionPage: React.FC = () => {
                       <div className="mt-3 text-sm font-medium text-blue-700 bg-blue-100 px-3 py-1 rounded-full inline-block">
                         Valid until {plan?.validity === null ? plan.leads : plan.validity} {plan?.validity === null ? "leads" : "days"}
                       </div>
+                       {plan?.endUpPrice ? (
+                      <div className="ms-2 mt-3 text-sm font-medium text-green-700 bg-green-100 px-3 py-1 rounded-full inline-block">
+                          <div> Earn upto ₹ {plan?.endUpPrice}</div>
+                      </div>
+                        ) : null}
                     </div>
 
                     <ul className="space-y-2 mb-3" role="list">
