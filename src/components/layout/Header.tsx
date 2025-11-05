@@ -105,7 +105,7 @@ function Header() {
                 src="https://old.prnvservices.com/uploads/logo/prnvlogo.jpg"
                 // src="https://res.cloudinary.com/dkfjl3blf/image/upload/v1762314585/prnvlogo.jpg"
                 alt="PRNV Logo"
-                className="h-8 w-auto"
+                className="h-12 w-auto"
               />
             </button>
           </div>

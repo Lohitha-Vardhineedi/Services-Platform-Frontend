@@ -601,11 +601,11 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
       <>
         <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex justify-center">
-            <div className="bg-blue-900 rounded w-fit flex">
+            <div className=" rounded w-fit flex">
               <img
-                src="https://old.prnvservices.com/uploads/logo/1695377568_logo-white.png"
+                src="https://old.prnvservices.com/uploads/logo/prnvlogo.jpg"
                 alt="Prnv Logo"
-                className="h-10 w-auto rounded-sm"
+                className="h-12 w-auto "
               />
 
             </div>
