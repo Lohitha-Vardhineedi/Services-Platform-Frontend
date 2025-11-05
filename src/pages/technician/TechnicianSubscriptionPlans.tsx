@@ -9,47 +9,14 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getPlans } from '../../api/apiMethods';
-
-interface Feature {
-  name: string;
-  included: boolean;
-}
-
-interface Plan {
-  _id: string;
-  name: string;
-  originalPrice: number;
-  discount: string;
-  discountPercentage: number;
-  price: number;
-  gstPercentage: number;
-  gst: number;
-  finalPrice: number;
-  validity: number | null;
-  leads: number | null;
-  features: Feature[];
-  fullFeatures?: Array<{ text: string }>;
-  isPopular: boolean;
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-  commisionAmount?: number;
-  endUpPrice?: number;
-  executiveCommissionAmount?: number;
-  refExecutiveCommisionAmount?: number;
-  referalCommisionAmount?: number;
-}
-
-type PlanName = "Economy Plan" | "Gold Plan" | "Platinum Plan" | "Free Plan";
-
+import { PlanResponse, SubscriptionPlan } from '../SubscriptionPage';
 interface PlanConfig {
   gradient: string;
-  icon: React.ComponentType<{ className?: string; size?: number }>;
+  icon: React.ComponentType<any>;
   button: string;
 }
 
-const PLAN_CONFIG: Record<PlanName, PlanConfig> = {
+const PLAN_CONFIG: Record<string, PlanConfig> = {
   "Economy Plan": {
     gradient: "from-blue-500 to-blue-600",
     icon: Zap,
@@ -75,14 +42,14 @@ const PLAN_CONFIG: Record<PlanName, PlanConfig> = {
 const TechnicianSubscriptionPlans: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const navigate = useNavigate();
-  const [plans, setPlans] = useState<Plan[]>([]);
+  const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [technicianLeads, setTechnicianLeads] = useState<Record<string, number>>({});
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const fetchPlans = async (): Promise<void> => {
     try {
-      const response = await getPlans();
+      const response = await getPlans({}) as PlanResponse;
       if (response) {
         setPlans(response?.data || []);
       } else {
@@ -98,7 +65,7 @@ const TechnicianSubscriptionPlans: React.FC = () => {
     fetchPlans();
   }, []);
 
-  const handleFullDetails = (plan: Plan): void => {
+  const handleFullDetails = (plan: SubscriptionPlan): void => {
     navigate(`/subscription/${plan._id}`, { state: { plan } });
   };
 
@@ -124,9 +91,9 @@ const TechnicianSubscriptionPlans: React.FC = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
           {plans
-            .filter(plan => plan.name === "Free Plan" || plan.name === "Economy Plan")
+            .filter(plan => plan.isActive)
             .map((plan) => {
-              const config = PLAN_CONFIG[plan.name as PlanName] || {
+              const config = PLAN_CONFIG[plan.name as any] || {
                 gradient: "from-gray-400 to-gray-600",
                 icon: Star,
                 button: "bg-gray-500 hover:bg-gray-600",
@@ -182,9 +149,11 @@ const TechnicianSubscriptionPlans: React.FC = () => {
                       <div className="mt-3 text-sm font-medium text-blue-700 bg-blue-100 px-3 py-1 rounded-full inline-block">
                         Valid until {plan?.validity === null ? `${remainingLeads} leads remaining` : `${plan.validity} days`}
                       </div>
+                        {plan?.endUpPrice ? (
                       <div className="ms-2 mt-3 text-sm font-medium text-green-700 bg-green-100 px-3 py-1 rounded-full inline-block">
-                        {plan?.endUpPrice && <div> Earn upto ₹ {plan?.endUpPrice}</div>}
+                          <div> Earn upto ₹ {plan?.endUpPrice}</div>
                       </div>
+                        ) : null}
                     </div>
 
                     <ul className="space-y-2 mb-6">

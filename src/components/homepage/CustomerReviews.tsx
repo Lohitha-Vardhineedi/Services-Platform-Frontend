@@ -26,6 +26,12 @@ interface Review {
   } | null;
 }
 
+interface ReviewsResponse {
+  success: boolean;
+  result: Review[];
+  message: string;
+}
+
 const CustomerReviewCarousel: React.FC = () => {
   const [page, setPage] = useState<number>(0);
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -37,13 +43,13 @@ const CustomerReviewCarousel: React.FC = () => {
     try {
       setIsLoading(true);
       setError(null);
-      const response = await getCompanyReviews();
+      const response = await getCompanyReviews({}) as ReviewsResponse;
       if (response?.success && response.result?.length > 0) {
         setReviews(response.result);
       } else {
         setError('No reviews available at the moment.');
       }
-    } catch (error) {
+    } catch (error: any) {
       setError(error?.message);
     } finally {
       setIsLoading(false);
@@ -157,7 +163,7 @@ const CustomerReviews: React.FC = () => {
   return (
     <section className="py-16 bg-gradient-to-b from-gray-50 to-gray-100">
       <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 text-center mb-6">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-6">
         What Our Customers Say
         </h2>
         <CustomerReviewCarousel />

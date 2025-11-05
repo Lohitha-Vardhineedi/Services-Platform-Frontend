@@ -478,7 +478,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
           if (formData.auth1Photo) fd.append("auth1Photo", formData.auth1Photo);
           fd.append("authorizedPersons[1][phone]", formData.authorizedPhone2);
           if (formData.auth2Photo) fd.append("auth2Photo", formData.auth2Photo);
-          response = await technicianRegister(fd);
+          response = await technicianRegister(fd) as any;
         }
 
         if (response?.success) {
@@ -863,13 +863,13 @@ const SignupForm: React.FC<SignupFormProps> = ({ defaultRole }) => {
     <>
       <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-center">
-          <div className="bg-blue-900 rounded px-1 py-1 w-fit flex">
-            <img
-              src="https://prnvservices.com/uploads/logo/1695377568_logo-white.png"
-              alt="Prnv services Logo"
-              className="h-8 w-auto"
-            />
-          </div>
+          <div className="flex-shrink-0 bg-blue-900 rounded px-1 py-1">
+          <img
+            src="https://old.prnvservices.com/uploads/logo/1695377568_logo-white.png"
+            alt="Prnv services Logo"
+            className="h-8 w-auto"
+          />
+        </div>
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
