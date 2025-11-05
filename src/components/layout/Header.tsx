@@ -99,7 +99,7 @@ function Header() {
     <header className="bg-white shadow-sm border-b z-10 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <div className="flex-shrink-0 bg-blue-900 rounded px-1 py-1">
+          <div className="flex-shrink-0  rounded px-1 py-1">
             <button onClick={handleLogoClick}>
               <img
                 src="https://old.prnvservices.com/uploads/logo/prnvlogo.jpg"
