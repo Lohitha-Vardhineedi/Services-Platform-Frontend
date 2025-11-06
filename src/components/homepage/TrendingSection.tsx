@@ -41,7 +41,7 @@ function TrendingSection() {
                 key={category._id}
                 className="group relative bg-gradient-to-br from-white to-gray-50 rounded-xl shadow-lg p-4 flex flex-col items-center overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-105"
                 onClick={() => {
-                  navigate(`/technicians/${category._id}`, {
+                  navigate(`/${category.category_slug}`, {
                     state: { category },
                   });
                 }}
