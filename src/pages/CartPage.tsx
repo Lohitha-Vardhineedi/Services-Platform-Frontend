@@ -389,11 +389,11 @@ const CartPage: React.FC = () => {
 
       const userId = localStorage.getItem("userId");
       if (!userId) {
-        setError("User not logged in");
+        setError("User not logged in"); 
         return;
       }
 
-      const item = cartData?.cart.items.find((item) => item._id === itemId);
+      const item = cartData?.cart.items.find((item) => item._id === itemId); 
       if (!item) return;
 
       const newQuantity = Math.max(1, item.quantity + delta);
