@@ -136,7 +136,8 @@ const SubscriptionPage: React.FC = () => {
           </p>
         </div>
         {/* Updated layout: Flex row, centered (justify-center), equal height (items-stretch), wraps for 3+ plans, gap for spacing */}
-        <div className="flex justify-center items-stretch flex-wrap gap-9 w-full">
+        {/* <div className="flex justify-center items-stretch flex-wrap gap-9 w-full"> */}
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'>
           {plans
             .filter(plan => plan.isActive) 
             .map((plan: SubscriptionPlan) => {
