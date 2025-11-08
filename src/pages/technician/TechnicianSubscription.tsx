@@ -59,7 +59,7 @@ type TechSubResult = {
 type TechSubResponse = {
   success: boolean;
   message: string;
-  result: {activePlan: TechSubResult | null , history: TechSubResult[]};
+  result: TechSubResult | null ;
 };
 
 /* ──────────────────────────────────────────────────────────────────────────
@@ -191,7 +191,7 @@ const SubscriptionPage: React.FC = () => {
         const plansRes = (await getPlans({})) as PlansResponse;
         setPlans(plansRes?.data ?? []);
         const subRes = (await gettechnicianPlanById(userId)) as TechSubResponse;
-        if (subRes?.result) setSub(subRes.result.activePlan);
+        if (subRes?.result) setSub(subRes.result);
       } catch (e) {
         console.error(e);
       } finally {

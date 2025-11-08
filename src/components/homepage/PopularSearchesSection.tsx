@@ -46,7 +46,7 @@ const PopularSearchesSection = () => {
               key={category._id}
               className="group relative bg-white rounded-lg shadow-md p-4 flex flex-col items-center text-center overflow-hidden transition-all duration-300 hover:shadow-xl"
               onClick={() => {
-                navigate(`/technicians/${category._id}`, {
+                navigate(`/${category.category_slug}`, {
                   state: { category },
                 });
               }}
