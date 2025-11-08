@@ -153,7 +153,7 @@ const BlogListPage: React.FC = () => {
         <div className="relative text-center flex justify-between items-center max-w-3xl mb-6">
           <div className="flex items-center">
             <span className="w-1 h-12 bg-gradient-to-b from-pink-500 to-purple-500 mr-4"></span>
-            <h1 className="text-4xl font-bold text-gray-900">Blogs</h1>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Blogs</h1>
           </div>
           <Link
             to="/all-blogs"

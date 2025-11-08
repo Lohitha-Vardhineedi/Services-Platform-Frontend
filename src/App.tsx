@@ -21,7 +21,7 @@ const App = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {!shouldHideHeader && <Header />}
-      <main className={`px-4 sm:px-6 py-8 ${shouldHideHeader ? 'pt-0' : ''}`}>
+      <main className={`px-4 sm:px-6 py-6 ${shouldHideHeader ? 'pt-0' : ''}`}>
         <AppRoutes />
          
       </main>
