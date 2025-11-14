@@ -380,11 +380,11 @@ const UserSignupForm: React.FC = () => {
     <>
       <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-center">
-          <div className="flex-shrink-0 bg-blue-900 rounded px-1 py-1">
+          <div className="flex-shrink-0  rounded px-1 py-1">
             <img
-              src="https://old.prnvservices.com/uploads/logo/1695377568_logo-white.png"
-              alt="Prnv services Logo"
-              className="h-8 w-auto"
+              src="https://old.prnvservices.com/uploads/logo/prnv_logo.png"
+              alt="PRNV Logo"
+              className="h-12 w-auto rounded-md"
             />
           </div>
         </div>

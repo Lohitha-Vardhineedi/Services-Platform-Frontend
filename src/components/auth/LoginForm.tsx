@@ -89,11 +89,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = "user" }) => {
   return (
     <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex justify-center mb-4">
-        <div className=" flex items-center bg-blue-900 rounded p-1">
+        <div className=" flex items-center rounded p-1">
           <img
             src="https://old.prnvservices.com/uploads/logo/prnv_logo.png"
             alt="Prnv Logo"
-            className="h-10 w-auto"
+            className="h-12 w-auto rounded-md"
           />
         </div>
       </div>

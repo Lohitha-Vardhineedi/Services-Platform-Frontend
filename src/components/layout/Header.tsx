@@ -99,13 +99,13 @@ function Header() {
     <header className="bg-white shadow-sm border-b z-10 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 ">
-          <div className="flex-shrink-0 p-1  rounded bg-blue-900 cursor-pointer">
+          <div className="flex-shrink-0 p-1  rounded  cursor-pointer">
             <button onClick={handleLogoClick}>
               <img
                 src="https://old.prnvservices.com/uploads/logo/prnv_logo.png"
                 // src="https://res.cloudinary.com/dkfjl3blf/image/upload/v1762314585/prnvlogo.jpg"
                 alt="PRNV Logo"
-                className="h-8 w-auto"
+                className="h-12 w-auto rounded-md"
               />
             </button>
           </div>
