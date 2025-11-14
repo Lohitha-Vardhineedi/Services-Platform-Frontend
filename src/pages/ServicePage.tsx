@@ -11,6 +11,7 @@ import { ContactForm } from "../components/services/ContactForms";
 import { getTechByCategorie } from "../api/apiMethods";
 import { Helmet } from "react-helmet-async";
 import { CategoryContext, Category } from "../context/CategoryContext";
+import NotFoundPage from "./NotFoundPage";
 
 export interface Rating {
   _id: string;
@@ -40,19 +41,21 @@ interface Technician {
   servicesDone?: number;
 }
 
-/* --------------------------------------------------------------- */
 
 const ServicePage: React.FC = () => {
   const { category_slug } = useParams<{ category_slug: string }>();
   const navigate = useNavigate();
   const { categories } = useContext(CategoryContext);
 
-  /* ---- find the category once (memoised) ---- */
   const selectedCategory = React.useMemo(
     () =>
       categories.find((c) => c.category_slug === category_slug) ?? undefined,
     [categories, category_slug]
   );
+
+  if (!selectedCategory) {
+  return <NotFoundPage />;
+}
 
   const [technicians, setTechnicians] = useState<Technician[]>([]);
   const [filteredTechnicians, setFilteredTechnicians] = useState<Technician[]>([]);

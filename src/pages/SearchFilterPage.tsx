@@ -16,6 +16,7 @@ import { Helmet } from "react-helmet-async";
 import { BsWhatsapp } from "react-icons/bs";
 import { Rating } from "./ProfilePage";
 import { FC } from "react";
+import NotFoundPage from "./NotFoundPage";
 
 interface Technician {
   _id: string;
@@ -118,6 +119,7 @@ const SearchFilterPage: React.FC = () => {
   console.log("searchAddress", searchAddress);
 
   const parsedSearchAddress = searchAddress ? JSON.parse(searchAddress) : null;
+
 
   const categoryId = parsedSearchAddress?.category;
   const areaName = parsedSearchAddress?.areaName;
