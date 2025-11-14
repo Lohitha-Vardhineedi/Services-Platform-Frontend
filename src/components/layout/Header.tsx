@@ -102,7 +102,7 @@ function Header() {
           <div className="flex-shrink-0 p-1  rounded bg-blue-900 cursor-pointer">
             <button onClick={handleLogoClick}>
               <img
-                src="https://old.prnvservices.com/uploads/logo/1695377568_logo-white.png"
+                src="https://old.prnvservices.com/uploads/logo/prnv_logo.png"
                 // src="https://res.cloudinary.com/dkfjl3blf/image/upload/v1762314585/prnvlogo.jpg"
                 alt="PRNV Logo"
                 className="h-8 w-auto"

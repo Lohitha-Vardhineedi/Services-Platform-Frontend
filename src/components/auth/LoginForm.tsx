@@ -91,7 +91,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ defaultRole = "user" }) => {
       <div className="flex justify-center mb-4">
         <div className=" flex items-center bg-blue-900 rounded p-1">
           <img
-            src="https://old.prnvservices.com/uploads/logo/1695377568_logo-white.png"
+            src="https://old.prnvservices.com/uploads/logo/prnv_logo.png"
             alt="Prnv Logo"
             className="h-10 w-auto"
           />

@@ -1,4 +1,13 @@
 User-agent: *
+Disallow: /api/
 Disallow: /admin/
-Disallow: /login/user
-Sitemap: https://prnvservices.com/sitemap.xml 
+Disallow: /dashboard/
+Disallow: /server/
+Disallow: /backend/
+Disallow: /node_modules/
+Disallow: /static/js/*.map
+Disallow: /*.json$
+Allow: /static/
+Allow: /images/
+Allow: /assets/
+Sitemap: https://prnvservices.com/sitemap.xml
