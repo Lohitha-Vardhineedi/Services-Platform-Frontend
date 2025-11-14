@@ -10,12 +10,13 @@
         }
       },
       {
+        "source": "/sitemap.xml",
+        "destination": "/sitemap.xml"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
-    ],
-    "errorHandlers": {
-      "404": "/404.html"
-    }
+    ]
   }
 }
