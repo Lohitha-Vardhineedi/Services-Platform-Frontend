@@ -1,20 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset 
-  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
-  <!-- Homepage -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://prnvservices.com/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
+  <url><loc>https://prnvservices.com/plumber-services</loc></url>
+  <url><loc>https://prnvservices.com/electrician-services</loc></url>
+  <url><loc>https://prnvservices.com/carpenter-services</loc></url>
+  <url><loc>https://prnvservices.com/painting-services</loc></url>
+  <url><loc>https://prnvservices.com/pest-control-services</loc></url>
+  <url><loc>https://prnvservices.com/deep-cleaning-services</loc></url>
+  <url><loc>https://prnvservices.com/washing-machine-repair-services</loc></url>
+  <url><loc>https://prnvservices.com/spa-services</loc></url>
 
-  <url><loc>https://prnvservices.com/plumber-services/hyderabad</loc><changefreq>weekly</changefreq><priority>0.90</priority></url>
-  <url><loc>https://prnvservices.com/electrician-services/hyderabad</loc><changefreq>weekly</changefreq><priority>0.90</priority></url>
-  <url><loc>https://prnvservices.com/carpenter-services/hyderabad</loc><changefreq>weekly</changefreq><priority>0.90</priority></url>
-  <url><loc>https://prnvservices.com/painting-services/hyderabad</loc><changefreq>weekly</changefreq><priority>0.90</priority></url>
-  <url><loc>https://prnvservices.com/pest-control-services/hyderabad</loc><changefreq>weekly</changefreq><priority>0.90</priority></url>
-  <url><loc>https://prnvservices.com/deep-cleaning-services/hyderabad</loc><changefreq>weekly</changefreq><priority>0.90</priority></url>
-  <url><loc>https://prnvservices.com/ac-repair-services/hyderabad</loc><changefreq>weekly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://prnvservices.com/interior-designers-services/hyderabad</loc><changefreq>weekly</changefreq><priority>0.80</priority></url>
+  <url><loc>https://prnvservices.com/plumber-services/sanjeev-reddy-nagar-500038</loc></url>
+  <url><loc>https://prnvservices.com/electrician-services/sanjeev-reddy-nagar-500038</loc></url>
+  <url><loc>https://prnvservices.com/carpenter-services/sanjeev-reddy-nagar-500038</loc></url>
+  <url><loc>https://prnvservices.com/painting-services/sanjeev-reddy-nagar-500038</loc></url>
+  <url><loc>https://prnvservices.com/pest-control-services/sanjeev-reddy-nagar-500038</loc></url>
+  <url><loc>https://prnvservices.com/deep-cleaning-services/sanjeev-reddy-nagar-500038</loc></url>
+  <url><loc>https://prnvservices.com/ac-repair-services/sanjeev-reddy-nagar-500038</loc></url>
+  <url><loc>https://prnvservices.com/interior-designers-services/sanjeev-reddy-nagar-500038</loc></url>
+
+  <url><loc>https://prnvservices.com/plumber-services/peerzadiguda-500039</loc></url>
+  <url><loc>https://prnvservices.com/electrician-services/peerzadiguda-500039</loc></url>
+  <url><loc>https://prnvservices.com/carpenter-services/peerzadiguda-500039</loc></url>
+  <url><loc>https://prnvservices.com/painting-services/peerzadiguda-500039</loc></url>
+  <url><loc>https://prnvservices.com/pest-control-services/peerzadiguda-500039</loc></url>
+  <url><loc>https://prnvservices.com/deep-cleaning-services/peerzadiguda-500039</loc></url>
+  <url><loc>https://prnvservices.com/ac-repair-services/peerzadiguda-500039</loc></url>
+  <url><loc>https://prnvservices.com/interior-designers-services/peerzadiguda-500039</loc></url>
+
+  <url><loc>https://prnvservices.com/plumber-services/aphb-colony-moulali-500040</loc></url>
+  <url><loc>https://prnvservices.com/electrician-services/aphb-colony-moulali-500040</loc></url>
+  <url><loc>https://prnvservices.com/carpenter-services/aphb-colony-moulali-500040</loc></url>
+  <url><loc>https://prnvservices.com/painting-services/aphb-colony-moulali-500040</loc></url>
+  <url><loc>https://prnvservices.com/pest-control-services/aphb-colony-moulali-500040</loc></url>
+  <url><loc>https://prnvservices.com/deep-cleaning-services/aphb-colony-moulali-500040</loc></url>
+  <url><loc>https://prnvservices.com/ac-repair-services/aphb-colony-moulali-500040</loc></url>
+  <url><loc>https://prnvservices.com/interior-designers-services/aphb-colony-moulali-500040</loc></url>
+  <url><loc>https://prnvservices.com/plumber-services/raj-bhavan-area-500041</loc></url>
+  <url><loc>https://prnvservices.com/electrician-services/raj-bhavan-area-500041</loc></url>
+  <url><loc>https://prnvservices.com/carpenter-services/raj-bhavan-area-500041</loc></url>
+  <url><loc>https://prnvservices.com/painting-services/raj-bhavan-area-500041</loc></url>
+  <url><loc>https://prnvservices.com/pest-control-services/raj-bhavan-area-500041</loc></url>
+  <url><loc>https://prnvservices.com/deep-cleaning-services/raj-bhavan-area-500041</loc></url>
+  <url><loc>https://prnvservices.com/ac-repair-services/raj-bhavan-area-500041</loc></url>
+  <url><loc>https://prnvservices.com/interior-designers-services/raj-bhavan-area-500041</loc></url>
+
+  <url><loc>https://prnvservices.com/plumber-services/balanagar-500042</loc></url>
+  <url><loc>https://prnvservices.com/electrician-services/balanagar-500042</loc></url>
+  <url><loc>https://prnvservices.com/carpenter-services/balanagar-500042</loc></url>
+  <url><loc>https://prnvservices.com/painting-services/balanagar-500042</loc></url>
+  <url><loc>https://prnvservices.com/pest-control-services/balanagar-500042</loc></url>
+  <url><loc>https://prnvservices.com/deep-cleaning-services/balanagar-500042</loc></url>
+  <url><loc>https://prnvservices.com/ac-repair-services/balanagar-500042</loc></url>
+  <url><loc>https://prnvservices.com/interior-designers-services/balanagar-500042</loc></url>
+
+  <url><loc>https://prnvservices.com/plumber-services/sitaphalmandi-500061</loc></url>
+  <url><loc>https://prnvservices.com/electrician-services/sitaphalmandi-500061</loc></url>
+  <url><loc>https://prnvservices.com/carpenter-services/sitaphalmandi-500061</loc></url>
+  <url><loc>https://prnvservices.com/painting-services/sitaphalmandi-500061</loc></url>
+  <url><loc>https://prnvservices.com/pest-control-services/sitaphalmandi-500061</loc></url>
+  <url><loc>https://prnvservices.com/deep-cleaning-services/sitaphalmandi-500061</loc></url>
+  <url><loc>https://prnvservices.com/ac-repair-services/sitaphalmandi-500061</loc></url>
+  <url><loc>https://prnvservices.com/interior-designers-services/sitaphalmandi-500061</loc></url>
+
+</urlset>
